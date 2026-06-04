@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useRoute, Link } from "wouter";
 import {
-  Play,
-  Pause,
   Scissors,
   Plus,
   Trash2,
-  Share2,
   Globe,
+  Lock,
   Loader2,
   Check,
   Copy,
@@ -25,14 +23,18 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { RichTextEditor } from "@/components/rich-text-editor";
+import {
+  VideoPlayer,
+  type VideoPlayerHandle,
+} from "@/components/video-player";
 import { useToast } from "@/hooks/use-toast";
 import { getRecording, updateRecording } from "@/lib/db";
-import { publishRecording } from "@/lib/publish";
+import { getPublicLink, unpublishRecording } from "@/lib/publish";
 import { createGifFromBlob } from "@/lib/gif";
 import { shareUrl } from "@/lib/api";
 import { formatTimestamp } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import type { LocalRecording, Chapter } from "@/lib/types";
+import type { LocalRecording, Chapter, Visibility } from "@/lib/types";
 
 export default function Editor() {
   const [, params] = useRoute("/editor/:id");
@@ -50,16 +52,16 @@ export default function Editor() {
   const [trimEnd, setTrimEnd] = useState(0);
   const [chapters, setChapters] = useState<Chapter[]>([]);
 
-  const [playing, setPlaying] = useState(false);
   const [current, setCurrent] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  const [publishing, setPublishing] = useState(false);
-  const [publishStep, setPublishStep] = useState("");
+  const [visibility, setVisibility] = useState<Visibility>("private");
   const [shareId, setShareId] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [publishStep, setPublishStep] = useState("");
   const [copied, setCopied] = useState(false);
 
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<VideoPlayerHandle>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -75,6 +77,7 @@ export default function Editor() {
       setTrimStart(r.trimStart);
       setTrimEnd(r.trimEnd || r.durationSec);
       setChapters(r.chapters);
+      setVisibility(r.visibility);
       setShareId(r.shareId);
       url = URL.createObjectURL(r.blob);
       setObjectUrl(url);
@@ -84,36 +87,7 @@ export default function Editor() {
     };
   }, [id]);
 
-  const togglePlay = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (v.paused) {
-      if (v.currentTime < trimStart || v.currentTime >= trimEnd) {
-        v.currentTime = trimStart;
-      }
-      void v.play();
-    } else {
-      v.pause();
-    }
-  };
-
-  const onTimeUpdate = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (v.currentTime >= trimEnd) {
-      v.pause();
-      v.currentTime = trimStart;
-      setPlaying(false);
-    }
-    setCurrent(v.currentTime);
-  };
-
-  const seek = (t: number) => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.currentTime = Math.max(trimStart, Math.min(trimEnd, t));
-    setCurrent(v.currentTime);
-  };
+  const seek = (t: number) => playerRef.current?.seek(t);
 
   const addChapter = () => {
     const time = Math.round(current * 10) / 10;
@@ -150,47 +124,85 @@ export default function Editor() {
     toast({ title: "Saved", description: "Your changes are stored locally." });
   };
 
-  const handlePublish = async () => {
+  const handleGetLink = async () => {
     if (!rec) return;
-    setPublishing(true);
+    setBusy(true);
     try {
       const updated = await persist();
-      const current = updated ?? rec;
-      setPublishStep("Building preview…");
+      const saved = updated ?? rec;
+      const draft: LocalRecording = {
+        ...saved,
+        title,
+        description,
+        trimStart,
+        trimEnd,
+        chapters,
+      };
+
       let gifBlob: Blob | null = null;
-      try {
-        gifBlob = await createGifFromBlob(current.blob, {
-          start: trimStart,
-          end: Math.min(trimEnd, trimStart + 6),
-        });
-      } catch {
-        gifBlob = null;
+      if (!draft.shareId || !draft.videoPath) {
+        setPublishStep("Building preview…");
+        try {
+          gifBlob = await createGifFromBlob(draft.blob, {
+            start: trimStart,
+            end: Math.min(trimEnd, trimStart + 6),
+          });
+        } catch {
+          gifBlob = null;
+        }
       }
-      const result = await publishRecording(
-        { ...current, title, description, trimStart, trimEnd, chapters },
-        { gifBlob, onProgress: setPublishStep },
-      );
-      await updateRecording(current.id, {
+
+      const result = await getPublicLink(draft, {
+        gifBlob,
+        onProgress: setPublishStep,
+      });
+      await updateRecording(draft.id, {
         visibility: result.visibility,
         shareId: result.shareId,
         videoPath: result.videoPath,
         thumbnailPath: result.thumbnailPath,
         gifPath: result.gifPath,
       });
+      setVisibility(result.visibility);
       setShareId(result.shareId);
+      await navigator.clipboard.writeText(shareUrl(result.shareId));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
       toast({
-        title: "Published!",
-        description: "Your share link is ready.",
+        title: "Public link ready",
+        description: "Link copied — anyone with it can watch.",
       });
     } catch {
       toast({
-        title: "Publish failed",
-        description: "Something went wrong uploading your recording.",
+        title: "Couldn't create link",
+        description: "Something went wrong. Please try again.",
         variant: "destructive",
       });
     } finally {
-      setPublishing(false);
+      setBusy(false);
       setPublishStep("");
+    }
+  };
+
+  const handleUnpublish = async () => {
+    if (!shareId) return;
+    setBusy(true);
+    try {
+      await unpublishRecording(shareId);
+      await updateRecording(rec!.id, { visibility: "private" });
+      setVisibility("private");
+      toast({
+        title: "Made private",
+        description: "The public link no longer works.",
+      });
+    } catch {
+      toast({
+        title: "Couldn't unpublish",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -205,6 +217,8 @@ export default function Editor() {
     () => Math.max(0, trimEnd - trimStart),
     [trimStart, trimEnd],
   );
+
+  const isPublic = visibility === "public" && !!shareId;
 
   if (notFound) {
     return (
@@ -244,41 +258,19 @@ export default function Editor() {
 
       <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr]">
         <div>
-          <div className="overflow-hidden border-4 border-foreground bg-foreground shadow-md">
-            <video
-              ref={videoRef}
-              src={objectUrl}
-              className="aspect-video w-full bg-foreground object-contain"
-              onLoadedMetadata={(e) => {
-                const d = e.currentTarget.duration;
-                if (Number.isFinite(d)) {
-                  setDuration(d);
-                  if (!trimEnd) setTrimEnd(d);
-                }
-                e.currentTarget.currentTime = trimStart;
-              }}
-              onPlay={() => setPlaying(true)}
-              onPause={() => setPlaying(false)}
-              onTimeUpdate={onTimeUpdate}
-              onClick={togglePlay}
-            />
-          </div>
-
-          <div className="mt-4 flex items-center gap-4">
-            <Button
-              onClick={togglePlay}
-              className="h-12 w-12 shrink-0 rounded-full border-4 border-foreground bg-primary p-0 text-primary-foreground shadow-sm"
-            >
-              {playing ? (
-                <Pause className="h-5 w-5" />
-              ) : (
-                <Play className="ml-0.5 h-5 w-5" />
-              )}
-            </Button>
-            <span className="font-mono text-sm font-bold">
-              {formatTimestamp(current)} / {formatTimestamp(duration)}
-            </span>
-          </div>
+          <VideoPlayer
+            ref={playerRef}
+            src={objectUrl}
+            chapters={chapters}
+            transcript={rec.transcript}
+            startTime={trimStart}
+            endTime={trimEnd || undefined}
+            onTimeUpdate={setCurrent}
+            onDurationChange={(d) => {
+              setDuration(d);
+              if (!trimEnd) setTrimEnd(d);
+            }}
+          />
 
           <div className="mt-6 border-4 border-foreground bg-card p-5">
             <div className="mb-3 flex items-center gap-2">
@@ -321,7 +313,7 @@ export default function Editor() {
           <Tabs defaultValue="description">
             <TabsList className="grid w-full grid-cols-3 border-4 border-foreground bg-muted p-1">
               <TabsTrigger value="description" className="font-bold uppercase">
-                Notes
+                Description
               </TabsTrigger>
               <TabsTrigger value="chapters" className="font-bold uppercase">
                 Chapters
@@ -412,15 +404,18 @@ export default function Editor() {
           </Tabs>
 
           <div className="space-y-3 border-t-4 border-foreground pt-6">
-            {shareId ? (
+            {isPublic ? (
               <div className="space-y-3 border-4 border-foreground bg-secondary p-4 text-secondary-foreground">
                 <div className="flex items-center gap-2 font-display font-bold uppercase">
-                  <Globe className="h-5 w-5" /> Published
+                  <Globe className="h-5 w-5" /> Public
                 </div>
+                <p className="text-sm font-medium">
+                  Anyone with the link can watch this recording.
+                </p>
                 <div className="flex items-center gap-2">
                   <Input
                     readOnly
-                    value={shareUrl(shareId)}
+                    value={shareUrl(shareId!)}
                     className="h-10 border-2 border-foreground bg-background font-mono text-xs"
                   />
                   <Button
@@ -442,39 +437,49 @@ export default function Editor() {
                   Open public page
                 </Button>
                 <Button
-                  onClick={handlePublish}
-                  disabled={publishing}
+                  onClick={handleUnpublish}
+                  disabled={busy}
                   variant="ghost"
                   className="w-full font-bold uppercase"
                 >
-                  {publishing ? (
+                  {busy ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {publishStep || "Updating…"}
+                      Working…
                     </>
                   ) : (
-                    "Update published copy"
+                    <>
+                      <Lock className="mr-2 h-4 w-4" /> Make private
+                    </>
                   )}
                 </Button>
               </div>
             ) : (
-              <Button
-                onClick={handlePublish}
-                disabled={publishing}
-                size="lg"
-                className="h-14 w-full border-4 border-foreground bg-primary text-lg font-black uppercase text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
-              >
-                {publishing ? (
-                  <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    {publishStep || "Publishing…"}
-                  </>
-                ) : (
-                  <>
-                    <Share2 className="mr-2 h-5 w-5" /> Publish & Get Link
-                  </>
-                )}
-              </Button>
+              <div className="space-y-3 border-4 border-foreground bg-card p-4">
+                <div className="flex items-center gap-2 font-display font-bold uppercase">
+                  <Lock className="h-5 w-5" /> Private
+                </div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  Only you can see this. Generate a link to share it.
+                </p>
+                <Button
+                  onClick={handleGetLink}
+                  disabled={busy}
+                  size="lg"
+                  className="h-14 w-full border-4 border-foreground bg-primary text-lg font-black uppercase text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+                >
+                  {busy ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      {publishStep || "Working…"}
+                    </>
+                  ) : (
+                    <>
+                      <Globe className="mr-2 h-5 w-5" /> Get public link
+                    </>
+                  )}
+                </Button>
+              </div>
             )}
             <Button
               onClick={handleSave}
