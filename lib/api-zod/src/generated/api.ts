@@ -95,6 +95,61 @@ export const GetRecordingResponse = zod.object({
 
 
 /**
+ * @summary Update an already-published recording's editable metadata
+ */
+export const UpdateRecordingParams = zod.object({
+  "shareId": zod.coerce.string()
+})
+
+
+
+
+export const UpdateRecordingBody = zod.object({
+  "title": zod.string().min(1),
+  "description": zod.string().optional(),
+  "durationSec": zod.number(),
+  "trimStart": zod.number(),
+  "trimEnd": zod.number(),
+  "hasAudio": zod.boolean().optional(),
+  "gifPath": zod.string().nullish(),
+  "chapters": zod.array(zod.object({
+  "time": zod.number(),
+  "label": zod.string()
+})).optional(),
+  "transcript": zod.array(zod.object({
+  "start": zod.number(),
+  "end": zod.number(),
+  "text": zod.string()
+})).optional()
+})
+
+export const UpdateRecordingResponse = zod.object({
+  "shareId": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "visibility": zod.enum(['private', 'public']),
+  "durationSec": zod.number(),
+  "trimStart": zod.number(),
+  "trimEnd": zod.number(),
+  "hasAudio": zod.boolean(),
+  "videoPath": zod.string(),
+  "thumbnailPath": zod.string().nullish(),
+  "gifPath": zod.string().nullish(),
+  "chapters": zod.array(zod.object({
+  "time": zod.number(),
+  "label": zod.string()
+})),
+  "transcript": zod.array(zod.object({
+  "start": zod.number(),
+  "end": zod.number(),
+  "text": zod.string()
+})),
+  "views": zod.number(),
+  "createdAt": zod.string()
+})
+
+
+/**
  * @summary Change a recording's visibility (publish / unpublish)
  */
 export const SetRecordingVisibilityParams = zod.object({

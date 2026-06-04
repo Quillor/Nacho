@@ -29,7 +29,11 @@ import {
 } from "@/components/video-player";
 import { useToast } from "@/hooks/use-toast";
 import { getRecording, updateRecording } from "@/lib/db";
-import { getPublicLink, unpublishRecording } from "@/lib/publish";
+import {
+  getPublicLink,
+  unpublishRecording,
+  syncPublishedRecording,
+} from "@/lib/publish";
 import { createGifFromBlob } from "@/lib/gif";
 import { shareUrl } from "@/lib/api";
 import { formatTimestamp } from "@/lib/format";
@@ -120,8 +124,58 @@ export default function Editor() {
   };
 
   const handleSave = async () => {
-    await persist();
-    toast({ title: "Saved", description: "Your changes are stored locally." });
+    if (!rec) return;
+    const trimChanged =
+      trimStart !== rec.trimStart || trimEnd !== (rec.trimEnd || rec.durationSec);
+    const updated = await persist();
+    const saved = updated ?? rec;
+
+    // Local-only recording: persist locally and we're done.
+    if (saved.visibility !== "public" || !saved.shareId || !saved.videoPath) {
+      toast({
+        title: "Saved",
+        description: "Your changes are stored locally.",
+      });
+      return;
+    }
+
+    // Already published: re-sync edits so the shared link stays current.
+    setBusy(true);
+    try {
+      let gifBlob: Blob | null = null;
+      if (trimChanged) {
+        setPublishStep("Building preview…");
+        try {
+          gifBlob = await createGifFromBlob(saved.blob, {
+            start: trimStart,
+            end: Math.min(trimEnd, trimStart + 6),
+          });
+        } catch {
+          gifBlob = null;
+        }
+      }
+      const result = await syncPublishedRecording(saved, {
+        gifBlob,
+        onProgress: setPublishStep,
+      });
+      const synced = await updateRecording(saved.id, {
+        gifPath: result.gifPath,
+      });
+      if (synced) setRec(synced);
+      toast({
+        title: "Saved & synced",
+        description: "Your public link now shows the latest version.",
+      });
+    } catch {
+      toast({
+        title: "Saved locally",
+        description: "Couldn't sync the public link. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setBusy(false);
+      setPublishStep("");
+    }
   };
 
   const handleGetLink = async () => {

@@ -24,6 +24,7 @@ import type {
   HealthStatus,
   PublishedRecording,
   RecordingInput,
+  RecordingUpdateInput,
   UploadUrlInput,
   UploadUrlResponse,
   VersionInfo,
@@ -339,6 +340,78 @@ export function useGetRecording<TData = Awaited<ReturnType<typeof getRecording>>
 
 
 
+
+export const getUpdateRecordingUrl = (shareId: string,) => {
+
+
+
+
+  return `/api/recordings/${shareId}`
+}
+
+/**
+ * @summary Update an already-published recording's editable metadata
+ */
+export const updateRecording = async (shareId: string,
+    recordingUpdateInput: RecordingUpdateInput, options?: RequestInit): Promise<PublishedRecording> => {
+
+  return customFetch<PublishedRecording>(getUpdateRecordingUrl(shareId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      recordingUpdateInput,)
+  }
+);}
+
+
+
+
+export const getUpdateRecordingMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRecording>>, TError,{shareId: string;data: BodyType<RecordingUpdateInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateRecording>>, TError,{shareId: string;data: BodyType<RecordingUpdateInput>}, TContext> => {
+
+const mutationKey = ['updateRecording'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateRecording>>, {shareId: string;data: BodyType<RecordingUpdateInput>}> = (props) => {
+          const {shareId,data} = props ?? {};
+
+          return  updateRecording(shareId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateRecordingMutationResult = NonNullable<Awaited<ReturnType<typeof updateRecording>>>
+    export type UpdateRecordingMutationBody = BodyType<RecordingUpdateInput>
+    export type UpdateRecordingMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Update an already-published recording's editable metadata
+ */
+export const useUpdateRecording = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRecording>>, TError,{shareId: string;data: BodyType<RecordingUpdateInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateRecording>>,
+        TError,
+        {shareId: string;data: BodyType<RecordingUpdateInput>},
+        TContext
+      > => {
+      return useMutation(getUpdateRecordingMutationOptions(options));
+    }
 
 export const getSetRecordingVisibilityUrl = (shareId: string,) => {
 

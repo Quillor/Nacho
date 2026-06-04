@@ -65,6 +65,20 @@ export interface RecordingInput {
   transcript?: TranscriptSegment[];
 }
 
+export interface RecordingUpdateInput {
+  /** @minLength 1 */
+  title: string;
+  description?: string;
+  durationSec: number;
+  trimStart: number;
+  trimEnd: number;
+  hasAudio?: boolean;
+  /** @nullable */
+  gifPath?: string | null;
+  chapters?: Chapter[];
+  transcript?: TranscriptSegment[];
+}
+
 export interface PublishedRecording {
   shareId: string;
   title: string;

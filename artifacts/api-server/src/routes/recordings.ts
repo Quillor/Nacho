@@ -11,6 +11,8 @@ import {
   PublishRecordingBody,
   GetRecordingParams,
   GetRecordingResponse,
+  UpdateRecordingParams,
+  UpdateRecordingBody,
   SetRecordingVisibilityParams,
   SetRecordingVisibilityBody,
   AddRecordingViewParams,
@@ -96,6 +98,58 @@ router.get("/recordings/:shareId", async (req, res): Promise<void> => {
 
   // Private recordings are never resolvable through the public path.
   if (!row || row.visibility !== "public") {
+    res.status(404).json({ error: "Recording not found" });
+    return;
+  }
+
+  res.json(GetRecordingResponse.parse(toApi(row)));
+});
+
+router.patch("/recordings/:shareId", async (req, res): Promise<void> => {
+  const params = UpdateRecordingParams.safeParse(req.params);
+  if (!params.success) {
+    res.status(400).json({ error: params.error.message });
+    return;
+  }
+  const body = UpdateRecordingBody.safeParse(req.body);
+  if (!body.success) {
+    req.log.warn({ errors: body.error.message }, "Invalid recording update");
+    res.status(400).json({ error: body.error.message });
+    return;
+  }
+
+  const { userId } = getAuth(req);
+  if (!userId) {
+    res.status(401).json({ error: "Sign in to update a recording" });
+    return;
+  }
+
+  const data = body.data;
+
+  // Only the owner may edit. Scope the update by owner so a leaked shareId
+  // can't be edited by anyone else; a non-match yields 404 (same as not found).
+  const [row] = await db
+    .update(publishedRecordingsTable)
+    .set({
+      title: data.title,
+      description: data.description ?? "",
+      durationSec: data.durationSec,
+      trimStart: data.trimStart,
+      trimEnd: data.trimEnd,
+      hasAudio: data.hasAudio ?? true,
+      gifPath: data.gifPath ?? null,
+      chapters: data.chapters ?? [],
+      transcript: data.transcript ?? [],
+    })
+    .where(
+      and(
+        eq(publishedRecordingsTable.shareId, params.data.shareId),
+        eq(publishedRecordingsTable.ownerUserId, userId),
+      ),
+    )
+    .returning();
+
+  if (!row) {
     res.status(404).json({ error: "Recording not found" });
     return;
   }

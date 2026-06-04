@@ -11,6 +11,7 @@ export * from './errorResponse';
 export * from './healthStatus';
 export * from './publishedRecording';
 export * from './recordingInput';
+export * from './recordingUpdateInput';
 export * from './transcriptSegment';
 export * from './uploadUrlInput';
 export * from './uploadUrlResponse';

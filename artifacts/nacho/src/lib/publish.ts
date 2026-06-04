@@ -101,6 +101,55 @@ export function saveRecordingPrivate(
   return uploadRecording(rec, "private", options);
 }
 
+/**
+ * Push edited metadata for an already-published recording to the server so the
+ * public page and share link reflect the latest content — without needing to
+ * unpublish/republish. If `gifBlob` is provided (e.g. the trim changed), the
+ * preview is re-uploaded and the record points at the fresh GIF.
+ */
+export async function syncPublishedRecording(
+  rec: LocalRecording,
+  options: PublishOptions = {},
+): Promise<PublishResult> {
+  if (!rec.shareId || !rec.videoPath) {
+    throw new Error("Recording has not been published yet");
+  }
+  const { gifBlob, onProgress } = options;
+
+  let gifPath = rec.gifPath;
+  if (gifBlob) {
+    onProgress?.("Updating preview…");
+    gifPath = await uploadBlob(gifBlob, `${rec.id}.gif`);
+  }
+
+  onProgress?.("Updating…");
+  const res = await fetch(`/api/recordings/${rec.shareId}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      title: rec.title,
+      description: DOMPurify.sanitize(rec.description),
+      durationSec: rec.durationSec,
+      trimStart: rec.trimStart,
+      trimEnd: rec.trimEnd,
+      hasAudio: rec.hasAudio,
+      gifPath,
+      chapters: rec.chapters,
+      transcript: rec.transcript,
+    }),
+  });
+  if (!res.ok) throw new Error("Failed to update recording");
+
+  return {
+    shareId: rec.shareId,
+    visibility: rec.visibility,
+    videoPath: rec.videoPath,
+    thumbnailPath: rec.thumbnailPath,
+    gifPath,
+  };
+}
+
 /** Flip an already-saved recording's visibility on the server. */
 async function setVisibility(
   shareId: string,
@@ -124,14 +173,11 @@ export async function getPublicLink(
   options: PublishOptions = {},
 ): Promise<PublishResult> {
   if (rec.shareId && rec.videoPath) {
+    // Already on the server: push the latest edits and (re-)enable the link so
+    // viewers see current content instead of whatever was first published.
+    const synced = await syncPublishedRecording(rec, options);
     await setVisibility(rec.shareId, "public");
-    return {
-      shareId: rec.shareId,
-      visibility: "public",
-      videoPath: rec.videoPath,
-      thumbnailPath: rec.thumbnailPath,
-      gifPath: rec.gifPath,
-    };
+    return { ...synced, visibility: "public" };
   }
   return uploadRecording(rec, "public", options);
 }

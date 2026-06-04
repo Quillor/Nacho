@@ -90,6 +90,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateRecording
+      tags: [recordings]
+      summary: Update an already-published recording's editable metadata
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecordingUpdateInput"
+      responses:
+        "200":
+          description: The updated recording
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedRecording"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /recordings/{shareId}/visibility:
     patch:
       operationId: setRecordingVisibility
@@ -245,6 +274,37 @@ components:
           type: string
         thumbnailPath:
           type: ["string", "null"]
+        gifPath:
+          type: ["string", "null"]
+        chapters:
+          type: array
+          items:
+            $ref: "#/components/schemas/Chapter"
+        transcript:
+          type: array
+          items:
+            $ref: "#/components/schemas/TranscriptSegment"
+    RecordingUpdateInput:
+      type: object
+      required:
+        - title
+        - durationSec
+        - trimStart
+        - trimEnd
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        durationSec:
+          type: number
+        trimStart:
+          type: number
+        trimEnd:
+          type: number
+        hasAudio:
+          type: boolean
         gifPath:
           type: ["string", "null"]
         chapters:
