@@ -25,6 +25,12 @@ const NAVIGATION = [
     ]
   },
   {
+    title: "Guidelines",
+    links: [
+      { title: "Voice & Tone", href: "/guidelines/voice-and-tone" },
+    ]
+  },
+  {
     title: "Foundations",
     links: [
       { title: "Colors", href: "/foundations/colors" },

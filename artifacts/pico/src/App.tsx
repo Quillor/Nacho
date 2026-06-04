@@ -9,6 +9,7 @@ import { DocsLayout } from "@/components/layout/DocsLayout";
 // Docs Pages
 import Introduction from "@/pages/design-system/introduction";
 import Installation from "@/pages/design-system/installation";
+import ContentGuidelines from "@/pages/design-system/content-guidelines";
 import Colors from "@/pages/design-system/foundations/colors";
 import Typography from "@/pages/design-system/foundations/typography";
 import Spacing from "@/pages/design-system/foundations/spacing";
@@ -44,6 +45,9 @@ function Router() {
       <Switch>
         <Route path="/" component={Introduction} />
         <Route path="/installation" component={Installation} />
+
+        {/* Guidelines */}
+        <Route path="/guidelines/voice-and-tone" component={ContentGuidelines} />
 
         {/* Foundations */}
         <Route path="/foundations/colors" component={Colors} />
