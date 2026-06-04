@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Video, Library, Settings, CircleDot, LogOut } from "lucide-react";
 import { useClerk, useUser } from "@clerk/react";
 import { cn } from "@/lib/utils";
+import { getDisplayName } from "@/components/account-management";
 
 interface NavItem {
   href: string;
@@ -23,6 +24,7 @@ function UserControl() {
 
   const email = user?.primaryEmailAddress?.emailAddress;
   const label =
+    getDisplayName(user?.unsafeMetadata) ||
     user?.fullName ||
     user?.firstName ||
     email?.split("@")[0] ||

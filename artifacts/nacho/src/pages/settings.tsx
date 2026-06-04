@@ -14,6 +14,10 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import {
+  AccountManagement,
+  getDisplayName,
+} from "@/components/account-management";
 import { useGetVersion } from "@workspace/api-client-react";
 import { listRecordings, deleteRecording } from "@/lib/db";
 import { formatBytes } from "@/lib/format";
@@ -70,7 +74,11 @@ export default function SettingsPage() {
   };
 
   const accountEmail = user?.primaryEmailAddress?.emailAddress;
-  const accountName = user?.fullName || user?.firstName || accountEmail;
+  const accountName =
+    getDisplayName(user?.unsafeMetadata) ||
+    user?.fullName ||
+    user?.firstName ||
+    accountEmail;
 
   const publishedCount = recordings.filter((r) => r.shareId).length;
 
@@ -80,8 +88,12 @@ export default function SettingsPage() {
         Settings
       </h1>
       <p className="mb-10 text-lg font-medium text-muted-foreground">
-        Manage local storage and see what's running.
+        Manage your account, local storage, and see what's running.
       </p>
+
+      <div className="mb-6">
+        <AccountManagement />
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         <div className="border-4 border-foreground bg-card p-6">

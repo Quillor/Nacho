@@ -1,1 +1,2 @@
 - [Shared Pico theme lib](pico-shared-theme.md) — `@workspace/pico-theme/theme.css` is the single source of truth for design tokens; all artifacts import it so token edits propagate.
+- [Clerk display name](clerk-name-attribute.md) — first_name/last_name disabled in this Clerk instance; store editable display name in `unsafeMetadata.displayName`, read via `getDisplayName()`.
