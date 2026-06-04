@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { User, Mail, Lock, Check } from "lucide-react";
 import { useUser } from "@clerk/react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
@@ -20,7 +21,7 @@ function errMessage(err: unknown, fallback: string): string {
   return fallback;
 }
 
-const cardClass = "border-4 border-foreground bg-card p-6";
+const cardClass = "rounded-none border-4 border-foreground bg-card p-6 shadow-none";
 const headingClass = "font-display text-xl font-black uppercase";
 const inputClass = "border-2 border-foreground bg-background";
 const labelClass = "mb-1.5 block font-bold uppercase tracking-wide text-sm";
@@ -74,7 +75,7 @@ function ProfileNameCard() {
   };
 
   return (
-    <div className={cardClass}>
+    <Card className={cardClass}>
       <div className="mb-4 flex items-center gap-2">
         <User className="h-5 w-5" />
         <h2 className={headingClass}>Profile</h2>
@@ -101,7 +102,7 @@ function ProfileNameCard() {
       >
         <Check className="mr-2 h-4 w-4" /> {saving ? "Saving…" : "Save name"}
       </Button>
-    </div>
+    </Card>
   );
 }
 
@@ -172,7 +173,7 @@ function EmailCard() {
   };
 
   return (
-    <div className={cardClass}>
+    <Card className={cardClass}>
       <div className="mb-4 flex items-center gap-2">
         <Mail className="h-5 w-5" />
         <h2 className={headingClass}>Email</h2>
@@ -262,7 +263,7 @@ function EmailCard() {
           </div>
         </div>
       )}
-    </div>
+    </Card>
   );
 }
 
@@ -310,7 +311,7 @@ function PasswordCard() {
   };
 
   return (
-    <div className={cardClass}>
+    <Card className={cardClass}>
       <div className="mb-4 flex items-center gap-2">
         <Lock className="h-5 w-5" />
         <h2 className={headingClass}>Password</h2>
@@ -381,7 +382,7 @@ function PasswordCard() {
             ? "Update password"
             : "Set password"}
       </Button>
-    </div>
+    </Card>
   );
 }
 

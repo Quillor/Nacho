@@ -28,6 +28,10 @@ import SwitchDocs from "@/pages/design-system/components/switch";
 import CheckboxDocs from "@/pages/design-system/components/checkbox";
 import AvatarDocs from "@/pages/design-system/components/avatar";
 import DialogDocs from "@/pages/design-system/components/dialog";
+import LabelDocs from "@/pages/design-system/components/label";
+import SelectDocs from "@/pages/design-system/components/select";
+import AlertDialogDocs from "@/pages/design-system/components/alert-dialog";
+import ToastDocs from "@/pages/design-system/components/toast";
 
 import PatternsOverview from "@/pages/design-system/patterns/overview";
 import FormsPattern from "@/pages/design-system/patterns/forms";
@@ -71,6 +75,10 @@ function Router() {
         <Route path="/components/checkbox" component={CheckboxDocs} />
         <Route path="/components/avatar" component={AvatarDocs} />
         <Route path="/components/dialog" component={DialogDocs} />
+        <Route path="/components/label" component={LabelDocs} />
+        <Route path="/components/select" component={SelectDocs} />
+        <Route path="/components/alert-dialog" component={AlertDialogDocs} />
+        <Route path="/components/toast" component={ToastDocs} />
 
         {/* Patterns */}
         <Route path="/patterns" component={PatternsOverview} />

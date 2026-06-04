@@ -49,12 +49,16 @@ const NAVIGATION = [
       { title: "Badge", href: "/components/badge" },
       { title: "Card", href: "/components/card" },
       { title: "Input", href: "/components/input" },
+      { title: "Label", href: "/components/label" },
+      { title: "Select", href: "/components/select" },
       { title: "Alert", href: "/components/alert" },
       { title: "Tabs", href: "/components/tabs" },
       { title: "Switch", href: "/components/switch" },
       { title: "Checkbox", href: "/components/checkbox" },
       { title: "Avatar", href: "/components/avatar" },
       { title: "Dialog", href: "/components/dialog" },
+      { title: "Alert Dialog", href: "/components/alert-dialog" },
+      { title: "Toast", href: "/components/toast" },
     ]
   },
   {
