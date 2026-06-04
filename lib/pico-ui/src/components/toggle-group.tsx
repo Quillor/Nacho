@@ -5,6 +5,7 @@ import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group"
 import { type VariantProps } from "class-variance-authority"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 import { toggleVariants } from "./toggle"
 
 const ToggleGroupContext = React.createContext<
@@ -22,6 +23,10 @@ const ToggleGroup = React.forwardRef<
   <ToggleGroupPrimitive.Root
     ref={ref}
     className={cn("flex items-center justify-center gap-1", className)}
+    {...picoMeta("ToggleGroup", {
+      variant: variant ?? "default",
+      size: size ?? "default",
+    })}
     {...props}
   >
     <ToggleGroupContext.Provider value={{ variant, size }}>
@@ -49,6 +54,10 @@ const ToggleGroupItem = React.forwardRef<
         }),
         className
       )}
+      {...picoMeta("ToggleGroupItem", {
+        variant: context.variant || variant || "default",
+        size: context.size || size || "default",
+      })}
       {...props}
     >
       {children}

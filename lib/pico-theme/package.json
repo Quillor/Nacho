@@ -4,9 +4,14 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./theme.css": "./theme.css"
+    "./theme.css": "./theme.css",
+    "./tokens.json": "./tokens.json"
+  },
+  "scripts": {
+    "generate-tokens": "node scripts/generate-tokens.mjs"
   },
   "files": [
-    "theme.css"
+    "theme.css",
+    "tokens.json"
   ]
 }

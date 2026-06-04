@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
@@ -13,6 +14,7 @@ const Textarea = React.forwardRef<
         className
       )}
       ref={ref}
+      {...picoMeta("Textarea")}
       {...props}
     />
   )

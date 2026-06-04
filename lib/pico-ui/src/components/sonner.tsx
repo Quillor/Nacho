@@ -3,6 +3,8 @@
 import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner"
 
+import { picoMeta } from "../lib/pico-meta"
+
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
@@ -23,6 +25,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
             "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
         },
       }}
+      {...picoMeta("Toaster")}
       {...props}
     />
   )

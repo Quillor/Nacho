@@ -3,14 +3,27 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 
 const Dialog = DialogPrimitive.Root
 
-const DialogTrigger = DialogPrimitive.Trigger
+const DialogTrigger = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Trigger>
+>(({ ...props }, ref) => (
+  <DialogPrimitive.Trigger ref={ref} {...picoMeta("DialogTrigger")} {...props} />
+))
+DialogTrigger.displayName = "DialogTrigger"
 
 const DialogPortal = DialogPrimitive.Portal
 
-const DialogClose = DialogPrimitive.Close
+const DialogClose = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Close>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Close>
+>(({ ...props }, ref) => (
+  <DialogPrimitive.Close ref={ref} {...picoMeta("DialogClose")} {...props} />
+))
+DialogClose.displayName = "DialogClose"
 
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
@@ -22,6 +35,7 @@ const DialogOverlay = React.forwardRef<
       "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
+    {...picoMeta("DialogOverlay")}
     {...props}
   />
 ))
@@ -39,6 +53,7 @@ const DialogContent = React.forwardRef<
         "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
         className
       )}
+      {...picoMeta("DialogContent")}
       {...props}
     >
       {children}
@@ -60,6 +75,7 @@ const DialogHeader = ({
       "flex flex-col space-y-1.5 text-center sm:text-left",
       className
     )}
+    {...picoMeta("DialogHeader")}
     {...props}
   />
 )
@@ -74,6 +90,7 @@ const DialogFooter = ({
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
       className
     )}
+    {...picoMeta("DialogFooter")}
     {...props}
   />
 )
@@ -89,6 +106,7 @@ const DialogTitle = React.forwardRef<
       "text-lg font-semibold leading-none tracking-tight",
       className
     )}
+    {...picoMeta("DialogTitle")}
     {...props}
   />
 ))
@@ -101,6 +119,7 @@ const DialogDescription = React.forwardRef<
   <DialogPrimitive.Description
     ref={ref}
     className={cn("text-sm text-muted-foreground", className)}
+    {...picoMeta("DialogDescription")}
     {...props}
   />
 ))

@@ -6,12 +6,21 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { X } from "lucide-react"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 
 const Sheet = SheetPrimitive.Root
 
-const SheetTrigger = SheetPrimitive.Trigger
+function SheetTrigger(
+  props: React.ComponentProps<typeof SheetPrimitive.Trigger>
+) {
+  return <SheetPrimitive.Trigger {...picoMeta("SheetTrigger")} {...props} />
+}
 
-const SheetClose = SheetPrimitive.Close
+function SheetClose(
+  props: React.ComponentProps<typeof SheetPrimitive.Close>
+) {
+  return <SheetPrimitive.Close {...picoMeta("SheetClose")} {...props} />
+}
 
 const SheetPortal = SheetPrimitive.Portal
 
@@ -24,6 +33,7 @@ const SheetOverlay = React.forwardRef<
       "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
+    {...picoMeta("SheetOverlay")}
     {...props}
     ref={ref}
   />
@@ -62,6 +72,7 @@ const SheetContent = React.forwardRef<
     <SheetPrimitive.Content
       ref={ref}
       className={cn(sheetVariants({ side }), className)}
+      {...picoMeta("SheetContent", { side: side ?? "right" })}
       {...props}
     >
       <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
@@ -83,6 +94,7 @@ const SheetHeader = ({
       "flex flex-col space-y-2 text-center sm:text-left",
       className
     )}
+    {...picoMeta("SheetHeader")}
     {...props}
   />
 )
@@ -97,6 +109,7 @@ const SheetFooter = ({
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
       className
     )}
+    {...picoMeta("SheetFooter")}
     {...props}
   />
 )
@@ -109,6 +122,7 @@ const SheetTitle = React.forwardRef<
   <SheetPrimitive.Title
     ref={ref}
     className={cn("text-lg font-semibold text-foreground", className)}
+    {...picoMeta("SheetTitle")}
     {...props}
   />
 ))
@@ -121,6 +135,7 @@ const SheetDescription = React.forwardRef<
   <SheetPrimitive.Description
     ref={ref}
     className={cn("text-sm text-muted-foreground", className)}
+    {...picoMeta("SheetDescription")}
     {...props}
   />
 ))

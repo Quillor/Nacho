@@ -9,6 +9,7 @@ import {
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 import { Button, buttonVariants } from "./button"
 
 function Calendar({
@@ -131,6 +132,7 @@ function Calendar({
               data-slot="calendar"
               ref={rootRef}
               className={cn(className)}
+              {...picoMeta("Calendar", { captionLayout, buttonVariant })}
               {...props}
             />
           )
@@ -205,6 +207,7 @@ function CalendarDayButton({
         defaultClassNames.day,
         className
       )}
+      {...picoMeta("CalendarDayButton")}
       {...props}
     />
   )

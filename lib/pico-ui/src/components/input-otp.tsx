@@ -3,6 +3,7 @@ import { OTPInput, OTPInputContext } from "input-otp"
 import { Minus } from "lucide-react"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 
 const InputOTP = React.forwardRef<
   React.ElementRef<typeof OTPInput>,
@@ -15,6 +16,7 @@ const InputOTP = React.forwardRef<
       containerClassName
     )}
     className={cn("disabled:cursor-not-allowed", className)}
+    {...picoMeta("InputOTP")}
     {...props}
   />
 ))
@@ -24,7 +26,12 @@ const InputOTPGroup = React.forwardRef<
   React.ElementRef<"div">,
   React.ComponentPropsWithoutRef<"div">
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("flex items-center", className)} {...props} />
+  <div
+    ref={ref}
+    className={cn("flex items-center", className)}
+    {...picoMeta("InputOTPGroup")}
+    {...props}
+  />
 ))
 InputOTPGroup.displayName = "InputOTPGroup"
 
@@ -43,6 +50,7 @@ const InputOTPSlot = React.forwardRef<
         isActive && "z-10 ring-1 ring-ring",
         className
       )}
+      {...picoMeta("InputOTPSlot")}
       {...props}
     >
       {char}
@@ -60,7 +68,7 @@ const InputOTPSeparator = React.forwardRef<
   React.ElementRef<"div">,
   React.ComponentPropsWithoutRef<"div">
 >(({ ...props }, ref) => (
-  <div ref={ref} role="separator" {...props}>
+  <div ref={ref} role="separator" {...picoMeta("InputOTPSeparator")} {...props}>
     <Minus />
   </div>
 ))

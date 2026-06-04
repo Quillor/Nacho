@@ -3,13 +3,16 @@ import { Slot } from "@radix-ui/react-slot"
 import { ChevronRight, MoreHorizontal } from "lucide-react"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,
   React.ComponentPropsWithoutRef<"nav"> & {
     separator?: React.ReactNode
   }
->(({ ...props }, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />)
+>(({ ...props }, ref) => (
+  <nav ref={ref} aria-label="breadcrumb" {...picoMeta("Breadcrumb")} {...props} />
+))
 Breadcrumb.displayName = "Breadcrumb"
 
 const BreadcrumbList = React.forwardRef<
@@ -22,6 +25,7 @@ const BreadcrumbList = React.forwardRef<
       "flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5",
       className
     )}
+    {...picoMeta("BreadcrumbList")}
     {...props}
   />
 ))
@@ -34,6 +38,7 @@ const BreadcrumbItem = React.forwardRef<
   <li
     ref={ref}
     className={cn("inline-flex items-center gap-1.5", className)}
+    {...picoMeta("BreadcrumbItem")}
     {...props}
   />
 ))
@@ -51,6 +56,7 @@ const BreadcrumbLink = React.forwardRef<
     <Comp
       ref={ref}
       className={cn("transition-colors hover:text-foreground", className)}
+      {...picoMeta("BreadcrumbLink")}
       {...props}
     />
   )
@@ -67,6 +73,7 @@ const BreadcrumbPage = React.forwardRef<
     aria-disabled="true"
     aria-current="page"
     className={cn("font-normal text-foreground", className)}
+    {...picoMeta("BreadcrumbPage")}
     {...props}
   />
 ))
@@ -81,6 +88,7 @@ const BreadcrumbSeparator = ({
     role="presentation"
     aria-hidden="true"
     className={cn("[&>svg]:w-3.5 [&>svg]:h-3.5", className)}
+    {...picoMeta("BreadcrumbSeparator")}
     {...props}
   >
     {children ?? <ChevronRight />}
@@ -96,6 +104,7 @@ const BreadcrumbEllipsis = ({
     role="presentation"
     aria-hidden="true"
     className={cn("flex h-9 w-9 items-center justify-center", className)}
+    {...picoMeta("BreadcrumbEllipsis")}
     {...props}
   >
     <MoreHorizontal className="h-4 w-4" />

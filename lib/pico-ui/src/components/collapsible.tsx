@@ -1,11 +1,36 @@
 "use client"
 
+import * as React from "react"
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
 
-const Collapsible = CollapsiblePrimitive.Root
+import { picoMeta } from "../lib/pico-meta"
 
-const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger
+function Collapsible(
+  props: React.ComponentProps<typeof CollapsiblePrimitive.Root>
+) {
+  return <CollapsiblePrimitive.Root {...picoMeta("Collapsible")} {...props} />
+}
 
-const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent
+function CollapsibleTrigger(
+  props: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleTrigger>
+) {
+  return (
+    <CollapsiblePrimitive.CollapsibleTrigger
+      {...picoMeta("CollapsibleTrigger")}
+      {...props}
+    />
+  )
+}
+
+function CollapsibleContent(
+  props: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>
+) {
+  return (
+    <CollapsiblePrimitive.CollapsibleContent
+      {...picoMeta("CollapsibleContent")}
+      {...props}
+    />
+  )
+}
 
 export { Collapsible, CollapsibleTrigger, CollapsibleContent }

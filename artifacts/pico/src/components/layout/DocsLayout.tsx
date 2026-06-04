@@ -122,7 +122,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <SidebarProvider>
-      <Sidebar className="border-r-4 border-foreground" variant="sidebar" collapsible="offcanvas">
+      <Sidebar data-pico-section="sidebar" className="border-r-4 border-foreground" variant="sidebar" collapsible="offcanvas">
         <SidebarHeader className="border-b-4 border-foreground p-6 bg-primary">
           <Link href="/" className="font-display font-black text-3xl tracking-tight uppercase text-foreground">
             Pico.
@@ -166,7 +166,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
           <SidebarTrigger className="bg-foreground text-background hover:bg-foreground/90 border-2 border-foreground shadow-xs rounded-sm" />
           <span className="ml-4 font-display font-black text-xl tracking-tight uppercase">Pico.</span>
         </header>
-        <main className="flex-1 w-full max-w-5xl mx-auto p-6 md:p-12 lg:p-16 overflow-x-hidden">
+        <main data-pico-section="content" className="flex-1 w-full max-w-5xl mx-auto p-6 md:p-12 lg:p-16 overflow-x-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={location}

@@ -5,6 +5,7 @@ import useEmblaCarousel, {
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 import { Button } from "./button"
 
 type CarouselApi = UseEmblaCarouselType[1]
@@ -138,6 +139,7 @@ const Carousel = React.forwardRef<
           className={cn("relative", className)}
           role="region"
           aria-roledescription="carousel"
+          {...picoMeta("Carousel", { orientation })}
           {...props}
         >
           {children}
@@ -163,6 +165,7 @@ const CarouselContent = React.forwardRef<
           orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
           className
         )}
+        {...picoMeta("CarouselContent", { orientation })}
         {...props}
       />
     </div>
@@ -186,6 +189,7 @@ const CarouselItem = React.forwardRef<
         orientation === "horizontal" ? "pl-4" : "pt-4",
         className
       )}
+      {...picoMeta("CarouselItem", { orientation })}
       {...props}
     />
   )
@@ -212,6 +216,7 @@ const CarouselPrevious = React.forwardRef<
       )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
+      {...picoMeta("CarouselPrevious")}
       {...props}
     >
       <ArrowLeft className="h-4 w-4" />
@@ -241,6 +246,7 @@ const CarouselNext = React.forwardRef<
       )}
       disabled={!canScrollNext}
       onClick={scrollNext}
+      {...picoMeta("CarouselNext")}
       {...props}
     >
       <ArrowRight className="h-4 w-4" />

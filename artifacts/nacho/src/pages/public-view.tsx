@@ -61,7 +61,7 @@ export default function PublicView() {
 
   return (
     <div className="min-h-[100dvh] bg-background font-sans text-foreground">
-      <header className="border-b-4 border-foreground bg-background">
+      <header data-pico-section="header" className="border-b-4 border-foreground bg-background">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center" aria-label="Nacho home">
             <Logo className="h-8" />
@@ -82,7 +82,7 @@ export default function PublicView() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-6 py-10">
+      <main data-pico-section="recording" className="mx-auto max-w-5xl px-6 py-10">
         {isError || !shareId ? (
           <div className="py-24 text-center">
             <h1 className="font-display text-4xl font-black uppercase">
@@ -202,7 +202,7 @@ export default function PublicView() {
               )}
             </div>
 
-            <div className="mt-16 flex flex-col items-center gap-4 border-t-4 border-foreground py-10 text-center">
+            <div data-pico-section="cta" className="mt-16 flex flex-col items-center gap-4 border-t-4 border-foreground py-10 text-center">
               <p className="font-display text-2xl font-black uppercase">
                 Made with Nacho
               </p>

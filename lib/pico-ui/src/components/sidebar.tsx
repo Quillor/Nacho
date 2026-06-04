@@ -7,6 +7,7 @@ import { PanelLeftIcon } from "lucide-react"
 
 import { useIsMobile } from "../hooks/use-mobile"
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 import { Button } from "./button"
 import { Input } from "./input"
 import { Separator } from "./separator"
@@ -142,6 +143,7 @@ function SidebarProvider({
             "group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full",
             className
           )}
+          {...picoMeta("SidebarProvider")}
           {...props}
         >
           {children}
@@ -173,6 +175,7 @@ function Sidebar({
           "bg-sidebar text-sidebar-foreground flex h-full w-[var(--sidebar-width)] flex-col",
           className
         )}
+        {...picoMeta("Sidebar", { side, variant, collapsible })}
         {...props}
       >
         {children}
@@ -239,6 +242,7 @@ function Sidebar({
             : "group-data-[collapsible=icon]:w-[var(--sidebar-width-icon)] group-data-[side=left]:border-r group-data-[side=right]:border-l",
           className
         )}
+        {...picoMeta("Sidebar", { side, variant, collapsible })}
         {...props}
       >
         <div
@@ -271,6 +275,7 @@ function SidebarTrigger({
         onClick?.(event)
         toggleSidebar()
       }}
+      {...picoMeta("SidebarTrigger")}
       {...props}
     >
       <PanelLeftIcon />
@@ -300,6 +305,7 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
         "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2",
         className
       )}
+      {...picoMeta("SidebarRail")}
       {...props}
     />
   )
@@ -314,6 +320,7 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
         "md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
         className
       )}
+      {...picoMeta("SidebarInset")}
       {...props}
     />
   )
@@ -328,6 +335,7 @@ function SidebarInput({
       data-slot="sidebar-input"
       data-sidebar="input"
       className={cn("bg-background h-8 w-full shadow-none", className)}
+      {...picoMeta("SidebarInput")}
       {...props}
     />
   )
@@ -339,6 +347,7 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="sidebar-header"
       data-sidebar="header"
       className={cn("flex flex-col gap-2 p-2", className)}
+      {...picoMeta("SidebarHeader")}
       {...props}
     />
   )
@@ -350,6 +359,7 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="sidebar-footer"
       data-sidebar="footer"
       className={cn("flex flex-col gap-2 p-2", className)}
+      {...picoMeta("SidebarFooter")}
       {...props}
     />
   )
@@ -364,6 +374,7 @@ function SidebarSeparator({
       data-slot="sidebar-separator"
       data-sidebar="separator"
       className={cn("bg-sidebar-border mx-2 w-auto", className)}
+      {...picoMeta("SidebarSeparator")}
       {...props}
     />
   )
@@ -378,6 +389,7 @@ function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
         "flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
         className
       )}
+      {...picoMeta("SidebarContent")}
       {...props}
     />
   )
@@ -389,6 +401,7 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="sidebar-group"
       data-sidebar="group"
       className={cn("relative flex w-full min-w-0 flex-col p-2", className)}
+      {...picoMeta("SidebarGroup")}
       {...props}
     />
   )
@@ -410,6 +423,7 @@ function SidebarGroupLabel({
         "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
         className
       )}
+      {...picoMeta("SidebarGroupLabel")}
       {...props}
     />
   )
@@ -433,6 +447,7 @@ function SidebarGroupAction({
         "group-data-[collapsible=icon]:hidden",
         className
       )}
+      {...picoMeta("SidebarGroupAction")}
       {...props}
     />
   )
@@ -447,6 +462,7 @@ function SidebarGroupContent({
       data-slot="sidebar-group-content"
       data-sidebar="group-content"
       className={cn("w-full text-sm", className)}
+      {...picoMeta("SidebarGroupContent")}
       {...props}
     />
   )
@@ -458,6 +474,7 @@ function SidebarMenu({ className, ...props }: React.ComponentProps<"ul">) {
       data-slot="sidebar-menu"
       data-sidebar="menu"
       className={cn("flex w-full min-w-0 flex-col gap-1", className)}
+      {...picoMeta("SidebarMenu")}
       {...props}
     />
   )
@@ -469,6 +486,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
       data-slot="sidebar-menu-item"
       data-sidebar="menu-item"
       className={cn("group/menu-item relative", className)}
+      {...picoMeta("SidebarMenuItem")}
       {...props}
     />
   )
@@ -519,6 +537,7 @@ function SidebarMenuButton({
       data-size={size}
       data-active={isActive}
       className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+      {...picoMeta("SidebarMenuButton", { variant, size })}
       {...props}
     />
   )
@@ -573,6 +592,7 @@ function SidebarMenuAction({
           "peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0",
         className
       )}
+      {...picoMeta("SidebarMenuAction")}
       {...props}
     />
   )
@@ -595,6 +615,7 @@ function SidebarMenuBadge({
         "group-data-[collapsible=icon]:hidden",
         className
       )}
+      {...picoMeta("SidebarMenuBadge")}
       {...props}
     />
   )
@@ -617,6 +638,7 @@ function SidebarMenuSkeleton({
       data-slot="sidebar-menu-skeleton"
       data-sidebar="menu-skeleton"
       className={cn("flex h-8 items-center gap-2 rounded-md px-2", className)}
+      {...picoMeta("SidebarMenuSkeleton")}
       {...props}
     >
       {showIcon && (
@@ -648,6 +670,7 @@ function SidebarMenuSub({ className, ...props }: React.ComponentProps<"ul">) {
         "group-data-[collapsible=icon]:hidden",
         className
       )}
+      {...picoMeta("SidebarMenuSub")}
       {...props}
     />
   )
@@ -662,6 +685,7 @@ function SidebarMenuSubItem({
       data-slot="sidebar-menu-sub-item"
       data-sidebar="menu-sub-item"
       className={cn("group/menu-sub-item relative", className)}
+      {...picoMeta("SidebarMenuSubItem")}
       {...props}
     />
   )
@@ -694,6 +718,7 @@ function SidebarMenuSubButton({
         "group-data-[collapsible=icon]:hidden",
         className
       )}
+      {...picoMeta("SidebarMenuSubButton", { size })}
       {...props}
     />
   )

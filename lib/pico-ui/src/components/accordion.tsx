@@ -3,8 +3,15 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { ChevronDown } from "lucide-react"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 
-const Accordion = AccordionPrimitive.Root
+const Accordion = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>
+>(({ ...props }, ref) => (
+  <AccordionPrimitive.Root ref={ref} {...picoMeta("Accordion")} {...props} />
+))
+Accordion.displayName = "Accordion"
 
 const AccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
@@ -13,6 +20,7 @@ const AccordionItem = React.forwardRef<
   <AccordionPrimitive.Item
     ref={ref}
     className={cn("border-b", className)}
+    {...picoMeta("AccordionItem")}
     {...props}
   />
 ))
@@ -29,6 +37,7 @@ const AccordionTrigger = React.forwardRef<
         "flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline text-left [&[data-state=open]>svg]:rotate-180",
         className
       )}
+      {...picoMeta("AccordionTrigger")}
       {...props}
     >
       {children}
@@ -45,6 +54,7 @@ const AccordionContent = React.forwardRef<
   <AccordionPrimitive.Content
     ref={ref}
     className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    {...picoMeta("AccordionContent")}
     {...props}
   >
     <div className={cn("pb-4 pt-0", className)}>{children}</div>

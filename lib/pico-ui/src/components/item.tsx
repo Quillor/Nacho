@@ -3,6 +3,7 @@ import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 import { Separator } from "./separator"
 
 function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
@@ -11,6 +12,7 @@ function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
       role="list"
       data-slot="item-group"
       className={cn("group/item-group flex flex-col", className)}
+      {...picoMeta("ItemGroup")}
       {...props}
     />
   )
@@ -25,6 +27,7 @@ function ItemSeparator({
       data-slot="item-separator"
       orientation="horizontal"
       className={cn("my-0", className)}
+      {...picoMeta("ItemSeparator")}
       {...props}
     />
   )
@@ -66,6 +69,7 @@ function Item({
       data-variant={variant}
       data-size={size}
       className={cn(itemVariants({ variant, size, className }))}
+      {...picoMeta("Item", { variant, size })}
       {...props}
     />
   )
@@ -98,6 +102,7 @@ function ItemMedia({
       data-slot="item-media"
       data-variant={variant}
       className={cn(itemMediaVariants({ variant, className }))}
+      {...picoMeta("ItemMedia", { variant })}
       {...props}
     />
   )
@@ -111,6 +116,7 @@ function ItemContent({ className, ...props }: React.ComponentProps<"div">) {
         "flex flex-1 flex-col gap-1 [&+[data-slot=item-content]]:flex-none",
         className
       )}
+      {...picoMeta("ItemContent")}
       {...props}
     />
   )
@@ -124,6 +130,7 @@ function ItemTitle({ className, ...props }: React.ComponentProps<"div">) {
         "flex w-fit items-center gap-2 text-sm font-medium leading-snug",
         className
       )}
+      {...picoMeta("ItemTitle")}
       {...props}
     />
   )
@@ -138,6 +145,7 @@ function ItemDescription({ className, ...props }: React.ComponentProps<"p">) {
         "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
         className
       )}
+      {...picoMeta("ItemDescription")}
       {...props}
     />
   )
@@ -148,6 +156,7 @@ function ItemActions({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="item-actions"
       className={cn("flex items-center gap-2", className)}
+      {...picoMeta("ItemActions")}
       {...props}
     />
   )
@@ -161,6 +170,7 @@ function ItemHeader({ className, ...props }: React.ComponentProps<"div">) {
         "flex basis-full items-center justify-between gap-2",
         className
       )}
+      {...picoMeta("ItemHeader")}
       {...props}
     />
   )
@@ -174,6 +184,7 @@ function ItemFooter({ className, ...props }: React.ComponentProps<"div">) {
         "flex basis-full items-center justify-between gap-2",
         className
       )}
+      {...picoMeta("ItemFooter")}
       {...props}
     />
   )

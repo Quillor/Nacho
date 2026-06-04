@@ -5,18 +5,46 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { Check, ChevronRight, Circle } from "lucide-react"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 
 const DropdownMenu = DropdownMenuPrimitive.Root
 
-const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
+function DropdownMenuTrigger(
+  props: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>
+) {
+  return (
+    <DropdownMenuPrimitive.Trigger
+      {...picoMeta("DropdownMenuTrigger")}
+      {...props}
+    />
+  )
+}
 
-const DropdownMenuGroup = DropdownMenuPrimitive.Group
+function DropdownMenuGroup(
+  props: React.ComponentProps<typeof DropdownMenuPrimitive.Group>
+) {
+  return (
+    <DropdownMenuPrimitive.Group
+      {...picoMeta("DropdownMenuGroup")}
+      {...props}
+    />
+  )
+}
 
 const DropdownMenuPortal = DropdownMenuPrimitive.Portal
 
 const DropdownMenuSub = DropdownMenuPrimitive.Sub
 
-const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
+function DropdownMenuRadioGroup(
+  props: React.ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>
+) {
+  return (
+    <DropdownMenuPrimitive.RadioGroup
+      {...picoMeta("DropdownMenuRadioGroup")}
+      {...props}
+    />
+  )
+}
 
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
@@ -31,6 +59,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
       inset && "pl-8",
       className
     )}
+    {...picoMeta("DropdownMenuSubTrigger", { inset })}
     {...props}
   >
     {children}
@@ -50,6 +79,7 @@ const DropdownMenuSubContent = React.forwardRef<
       "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]",
       className
     )}
+    {...picoMeta("DropdownMenuSubContent")}
     {...props}
   />
 ))
@@ -69,6 +99,7 @@ const DropdownMenuContent = React.forwardRef<
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]",
         className
       )}
+      {...picoMeta("DropdownMenuContent")}
       {...props}
     />
   </DropdownMenuPrimitive.Portal>
@@ -88,6 +119,7 @@ const DropdownMenuItem = React.forwardRef<
       inset && "pl-8",
       className
     )}
+    {...picoMeta("DropdownMenuItem", { inset })}
     {...props}
   />
 ))
@@ -104,6 +136,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
       className
     )}
     checked={checked}
+    {...picoMeta("DropdownMenuCheckboxItem")}
     {...props}
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
@@ -127,6 +160,7 @@ const DropdownMenuRadioItem = React.forwardRef<
       "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
+    {...picoMeta("DropdownMenuRadioItem")}
     {...props}
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
@@ -152,6 +186,7 @@ const DropdownMenuLabel = React.forwardRef<
       inset && "pl-8",
       className
     )}
+    {...picoMeta("DropdownMenuLabel", { inset })}
     {...props}
   />
 ))
@@ -164,6 +199,7 @@ const DropdownMenuSeparator = React.forwardRef<
   <DropdownMenuPrimitive.Separator
     ref={ref}
     className={cn("-mx-1 my-1 h-px bg-muted", className)}
+    {...picoMeta("DropdownMenuSeparator")}
     {...props}
   />
 ))
@@ -176,6 +212,7 @@ const DropdownMenuShortcut = ({
   return (
     <span
       className={cn("ml-auto text-xs tracking-widest opacity-60", className)}
+      {...picoMeta("DropdownMenuShortcut")}
       {...props}
     />
   )

@@ -2,6 +2,7 @@ import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 import { Separator } from "./separator"
 
 const buttonGroupVariants = cva(
@@ -32,6 +33,7 @@ function ButtonGroup({
       data-slot="button-group"
       data-orientation={orientation}
       className={cn(buttonGroupVariants({ orientation }), className)}
+      {...picoMeta("ButtonGroup", { orientation: orientation ?? "horizontal" })}
       {...props}
     />
   )
@@ -52,6 +54,7 @@ function ButtonGroupText({
         "bg-muted shadow-xs flex items-center gap-2 rounded-md border px-4 text-sm font-medium [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
         className
       )}
+      {...picoMeta("ButtonGroupText")}
       {...props}
     />
   )
@@ -70,6 +73,7 @@ function ButtonGroupSeparator({
         "bg-input relative !m-0 self-stretch data-[orientation=vertical]:h-auto",
         className
       )}
+      {...picoMeta("ButtonGroupSeparator")}
       {...props}
     />
   )

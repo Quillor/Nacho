@@ -29,7 +29,7 @@ export default function Home() {
     <div className="min-h-[100dvh] bg-background text-foreground overflow-hidden selection:bg-primary selection:text-primary-foreground font-sans">
       
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b-4 border-foreground bg-background py-4 px-6 md:px-12 flex items-center justify-between">
+      <nav data-pico-section="navbar" className="fixed top-0 left-0 right-0 z-50 border-b-4 border-foreground bg-background py-4 px-6 md:px-12 flex items-center justify-between">
         <Link href="/" className="flex items-center" aria-label="Nacho home">
           <Logo className="h-9" />
         </Link>
@@ -43,8 +43,10 @@ export default function Home() {
         </div>
       </nav>
 
+      <main>
+
       {/* 1. Hero Section */}
-      <section className="relative pt-40 pb-24 px-6 md:px-12 border-b-4 border-foreground overflow-hidden bg-primary">
+      <section data-pico-section="hero" className="relative pt-40 pb-24 px-6 md:px-12 border-b-4 border-foreground overflow-hidden bg-primary">
         <div className="max-w-7xl mx-auto relative z-10 grid md:grid-cols-2 gap-12 items-center">
           <motion.div 
             initial="hidden"
@@ -89,7 +91,7 @@ export default function Home() {
       </section>
 
       {/* 2. Value Prop (Scrolling Text) */}
-      <section className="py-24 px-6 md:px-12 border-b-4 border-foreground bg-foreground text-background">
+      <section data-pico-section="value-prop" className="py-24 px-6 md:px-12 border-b-4 border-foreground bg-foreground text-background">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9, rotate: 2 }}
@@ -124,7 +126,7 @@ export default function Home() {
       </section>
 
       {/* 3. Features Grid */}
-      <section className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-background">
+      <section data-pico-section="features" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16 flex items-center gap-4">
             <div className="w-12 h-12 bg-primary border-4 border-foreground rounded-none shadow-sm flex items-center justify-center">
@@ -194,7 +196,7 @@ export default function Home() {
       </section>
 
       {/* 4. How it Works (Steps) */}
-      <section className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-secondary text-secondary-foreground relative overflow-hidden">
+      <section data-pico-section="how-it-works" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-secondary text-secondary-foreground relative overflow-hidden">
         <div className="max-w-5xl mx-auto relative z-10">
           <h2 className="text-5xl md:text-7xl font-display font-black uppercase text-center mb-6 text-secondary-foreground">As simple as 1, 2, 3.</h2>
           <motion.img
@@ -235,7 +237,7 @@ export default function Home() {
       </section>
 
       {/* 5. Big Testimonial */}
-      <section className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-primary">
+      <section data-pico-section="testimonial" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-primary">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -260,7 +262,7 @@ export default function Home() {
       </section>
 
       {/* 6. Integrations */}
-      <section className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-background overflow-hidden">
+      <section data-pico-section="integrations" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-background overflow-hidden">
         <div className="max-w-7xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-6xl font-display font-black uppercase mb-6 text-foreground">Plays nice with others</h2>
           <p className="text-xl font-medium text-foreground/80 max-w-2xl mx-auto">Paste a Nacho link anywhere and it automatically unfurls into a beautiful playable embed.</p>
@@ -284,7 +286,7 @@ export default function Home() {
       </section>
 
       {/* 7. CTA */}
-      <section className="py-32 px-6 md:px-12 bg-foreground text-background">
+      <section data-pico-section="cta" className="py-32 px-6 md:px-12 bg-foreground text-background">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-5xl md:text-8xl font-display font-black uppercase tracking-tight mb-8">
             Ready to stop typing?
@@ -298,8 +300,10 @@ export default function Home() {
         </div>
       </section>
 
+      </main>
+
       {/* Footer */}
-      <footer className="py-12 px-6 md:px-12 border-t-4 border-foreground bg-background text-foreground">
+      <footer data-pico-section="footer" className="py-12 px-6 md:px-12 border-t-4 border-foreground bg-background text-foreground">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <Link href="/" className="flex items-center" aria-label="Nacho home">
             <Logo className="h-10" />

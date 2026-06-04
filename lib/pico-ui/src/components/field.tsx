@@ -4,6 +4,7 @@ import { useMemo } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 import { Label } from "./label"
 import { Separator } from "./separator"
 
@@ -16,6 +17,7 @@ function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
         "has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3",
         className
       )}
+      {...picoMeta("FieldSet")}
       {...props}
     />
   )
@@ -36,6 +38,7 @@ function FieldLegend({
         "data-[variant=label]:text-sm",
         className
       )}
+      {...picoMeta("FieldLegend", { variant })}
       {...props}
     />
   )
@@ -49,6 +52,7 @@ function FieldGroup({ className, ...props }: React.ComponentProps<"div">) {
         "group/field-group @container/field-group flex w-full flex-col gap-7 data-[slot=checkbox-group]:gap-3 [&>[data-slot=field-group]]:gap-4",
         className
       )}
+      {...picoMeta("FieldGroup")}
       {...props}
     />
   )
@@ -89,6 +93,7 @@ function Field({
       data-slot="field"
       data-orientation={orientation}
       className={cn(fieldVariants({ orientation }), className)}
+      {...picoMeta("Field", { orientation })}
       {...props}
     />
   )
@@ -102,6 +107,7 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
         "group/field-content flex flex-1 flex-col gap-1.5 leading-snug",
         className
       )}
+      {...picoMeta("FieldContent")}
       {...props}
     />
   )
@@ -120,6 +126,7 @@ function FieldLabel({
         "has-data-[state=checked]:bg-primary/5 has-data-[state=checked]:border-primary dark:has-data-[state=checked]:bg-primary/10",
         className
       )}
+      {...picoMeta("FieldLabel")}
       {...props}
     />
   )
@@ -133,6 +140,7 @@ function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
         "flex w-fit items-center gap-2 text-sm font-medium leading-snug group-data-[disabled=true]/field:opacity-50",
         className
       )}
+      {...picoMeta("FieldTitle")}
       {...props}
     />
   )
@@ -148,6 +156,7 @@ function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
         "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
         className
       )}
+      {...picoMeta("FieldDescription")}
       {...props}
     />
   )
@@ -168,6 +177,7 @@ function FieldSeparator({
         "relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2",
         className
       )}
+      {...picoMeta("FieldSeparator")}
       {...props}
     >
       <Separator className="absolute inset-0 top-1/2" />
@@ -223,6 +233,7 @@ function FieldError({
       role="alert"
       data-slot="field-error"
       className={cn("text-destructive text-sm font-normal", className)}
+      {...picoMeta("FieldError")}
       {...props}
     >
       {content}

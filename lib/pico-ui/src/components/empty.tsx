@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 
 function Empty({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -10,6 +11,7 @@ function Empty({ className, ...props }: React.ComponentProps<"div">) {
         "flex min-w-0 flex-1 flex-col items-center justify-center gap-6 text-balance rounded-lg border-dashed p-6 text-center md:p-12",
         className
       )}
+      {...picoMeta("Empty")}
       {...props}
     />
   )
@@ -23,6 +25,7 @@ function EmptyHeader({ className, ...props }: React.ComponentProps<"div">) {
         "flex max-w-sm flex-col items-center gap-2 text-center",
         className
       )}
+      {...picoMeta("EmptyHeader")}
       {...props}
     />
   )
@@ -53,6 +56,7 @@ function EmptyMedia({
       data-slot="empty-icon"
       data-variant={variant}
       className={cn(emptyMediaVariants({ variant, className }))}
+      {...picoMeta("EmptyMedia", { variant })}
       {...props}
     />
   )
@@ -63,6 +67,7 @@ function EmptyTitle({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="empty-title"
       className={cn("text-lg font-medium tracking-tight", className)}
+      {...picoMeta("EmptyTitle")}
       {...props}
     />
   )
@@ -76,6 +81,7 @@ function EmptyDescription({ className, ...props }: React.ComponentProps<"p">) {
         "text-muted-foreground [&>a:hover]:text-primary text-sm/relaxed [&>a]:underline [&>a]:underline-offset-4",
         className
       )}
+      {...picoMeta("EmptyDescription")}
       {...props}
     />
   )
@@ -89,6 +95,7 @@ function EmptyContent({ className, ...props }: React.ComponentProps<"div">) {
         "flex w-full min-w-0 max-w-sm flex-col items-center gap-4 text-balance text-sm",
         className
       )}
+      {...picoMeta("EmptyContent")}
       {...props}
     />
   )

@@ -63,7 +63,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground font-sans">
-      <nav className="sticky top-0 z-50 border-b-4 border-foreground bg-background">
+      <nav data-pico-section="navbar" className="sticky top-0 z-50 border-b-4 border-foreground bg-background">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
           <Link
             href="/library"
@@ -101,7 +101,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-7xl px-6 py-10">{children}</main>
+      <main data-pico-section="content" className="mx-auto max-w-7xl px-6 py-10">{children}</main>
     </div>
   );
 }

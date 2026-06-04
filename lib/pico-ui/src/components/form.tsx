@@ -11,6 +11,7 @@ import {
 } from "react-hook-form"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 import { Label } from "./label"
 
 const Form = FormProvider
@@ -78,7 +79,12 @@ const FormItem = React.forwardRef<
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div ref={ref} className={cn("space-y-2", className)} {...props} />
+      <div
+        ref={ref}
+        className={cn("space-y-2", className)}
+        {...picoMeta("FormItem")}
+        {...props}
+      />
     </FormItemContext.Provider>
   )
 })
@@ -95,6 +101,7 @@ const FormLabel = React.forwardRef<
       ref={ref}
       className={cn(error && "text-destructive", className)}
       htmlFor={formItemId}
+      {...picoMeta("FormLabel")}
       {...props}
     />
   )
@@ -117,6 +124,7 @@ const FormControl = React.forwardRef<
           : `${formDescriptionId} ${formMessageId}`
       }
       aria-invalid={!!error}
+      {...picoMeta("FormControl")}
       {...props}
     />
   )
@@ -134,6 +142,7 @@ const FormDescription = React.forwardRef<
       ref={ref}
       id={formDescriptionId}
       className={cn("text-[0.8rem] text-muted-foreground", className)}
+      {...picoMeta("FormDescription")}
       {...props}
     />
   )
@@ -156,6 +165,7 @@ const FormMessage = React.forwardRef<
       ref={ref}
       id={formMessageId}
       className={cn("text-[0.8rem] font-medium text-destructive", className)}
+      {...picoMeta("FormMessage")}
       {...props}
     >
       {body}

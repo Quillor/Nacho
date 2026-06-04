@@ -6,6 +6,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./utils": "./src/lib/utils.ts",
+    "./pico-meta": "./src/lib/pico-meta.ts",
     "./hooks/use-toast": "./src/hooks/use-toast.ts",
     "./hooks/use-mobile": "./src/hooks/use-mobile.tsx",
     "./*": "./src/components/*.tsx"
@@ -52,6 +53,9 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "catalog:",
     "vaul": "^1.1.2"
+  },
+  "scripts": {
+    "check-pico-meta": "node scripts/check-pico-meta.mjs"
   },
   "peerDependencies": {
     "react": ">=18",

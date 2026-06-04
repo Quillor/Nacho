@@ -2,6 +2,7 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../lib/utils"
+import { picoMeta } from "../lib/pico-meta"
 import { Button } from "./button"
 import { Input } from "./input"
 import { Textarea } from "./textarea"
@@ -29,6 +30,7 @@ function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
 
         className
       )}
+      {...picoMeta("InputGroup")}
       {...props}
     />
   )
@@ -66,6 +68,7 @@ function InputGroupAddon({
       data-slot="input-group-addon"
       data-align={align}
       className={cn(inputGroupAddonVariants({ align }), className)}
+      {...picoMeta("InputGroupAddon", { align })}
       onClick={(e) => {
         if ((e.target as HTMLElement).closest("button")) {
           return
@@ -109,6 +112,7 @@ function InputGroupButton({
       data-size={size}
       variant={variant}
       className={cn(inputGroupButtonVariants({ size }), className)}
+      {...picoMeta("InputGroupButton")}
       {...props}
     />
   )
@@ -121,6 +125,7 @@ function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
         "text-muted-foreground flex items-center gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
         className
       )}
+      {...picoMeta("InputGroupText")}
       {...props}
     />
   )
@@ -137,6 +142,7 @@ function InputGroupInput({
         "flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent",
         className
       )}
+      {...picoMeta("InputGroupInput")}
       {...props}
     />
   )
@@ -153,6 +159,7 @@ function InputGroupTextarea({
         "flex-1 resize-none rounded-none border-0 bg-transparent py-3 shadow-none focus-visible:ring-0 dark:bg-transparent",
         className
       )}
+      {...picoMeta("InputGroupTextarea")}
       {...props}
     />
   )
