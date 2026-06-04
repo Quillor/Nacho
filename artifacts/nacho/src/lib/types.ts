@@ -22,6 +22,7 @@ export interface LocalRecording {
   trimEnd: number;
   hasAudio: boolean;
   source: RecordingSource;
+  captionLang: string | null;
   chapters: Chapter[];
   transcript: TranscriptSegment[];
   createdAt: number;

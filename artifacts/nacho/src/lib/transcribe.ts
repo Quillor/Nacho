@@ -36,6 +36,7 @@ export function isTranscriptionSupported(): boolean {
 export function startTranscription(
   getElapsed: () => number,
   onSegment: (seg: TranscriptSegment) => void,
+  lang = "en-US",
 ): Transcriber {
   const w = window as unknown as Record<string, unknown>;
   const Ctor = (w.SpeechRecognition || w.webkitSpeechRecognition) as
@@ -53,7 +54,7 @@ export function startTranscription(
   const recognition = new Ctor();
   recognition.continuous = true;
   recognition.interimResults = false;
-  recognition.lang = "en-US";
+  recognition.lang = lang;
 
   let running = true;
   let paused = false;

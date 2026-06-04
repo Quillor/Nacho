@@ -1,10 +1,17 @@
 import type { RecordingSource } from "./types";
 import { pickRecorderMimeType } from "./media";
 
+export type SelfieCorner =
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right";
+
 export interface RecorderOptions {
   source: RecordingSource;
   withMic: boolean;
   withSystemAudio: boolean;
+  corner?: SelfieCorner;
 }
 
 export interface RecorderController {
@@ -18,6 +25,20 @@ export interface RecorderController {
   stop(): Promise<Blob>;
   cancel(): void;
   onEnded(cb: () => void): void;
+}
+
+export interface PreparedRecorder {
+  /** Live composite stream suitable for an on-screen <video> preview. */
+  previewStream: MediaStream;
+  hasAudio: boolean;
+  /** Whether a selfie bubble corner control is meaningful for this source. */
+  hasSelfie: boolean;
+  /** Move the camera bubble live (affects both preview and the recording). */
+  setCorner(corner: SelfieCorner): void;
+  /** Begin capturing. Returns the active recorder controller. */
+  start(): RecorderController;
+  /** Release all streams without recording (used when the user backs out). */
+  dispose(): void;
 }
 
 function mixAudio(streams: MediaStream[]): {
@@ -75,9 +96,14 @@ function drawCover(
   ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh);
 }
 
-export async function startRecording(
+/**
+ * Acquire the screen/camera/mic streams and build the live composite preview,
+ * but do not start the MediaRecorder yet. This lets Studio show what's being
+ * captured (and let the user pick the selfie corner) before recording begins.
+ */
+export async function prepareRecording(
   opts: RecorderOptions,
-): Promise<RecorderController> {
+): Promise<PreparedRecorder> {
   const acquired: MediaStream[] = [];
   let screenStream: MediaStream | undefined;
   let cameraStream: MediaStream | undefined;
@@ -115,7 +141,9 @@ export async function startRecording(
   let videoTrack: MediaStreamTrack;
   let rafId = 0;
   let canvas: HTMLCanvasElement | null = null;
+  let corner: SelfieCorner = opts.corner ?? "bottom-right";
   const helperVideos: HTMLVideoElement[] = [];
+  const hasSelfie = opts.source === "screen-camera";
 
   if (opts.source === "screen-camera" && screenStream && cameraStream) {
     const screenVideo = attachVideo(screenStream);
@@ -136,8 +164,14 @@ export async function startRecording(
       ctx.drawImage(screenVideo, 0, 0, canvas.width, canvas.height);
       const size = Math.round(canvas.height * 0.26);
       const margin = Math.round(canvas.height * 0.03);
-      const cx = canvas.width - size - margin;
-      const cy = canvas.height - size - margin;
+      const right = canvas.width - size - margin;
+      const bottom = canvas.height - size - margin;
+      const cx = corner === "top-left" || corner === "bottom-left"
+        ? margin
+        : right;
+      const cy = corner === "top-left" || corner === "top-right"
+        ? margin
+        : bottom;
       ctx.save();
       ctx.beginPath();
       ctx.arc(cx + size / 2, cy + size / 2, size / 2, 0, Math.PI * 2);
@@ -162,25 +196,7 @@ export async function startRecording(
   const recordTracks: MediaStreamTrack[] = [videoTrack];
   if (audioTrack) recordTracks.push(audioTrack);
   const recordStream = new MediaStream(recordTracks);
-
-  const previewTracks: MediaStreamTrack[] = [videoTrack];
-  const previewStream = new MediaStream(previewTracks);
-
-  const mimeType = pickRecorderMimeType();
-  const recorder = new MediaRecorder(recordStream, {
-    mimeType,
-    videoBitsPerSecond: 5_000_000,
-  });
-  const chunks: Blob[] = [];
-  recorder.ondataavailable = (e) => {
-    if (e.data.size > 0) chunks.push(e.data);
-  };
-  recorder.start(1000);
-
-  let startTime = performance.now();
-  let accumulated = 0;
-  let paused = false;
-  let endedCb: (() => void) | null = null;
+  const previewStream = new MediaStream([videoTrack]);
 
   const cleanup = () => {
     if (rafId) cancelAnimationFrame(rafId);
@@ -194,60 +210,92 @@ export async function startRecording(
     if (audioCtx) void audioCtx.close().catch(() => undefined);
   };
 
-  // Auto-stop when the user ends the screen share via the browser UI.
-  const screenTrack = screenStream?.getVideoTracks()[0];
-  if (screenTrack) {
-    screenTrack.addEventListener("ended", () => {
-      if (endedCb) endedCb();
-    });
-  }
+  let started = false;
 
   return {
     previewStream,
-    mimeType,
     hasAudio: Boolean(audioTrack),
-    pause() {
-      if (paused || recorder.state !== "recording") return;
-      recorder.pause();
-      accumulated += performance.now() - startTime;
-      paused = true;
+    hasSelfie,
+    setCorner(next) {
+      corner = next;
     },
-    resume() {
-      if (!paused) return;
-      recorder.resume();
-      startTime = performance.now();
-      paused = false;
-    },
-    isPaused() {
-      return paused;
-    },
-    getElapsed() {
-      const live = paused ? 0 : performance.now() - startTime;
-      return (accumulated + live) / 1000;
-    },
-    stop() {
-      return new Promise<Blob>((resolve) => {
-        recorder.onstop = () => {
-          cleanup();
-          resolve(new Blob(chunks, { type: mimeType }));
-        };
-        if (recorder.state !== "inactive") recorder.stop();
-        else {
-          cleanup();
-          resolve(new Blob(chunks, { type: mimeType }));
-        }
-      });
-    },
-    cancel() {
-      try {
-        if (recorder.state !== "inactive") recorder.stop();
-      } catch {
-        /* ignore */
-      }
+    dispose() {
+      if (started) return;
       cleanup();
     },
-    onEnded(cb) {
-      endedCb = cb;
+    start(): RecorderController {
+      started = true;
+      const mimeType = pickRecorderMimeType();
+      const recorder = new MediaRecorder(recordStream, {
+        mimeType,
+        videoBitsPerSecond: 5_000_000,
+      });
+      const chunks: Blob[] = [];
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunks.push(e.data);
+      };
+      recorder.start(1000);
+
+      let startTime = performance.now();
+      let accumulated = 0;
+      let paused = false;
+      let endedCb: (() => void) | null = null;
+
+      const screenTrack = screenStream?.getVideoTracks()[0];
+      if (screenTrack) {
+        screenTrack.addEventListener("ended", () => {
+          if (endedCb) endedCb();
+        });
+      }
+
+      return {
+        previewStream,
+        mimeType,
+        hasAudio: Boolean(audioTrack),
+        pause() {
+          if (paused || recorder.state !== "recording") return;
+          recorder.pause();
+          accumulated += performance.now() - startTime;
+          paused = true;
+        },
+        resume() {
+          if (!paused) return;
+          recorder.resume();
+          startTime = performance.now();
+          paused = false;
+        },
+        isPaused() {
+          return paused;
+        },
+        getElapsed() {
+          const live = paused ? 0 : performance.now() - startTime;
+          return (accumulated + live) / 1000;
+        },
+        stop() {
+          return new Promise<Blob>((resolve) => {
+            recorder.onstop = () => {
+              cleanup();
+              resolve(new Blob(chunks, { type: mimeType }));
+            };
+            if (recorder.state !== "inactive") recorder.stop();
+            else {
+              cleanup();
+              resolve(new Blob(chunks, { type: mimeType }));
+            }
+          });
+        },
+        cancel() {
+          try {
+            if (recorder.state !== "inactive") recorder.stop();
+          } catch {
+            /* ignore */
+          }
+          cleanup();
+        },
+        onEnded(cb) {
+          endedCb = cb;
+        },
+      };
     },
   };
 }

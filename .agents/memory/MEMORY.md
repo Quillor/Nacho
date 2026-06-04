@@ -1,2 +1,3 @@
 - [Shared Pico theme lib](pico-shared-theme.md) — `@workspace/pico-theme/theme.css` is the single source of truth for design tokens; all artifacts import it so token edits propagate.
 - [Clerk display name](clerk-name-attribute.md) — first_name/last_name disabled in this Clerk instance; store editable display name in `unsafeMetadata.displayName`, read via `getDisplayName()`.
+- [Two-phase recording](recorder-two-phase.md) — Nacho acquires media streams on an explicit gesture before recording (live preview); selfie corner/caption lang change live, capture options force re-acquire.
