@@ -1,0 +1,114 @@
+import { Router, type IRouter } from "express";
+import { eq, sql } from "drizzle-orm";
+import { nanoid } from "nanoid";
+import {
+  db,
+  publishedRecordingsTable,
+  type PublishedRecordingRow,
+} from "@workspace/db";
+import {
+  PublishRecordingBody,
+  GetRecordingParams,
+  GetRecordingResponse,
+  AddRecordingViewParams,
+  AddRecordingViewResponse,
+} from "@workspace/api-zod";
+
+const router: IRouter = Router();
+
+function toApi(row: PublishedRecordingRow) {
+  return {
+    shareId: row.shareId,
+    title: row.title,
+    description: row.description,
+    durationSec: row.durationSec,
+    trimStart: row.trimStart,
+    trimEnd: row.trimEnd,
+    hasAudio: row.hasAudio,
+    videoPath: row.videoPath,
+    thumbnailPath: row.thumbnailPath,
+    gifPath: row.gifPath,
+    chapters: row.chapters,
+    transcript: row.transcript,
+    views: row.views,
+    createdAt:
+      row.createdAt instanceof Date
+        ? row.createdAt.toISOString()
+        : String(row.createdAt),
+  };
+}
+
+router.post("/recordings", async (req, res): Promise<void> => {
+  const parsed = PublishRecordingBody.safeParse(req.body);
+  if (!parsed.success) {
+    req.log.warn({ errors: parsed.error.message }, "Invalid recording input");
+    res.status(400).json({ error: parsed.error.message });
+    return;
+  }
+
+  const data = parsed.data;
+  const shareId = nanoid(10);
+
+  const [row] = await db
+    .insert(publishedRecordingsTable)
+    .values({
+      shareId,
+      title: data.title,
+      description: data.description ?? "",
+      durationSec: data.durationSec,
+      trimStart: data.trimStart,
+      trimEnd: data.trimEnd,
+      hasAudio: data.hasAudio ?? true,
+      videoPath: data.videoPath,
+      thumbnailPath: data.thumbnailPath ?? null,
+      gifPath: data.gifPath ?? null,
+      chapters: data.chapters ?? [],
+      transcript: data.transcript ?? [],
+    })
+    .returning();
+
+  res.status(201).json(GetRecordingResponse.parse(toApi(row)));
+});
+
+router.get("/recordings/:shareId", async (req, res): Promise<void> => {
+  const params = GetRecordingParams.safeParse(req.params);
+  if (!params.success) {
+    res.status(400).json({ error: params.error.message });
+    return;
+  }
+
+  const [row] = await db
+    .select()
+    .from(publishedRecordingsTable)
+    .where(eq(publishedRecordingsTable.shareId, params.data.shareId));
+
+  if (!row) {
+    res.status(404).json({ error: "Recording not found" });
+    return;
+  }
+
+  res.json(GetRecordingResponse.parse(toApi(row)));
+});
+
+router.post("/recordings/:shareId/views", async (req, res): Promise<void> => {
+  const params = AddRecordingViewParams.safeParse(req.params);
+  if (!params.success) {
+    res.status(400).json({ error: params.error.message });
+    return;
+  }
+
+  const [row] = await db
+    .update(publishedRecordingsTable)
+    .set({ views: sql`${publishedRecordingsTable.views} + 1` })
+    .where(eq(publishedRecordingsTable.shareId, params.data.shareId))
+    .returning();
+
+  if (!row) {
+    res.status(404).json({ error: "Recording not found" });
+    return;
+  }
+
+  res.json(AddRecordingViewResponse.parse({ views: row.views }));
+});
+
+export default router;

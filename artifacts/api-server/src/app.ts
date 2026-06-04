@@ -2,9 +2,13 @@ import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
 import router from "./routes";
+import shareRouter from "./routes/share";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
+
+// Behind the Replit reverse proxy — trust X-Forwarded-* so req.protocol is correct.
+app.set("trust proxy", true);
 
 app.use(
   pinoHttp({
@@ -30,5 +34,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
+app.use(shareRouter);
 
 export default app;

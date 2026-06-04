@@ -10,6 +10,12 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: storage
+    description: Object storage operations
+  - name: recordings
+    description: Published recording operations
+  - name: app
+    description: App metadata operations
 paths:
   /healthz:
     get:
@@ -24,6 +30,102 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /storage/uploads/request-url:
+    post:
+      operationId: requestUploadUrl
+      tags: [storage]
+      summary: Request a presigned upload URL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadUrlInput"
+      responses:
+        "200":
+          description: Presigned upload URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadUrlResponse"
+  /recordings:
+    post:
+      operationId: publishRecording
+      tags: [recordings]
+      summary: Publish a recording (store metadata; media already uploaded)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecordingInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedRecording"
+  /recordings/{shareId}:
+    get:
+      operationId: getRecording
+      tags: [recordings]
+      summary: Get a published recording by share id
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The published recording
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedRecording"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /recordings/{shareId}/views:
+    post:
+      operationId: addRecordingView
+      tags: [recordings]
+      summary: Increment the view count for a recording
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Updated view count
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ViewCount"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /version:
+    get:
+      operationId: getVersion
+      tags: [app]
+      summary: Get the current app version
+      responses:
+        "200":
+          description: Version info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VersionInfo"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +135,144 @@ components:
           type: string
       required:
         - status
-
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+    UploadUrlInput:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name:
+          type: string
+        size:
+          type: integer
+        contentType:
+          type: string
+    UploadUrlResponse:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL:
+          type: string
+        objectPath:
+          type: string
+    Chapter:
+      type: object
+      required: [time, label]
+      properties:
+        time:
+          type: number
+        label:
+          type: string
+    TranscriptSegment:
+      type: object
+      required: [start, end, text]
+      properties:
+        start:
+          type: number
+        end:
+          type: number
+        text:
+          type: string
+    RecordingInput:
+      type: object
+      required:
+        - title
+        - durationSec
+        - trimStart
+        - trimEnd
+        - videoPath
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        durationSec:
+          type: number
+        trimStart:
+          type: number
+        trimEnd:
+          type: number
+        hasAudio:
+          type: boolean
+        videoPath:
+          type: string
+        thumbnailPath:
+          type: ["string", "null"]
+        gifPath:
+          type: ["string", "null"]
+        chapters:
+          type: array
+          items:
+            $ref: "#/components/schemas/Chapter"
+        transcript:
+          type: array
+          items:
+            $ref: "#/components/schemas/TranscriptSegment"
+    PublishedRecording:
+      type: object
+      required:
+        - shareId
+        - title
+        - description
+        - durationSec
+        - trimStart
+        - trimEnd
+        - hasAudio
+        - videoPath
+        - chapters
+        - transcript
+        - views
+        - createdAt
+      properties:
+        shareId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        durationSec:
+          type: number
+        trimStart:
+          type: number
+        trimEnd:
+          type: number
+        hasAudio:
+          type: boolean
+        videoPath:
+          type: string
+        thumbnailPath:
+          type: ["string", "null"]
+        gifPath:
+          type: ["string", "null"]
+        chapters:
+          type: array
+          items:
+            $ref: "#/components/schemas/Chapter"
+        transcript:
+          type: array
+          items:
+            $ref: "#/components/schemas/TranscriptSegment"
+        views:
+          type: integer
+        createdAt:
+          type: string
+    ViewCount:
+      type: object
+      required: [views]
+      properties:
+        views:
+          type: integer
+    VersionInfo:
+      type: object
+      required: [version]
+      properties:
+        version:
+          type: string
+        releaseDate:
+          type: ["string", "null"]

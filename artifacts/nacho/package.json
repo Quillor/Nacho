@@ -74,5 +74,11 @@
     "vite": "catalog:",
     "wouter": "^3.3.5",
     "zod": "catalog:"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.7",
+    "gifenc": "^1.0.3",
+    "idb": "^8.0.3",
+    "nanoid": "^5.1.11"
   }
 }

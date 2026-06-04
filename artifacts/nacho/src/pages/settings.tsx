@@ -1,0 +1,148 @@
+import { useEffect, useState } from "react";
+import { Info, HardDrive, Trash2, Tag } from "lucide-react";
+import { AppShell } from "@/components/app-shell";
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
+import { useGetVersion } from "@workspace/api-client-react";
+import { listRecordings, deleteRecording } from "@/lib/db";
+import { formatBytes } from "@/lib/format";
+import type { LocalRecordingMeta } from "@/lib/types";
+
+export default function SettingsPage() {
+  const { toast } = useToast();
+  const { data: version } = useGetVersion();
+  const [recordings, setRecordings] = useState<LocalRecordingMeta[]>([]);
+  const [usage, setUsage] = useState<number | null>(null);
+  const [confirmClear, setConfirmClear] = useState(false);
+
+  const refresh = () => {
+    listRecordings().then(setRecordings);
+    if (navigator.storage?.estimate) {
+      navigator.storage.estimate().then((est) => setUsage(est.usage ?? 0));
+    }
+  };
+
+  useEffect(() => {
+    refresh();
+  }, []);
+
+  const clearAll = async () => {
+    await Promise.all(recordings.map((r) => deleteRecording(r.id)));
+    setConfirmClear(false);
+    refresh();
+    toast({ title: "Local recordings cleared" });
+  };
+
+  const publishedCount = recordings.filter((r) => r.shareId).length;
+
+  return (
+    <AppShell>
+      <h1 className="mb-2 font-display text-5xl font-black uppercase tracking-tight">
+        Settings
+      </h1>
+      <p className="mb-10 text-lg font-medium text-muted-foreground">
+        Manage local storage and see what's running.
+      </p>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="border-4 border-foreground bg-card p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <HardDrive className="h-5 w-5" />
+            <h2 className="font-display text-xl font-black uppercase">
+              Local Storage
+            </h2>
+          </div>
+          <dl className="space-y-3">
+            <div className="flex justify-between border-b-2 border-dashed border-foreground pb-2">
+              <dt className="font-medium text-muted-foreground">Recordings</dt>
+              <dd className="font-bold">{recordings.length}</dd>
+            </div>
+            <div className="flex justify-between border-b-2 border-dashed border-foreground pb-2">
+              <dt className="font-medium text-muted-foreground">Published</dt>
+              <dd className="font-bold">{publishedCount}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="font-medium text-muted-foreground">
+                Disk used
+              </dt>
+              <dd className="font-bold">
+                {usage === null ? "—" : formatBytes(usage)}
+              </dd>
+            </div>
+          </dl>
+          <Button
+            variant="outline"
+            disabled={recordings.length === 0}
+            onClick={() => setConfirmClear(true)}
+            className="mt-6 w-full border-4 border-foreground font-bold uppercase text-destructive hover:bg-destructive hover:text-destructive-foreground"
+          >
+            <Trash2 className="mr-2 h-4 w-4" /> Clear local recordings
+          </Button>
+        </div>
+
+        <div className="border-4 border-foreground bg-card p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <Info className="h-5 w-5" />
+            <h2 className="font-display text-xl font-black uppercase">About</h2>
+          </div>
+          <dl className="space-y-3">
+            <div className="flex justify-between border-b-2 border-dashed border-foreground pb-2">
+              <dt className="flex items-center gap-1 font-medium text-muted-foreground">
+                <Tag className="h-4 w-4" /> Version
+              </dt>
+              <dd className="font-mono font-bold">
+                {version?.version ?? "…"}
+              </dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="font-medium text-muted-foreground">Released</dt>
+              <dd className="font-mono font-bold">
+                {version?.releaseDate ?? "…"}
+              </dd>
+            </div>
+          </dl>
+          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+            Nacho records in your browser. Recordings stay on this device until
+            you publish — publishing uploads a copy so anyone with the link can
+            watch.
+          </p>
+        </div>
+      </div>
+
+      <AlertDialog open={confirmClear} onOpenChange={setConfirmClear}>
+        <AlertDialogContent className="border-4 border-foreground">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-display uppercase">
+              Clear all local recordings?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This deletes every recording stored on this device. Published share
+              links will keep working.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-2 border-foreground font-bold">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={clearAll}
+              className="border-2 border-foreground bg-destructive font-bold text-destructive-foreground"
+            >
+              Clear everything
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </AppShell>
+  );
+}

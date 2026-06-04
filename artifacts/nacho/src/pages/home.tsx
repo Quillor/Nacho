@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -32,11 +33,11 @@ export default function Home() {
           <span className="font-display font-black text-2xl uppercase tracking-tight">Nacho</span>
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="outline" className="hidden md:flex font-bold border-2 border-transparent text-foreground hover:bg-muted transition-all">
-            Login
+          <Button asChild variant="outline" className="hidden md:flex font-bold border-2 border-transparent text-foreground hover:bg-muted transition-all">
+            <Link href="/library">Library</Link>
           </Button>
-          <Button className="font-bold border-2 border-foreground shadow-sm hover:translate-y-[2px] hover:shadow-none transition-all bg-primary text-foreground hover:bg-primary/90">
-            Get Started
+          <Button asChild className="font-bold border-2 border-foreground shadow-sm hover:translate-y-[2px] hover:shadow-none transition-all bg-primary text-foreground hover:bg-primary/90">
+            <Link href="/studio">Get Started</Link>
           </Button>
         </div>
       </nav>
@@ -60,11 +61,11 @@ export default function Home() {
               Record your screen, camera, and mic. Share an instant link. Nacho is the fastest way to get your point across without typing a 10-paragraph email.
             </motion.p>
             <motion.div variants={fadeIn} className="flex flex-wrap gap-4">
-              <Button size="lg" className="h-16 px-8 text-lg font-bold border-4 border-foreground shadow-lg hover:translate-y-[2px] hover:shadow-md transition-all bg-background text-foreground hover:bg-background/90 rounded-none">
-                Start Recording Free
+              <Button asChild size="lg" className="h-16 px-8 text-lg font-bold border-4 border-foreground shadow-lg hover:translate-y-[2px] hover:shadow-md transition-all bg-background text-foreground hover:bg-background/90 rounded-none">
+                <Link href="/studio">Start Recording Free</Link>
               </Button>
-              <Button size="lg" variant="outline" className="h-16 px-8 text-lg font-bold border-4 border-foreground shadow-lg hover:translate-y-[2px] hover:shadow-md transition-all bg-transparent text-foreground hover:bg-foreground hover:text-background rounded-none">
-                Watch Demo
+              <Button asChild size="lg" variant="outline" className="h-16 px-8 text-lg font-bold border-4 border-foreground shadow-lg hover:translate-y-[2px] hover:shadow-md transition-all bg-transparent text-foreground hover:bg-foreground hover:text-background rounded-none">
+                <Link href="/library">My Library</Link>
               </Button>
             </motion.div>
           </motion.div>
@@ -276,8 +277,8 @@ export default function Home() {
           <p className="text-2xl font-medium text-background/80 mb-12">
             Join 100,000+ people who communicate better, faster.
           </p>
-          <Button size="lg" className="h-20 px-12 text-2xl font-display font-black uppercase tracking-wider border-4 border-foreground shadow-xl hover:translate-y-[4px] hover:shadow-lg transition-all bg-primary text-foreground hover:bg-primary/90 rounded-none">
-            Get Nacho For Free
+          <Button asChild size="lg" className="h-20 px-12 text-2xl font-display font-black uppercase tracking-wider border-4 border-foreground shadow-xl hover:translate-y-[4px] hover:shadow-lg transition-all bg-primary text-foreground hover:bg-primary/90 rounded-none">
+            <Link href="/studio">Get Nacho For Free</Link>
           </Button>
         </div>
       </section>
