@@ -104,7 +104,7 @@ export default function Imagery() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
-        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+ <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
           Imagery
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -113,7 +113,7 @@ export default function Imagery() {
       </div>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase">The Cast</h2>
+ <h2 className="text-3xl font-display font-black">The Cast</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {ILLUSTRATIONS.map((ill) => (
@@ -131,7 +131,7 @@ export default function Imagery() {
               </div>
               <div className="p-5 flex flex-col gap-2 flex-1">
                 <div className="flex items-center justify-between gap-2">
-                  <h3 className="text-xl font-bold uppercase leading-none">{ill.name}</h3>
+ <h3 className="text-xl font-bold leading-none">{ill.name}</h3>
                 </div>
                 <code className="font-mono text-xs bg-foreground/10 px-1.5 py-0.5 rounded-sm w-fit">{ill.file}</code>
                 <p className="text-foreground/80 font-medium text-sm mt-1">{ill.caption}</p>
@@ -146,7 +146,7 @@ export default function Imagery() {
       </section>
 
       <section className="space-y-6">
-        <h2 className="text-3xl font-display font-black uppercase">Usage Guidance</h2>
+ <h2 className="text-3xl font-display font-black">Usage Guidance</h2>
         <ul className="space-y-3 max-w-2xl">
           {[
             "One illustration per view. These characters are loud; let a single one own the moment.",
@@ -163,7 +163,7 @@ export default function Imagery() {
       </section>
 
       <section className="space-y-6">
-        <h2 className="text-3xl font-display font-black uppercase">Prompt Template</h2>
+ <h2 className="text-3xl font-display font-black">Prompt Template</h2>
         <p className="font-medium text-foreground/80 max-w-2xl">
           Need a new illustration? Generate it in the exact same style. Copy the template below and replace <code className="bg-foreground/10 px-1 rounded-sm">{"{SUBJECT/SCENE}"}</code> with what you want to show.
         </p>

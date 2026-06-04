@@ -4,7 +4,7 @@ export default function Installation() {
   return (
     <div className="space-y-12">
       <div className="space-y-4">
-        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+ <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
           Installation & Usage
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -14,7 +14,7 @@ export default function Installation() {
 
       <div className="space-y-8">
         <section className="space-y-4">
-          <h2 className="text-3xl font-display font-black uppercase">Tailwind Configuration</h2>
+ <h2 className="text-3xl font-display font-black">Tailwind Configuration</h2>
           <p className="font-medium text-foreground/80">
             Pico uses standard Tailwind CSS classes mapped to our custom design tokens. Here's a quick cheat sheet:
           </p>
@@ -52,7 +52,7 @@ export default function Installation() {
                 <tr>
                   <td className="p-4">font-display</td>
                   <td className="p-4">--font-display</td>
-                  <td className="p-4 font-sans font-medium">Bricolage Grotesque for headings</td>
+                  <td className="p-4 font-sans font-medium">Platypi for headings</td>
                 </tr>
               </tbody>
             </table>
@@ -60,7 +60,7 @@ export default function Installation() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-3xl font-display font-black uppercase">Using Components</h2>
+ <h2 className="text-3xl font-display font-black">Using Components</h2>
           <p className="font-medium text-foreground/80">
             Our components are built on top of shadcn/ui but heavily styled with the Pico theme. Import them from <code className="bg-foreground/10 px-1 rounded-sm">@/components/ui</code>.
           </p>
@@ -72,7 +72,7 @@ export default function MyView() {
   return (
     <Card className="max-w-md">
       <CardContent className="p-6 space-y-4">
-        <h3 className="text-2xl font-display font-black uppercase">Snack Time</h3>
+ <h3 className="text-2xl font-display font-black">Snack Time</h3>
         <p>Ready for a break?</p>
         <Button size="lg">Grab a bite</Button>
       </CardContent>
@@ -82,7 +82,7 @@ export default function MyView() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-3xl font-display font-black uppercase">The Root Layout</h2>
+ <h2 className="text-3xl font-display font-black">The Root Layout</h2>
           <p className="font-medium text-foreground/80">
             Make sure your root HTML or body tag has the correct base classes to set the stage:
           </p>

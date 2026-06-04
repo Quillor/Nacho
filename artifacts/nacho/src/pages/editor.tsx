@@ -278,7 +278,7 @@ export default function Editor() {
     return (
       <AppShell>
         <div className="py-24 text-center">
-          <h1 className="font-display text-4xl font-black uppercase">
+ <h1 className="font-display text-4xl font-black">
             Recording not found
           </h1>
           <Button
@@ -305,7 +305,7 @@ export default function Editor() {
       <Button
         variant="ghost"
         onClick={() => navigate("/library")}
-        className="mb-4 font-bold uppercase text-muted-foreground"
+ className="mb-4 font-bold text-muted-foreground"
       >
         <ArrowLeft className="mr-2 h-4 w-4" /> Library
       </Button>
@@ -329,7 +329,7 @@ export default function Editor() {
           <div className="mt-6 border-4 border-foreground bg-card p-5">
             <div className="mb-3 flex items-center gap-2">
               <Scissors className="h-5 w-5" />
-              <h3 className="font-display text-lg font-bold uppercase">
+ <h3 className="font-display text-lg font-bold">
                 Trim · {formatTimestamp(trimmedDuration)}
               </h3>
             </div>
@@ -366,13 +366,13 @@ export default function Editor() {
 
           <Tabs defaultValue="description">
             <TabsList className="grid w-full grid-cols-3 border-4 border-foreground bg-muted p-1">
-              <TabsTrigger value="description" className="font-bold uppercase">
+ <TabsTrigger value="description" className="font-bold">
                 Description
               </TabsTrigger>
-              <TabsTrigger value="chapters" className="font-bold uppercase">
+ <TabsTrigger value="chapters" className="font-bold">
                 Chapters
               </TabsTrigger>
-              <TabsTrigger value="transcript" className="font-bold uppercase">
+ <TabsTrigger value="transcript" className="font-bold">
                 Script
               </TabsTrigger>
             </TabsList>
@@ -389,7 +389,7 @@ export default function Editor() {
               <Button
                 onClick={addChapter}
                 variant="outline"
-                className="w-full border-4 border-foreground font-bold uppercase"
+ className="w-full border-4 border-foreground font-bold"
               >
                 <Plus className="mr-2 h-4 w-4" /> Add chapter at{" "}
                 {formatTimestamp(current)}
@@ -460,7 +460,7 @@ export default function Editor() {
           <div className="space-y-3 border-t-4 border-foreground pt-6">
             {isPublic ? (
               <div className="space-y-3 border-4 border-foreground bg-secondary p-4 text-secondary-foreground">
-                <div className="flex items-center gap-2 font-display font-bold uppercase">
+ <div className="flex items-center gap-2 font-display font-bold">
                   <Globe className="h-5 w-5" /> Public
                 </div>
                 <p className="text-sm font-medium">
@@ -486,7 +486,7 @@ export default function Editor() {
                 <Button
                   onClick={() => navigate(`/v/${shareId}`)}
                   variant="outline"
-                  className="w-full border-2 border-foreground bg-background font-bold uppercase"
+ className="w-full border-2 border-foreground bg-background font-bold"
                 >
                   Open public page
                 </Button>
@@ -494,7 +494,7 @@ export default function Editor() {
                   onClick={handleUnpublish}
                   disabled={busy}
                   variant="ghost"
-                  className="w-full font-bold uppercase"
+ className="w-full font-bold"
                 >
                   {busy ? (
                     <>
@@ -510,7 +510,7 @@ export default function Editor() {
               </div>
             ) : (
               <div className="space-y-3 border-4 border-foreground bg-card p-4">
-                <div className="flex items-center gap-2 font-display font-bold uppercase">
+ <div className="flex items-center gap-2 font-display font-bold">
                   <Lock className="h-5 w-5" /> Private
                 </div>
                 <p className="text-sm font-medium text-muted-foreground">
@@ -520,7 +520,7 @@ export default function Editor() {
                   onClick={handleGetLink}
                   disabled={busy}
                   size="lg"
-                  className="h-14 w-full border-4 border-foreground bg-primary text-lg font-black uppercase text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+ className="h-14 w-full border-4 border-foreground bg-primary text-lg font-black text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
                 >
                   {busy ? (
                     <>
@@ -538,7 +538,7 @@ export default function Editor() {
             <Button
               onClick={handleSave}
               variant="outline"
-              className="w-full border-4 border-foreground font-bold uppercase"
+ className="w-full border-4 border-foreground font-bold"
             >
               Save changes
             </Button>

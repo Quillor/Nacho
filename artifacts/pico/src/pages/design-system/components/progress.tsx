@@ -5,7 +5,7 @@ export default function ProgressDocs() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
-        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+ <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
           Progress
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -14,7 +14,7 @@ export default function ProgressDocs() {
       </div>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Usage</h2>
+ <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Usage</h2>
         <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="w-full max-w-sm space-y-2 bg-background p-4 border-2 border-foreground shadow-sm rounded-sm">
             <div className="flex items-center justify-between text-sm font-bold uppercase tracking-wide">
@@ -30,7 +30,7 @@ export default function ProgressDocs() {
       </section>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Values</h2>
+ <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Values</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Set <code>value</code> from 0 to 100 to reflect the real state of the task.
         </p>

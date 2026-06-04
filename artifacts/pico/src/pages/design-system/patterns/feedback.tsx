@@ -31,7 +31,7 @@ export default function FeedbackPattern() {
         </Note>
         <Preview className="flex flex-wrap gap-3">
           <Button
-            className="font-bold uppercase"
+ className="font-bold"
             onClick={() =>
               toast({ title: "Link copied", description: "Share it anywhere." })
             }
@@ -40,7 +40,7 @@ export default function FeedbackPattern() {
           </Button>
           <Button
             variant="outline"
-            className="font-bold uppercase"
+ className="font-bold"
             onClick={() =>
               toast({
                 title: "Couldn't start recording",

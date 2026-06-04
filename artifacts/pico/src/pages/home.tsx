@@ -38,7 +38,7 @@ export default function Home() {
           <motion.div variants={fadeIn} className="inline-block mb-6 px-4 py-2 bg-background border-2 border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-sm">
             DESIGN SYSTEM v1.0
           </motion.div>
-          <motion.h1 variants={fadeIn} className="text-7xl md:text-9xl tracking-tight leading-[0.9] mb-8 text-foreground uppercase">
+ <motion.h1 variants={fadeIn} className="text-7xl md:text-9xl tracking-tight leading-[0.9] mb-8 text-foreground">
             Say hello <br/> to Pico.
           </motion.h1>
           <motion.p variants={fadeIn} className="text-xl md:text-2xl max-w-2xl font-medium leading-relaxed text-foreground/90">
@@ -60,7 +60,7 @@ export default function Home() {
             <div className="w-12 h-12 bg-primary border-2 border-foreground rounded-sm shadow-sm flex items-center justify-center">
               <PaintBucket className="w-6 h-6 text-foreground" />
             </div>
-            <h2 className="text-4xl md:text-5xl uppercase">Core Palette</h2>
+ <h2 className="text-4xl md:text-5xl">Core Palette</h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -76,7 +76,7 @@ export default function Home() {
               </div>
               <div className="p-6 bg-background">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-2xl font-bold uppercase">Golden Yellow</h3>
+ <h3 className="text-2xl font-bold">Golden Yellow</h3>
                   <span className="font-mono bg-foreground text-background px-2 py-1 rounded-sm text-sm">#F5C518</span>
                 </div>
                 <p className="text-foreground/70 font-medium">Primary brand color. Loud, attention-grabbing, used for major highlights and hero sections.</p>
@@ -96,7 +96,7 @@ export default function Home() {
               </div>
               <div className="p-6 bg-background">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-2xl font-bold uppercase">Deep Brown</h3>
+ <h3 className="text-2xl font-bold">Deep Brown</h3>
                   <span className="font-mono bg-foreground text-background px-2 py-1 rounded-sm text-sm">#2E1C0F</span>
                 </div>
                 <p className="text-foreground/70 font-medium">The ink. Used for all text, thick borders, heavy shadows, and providing ground.</p>
@@ -117,7 +117,7 @@ export default function Home() {
               </div>
               <div className="p-6 bg-background">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-2xl font-bold uppercase">Cream</h3>
+ <h3 className="text-2xl font-bold">Cream</h3>
                   <span className="font-mono bg-foreground text-background px-2 py-1 rounded-sm text-sm">#F8F4E6</span>
                 </div>
                 <p className="text-foreground/70 font-medium">The canvas. Soft, warm, and highly readable as the primary background color.</p>
@@ -159,19 +159,19 @@ export default function Home() {
             <div className="w-12 h-12 bg-primary border-2 border-foreground rounded-sm shadow-sm flex items-center justify-center">
               <LayoutGrid className="w-6 h-6 text-foreground" />
             </div>
-            <h2 className="text-4xl md:text-5xl uppercase">Combinations</h2>
+ <h2 className="text-4xl md:text-5xl">Combinations</h2>
           </motion.div>
 
           <div className="space-y-12">
             {/* Combo A */}
             <div className="grid md:grid-cols-[1fr_2fr] border-4 border-foreground rounded-sm overflow-hidden shadow-md">
               <div className="bg-foreground text-background p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
-                <h3 className="text-2xl font-bold uppercase mb-2">Combo A</h3>
+ <h3 className="text-2xl font-bold mb-2">Combo A</h3>
                 <p className="opacity-80 mb-4">Yellow on Brown. Extremely high contrast, excellent for banners and emphasis.</p>
                 <Badge variant="outline" className="w-fit border-background text-background">Accessible AAA</Badge>
               </div>
               <div className="bg-primary text-foreground p-8 md:p-12 flex flex-col justify-center">
-                <h4 className="text-3xl md:text-4xl uppercase mb-4">Loud & Clear</h4>
+ <h4 className="text-3xl md:text-4xl mb-4">Loud & Clear</h4>
                 <p className="text-lg font-medium mb-8 max-w-md">This combination is our bread and butter. It's impossible to ignore and perfectly captures the snack-brand energy.</p>
                 <div className="flex flex-wrap gap-4">
                   <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.3)] transition-all font-bold">
@@ -187,12 +187,12 @@ export default function Home() {
             {/* Combo B */}
             <div className="grid md:grid-cols-[1fr_2fr] border-4 border-foreground rounded-sm overflow-hidden shadow-md">
               <div className="bg-primary text-foreground p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
-                <h3 className="text-2xl font-bold uppercase mb-2">Combo B</h3>
+ <h3 className="text-2xl font-bold mb-2">Combo B</h3>
                 <p className="opacity-80 mb-4">Cream/Yellow on Brown. Deep, rich, and grounds the layout.</p>
                 <Badge variant="outline" className="w-fit border-foreground text-foreground">Accessible AAA</Badge>
               </div>
               <div className="bg-foreground text-background p-8 md:p-12 flex flex-col justify-center">
-                <h4 className="text-3xl md:text-4xl uppercase mb-4 text-primary">The Midnight Snack</h4>
+ <h4 className="text-3xl md:text-4xl mb-4 text-primary">The Midnight Snack</h4>
                 <p className="text-lg font-medium mb-8 max-w-md text-background/90">Use this for footers, dramatic section breaks, or when you need the reader to stop scrolling and pay attention.</p>
                 <div className="flex flex-wrap gap-4">
                   <Button size="lg" className="bg-primary text-foreground hover:bg-primary/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.2)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.2)] transition-all font-bold">
@@ -208,12 +208,12 @@ export default function Home() {
             {/* Combo C */}
              <div className="grid md:grid-cols-[1fr_2fr] border-4 border-foreground rounded-sm overflow-hidden shadow-md">
               <div className="bg-background text-foreground p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
-                <h3 className="text-2xl font-bold uppercase mb-2">Combo C</h3>
+ <h3 className="text-2xl font-bold mb-2">Combo C</h3>
                 <p className="opacity-80 mb-4">Brown on Cream. The standard reading experience, warm and legible.</p>
                 <Badge variant="outline" className="w-fit border-foreground text-foreground">Accessible AAA</Badge>
               </div>
               <div className="bg-background text-foreground p-8 md:p-12 flex flex-col justify-center">
-                <h4 className="text-3xl md:text-4xl uppercase mb-4">Daily Bread</h4>
+ <h4 className="text-3xl md:text-4xl mb-4">Daily Bread</h4>
                 <p className="text-lg font-medium mb-8 max-w-md">This is where the actual reading happens. It's softer than pure white on black, making it friendlier on the eyes.</p>
                 <div className="flex flex-wrap gap-4">
                   <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
@@ -244,38 +244,38 @@ export default function Home() {
             <div className="w-12 h-12 bg-background border-2 border-foreground rounded-sm shadow-sm flex items-center justify-center">
               <Type className="w-6 h-6 text-foreground" />
             </div>
-            <h2 className="text-4xl md:text-5xl uppercase">Typography</h2>
+ <h2 className="text-4xl md:text-5xl">Typography</h2>
           </motion.div>
 
           <div className="space-y-12">
             <div className="border-b-4 border-foreground/20 pb-8">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
                 <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Display 1 / 8rem / 900 / 0.9</span>
-                <span className="text-foreground/70 font-bold uppercase">Bricolage Grotesque</span>
+ <span className="text-foreground/70 font-bold">Platypi</span>
               </div>
-              <div className="text-[5rem] md:text-[8rem] font-display font-black leading-[0.9] tracking-tight uppercase">Giant.</div>
+ <div className="text-[5rem] md:text-[8rem] font-display font-black leading-[0.9] tracking-tight">Giant.</div>
             </div>
 
             <div className="border-b-4 border-foreground/20 pb-8">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
                 <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Heading 1 / 4.5rem / 800 / 1.0</span>
-                <span className="text-foreground/70 font-bold uppercase">Bricolage Grotesque</span>
+ <span className="text-foreground/70 font-bold">Platypi</span>
               </div>
-              <div className="text-5xl md:text-7xl font-display font-extrabold leading-[1] tracking-tight uppercase">Punchy Title.</div>
+ <div className="text-5xl md:text-7xl font-display font-extrabold leading-[1] tracking-tight">Punchy Title.</div>
             </div>
 
             <div className="border-b-4 border-foreground/20 pb-8">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
                 <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Heading 3 / 2.25rem / 800 / 1.1</span>
-                <span className="text-foreground/70 font-bold uppercase">Bricolage Grotesque</span>
+ <span className="text-foreground/70 font-bold">Platypi</span>
               </div>
-              <div className="text-3xl md:text-4xl font-display font-extrabold leading-[1.1] uppercase">Section Header.</div>
+ <div className="text-3xl md:text-4xl font-display font-extrabold leading-[1.1]">Section Header.</div>
             </div>
 
             <div className="border-b-4 border-foreground/20 pb-8">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
                 <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Body Large / 1.25rem / 500 / 1.6</span>
-                <span className="text-foreground/70 font-bold uppercase">DM Sans</span>
+ <span className="text-foreground/70 font-bold">DM Sans</span>
               </div>
               <div className="text-xl font-medium leading-relaxed max-w-3xl">The contrast between the tight, heavy display face and the highly legible, slightly open body font is what gives Pico its distinct personality.</div>
             </div>
@@ -283,7 +283,7 @@ export default function Home() {
              <div className="pb-8">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
                 <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Caption / 0.875rem / 700 / 1.5</span>
-                <span className="text-foreground/70 font-bold uppercase">DM Sans</span>
+ <span className="text-foreground/70 font-bold">DM Sans</span>
               </div>
               <div className="text-sm font-bold uppercase tracking-wider max-w-3xl">Used for tiny labels, metadata, and making sure small text still packs a punch.</div>
             </div>
@@ -304,7 +304,7 @@ export default function Home() {
             <div className="w-12 h-12 bg-primary border-2 border-foreground rounded-sm shadow-sm flex items-center justify-center">
               <Frame className="w-6 h-6 text-foreground" />
             </div>
-            <h2 className="text-4xl md:text-5xl uppercase">Spacing</h2>
+ <h2 className="text-4xl md:text-5xl">Spacing</h2>
           </motion.div>
 
           <p className="text-xl font-medium mb-12 max-w-2xl">We use a strict 8px baseline grid. Everything should snap to it. Bigger jumps in spacing equal bigger structural importance.</p>
@@ -351,7 +351,7 @@ export default function Home() {
             <div className="w-12 h-12 bg-primary border-2 border-foreground rounded-sm shadow-sm flex items-center justify-center">
               <PaintBucket className="w-6 h-6 text-foreground" />
             </div>
-            <h2 className="text-4xl md:text-5xl uppercase">Components</h2>
+ <h2 className="text-4xl md:text-5xl">Components</h2>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-12">
@@ -359,7 +359,7 @@ export default function Home() {
             {/* Buttons & Badges */}
             <div className="space-y-12">
               <div>
-                <h3 className="text-2xl font-bold uppercase mb-6 border-b-4 border-foreground/10 pb-2">Buttons</h3>
+ <h3 className="text-2xl font-bold mb-6 border-b-4 border-foreground/10 pb-2">Buttons</h3>
                 <div className="flex flex-wrap gap-6 items-center">
                   <Button size="lg" className="font-bold border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all bg-primary text-foreground hover:bg-primary/90">
                     Primary Action
@@ -374,7 +374,7 @@ export default function Home() {
               </div>
 
               <div>
-                <h3 className="text-2xl font-bold uppercase mb-6 border-b-4 border-foreground/10 pb-2">Badges</h3>
+ <h3 className="text-2xl font-bold mb-6 border-b-4 border-foreground/10 pb-2">Badges</h3>
                 <div className="flex flex-wrap gap-4">
                   <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-primary text-foreground border-2 border-foreground rounded-sm shadow-xs">New Feature</Badge>
                   <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-foreground text-background border-2 border-foreground rounded-sm shadow-xs">Sold Out</Badge>
@@ -385,7 +385,7 @@ export default function Home() {
 
             {/* Forms & Inputs */}
             <div>
-              <h3 className="text-2xl font-bold uppercase mb-6 border-b-4 border-foreground/10 pb-2">Forms</h3>
+ <h3 className="text-2xl font-bold mb-6 border-b-4 border-foreground/10 pb-2">Forms</h3>
               <Card className="border-4 border-foreground shadow-md rounded-sm bg-background">
                 <CardContent className="p-8 space-y-6">
                   <div className="space-y-2">
@@ -415,11 +415,11 @@ export default function Home() {
 
             {/* Alerts */}
             <div className="md:col-span-2 mt-8">
-              <h3 className="text-2xl font-bold uppercase mb-6 border-b-4 border-foreground/10 pb-2">Alerts</h3>
+ <h3 className="text-2xl font-bold mb-6 border-b-4 border-foreground/10 pb-2">Alerts</h3>
               <Alert className="border-4 border-foreground shadow-md bg-primary text-foreground rounded-sm flex items-start gap-4 p-6">
                 <InfoIcon className="h-6 w-6 mt-1 flex-shrink-0" />
                 <div>
-                  <AlertTitle className="text-xl font-bold uppercase mb-2">Attention Shoppers!</AlertTitle>
+ <AlertTitle className="text-xl font-bold mb-2">Attention Shoppers!</AlertTitle>
                   <AlertDescription className="font-medium text-lg">
                     This is an important message formatted in the true Pico style. Notice how the thick borders and solid colors make it impossible to ignore.
                   </AlertDescription>

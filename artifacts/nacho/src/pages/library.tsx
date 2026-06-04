@@ -154,7 +154,7 @@ export default function LibraryPage() {
     <AppShell>
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-5xl font-black uppercase tracking-tight">
+ <h1 className="font-display text-5xl font-black tracking-tight">
             Your Library
           </h1>
           <p className="mt-2 text-lg font-medium text-muted-foreground">
@@ -164,7 +164,7 @@ export default function LibraryPage() {
         <Button
           asChild
           size="lg"
-          className="h-14 border-4 border-foreground bg-primary px-6 text-lg font-bold uppercase text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+ className="h-14 border-4 border-foreground bg-primary px-6 text-lg font-bold text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
         >
           <Link href="/studio">
             <CircleDot className="mr-2 h-5 w-5" />
@@ -187,7 +187,7 @@ export default function LibraryPage() {
           <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-primary shadow-md">
             <CircleDot className="h-10 w-10 text-primary-foreground" />
           </div>
-          <h2 className="font-display text-3xl font-black uppercase">
+ <h2 className="font-display text-3xl font-black">
             No recordings yet
           </h2>
           <p className="mt-2 max-w-md text-muted-foreground">
@@ -196,7 +196,7 @@ export default function LibraryPage() {
           <Button
             asChild
             size="lg"
-            className="mt-8 h-14 border-4 border-foreground bg-primary px-8 text-lg font-bold uppercase text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+ className="mt-8 h-14 border-4 border-foreground bg-primary px-8 text-lg font-bold text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
           >
             <Link href="/studio">Start Recording</Link>
           </Button>
@@ -233,7 +233,7 @@ export default function LibraryPage() {
                     {formatRelativeDate(rec.createdAt)}
                   </span>
                 </div>
-                <h3 className="font-display text-xl font-bold uppercase leading-tight">
+ <h3 className="font-display text-xl font-bold leading-tight">
                   {rec.title}
                 </h3>
 
@@ -314,7 +314,7 @@ export default function LibraryPage() {
       >
         <AlertDialogContent className="border-4 border-foreground">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-display uppercase">
+ <AlertDialogTitle className="font-display">
               Delete this recording?
             </AlertDialogTitle>
             <AlertDialogDescription>

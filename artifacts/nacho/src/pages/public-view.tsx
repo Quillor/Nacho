@@ -69,7 +69,7 @@ export default function PublicView() {
           {rec && (
             <Button
               onClick={copyLink}
-              className="border-2 border-foreground bg-primary font-bold uppercase text-primary-foreground"
+ className="border-2 border-foreground bg-primary font-bold text-primary-foreground"
             >
               {copied ? (
                 <Check className="mr-2 h-4 w-4" />
@@ -85,7 +85,7 @@ export default function PublicView() {
       <main data-pico-section="recording" className="mx-auto max-w-5xl px-6 py-10">
         {isError || !shareId ? (
           <div className="py-24 text-center">
-            <h1 className="font-display text-4xl font-black uppercase">
+ <h1 className="font-display text-4xl font-black">
               This recording isn&apos;t available
             </h1>
             <p className="mt-2 text-muted-foreground">
@@ -114,7 +114,7 @@ export default function PublicView() {
 
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div className="space-y-2">
-                    <h1 className="font-display text-4xl font-black uppercase leading-tight">
+ <h1 className="font-display text-4xl font-black leading-tight">
                       {rec.title}
                     </h1>
                     <p className="text-sm font-bold text-muted-foreground">
@@ -125,7 +125,7 @@ export default function PublicView() {
                     <Button
                       onClick={() => setTranscriptOpen((o) => !o)}
                       aria-pressed={transcriptOpen}
-                      className="border-2 border-foreground bg-card font-bold uppercase text-foreground hover:bg-muted"
+ className="border-2 border-foreground bg-card font-bold text-foreground hover:bg-muted"
                     >
                       <FileText className="mr-2 h-4 w-4" />
                       {transcriptOpen ? "Hide transcript" : "Transcript"}
@@ -144,7 +144,7 @@ export default function PublicView() {
 
                 {rec.chapters.length > 0 && (
                   <div>
-                    <h2 className="mb-3 flex items-center gap-2 font-display text-xl font-black uppercase">
+ <h2 className="mb-3 flex items-center gap-2 font-display text-xl font-black">
                       <List className="h-5 w-5" /> Chapters
                     </h2>
                     <div className="space-y-1 border-4 border-foreground bg-card p-4">
@@ -170,7 +170,7 @@ export default function PublicView() {
                 <aside className="shrink-0 lg:w-80">
                   <div className="border-4 border-foreground bg-card lg:sticky lg:top-6">
                     <div className="flex items-center justify-between border-b-4 border-foreground px-4 py-3">
-                      <h2 className="flex items-center gap-2 font-display text-lg font-black uppercase">
+ <h2 className="flex items-center gap-2 font-display text-lg font-black">
                         <FileText className="h-5 w-5" /> Transcript
                       </h2>
                       <button
@@ -203,13 +203,13 @@ export default function PublicView() {
             </div>
 
             <div data-pico-section="cta" className="mt-16 flex flex-col items-center gap-4 border-t-4 border-foreground py-10 text-center">
-              <p className="font-display text-2xl font-black uppercase">
+ <p className="font-display text-2xl font-black">
                 Made with Nacho
               </p>
               <Button
                 asChild
                 size="lg"
-                className="h-14 border-4 border-foreground bg-primary px-8 text-lg font-bold uppercase text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+ className="h-14 border-4 border-foreground bg-primary px-8 text-lg font-bold text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
               >
                 <Link href="/studio">Record your own</Link>
               </Button>

@@ -9,7 +9,7 @@ export default function ResizableDocs() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
-        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+ <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
           Resizable
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -18,7 +18,7 @@ export default function ResizableDocs() {
       </div>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Usage</h2>
+ <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Usage</h2>
         <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <ResizablePanelGroup
             direction="horizontal"
@@ -26,13 +26,13 @@ export default function ResizableDocs() {
           >
             <ResizablePanel defaultSize={60}>
               <div className="flex h-full items-center justify-center p-6">
-                <span className="font-display font-black uppercase text-foreground">Player</span>
+ <span className="font-display font-black text-foreground">Player</span>
               </div>
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={40}>
               <div className="flex h-full items-center justify-center p-6">
-                <span className="font-display font-black uppercase text-foreground">Transcript</span>
+ <span className="font-display font-black text-foreground">Transcript</span>
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>

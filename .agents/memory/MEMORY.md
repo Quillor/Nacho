@@ -9,3 +9,4 @@
 - [Figma-readable instrumentation](figma-readable-instrumentation.md) — `picoMeta()` stamps `data-pico-component`/`data-pico-<axis>`; tokens.json from theme.css; `data-pico-section` landmarks. Names are the plugin contract.
 - [Figma plugin tsconfig split](figma-plugin-tsconfig.md) — `lib/pico-figma-plugin` typechecks code+UI separately (figma `fetch` vs DOM `fetch` clash); no `URL`/DOM on code side; parsed tree is `ParsedNode` (not `PageNode`).
 - [Figma plugin page reader](figma-plugin-page-reader.md) — no headless browser (delivered HTML only); SSRF-guarded `/api/render` companion fetch; components/vars resolve local-then-linked-library; idempotency via full page clear.
+- [Pico headline casing](pico-casing.md) — headlines are sentence case; uppercase only for small labels, nav, badges, CTA buttons, and the Pico. wordmark.

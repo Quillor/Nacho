@@ -288,7 +288,7 @@ export default function Studio() {
   return (
     <AppShell>
       <div className="mx-auto max-w-6xl">
-        <h1 className="mb-2 font-display text-5xl font-black uppercase tracking-tight">
+ <h1 className="mb-2 font-display text-5xl font-black tracking-tight">
           Studio
         </h1>
         <p className="mb-8 text-lg font-medium text-muted-foreground">
@@ -313,7 +313,7 @@ export default function Studio() {
                       disabled={locked}
                       onClick={() => setSource(s.id)}
                       className={cn(
-                        "flex flex-col items-center gap-2 border-4 px-3 py-5 font-bold uppercase transition-all",
+"flex flex-col items-center gap-2 border-4 px-3 py-5 font-bold transition-all",
                         active
                           ? "border-foreground bg-primary text-primary-foreground shadow-sm"
                           : "border-foreground bg-card hover:bg-muted",
@@ -425,7 +425,7 @@ export default function Studio() {
                 <Button
                   variant="outline"
                   onClick={reconfigure}
-                  className="h-12 w-full border-4 border-foreground font-bold uppercase"
+ className="h-12 w-full border-4 border-foreground font-bold"
                 >
                   <RotateCcw className="mr-2 h-5 w-5" />
                   Reconfigure
@@ -439,7 +439,7 @@ export default function Studio() {
                   size="lg"
                   variant="outline"
                   onClick={togglePause}
-                  className="h-14 border-4 border-foreground px-6 font-bold uppercase"
+ className="h-14 border-4 border-foreground px-6 font-bold"
                 >
                   {paused ? (
                     <>
@@ -455,7 +455,7 @@ export default function Studio() {
                   size="lg"
                   onClick={() => void finishRecording()}
                   disabled={saving}
-                  className="h-14 border-4 border-foreground bg-primary px-8 font-black uppercase text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
+ className="h-14 border-4 border-foreground bg-primary px-8 font-black text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
                 >
                   <Square className="mr-2 h-5 w-5" />
                   {saving ? "Saving…" : "Stop & Save"}
@@ -465,7 +465,7 @@ export default function Studio() {
                   variant="ghost"
                   onClick={cancelRecording}
                   disabled={saving}
-                  className="h-14 px-4 font-bold uppercase text-muted-foreground"
+ className="h-14 px-4 font-bold text-muted-foreground"
                 >
                   <X className="mr-2 h-5 w-5" /> Discard
                 </Button>
@@ -490,7 +490,7 @@ export default function Studio() {
                 <div className="flex aspect-video w-full items-center justify-center bg-foreground">
                   <div className="text-center text-background/70">
                     <CircleDot className="mx-auto mb-4 h-16 w-16" />
-                    <p className="font-display text-2xl font-bold uppercase">
+ <p className="font-display text-2xl font-bold">
                       Live preview appears here
                     </p>
                     <p className="mt-2 text-sm font-medium">
@@ -520,7 +520,7 @@ export default function Studio() {
                     {formatDuration(elapsed)}
                   </span>
                   {paused && (
-                    <span className="font-bold uppercase text-muted-foreground">
+ <span className="font-bold text-muted-foreground">
                       Paused
                     </span>
                   )}

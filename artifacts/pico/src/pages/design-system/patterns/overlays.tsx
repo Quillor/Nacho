@@ -53,21 +53,21 @@ export default function OverlaysPattern() {
             </thead>
             <tbody className="font-medium text-foreground/80">
               <tr className="border-b-2 border-foreground/20">
-                <td className="px-4 py-3 font-bold uppercase">Dialog</td>
+ <td className="px-4 py-3 font-bold">Dialog</td>
                 <td className="px-4 py-3">
                   A short, focused task or decision — edit a title, confirm an
                   action. Blocks the page until resolved.
                 </td>
               </tr>
               <tr className="border-b-2 border-foreground/20">
-                <td className="px-4 py-3 font-bold uppercase">Sheet</td>
+ <td className="px-4 py-3 font-bold">Sheet</td>
                 <td className="px-4 py-3">
                   Secondary detail or settings alongside the main view — filters,
                   a transcript panel. Slides in from the edge.
                 </td>
               </tr>
               <tr>
-                <td className="px-4 py-3 font-bold uppercase">Drawer</td>
+ <td className="px-4 py-3 font-bold">Drawer</td>
                 <td className="px-4 py-3">
                   Touch-first action menus on small screens. Slides up from the
                   bottom within thumb reach.
@@ -87,11 +87,11 @@ export default function OverlaysPattern() {
         <Preview className="flex flex-wrap gap-3">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="font-bold uppercase">Open dialog</Button>
+ <Button className="font-bold">Open dialog</Button>
             </DialogTrigger>
             <DialogContent className="border-4 border-foreground">
               <DialogHeader>
-                <DialogTitle className="font-display uppercase">
+ <DialogTitle className="font-display">
                   Rename recording
                 </DialogTitle>
                 <DialogDescription>
@@ -99,20 +99,20 @@ export default function OverlaysPattern() {
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
-                <Button className="font-bold uppercase">Save</Button>
+ <Button className="font-bold">Save</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
 
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" className="font-bold uppercase">
+ <Button variant="outline" className="font-bold">
                 Open sheet
               </Button>
             </SheetTrigger>
             <SheetContent className="border-l-4 border-foreground">
               <SheetHeader>
-                <SheetTitle className="font-display uppercase">
+ <SheetTitle className="font-display">
                   Transcript
                 </SheetTitle>
                 <SheetDescription>
@@ -124,13 +124,13 @@ export default function OverlaysPattern() {
 
           <Drawer>
             <DrawerTrigger asChild>
-              <Button variant="outline" className="font-bold uppercase">
+ <Button variant="outline" className="font-bold">
                 Open drawer
               </Button>
             </DrawerTrigger>
             <DrawerContent className="border-t-4 border-foreground">
               <DrawerHeader>
-                <DrawerTitle className="font-display uppercase">
+ <DrawerTitle className="font-display">
                   Recording actions
                 </DrawerTitle>
                 <DrawerDescription>

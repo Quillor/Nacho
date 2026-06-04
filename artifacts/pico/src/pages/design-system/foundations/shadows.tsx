@@ -11,7 +11,7 @@ export default function Shadows() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
-        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+ <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
           Shadows
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -26,7 +26,7 @@ export default function Shadows() {
               {shadow.token}
             </div>
             <div className={`h-40 bg-primary border-4 border-foreground rounded-sm ${shadow.class} flex items-center justify-center`}>
-              <span className="font-display font-black text-2xl uppercase">Hover Me</span>
+ <span className="font-display font-black text-2xl">Hover Me</span>
             </div>
             <p className="text-sm font-medium text-foreground/80">{shadow.desc}</p>
           </div>

@@ -5,7 +5,7 @@ export default function KbdDocs() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
-        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+ <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
           Kbd
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -14,7 +14,7 @@ export default function KbdDocs() {
       </div>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Usage</h2>
+ <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Usage</h2>
         <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="bg-background p-4 border-2 border-foreground shadow-sm rounded-sm">
             <Kbd>⌘</Kbd>
@@ -26,7 +26,7 @@ export default function KbdDocs() {
       </section>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Shortcuts</h2>
+ <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Shortcuts</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Combine keys with <code>KbdGroup</code> to show a full shortcut for an action.
         </p>

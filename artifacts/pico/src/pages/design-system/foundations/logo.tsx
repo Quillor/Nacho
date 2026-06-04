@@ -7,7 +7,7 @@ export default function Logo() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
-        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+ <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
           Logo
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -33,7 +33,7 @@ export default function Logo() {
               />
             </div>
             <div className="p-6 bg-background">
-              <h3 className="text-2xl font-bold uppercase mb-1">Wordmark</h3>
+ <h3 className="text-2xl font-bold mb-1">Wordmark</h3>
               <p className="text-foreground/70 font-medium">
                 Mark + "Nacho" lockup. The default, primary logo. Use it in app
                 headers, the marketing site, decks, and anywhere there's room to
@@ -51,7 +51,7 @@ export default function Logo() {
               />
             </div>
             <div className="p-6 bg-background">
-              <h3 className="text-2xl font-bold uppercase mb-1">Mark</h3>
+ <h3 className="text-2xl font-bold mb-1">Mark</h3>
               <p className="text-foreground/70 font-medium">
                 The circular play button on its own. Use it for favicons,
                 avatars, app icons, and any tight or square space where the
@@ -77,7 +77,7 @@ export default function Logo() {
         <div className="grid gap-6 md:grid-cols-3">
           <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
             <div className="h-16 w-16 rounded-full bg-primary border-4 border-foreground mb-4" />
-            <h3 className="text-xl font-bold uppercase mb-1">Yellow circle</h3>
+ <h3 className="text-xl font-bold mb-1">Yellow circle</h3>
             <p className="text-foreground/70 font-medium text-sm">
               The container is a full circle in Golden Yellow{" "}
               <code className="font-mono bg-foreground/10 px-1">#F5C518</code>.
@@ -87,7 +87,7 @@ export default function Logo() {
             <div className="h-16 w-16 rounded-sm bg-[#FFE896] border-4 border-[#4F2D16] mb-4 flex items-center justify-center">
               <span className="ml-1 inline-block border-y-[10px] border-l-[16px] border-y-transparent border-l-[#4F2D16]" />
             </div>
-            <h3 className="text-xl font-bold uppercase mb-1">Play triangle</h3>
+ <h3 className="text-xl font-bold mb-1">Play triangle</h3>
             <p className="text-foreground/70 font-medium text-sm">
               A right-pointing triangle with a thick Deep Brown{" "}
               <code className="font-mono bg-foreground/10 px-1">#4F2D16</code>{" "}
@@ -96,7 +96,7 @@ export default function Logo() {
           </div>
           <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
             <div className="h-16 w-16 rounded-sm bg-[#FFE896] border-4 border-foreground mb-4" />
-            <h3 className="text-xl font-bold uppercase mb-1">Cream fill</h3>
+ <h3 className="text-xl font-bold mb-1">Cream fill</h3>
             <p className="text-foreground/70 font-medium text-sm">
               The triangle is filled with a soft cream{" "}
               <code className="font-mono bg-foreground/10 px-1">#FFE896</code>,
@@ -131,7 +131,7 @@ export default function Logo() {
           <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm flex items-center gap-6">
             <img src={wordmark} alt="Wordmark at minimum size" className="w-32" />
             <div>
-              <h3 className="text-lg font-bold uppercase">Wordmark</h3>
+ <h3 className="text-lg font-bold">Wordmark</h3>
               <p className="text-foreground/70 font-medium text-sm">
                 Minimum <strong>120px</strong> wide on screen.
               </p>
@@ -140,7 +140,7 @@ export default function Logo() {
           <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm flex items-center gap-6">
             <img src={mark} alt="Mark at minimum size" className="w-8 h-8" />
             <div>
-              <h3 className="text-lg font-bold uppercase">Mark</h3>
+ <h3 className="text-lg font-bold">Mark</h3>
               <p className="text-foreground/70 font-medium text-sm">
                 Minimum <strong>24px</strong> square (e.g. favicon).
               </p>
@@ -173,7 +173,7 @@ export default function Logo() {
                   className={i % 2 === 0 ? "bg-background" : "bg-background/50"}
                 >
                   <td className="p-4 border-t-2 border-foreground/10">{ctx}</td>
-                  <td className="p-4 border-t-2 border-foreground/10 font-bold uppercase text-foreground">
+ <td className="p-4 border-t-2 border-foreground/10 font-bold text-foreground">
                     {use}
                   </td>
                 </tr>

@@ -85,10 +85,10 @@ export default function FormsPattern() {
         </Note>
         <Preview>
           <div className="flex justify-end gap-3">
-            <Button variant="ghost" className="font-bold uppercase">
+ <Button variant="ghost" className="font-bold">
               Cancel
             </Button>
-            <Button className="font-bold uppercase">Save changes</Button>
+ <Button className="font-bold">Save changes</Button>
           </div>
         </Preview>
       </Section>

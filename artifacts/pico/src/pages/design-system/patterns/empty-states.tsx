@@ -31,13 +31,13 @@ export default function EmptyStatesPattern() {
             <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-primary shadow-md">
               <CircleDot className="h-10 w-10 text-primary-foreground" />
             </div>
-            <h3 className="font-display text-3xl font-black uppercase">
+ <h3 className="font-display text-3xl font-black">
               No recordings yet
             </h3>
             <p className="mt-2 max-w-md font-medium text-muted-foreground">
               Hit record, talk it out, and your video will show up right here.
             </p>
-            <Button size="lg" className="mt-8 font-bold uppercase">
+ <Button size="lg" className="mt-8 font-bold">
               Start Recording
             </Button>
           </div>
@@ -47,7 +47,7 @@ export default function EmptyStatesPattern() {
   <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-primary shadow-md">
     <CircleDot className="h-10 w-10 text-primary-foreground" />
   </div>
-  <h3 className="font-display text-3xl font-black uppercase">No recordings yet</h3>
+ <h3 className="font-display text-3xl font-black">No recordings yet</h3>
   <p className="mt-2 max-w-md font-medium text-muted-foreground">
     Hit record, talk it out, and your video will show up right here.
   </p>

@@ -72,7 +72,7 @@ function Scenario({
           <div className="font-mono text-sm font-bold uppercase tracking-widest text-foreground/70">
             {index}
           </div>
-          <h3 className="font-display text-2xl font-black uppercase leading-none text-foreground md:text-3xl">
+ <h3 className="font-display text-2xl font-black leading-none text-foreground md:text-3xl">
             {title}
           </h3>
         </div>
@@ -151,7 +151,7 @@ export default function ContentGuidelines() {
         <div className="inline-block border-2 border-foreground bg-primary px-4 py-2 text-sm font-bold uppercase tracking-widest shadow-sm">
           GUIDELINES
         </div>
-        <h1 className="font-display text-5xl font-black uppercase leading-[0.9] tracking-tight text-foreground md:text-6xl">
+ <h1 className="font-display text-5xl font-black leading-[0.9] tracking-tight text-foreground md:text-6xl">
           Voice &amp; Tone
         </h1>
         <p className="max-w-2xl pt-2 text-xl font-medium leading-relaxed text-foreground/80">
@@ -165,7 +165,7 @@ export default function ContentGuidelines() {
       {/* Voice vs Tone */}
       <div className="grid gap-6 md:grid-cols-2">
         <div className="border-4 border-foreground bg-foreground p-6 text-background shadow-md">
-          <h2 className="mb-2 font-display text-2xl font-black uppercase text-primary">
+ <h2 className="mb-2 font-display text-2xl font-black text-primary">
             Voice
           </h2>
           <p className="font-medium leading-relaxed text-background/90">
@@ -175,7 +175,7 @@ export default function ContentGuidelines() {
           </p>
         </div>
         <div className="border-4 border-foreground bg-background p-6 shadow-md">
-          <h2 className="mb-2 font-display text-2xl font-black uppercase">
+ <h2 className="mb-2 font-display text-2xl font-black">
             Tone
           </h2>
           <p className="font-medium leading-relaxed text-foreground/80">
@@ -187,7 +187,7 @@ export default function ContentGuidelines() {
 
       {/* Principles */}
       <section className="space-y-8">
-        <h2 className="border-b-4 border-foreground pb-2 font-display text-3xl font-black uppercase">
+ <h2 className="border-b-4 border-foreground pb-2 font-display text-3xl font-black">
           Voice Principles
         </h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -200,7 +200,7 @@ export default function ContentGuidelines() {
                 <span className="font-display text-3xl font-black text-primary">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="font-display text-2xl font-black uppercase leading-none">
+ <h3 className="font-display text-2xl font-black leading-none">
                   {p.name}
                 </h3>
               </div>
@@ -214,7 +214,7 @@ export default function ContentGuidelines() {
 
       {/* Tone by context */}
       <section className="space-y-8">
-        <h2 className="border-b-4 border-foreground pb-2 font-display text-3xl font-black uppercase">
+ <h2 className="border-b-4 border-foreground pb-2 font-display text-3xl font-black">
           Tone by Context
         </h2>
         <div className="overflow-hidden border-4 border-foreground shadow-md">
@@ -225,7 +225,7 @@ export default function ContentGuidelines() {
                 i !== 0 ? "border-t-4 border-foreground" : ""
               } ${i % 2 === 1 ? "bg-card" : "bg-background"}`}
             >
-              <div className="font-display text-lg font-black uppercase leading-tight">
+ <div className="font-display text-lg font-black leading-tight">
                 {t.when}
               </div>
               <div>
@@ -244,7 +244,7 @@ export default function ContentGuidelines() {
       {/* Scenarios */}
       <section className="space-y-8">
         <div className="space-y-3">
-          <h2 className="border-b-4 border-foreground pb-2 font-display text-3xl font-black uppercase">
+ <h2 className="border-b-4 border-foreground pb-2 font-display text-3xl font-black">
             Writing by Scenario
           </h2>
           <p className="max-w-2xl text-lg font-medium leading-relaxed text-foreground/80">
@@ -473,7 +473,7 @@ export default function ContentGuidelines() {
 
       {/* Closing rule of thumb */}
       <section className="border-4 border-foreground bg-primary p-8 shadow-md md:p-12">
-        <h2 className="font-display text-3xl font-black uppercase leading-tight text-foreground md:text-4xl">
+ <h2 className="font-display text-3xl font-black leading-tight text-foreground md:text-4xl">
           The 5-second test
         </h2>
         <p className="mt-4 max-w-2xl text-lg font-medium leading-relaxed text-foreground/80">

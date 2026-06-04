@@ -86,7 +86,7 @@ const clerkAppearance = {
     card: "!shadow-none !border-0 !bg-transparent !rounded-none",
     footer: "!shadow-none !border-0 !bg-transparent !rounded-none",
     headerTitle:
-      "text-foreground font-display font-black uppercase tracking-tight text-2xl",
+"text-foreground font-display font-black tracking-tight text-2xl",
     headerSubtitle: "text-muted-foreground font-medium",
     socialButtonsBlockButtonText: "text-foreground font-bold",
     formFieldLabel: "text-foreground font-bold",

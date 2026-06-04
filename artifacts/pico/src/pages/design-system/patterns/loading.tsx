@@ -27,7 +27,7 @@ export default function LoadingPattern() {
           original label so people know what they're waiting on.
         </Note>
         <Preview className="flex items-center gap-4">
-          <Button disabled className="font-bold uppercase">
+ <Button disabled className="font-bold">
             <Spinner className="mr-2" /> Publishing…
           </Button>
           <span className="inline-flex items-center gap-2 font-medium text-muted-foreground">

@@ -16,7 +16,7 @@ export default function AlertDialogDocs() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
-        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+ <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
           Alert Dialog
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -25,7 +25,7 @@ export default function AlertDialogDocs() {
       </div>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Usage</h2>
+ <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Usage</h2>
         <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -79,17 +79,17 @@ export default function AlertDialogDocs() {
       </section>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Dialog vs. Alert Dialog</h2>
+ <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Dialog vs. Alert Dialog</h2>
         <div className="grid gap-6 md:grid-cols-2">
           <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
-            <h3 className="font-display text-xl font-black uppercase mb-2">Dialog</h3>
+ <h3 className="font-display text-xl font-black mb-2">Dialog</h3>
             <p className="font-medium leading-relaxed text-foreground/80">
               For routine, reversible tasks — editing a title, filling a short
               form. Dismissable by clicking outside or pressing escape.
             </p>
           </div>
           <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
-            <h3 className="font-display text-xl font-black uppercase mb-2">Alert Dialog</h3>
+ <h3 className="font-display text-xl font-black mb-2">Alert Dialog</h3>
             <p className="font-medium leading-relaxed text-foreground/80">
               For destructive or irreversible choices — deleting data, removing
               an account. Requires an explicit confirm or cancel.

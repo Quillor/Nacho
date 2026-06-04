@@ -12,7 +12,7 @@ export default function SelectDocs() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
-        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+ <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
           Select
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -21,7 +21,7 @@ export default function SelectDocs() {
       </div>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Usage</h2>
+ <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Usage</h2>
         <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
           <div className="w-full max-w-xs space-y-2">
             <Label className="uppercase tracking-wide">Caption language</Label>
@@ -59,7 +59,7 @@ export default function SelectDocs() {
       </section>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Placeholder</h2>
+ <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Placeholder</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           When there's no default, show a placeholder that names the choice — never repeat the label.
         </p>

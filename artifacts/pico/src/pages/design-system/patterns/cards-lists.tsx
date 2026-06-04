@@ -35,7 +35,7 @@ function DemoCard({ published }: { published: boolean }) {
             2 days ago
           </span>
         </div>
-        <h3 className="font-display text-lg font-bold uppercase leading-tight">
+ <h3 className="font-display text-lg font-bold leading-tight">
           Quarterly walkthrough
         </h3>
         <div className="mt-4 flex flex-wrap gap-2">

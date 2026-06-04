@@ -84,7 +84,7 @@ export default function SettingsPage() {
 
   return (
     <AppShell>
-      <h1 className="mb-2 font-display text-5xl font-black uppercase tracking-tight">
+ <h1 className="mb-2 font-display text-5xl font-black tracking-tight">
         Settings
       </h1>
       <p className="mb-10 text-lg font-medium text-muted-foreground">
@@ -99,7 +99,7 @@ export default function SettingsPage() {
         <div className="border-4 border-foreground bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <HardDrive className="h-5 w-5" />
-            <h2 className="font-display text-xl font-black uppercase">
+ <h2 className="font-display text-xl font-black">
               Videos
             </h2>
           </div>
@@ -125,7 +125,7 @@ export default function SettingsPage() {
             variant="outline"
             disabled={recordings.length === 0}
             onClick={() => setConfirmClear(true)}
-            className="mt-6 w-full border-4 border-foreground font-bold uppercase text-destructive hover:bg-destructive hover:text-destructive-foreground"
+ className="mt-6 w-full border-4 border-foreground font-bold text-destructive hover:bg-destructive hover:text-destructive-foreground"
           >
             <Trash2 className="mr-2 h-4 w-4" /> Clear local recordings
           </Button>
@@ -134,7 +134,7 @@ export default function SettingsPage() {
         <div className="border-4 border-foreground bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <Info className="h-5 w-5" />
-            <h2 className="font-display text-xl font-black uppercase">About</h2>
+ <h2 className="font-display text-xl font-black">About</h2>
           </div>
           <dl className="space-y-3">
             <div className="flex justify-between border-b-2 border-dashed border-foreground pb-2">
@@ -163,7 +163,7 @@ export default function SettingsPage() {
       <div className="mt-6 border-4 border-destructive bg-card p-6">
         <div className="mb-4 flex items-center gap-2">
           <UserX className="h-5 w-5 text-destructive" />
-          <h2 className="font-display text-xl font-black uppercase text-destructive">
+ <h2 className="font-display text-xl font-black text-destructive">
             Account
           </h2>
         </div>
@@ -186,7 +186,7 @@ export default function SettingsPage() {
           variant="outline"
           disabled={!user || deleting}
           onClick={() => setConfirmDelete(true)}
-          className="mt-6 w-full border-4 border-destructive font-bold uppercase text-destructive hover:bg-destructive hover:text-destructive-foreground"
+ className="mt-6 w-full border-4 border-destructive font-bold text-destructive hover:bg-destructive hover:text-destructive-foreground"
         >
           <UserX className="mr-2 h-4 w-4" /> Delete my account
         </Button>
@@ -195,7 +195,7 @@ export default function SettingsPage() {
       <AlertDialog open={confirmClear} onOpenChange={setConfirmClear}>
         <AlertDialogContent className="border-4 border-foreground">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-display uppercase">
+ <AlertDialogTitle className="font-display">
               Clear all local recordings?
             </AlertDialogTitle>
             <AlertDialogDescription>
@@ -220,7 +220,7 @@ export default function SettingsPage() {
       <AlertDialog open={confirmDelete} onOpenChange={setConfirmDelete}>
         <AlertDialogContent className="border-4 border-destructive">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-display uppercase">
+ <AlertDialogTitle className="font-display">
               Delete your account?
             </AlertDialogTitle>
             <AlertDialogDescription>

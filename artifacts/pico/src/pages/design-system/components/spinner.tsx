@@ -5,7 +5,7 @@ export default function SpinnerDocs() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
-        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+ <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
           Spinner
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -14,7 +14,7 @@ export default function SpinnerDocs() {
       </div>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Usage</h2>
+ <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Usage</h2>
         <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="flex items-center gap-3 bg-background px-4 py-3 border-2 border-foreground shadow-sm rounded-sm">
             <Spinner />
@@ -30,7 +30,7 @@ export default function SpinnerDocs() {
       </section>
 
       <section className="space-y-8">
-        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Sizes</h2>
+ <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Sizes</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Resize with a className utility — the spinner inherits the current text color.
         </p>

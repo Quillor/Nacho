@@ -57,7 +57,7 @@ export default function Home() {
             <motion.div variants={fadeIn} className="inline-block mb-6 px-4 py-2 bg-background border-2 border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-sm text-foreground">
               Stop typing. Start talking.
             </motion.div>
-            <motion.h1 variants={fadeIn} className="text-6xl md:text-8xl font-display font-black tracking-tight leading-[0.9] mb-8 text-foreground uppercase">
+ <motion.h1 variants={fadeIn} className="text-6xl md:text-8xl font-display font-black tracking-tight leading-[0.9] mb-8 text-foreground">
               Send a <br/> video, not <br/> a novel.
             </motion.h1>
             <motion.p variants={fadeIn} className="text-xl md:text-2xl font-medium leading-relaxed text-foreground/90 mb-10 max-w-lg">
@@ -83,7 +83,7 @@ export default function Home() {
               <img src={videoPlayerNacho} alt="Nacho mascot presenting in a video player" className="w-full h-full object-contain" />
             </div>
             {/* Decoration */}
-            <div className="absolute -bottom-6 -left-6 bg-secondary text-secondary-foreground font-display font-black uppercase text-2xl py-3 px-6 border-4 border-foreground shadow-lg -rotate-6">
+ <div className="absolute -bottom-6 -left-6 bg-secondary text-secondary-foreground font-display font-black text-2xl py-3 px-6 border-4 border-foreground shadow-lg -rotate-6">
               Instant Link!
             </div>
           </motion.div>
@@ -107,7 +107,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl md:text-6xl font-display font-black uppercase leading-tight mb-8"
+ className="text-4xl md:text-6xl font-display font-black leading-tight mb-8"
             >
               You speak 7x faster than you type. <br/>
               <span className="text-primary">Why are you still typing?</span>
@@ -132,7 +132,7 @@ export default function Home() {
             <div className="w-12 h-12 bg-primary border-4 border-foreground rounded-none shadow-sm flex items-center justify-center">
               <Zap className="w-6 h-6 text-foreground" />
             </div>
-            <h2 className="text-5xl md:text-6xl font-display font-black uppercase text-foreground">Power Moves</h2>
+ <h2 className="text-5xl md:text-6xl font-display font-black text-foreground">Power Moves</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -147,7 +147,7 @@ export default function Home() {
               </div>
               <div className="p-8 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-3xl font-display font-bold uppercase mb-4 text-card-foreground">Record Anything</h3>
+ <h3 className="text-3xl font-display font-bold mb-4 text-card-foreground">Record Anything</h3>
                   <p className="text-card-foreground/80 font-medium text-lg mb-6">Capture your screen, your face, or both. Nacho lives in your menu bar, ready to roll.</p>
                 </div>
                 <Badge className="w-fit text-sm font-bold uppercase tracking-wider px-3 py-1 bg-primary text-primary-foreground border-2 border-foreground rounded-none shadow-sm">1-Click Record</Badge>
@@ -166,7 +166,7 @@ export default function Home() {
               </div>
               <div className="p-8 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-3xl font-display font-bold uppercase mb-4 text-card-foreground">Share Instantly</h3>
+ <h3 className="text-3xl font-display font-bold mb-4 text-card-foreground">Share Instantly</h3>
                   <p className="text-card-foreground/80 font-medium text-lg mb-6">The moment you hit stop, a link is copied to your clipboard. No uploading, no waiting.</p>
                 </div>
                 <Badge className="w-fit text-sm font-bold uppercase tracking-wider px-3 py-1 bg-secondary text-secondary-foreground border-2 border-foreground rounded-none shadow-sm">Zero Wait Time</Badge>
@@ -185,7 +185,7 @@ export default function Home() {
               </div>
               <div className="p-8 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-3xl font-display font-bold uppercase mb-4 text-card-foreground">Trim the Fat</h3>
+ <h3 className="text-3xl font-display font-bold mb-4 text-card-foreground">Trim the Fat</h3>
                   <p className="text-card-foreground/80 font-medium text-lg mb-6">Messed up the intro? Sneezed at the end? Chop it off with the built-in lightning-fast editor.</p>
                 </div>
                 <Badge className="w-fit text-sm font-bold uppercase tracking-wider px-3 py-1 bg-destructive text-destructive-foreground border-2 border-foreground rounded-none shadow-sm">Easy Edits</Badge>
@@ -198,7 +198,7 @@ export default function Home() {
       {/* 4. How it Works (Steps) */}
       <section data-pico-section="how-it-works" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-secondary text-secondary-foreground relative overflow-hidden">
         <div className="max-w-5xl mx-auto relative z-10">
-          <h2 className="text-5xl md:text-7xl font-display font-black uppercase text-center mb-6 text-secondary-foreground">As simple as 1, 2, 3.</h2>
+ <h2 className="text-5xl md:text-7xl font-display font-black text-center mb-6 text-secondary-foreground">As simple as 1, 2, 3.</h2>
           <motion.img
             src={hammockNacho}
             alt="A relaxed nacho mascot lounging in a hammock with a drink"
@@ -227,7 +227,7 @@ export default function Home() {
                   {step.num}
                 </div>
                 <div>
-                  <h3 className="text-4xl md:text-5xl font-display font-bold uppercase mb-4 text-secondary-foreground">{step.title}</h3>
+ <h3 className="text-4xl md:text-5xl font-display font-bold mb-4 text-secondary-foreground">{step.title}</h3>
                   <p className="text-xl md:text-2xl font-medium text-secondary-foreground/80 max-w-xl">{step.desc}</p>
                 </div>
               </motion.div>
@@ -245,7 +245,7 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <MessageSquare className="w-16 h-16 mx-auto mb-8 text-foreground" />
-            <h2 className="text-4xl md:text-6xl font-display font-black uppercase leading-tight text-foreground mb-12">
+ <h2 className="text-4xl md:text-6xl font-display font-black leading-tight text-foreground mb-12">
               "We banned internal meetings. Now we just send Nachos. Productivity is up 400% and nobody is mad about it."
             </h2>
             <div className="flex items-center justify-center gap-4">
@@ -253,7 +253,7 @@ export default function Home() {
                 <div className="w-full h-full bg-secondary"></div>
               </div>
               <div className="text-left">
-                <div className="font-display font-bold text-2xl uppercase text-foreground">Sarah Jenkins</div>
+ <div className="font-display font-bold text-2xl text-foreground">Sarah Jenkins</div>
                 <div className="font-medium text-foreground/80">VP of Getting Things Done</div>
               </div>
             </div>
@@ -264,7 +264,7 @@ export default function Home() {
       {/* 6. Integrations */}
       <section data-pico-section="integrations" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-background overflow-hidden">
         <div className="max-w-7xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-display font-black uppercase mb-6 text-foreground">Plays nice with others</h2>
+ <h2 className="text-4xl md:text-6xl font-display font-black mb-6 text-foreground">Plays nice with others</h2>
           <p className="text-xl font-medium text-foreground/80 max-w-2xl mx-auto">Paste a Nacho link anywhere and it automatically unfurls into a beautiful playable embed.</p>
         </div>
 
@@ -276,7 +276,7 @@ export default function Home() {
             transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
           >
             {['Slack', 'Notion', 'Linear', 'Jira', 'GitHub', 'Figma', 'Discord', 'Gmail', 'Confluence', 'Trello'].map((tool, i) => (
-              <div key={i} className="px-8 py-4 border-4 border-foreground bg-card text-card-foreground shadow-lg font-display font-bold text-2xl uppercase inline-flex items-center gap-2">
+ <div key={i} className="px-8 py-4 border-4 border-foreground bg-card text-card-foreground shadow-lg font-display font-bold text-2xl inline-flex items-center gap-2">
                 <CheckCircle2 className="w-6 h-6 text-foreground" />
                 {tool}
               </div>
@@ -288,7 +288,7 @@ export default function Home() {
       {/* 7. CTA */}
       <section data-pico-section="cta" className="py-32 px-6 md:px-12 bg-foreground text-background">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl md:text-8xl font-display font-black uppercase tracking-tight mb-8">
+ <h2 className="text-5xl md:text-8xl font-display font-black tracking-tight mb-8">
             Ready to stop typing?
           </h2>
           <p className="text-2xl font-medium text-background/80 mb-12">
