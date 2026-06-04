@@ -33,6 +33,7 @@ const NAVIGATION = [
   {
     title: "Foundations",
     links: [
+      { title: "Logo", href: "/foundations/logo" },
       { title: "Colors", href: "/foundations/colors" },
       { title: "Typography", href: "/foundations/typography" },
       { title: "Spacing", href: "/foundations/spacing" },

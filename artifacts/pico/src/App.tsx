@@ -11,6 +11,7 @@ import Introduction from "@/pages/design-system/introduction";
 import Installation from "@/pages/design-system/installation";
 import ContentGuidelines from "@/pages/design-system/content-guidelines";
 import Colors from "@/pages/design-system/foundations/colors";
+import Logo from "@/pages/design-system/foundations/logo";
 import Typography from "@/pages/design-system/foundations/typography";
 import Spacing from "@/pages/design-system/foundations/spacing";
 import Shadows from "@/pages/design-system/foundations/shadows";
@@ -50,6 +51,7 @@ function Router() {
         <Route path="/guidelines/voice-and-tone" component={ContentGuidelines} />
 
         {/* Foundations */}
+        <Route path="/foundations/logo" component={Logo} />
         <Route path="/foundations/colors" component={Colors} />
         <Route path="/foundations/typography" component={Typography} />
         <Route path="/foundations/spacing" component={Spacing} />
