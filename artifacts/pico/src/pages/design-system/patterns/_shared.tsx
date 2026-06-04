@@ -116,7 +116,7 @@ export function BuiltWith({
         <Link
           key={item.href}
           href={item.href}
-          className="inline-flex items-center gap-1 border-2 border-foreground bg-card px-3 py-1 rounded-sm font-bold uppercase text-xs tracking-wide shadow-[2px_2px_0px_0px_hsl(var(--foreground))] transition-transform hover:-translate-y-0.5"
+          className="inline-flex items-center gap-1 border-2 border-foreground bg-card px-3 py-1 rounded-sm font-bold uppercase text-xs tracking-wide shadow-xs transition-transform hover:-translate-y-0.5"
         >
           {item.title}
           <ArrowRight className="h-3 w-3" />

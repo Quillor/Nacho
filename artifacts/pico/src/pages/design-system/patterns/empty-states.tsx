@@ -1,6 +1,6 @@
 import { CircleDot } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Button } from "@workspace/pico-ui/button";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 import {
   PatternPage,
   PageHeader,

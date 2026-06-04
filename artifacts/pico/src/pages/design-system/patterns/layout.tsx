@@ -1,5 +1,5 @@
 import { Video, CircleDot, Library, Settings, ChevronLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@workspace/pico-ui/button";
 import {
   PatternPage,
   PageHeader,

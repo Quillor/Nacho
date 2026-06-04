@@ -1,5 +1,5 @@
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Alert, AlertTitle, AlertDescription } from "@workspace/pico-ui/alert";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 import { Terminal, AlertCircle } from "lucide-react";
 
 export default function AlertDocs() {
@@ -25,7 +25,7 @@ export default function AlertDocs() {
             </AlertDescription>
           </Alert>
         </div>
-        <CodeBlock code={`import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+        <CodeBlock code={`import { Alert, AlertDescription, AlertTitle } from "@workspace/pico-ui/alert"
 import { Terminal } from "lucide-react"
 
 <Alert>

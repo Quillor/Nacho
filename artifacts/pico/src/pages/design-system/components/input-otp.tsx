@@ -1,0 +1,65 @@
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from "@workspace/pico-ui/input-otp";
+import { Label } from "@workspace/pico-ui/label";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
+
+export default function InputOTPDocs() {
+  return (
+    <div className="space-y-16">
+      <div className="space-y-4">
+        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+          Input OTP
+        </h1>
+        <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
+          A segmented field for entering one-time passcodes, like the email code that protects a private recording.
+        </p>
+      </div>
+
+      <section className="space-y-8">
+        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
+          <div className="space-y-2 text-center">
+            <Label className="uppercase tracking-wide">Verification code</Label>
+            <InputOTP maxLength={6}>
+              <InputOTPGroup>
+                <InputOTPSlot index={0} className="border-2 border-foreground" />
+                <InputOTPSlot index={1} className="border-2 border-foreground" />
+                <InputOTPSlot index={2} className="border-2 border-foreground" />
+              </InputOTPGroup>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                <InputOTPSlot index={3} className="border-2 border-foreground" />
+                <InputOTPSlot index={4} className="border-2 border-foreground" />
+                <InputOTPSlot index={5} className="border-2 border-foreground" />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+        </div>
+        <CodeBlock code={`import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from "@workspace/pico-ui/input-otp"
+
+<InputOTP maxLength={6}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+  </InputOTPGroup>
+  <InputOTPSeparator />
+  <InputOTPGroup>
+    <InputOTPSlot index={3} />
+    <InputOTPSlot index={4} />
+    <InputOTPSlot index={5} />
+  </InputOTPGroup>
+</InputOTP>`} />
+      </section>
+    </div>
+  );
+}

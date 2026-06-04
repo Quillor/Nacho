@@ -13,8 +13,8 @@ import {
   Pencil,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@workspace/pico-ui/button";
+import { Badge } from "@workspace/pico-ui/badge";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,8 +24,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
+} from "@workspace/pico-ui/alert-dialog";
+import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import {
   listRecordings,
   deleteRecording,

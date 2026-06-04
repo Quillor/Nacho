@@ -1,4 +1,4 @@
-import { CodeBlock } from "@/components/ui/code-block";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function Installation() {
   return (
@@ -65,8 +65,8 @@ export default function Installation() {
             Our components are built on top of shadcn/ui but heavily styled with the Pico theme. Import them from <code className="bg-foreground/10 px-1 rounded-sm">@/components/ui</code>.
           </p>
           
-          <CodeBlock code={`import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+          <CodeBlock code={`import { Button } from "@workspace/pico-ui/button";
+import { Card, CardContent } from "@workspace/pico-ui/card";
 
 export default function MyView() {
   return (

@@ -8,9 +8,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/ui/code-block";
+} from "@workspace/pico-ui/alert-dialog";
+import { Button } from "@workspace/pico-ui/button";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function AlertDialogDocs() {
   return (
@@ -56,7 +56,7 @@ export default function AlertDialogDocs() {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@workspace/pico-ui/alert-dialog"
 
 <AlertDialog>
   <AlertDialogTrigger asChild>

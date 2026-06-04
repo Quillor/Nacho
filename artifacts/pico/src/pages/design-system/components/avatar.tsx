@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Avatar, AvatarFallback, AvatarImage } from "@workspace/pico-ui/avatar";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function AvatarDocs() {
   return (
@@ -25,7 +25,7 @@ export default function AvatarDocs() {
             <AvatarFallback className="bg-primary text-foreground font-bold">PI</AvatarFallback>
           </Avatar>
         </div>
-        <CodeBlock code={`import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+        <CodeBlock code={`import { Avatar, AvatarFallback, AvatarImage } from "@workspace/pico-ui/avatar"
 
 <Avatar>
   <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />

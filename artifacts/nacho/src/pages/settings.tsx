@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Info, HardDrive, Trash2, Tag, UserX, Mail } from "lucide-react";
 import { useUser, useClerk } from "@clerk/react";
 import { AppShell } from "@/components/app-shell";
-import { Button } from "@/components/ui/button";
+import { Button } from "@workspace/pico-ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,8 +12,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
+} from "@workspace/pico-ui/alert-dialog";
+import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import {
   AccountManagement,
   getDisplayName,

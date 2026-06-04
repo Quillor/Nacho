@@ -1,7 +1,7 @@
-import { Spinner } from "@/components/ui/spinner";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
+import { Spinner } from "@workspace/pico-ui/spinner";
+import { Skeleton } from "@workspace/pico-ui/skeleton";
+import { Progress } from "@workspace/pico-ui/progress";
+import { Button } from "@workspace/pico-ui/button";
 import {
   PatternPage,
   PageHeader,

@@ -6,11 +6,11 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { CodeBlock } from "@/components/ui/code-block";
+} from "@workspace/pico-ui/dialog";
+import { Button } from "@workspace/pico-ui/button";
+import { Label } from "@workspace/pico-ui/label";
+import { Input } from "@workspace/pico-ui/input";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function DialogDocs() {
   return (
@@ -65,7 +65,7 @@ export default function DialogDocs() {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@workspace/pico-ui/dialog"
 
 <Dialog>
   <DialogTrigger>Open</DialogTrigger>

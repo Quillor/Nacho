@@ -1,9 +1,9 @@
 import { AlertCircle } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Input } from "@workspace/pico-ui/input";
+import { Label } from "@workspace/pico-ui/label";
+import { Textarea } from "@workspace/pico-ui/textarea";
+import { Button } from "@workspace/pico-ui/button";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 import {
   PatternPage,
   PageHeader,

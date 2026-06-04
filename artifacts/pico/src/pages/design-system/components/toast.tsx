@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/ui/code-block";
-import { useToast } from "@/hooks/use-toast";
+import { Button } from "@workspace/pico-ui/button";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
+import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 
 export default function ToastDocs() {
   const { toast } = useToast();
@@ -30,7 +30,7 @@ export default function ToastDocs() {
             Copy link
           </Button>
         </div>
-        <CodeBlock code={`import { useToast } from "@/hooks/use-toast"
+        <CodeBlock code={`import { useToast } from "@workspace/pico-ui/hooks/use-toast"
 
 function CopyButton() {
   const { toast } = useToast()
@@ -81,7 +81,7 @@ function CopyButton() {
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Mount the <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">{"<Toaster />"}</code> once near the root of your app so toasts have somewhere to render.
         </p>
-        <CodeBlock code={`import { Toaster } from "@/components/ui/toaster"
+        <CodeBlock code={`import { Toaster } from "@workspace/pico-ui/toaster"
 
 function App() {
   return (

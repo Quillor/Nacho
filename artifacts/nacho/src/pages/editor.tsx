@@ -13,21 +13,21 @@ import {
   Captions,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@workspace/pico-ui/button";
+import { Input } from "@workspace/pico-ui/input";
+import { Label } from "@workspace/pico-ui/label";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui/tabs";
+} from "@workspace/pico-ui/tabs";
 import { RichTextEditor } from "@/components/rich-text-editor";
 import {
   VideoPlayer,
   type VideoPlayerHandle,
 } from "@/components/video-player";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { getRecording, updateRecording } from "@/lib/db";
 import {
   getPublicLink,

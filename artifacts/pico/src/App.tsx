@@ -1,7 +1,7 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@workspace/pico-ui/toaster";
+import { TooltipProvider } from "@workspace/pico-ui/tooltip";
 
 import NotFound from "@/pages/not-found";
 import { DocsLayout } from "@/components/layout/DocsLayout";
@@ -32,6 +32,46 @@ import LabelDocs from "@/pages/design-system/components/label";
 import SelectDocs from "@/pages/design-system/components/select";
 import AlertDialogDocs from "@/pages/design-system/components/alert-dialog";
 import ToastDocs from "@/pages/design-system/components/toast";
+import AccordionDocs from "@/pages/design-system/components/accordion";
+import AspectRatioDocs from "@/pages/design-system/components/aspect-ratio";
+import BreadcrumbDocs from "@/pages/design-system/components/breadcrumb";
+import CollapsibleDocs from "@/pages/design-system/components/collapsible";
+import CommandDocs from "@/pages/design-system/components/command";
+import ContextMenuDocs from "@/pages/design-system/components/context-menu";
+import DrawerDocs from "@/pages/design-system/components/drawer";
+import DropdownMenuDocs from "@/pages/design-system/components/dropdown-menu";
+import EmptyDocs from "@/pages/design-system/components/empty";
+import HoverCardDocs from "@/pages/design-system/components/hover-card";
+import InputOTPDocs from "@/pages/design-system/components/input-otp";
+import KbdDocs from "@/pages/design-system/components/kbd";
+import PaginationDocs from "@/pages/design-system/components/pagination";
+import PopoverDocs from "@/pages/design-system/components/popover";
+import ProgressDocs from "@/pages/design-system/components/progress";
+import RadioGroupDocs from "@/pages/design-system/components/radio-group";
+import ScrollAreaDocs from "@/pages/design-system/components/scroll-area";
+import SeparatorDocs from "@/pages/design-system/components/separator";
+import SheetDocs from "@/pages/design-system/components/sheet";
+import SkeletonDocs from "@/pages/design-system/components/skeleton";
+import SliderDocs from "@/pages/design-system/components/slider";
+import SpinnerDocs from "@/pages/design-system/components/spinner";
+import TableDocs from "@/pages/design-system/components/table";
+import TextareaDocs from "@/pages/design-system/components/textarea";
+import ToggleDocs from "@/pages/design-system/components/toggle";
+import ToggleGroupDocs from "@/pages/design-system/components/toggle-group";
+import TooltipDocs from "@/pages/design-system/components/tooltip";
+import ButtonGroupDocs from "@/pages/design-system/components/button-group";
+import CalendarDocs from "@/pages/design-system/components/calendar";
+import CarouselDocs from "@/pages/design-system/components/carousel";
+import ChartDocs from "@/pages/design-system/components/chart";
+import FieldDocs from "@/pages/design-system/components/field";
+import FormDocs from "@/pages/design-system/components/form";
+import InputGroupDocs from "@/pages/design-system/components/input-group";
+import ItemDocs from "@/pages/design-system/components/item";
+import MenubarDocs from "@/pages/design-system/components/menubar";
+import NavigationMenuDocs from "@/pages/design-system/components/navigation-menu";
+import ResizableDocs from "@/pages/design-system/components/resizable";
+import SidebarDocs from "@/pages/design-system/components/sidebar";
+import SonnerDocs from "@/pages/design-system/components/sonner";
 
 import PatternsOverview from "@/pages/design-system/patterns/overview";
 import FormsPattern from "@/pages/design-system/patterns/forms";
@@ -79,6 +119,46 @@ function Router() {
         <Route path="/components/select" component={SelectDocs} />
         <Route path="/components/alert-dialog" component={AlertDialogDocs} />
         <Route path="/components/toast" component={ToastDocs} />
+        <Route path="/components/accordion" component={AccordionDocs} />
+        <Route path="/components/aspect-ratio" component={AspectRatioDocs} />
+        <Route path="/components/breadcrumb" component={BreadcrumbDocs} />
+        <Route path="/components/collapsible" component={CollapsibleDocs} />
+        <Route path="/components/command" component={CommandDocs} />
+        <Route path="/components/context-menu" component={ContextMenuDocs} />
+        <Route path="/components/drawer" component={DrawerDocs} />
+        <Route path="/components/dropdown-menu" component={DropdownMenuDocs} />
+        <Route path="/components/empty" component={EmptyDocs} />
+        <Route path="/components/hover-card" component={HoverCardDocs} />
+        <Route path="/components/input-otp" component={InputOTPDocs} />
+        <Route path="/components/kbd" component={KbdDocs} />
+        <Route path="/components/pagination" component={PaginationDocs} />
+        <Route path="/components/popover" component={PopoverDocs} />
+        <Route path="/components/progress" component={ProgressDocs} />
+        <Route path="/components/radio-group" component={RadioGroupDocs} />
+        <Route path="/components/scroll-area" component={ScrollAreaDocs} />
+        <Route path="/components/separator" component={SeparatorDocs} />
+        <Route path="/components/sheet" component={SheetDocs} />
+        <Route path="/components/skeleton" component={SkeletonDocs} />
+        <Route path="/components/slider" component={SliderDocs} />
+        <Route path="/components/spinner" component={SpinnerDocs} />
+        <Route path="/components/table" component={TableDocs} />
+        <Route path="/components/textarea" component={TextareaDocs} />
+        <Route path="/components/toggle" component={ToggleDocs} />
+        <Route path="/components/toggle-group" component={ToggleGroupDocs} />
+        <Route path="/components/tooltip" component={TooltipDocs} />
+        <Route path="/components/button-group" component={ButtonGroupDocs} />
+        <Route path="/components/calendar" component={CalendarDocs} />
+        <Route path="/components/carousel" component={CarouselDocs} />
+        <Route path="/components/chart" component={ChartDocs} />
+        <Route path="/components/field" component={FieldDocs} />
+        <Route path="/components/form" component={FormDocs} />
+        <Route path="/components/input-group" component={InputGroupDocs} />
+        <Route path="/components/item" component={ItemDocs} />
+        <Route path="/components/menubar" component={MenubarDocs} />
+        <Route path="/components/navigation-menu" component={NavigationMenuDocs} />
+        <Route path="/components/resizable" component={ResizableDocs} />
+        <Route path="/components/sidebar" component={SidebarDocs} />
+        <Route path="/components/sonner" component={SonnerDocs} />
 
         {/* Patterns */}
         <Route path="/patterns" component={PatternsOverview} />

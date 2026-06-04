@@ -13,7 +13,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
   SidebarInset
-} from "@/components/ui/sidebar";
+} from "@workspace/pico-ui/sidebar";
 import { motion, AnimatePresence } from "framer-motion";
 
 const NAVIGATION = [
@@ -45,20 +45,60 @@ const NAVIGATION = [
   {
     title: "Components",
     links: [
-      { title: "Button", href: "/components/button" },
-      { title: "Badge", href: "/components/badge" },
-      { title: "Card", href: "/components/card" },
-      { title: "Input", href: "/components/input" },
-      { title: "Label", href: "/components/label" },
-      { title: "Select", href: "/components/select" },
+      { title: "Accordion", href: "/components/accordion" },
       { title: "Alert", href: "/components/alert" },
-      { title: "Tabs", href: "/components/tabs" },
-      { title: "Switch", href: "/components/switch" },
-      { title: "Checkbox", href: "/components/checkbox" },
-      { title: "Avatar", href: "/components/avatar" },
-      { title: "Dialog", href: "/components/dialog" },
       { title: "Alert Dialog", href: "/components/alert-dialog" },
+      { title: "Aspect Ratio", href: "/components/aspect-ratio" },
+      { title: "Avatar", href: "/components/avatar" },
+      { title: "Badge", href: "/components/badge" },
+      { title: "Breadcrumb", href: "/components/breadcrumb" },
+      { title: "Button", href: "/components/button" },
+      { title: "Button Group", href: "/components/button-group" },
+      { title: "Calendar", href: "/components/calendar" },
+      { title: "Card", href: "/components/card" },
+      { title: "Carousel", href: "/components/carousel" },
+      { title: "Chart", href: "/components/chart" },
+      { title: "Checkbox", href: "/components/checkbox" },
+      { title: "Collapsible", href: "/components/collapsible" },
+      { title: "Command", href: "/components/command" },
+      { title: "Context Menu", href: "/components/context-menu" },
+      { title: "Dialog", href: "/components/dialog" },
+      { title: "Drawer", href: "/components/drawer" },
+      { title: "Dropdown Menu", href: "/components/dropdown-menu" },
+      { title: "Empty", href: "/components/empty" },
+      { title: "Field", href: "/components/field" },
+      { title: "Form", href: "/components/form" },
+      { title: "Hover Card", href: "/components/hover-card" },
+      { title: "Input", href: "/components/input" },
+      { title: "Input Group", href: "/components/input-group" },
+      { title: "Input OTP", href: "/components/input-otp" },
+      { title: "Item", href: "/components/item" },
+      { title: "Kbd", href: "/components/kbd" },
+      { title: "Label", href: "/components/label" },
+      { title: "Menubar", href: "/components/menubar" },
+      { title: "Navigation Menu", href: "/components/navigation-menu" },
+      { title: "Pagination", href: "/components/pagination" },
+      { title: "Popover", href: "/components/popover" },
+      { title: "Progress", href: "/components/progress" },
+      { title: "Radio Group", href: "/components/radio-group" },
+      { title: "Resizable", href: "/components/resizable" },
+      { title: "Scroll Area", href: "/components/scroll-area" },
+      { title: "Select", href: "/components/select" },
+      { title: "Separator", href: "/components/separator" },
+      { title: "Sheet", href: "/components/sheet" },
+      { title: "Sidebar", href: "/components/sidebar" },
+      { title: "Skeleton", href: "/components/skeleton" },
+      { title: "Slider", href: "/components/slider" },
+      { title: "Sonner", href: "/components/sonner" },
+      { title: "Spinner", href: "/components/spinner" },
+      { title: "Switch", href: "/components/switch" },
+      { title: "Table", href: "/components/table" },
+      { title: "Tabs", href: "/components/tabs" },
+      { title: "Textarea", href: "/components/textarea" },
       { title: "Toast", href: "/components/toast" },
+      { title: "Toggle", href: "/components/toggle" },
+      { title: "Toggle Group", href: "/components/toggle-group" },
+      { title: "Tooltip", href: "/components/tooltip" },
     ]
   },
   {
@@ -123,7 +163,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
       </Sidebar>
       <SidebarInset className="bg-background min-h-[100dvh] flex flex-col">
         <header className="md:hidden flex items-center p-4 border-b-4 border-foreground bg-primary">
-          <SidebarTrigger className="bg-foreground text-background hover:bg-foreground/90 border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-sm" />
+          <SidebarTrigger className="bg-foreground text-background hover:bg-foreground/90 border-2 border-foreground shadow-xs rounded-sm" />
           <span className="ml-4 font-display font-black text-xl tracking-tight uppercase">Pico.</span>
         </header>
         <main className="flex-1 w-full max-w-5xl mx-auto p-6 md:p-12 lg:p-16 overflow-x-hidden">

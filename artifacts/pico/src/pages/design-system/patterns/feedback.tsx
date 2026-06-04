@@ -1,7 +1,7 @@
 import { Terminal, AlertCircle } from "lucide-react";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertTitle, AlertDescription } from "@workspace/pico-ui/alert";
+import { Button } from "@workspace/pico-ui/button";
+import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import {
   PatternPage,
   PageHeader,

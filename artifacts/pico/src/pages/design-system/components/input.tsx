@@ -1,7 +1,7 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Input } from "@workspace/pico-ui/input";
+import { Label } from "@workspace/pico-ui/label";
+import { Textarea } from "@workspace/pico-ui/textarea";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function InputDocs() {
   return (
@@ -23,8 +23,8 @@ export default function InputDocs() {
             <Input type="email" id="email" placeholder="Email" />
           </div>
         </div>
-        <CodeBlock code={`import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+        <CodeBlock code={`import { Input } from "@workspace/pico-ui/input"
+import { Label } from "@workspace/pico-ui/label"
 
 <div className="grid w-full items-center gap-1.5">
   <Label htmlFor="email">Email</Label>
@@ -51,7 +51,7 @@ import { Label } from "@/components/ui/label"
             <Textarea placeholder="Type your message here." id="message" />
           </div>
         </div>
-        <CodeBlock code={`import { Textarea } from "@/components/ui/textarea"
+        <CodeBlock code={`import { Textarea } from "@workspace/pico-ui/textarea"
 
 <div className="grid w-full items-center gap-1.5">
   <Label htmlFor="message">Message</Label>

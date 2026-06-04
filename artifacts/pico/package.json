@@ -51,6 +51,7 @@
     "@workspace/api-client-react": "workspace:*",
     "@workspace/nacho-illustrations": "workspace:*",
     "@workspace/pico-theme": "workspace:*",
+    "@workspace/pico-ui": "workspace:*",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "cmdk": "^1.1.1",

@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@workspace/pico-ui/dialog";
 import {
   Sheet,
   SheetContent,
@@ -14,7 +14,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from "@workspace/pico-ui/sheet";
 import {
   Drawer,
   DrawerContent,
@@ -22,8 +22,8 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
+} from "@workspace/pico-ui/drawer";
+import { Button } from "@workspace/pico-ui/button";
 import {
   PatternPage,
   PageHeader,

@@ -1,9 +1,9 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/pico-ui/tabs";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@workspace/pico-ui/card";
+import { Button } from "@workspace/pico-ui/button";
+import { Label } from "@workspace/pico-ui/label";
+import { Input } from "@workspace/pico-ui/input";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function TabsDocs() {
   return (
@@ -73,7 +73,7 @@ export default function TabsDocs() {
             </TabsContent>
           </Tabs>
         </div>
-        <CodeBlock code={`import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+        <CodeBlock code={`import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/pico-ui/tabs"
 
 <Tabs defaultValue="account" className="w-[400px]">
   <TabsList>

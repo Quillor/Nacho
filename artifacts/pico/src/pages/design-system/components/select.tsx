@@ -4,9 +4,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { CodeBlock } from "@/components/ui/code-block";
+} from "@workspace/pico-ui/select";
+import { Label } from "@workspace/pico-ui/label";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function SelectDocs() {
   return (
@@ -44,7 +44,7 @@ export default function SelectDocs() {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@workspace/pico-ui/select"
 
 <Select defaultValue="en">
   <SelectTrigger className="border-2 border-foreground font-bold">

@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@workspace/pico-ui/button";
+import { Card, CardContent } from "@workspace/pico-ui/card";
+import { Badge } from "@workspace/pico-ui/badge";
 import { Video, Share2, Scissors, Zap, MessageSquare, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import videoPlayerNacho from "@workspace/nacho-illustrations/assets/nacho-dip-sales-player.png";
@@ -37,7 +37,7 @@ export default function Home() {
           <Button asChild variant="outline" className="hidden md:flex font-bold border-2 border-transparent text-foreground hover:bg-muted transition-all">
             <Link href="/sign-in">Sign In</Link>
           </Button>
-          <Button asChild className="font-bold border-2 border-foreground shadow-sm hover:translate-y-[2px] hover:shadow-none transition-all bg-primary text-foreground hover:bg-primary/90">
+          <Button asChild variant="brand">
             <Link href="/sign-up">Get Started</Link>
           </Button>
         </div>
@@ -98,7 +98,7 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="order-2 md:order-1"
           >
-            <img src={emptyBowlNacho} alt="A sad nacho mascot leaning on an empty bowl" className="w-full max-w-md mx-auto object-contain drop-shadow-[6px_6px_0px_rgba(245,197,24,0.25)]" />
+            <img src={emptyBowlNacho} alt="A sad nacho mascot leaning on an empty bowl" className="w-full max-w-md mx-auto object-contain drop-shadow-[6px_6px_0px_hsl(var(--primary)/0.25)]" />
           </motion.div>
           <div className="order-1 md:order-2 text-center md:text-left">
             <motion.h2 

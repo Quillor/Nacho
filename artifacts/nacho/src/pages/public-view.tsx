@@ -7,7 +7,7 @@ import {
   useAddRecordingView,
   getGetRecordingQueryKey,
 } from "@workspace/api-client-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@workspace/pico-ui/button";
 import { Logo } from "@/components/logo";
 import { VideoPlayer, type VideoPlayerHandle } from "@/components/video-player";
 import { storageUrl, shareUrl } from "@/lib/api";

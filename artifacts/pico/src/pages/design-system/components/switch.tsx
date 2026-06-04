@@ -1,6 +1,6 @@
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Switch } from "@workspace/pico-ui/switch";
+import { Label } from "@workspace/pico-ui/label";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function SwitchDocs() {
   return (
@@ -22,8 +22,8 @@ export default function SwitchDocs() {
             <Label htmlFor="airplane-mode">Airplane Mode</Label>
           </div>
         </div>
-        <CodeBlock code={`import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
+        <CodeBlock code={`import { Switch } from "@workspace/pico-ui/switch"
+import { Label } from "@workspace/pico-ui/label"
 
 <div className="flex items-center space-x-2">
   <Switch id="airplane-mode" />

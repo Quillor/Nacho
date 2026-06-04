@@ -1,6 +1,6 @@
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Checkbox } from "@workspace/pico-ui/checkbox";
+import { Label } from "@workspace/pico-ui/label";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function CheckboxDocs() {
   return (
@@ -34,8 +34,8 @@ export default function CheckboxDocs() {
             </div>
           </div>
         </div>
-        <CodeBlock code={`import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
+        <CodeBlock code={`import { Checkbox } from "@workspace/pico-ui/checkbox"
+import { Label } from "@workspace/pico-ui/label"
 
 <div className="flex items-center space-x-2">
   <Checkbox id="terms" />

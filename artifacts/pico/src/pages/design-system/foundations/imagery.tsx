@@ -125,7 +125,7 @@ export default function Imagery() {
                 <img
                   src={ill.src}
                   alt={ill.caption}
-                  className="max-h-full max-w-full object-contain drop-shadow-[3px_3px_0px_rgba(46,28,15,0.15)] group-hover:scale-105 transition-transform duration-300"
+                  className="max-h-full max-w-full object-contain drop-shadow-[3px_3px_0px_hsl(var(--foreground)/0.15)] group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
                 />
               </div>
@@ -172,7 +172,7 @@ export default function Imagery() {
           <button
             onClick={copyPrompt}
             aria-label="Copy prompt template"
-            className="absolute top-3 right-3 z-10 flex items-center gap-1.5 bg-primary text-foreground border-2 border-foreground rounded-sm px-3 py-1.5 text-xs font-bold uppercase tracking-wide shadow-[2px_2px_0px_0px_#2E1C0F] hover:translate-y-[2px] hover:shadow-none transition-all"
+            className="absolute top-3 right-3 z-10 flex items-center gap-1.5 bg-primary text-foreground border-2 border-foreground rounded-sm px-3 py-1.5 text-xs font-bold uppercase tracking-wide shadow-xs hover:translate-y-[2px] hover:shadow-none transition-all"
           >
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             {copied ? "Copied" : "Copy"}

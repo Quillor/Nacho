@@ -1,6 +1,6 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@workspace/pico-ui/card";
+import { Button } from "@workspace/pico-ui/button";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function CardDocs() {
   return (
@@ -37,7 +37,7 @@ export default function CardDocs() {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@workspace/pico-ui/card"
 
 <Card className="max-w-[350px]">
   <CardHeader>

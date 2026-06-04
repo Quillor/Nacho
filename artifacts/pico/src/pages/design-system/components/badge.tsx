@@ -1,5 +1,5 @@
-import { Badge } from "@/components/ui/badge";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Badge } from "@workspace/pico-ui/badge";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function BadgeDocs() {
   return (
@@ -21,7 +21,7 @@ export default function BadgeDocs() {
           <Badge variant="outline">Outline</Badge>
           <Badge variant="destructive">Destructive</Badge>
         </div>
-        <CodeBlock code={`import { Badge } from "@/components/ui/badge"
+        <CodeBlock code={`import { Badge } from "@workspace/pico-ui/badge"
 
 <Badge>Default</Badge>
 <Badge variant="secondary">Secondary</Badge>

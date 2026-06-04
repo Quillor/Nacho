@@ -1,7 +1,7 @@
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Label } from "@workspace/pico-ui/label";
+import { Input } from "@workspace/pico-ui/input";
+import { Switch } from "@workspace/pico-ui/switch";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 
 export default function LabelDocs() {
   return (
@@ -24,8 +24,8 @@ export default function LabelDocs() {
             <p className="text-sm text-muted-foreground">Shown in the app instead of your email.</p>
           </div>
         </div>
-        <CodeBlock code={`import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
+        <CodeBlock code={`import { Label } from "@workspace/pico-ui/label"
+import { Input } from "@workspace/pico-ui/input"
 
 <div className="space-y-2">
   <Label htmlFor="name" className="uppercase tracking-wide">Display name</Label>

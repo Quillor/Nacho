@@ -21,17 +21,17 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import { Button } from "@workspace/pico-ui/button";
+import { Switch } from "@workspace/pico-ui/switch";
+import { Label } from "@workspace/pico-ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+} from "@workspace/pico-ui/select";
+import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import {
   prepareRecording,

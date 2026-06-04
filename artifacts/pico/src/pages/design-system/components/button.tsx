@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/ui/code-block";
+import { Button } from "@workspace/pico-ui/button";
+import { CodeBlock } from "@workspace/pico-ui/code-block";
 import { ArrowRight, Mail } from "lucide-react";
 
 export default function ButtonDocs() {
@@ -18,20 +18,35 @@ export default function ButtonDocs() {
         <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Variants</h2>
         <div className="flex flex-wrap gap-4 items-center p-8 border-4 border-foreground rounded-sm bg-background/50">
           <Button>Default</Button>
+          <Button variant="brand">Brand</Button>
           <Button variant="secondary">Secondary</Button>
           <Button variant="outline">Outline</Button>
           <Button variant="destructive">Destructive</Button>
           <Button variant="ghost">Ghost</Button>
           <Button variant="link">Link</Button>
         </div>
-        <CodeBlock code={`import { Button } from "@/components/ui/button"
+        <CodeBlock code={`import { Button } from "@workspace/pico-ui/button"
 
 <Button>Default</Button>
+<Button variant="brand">Brand</Button>
 <Button variant="secondary">Secondary</Button>
 <Button variant="outline">Outline</Button>
 <Button variant="destructive">Destructive</Button>
 <Button variant="ghost">Ghost</Button>
 <Button variant="link">Link</Button>`} />
+      </section>
+
+      <section className="space-y-8">
+        <h2 className="text-3xl font-display font-black uppercase border-b-4 border-foreground pb-2">Brand</h2>
+        <p className="text-lg max-w-2xl font-medium leading-relaxed text-foreground/80">
+          The chunky marketing CTA: solid yellow fill, heavy brown border, and the chunky offset shadow that presses down on hover. Use it for the loudest primary action on a light surface — landing-page sign-up, hero calls to action.
+        </p>
+        <div className="flex flex-wrap gap-4 items-center p-8 border-4 border-foreground rounded-sm bg-background/50">
+          <Button variant="brand">Start Recording Free</Button>
+          <Button variant="brand" size="lg">Get Started</Button>
+        </div>
+        <CodeBlock code={`<Button variant="brand">Start Recording Free</Button>
+<Button variant="brand" size="lg">Get Started</Button>`} />
       </section>
 
       <section className="space-y-8">

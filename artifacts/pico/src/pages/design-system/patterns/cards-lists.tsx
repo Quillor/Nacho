@@ -1,6 +1,6 @@
 import { Globe, Lock, Play, Pencil, Share2 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@workspace/pico-ui/badge";
+import { Button } from "@workspace/pico-ui/button";
 import {
   PatternPage,
   PageHeader,

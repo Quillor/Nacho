@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { User, Mail, Lock, Check } from "lucide-react";
 import { useUser } from "@clerk/react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
+import { Button } from "@workspace/pico-ui/button";
+import { Card } from "@workspace/pico-ui/card";
+import { Input } from "@workspace/pico-ui/input";
+import { Label } from "@workspace/pico-ui/label";
+import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 
 function errMessage(err: unknown, fallback: string): string {
   if (

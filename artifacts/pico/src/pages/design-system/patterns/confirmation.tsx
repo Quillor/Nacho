@@ -8,8 +8,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+} from "@workspace/pico-ui/alert-dialog";
+import { Button } from "@workspace/pico-ui/button";
 import { Trash2 } from "lucide-react";
 import {
   PatternPage,

@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@workspace/pico-ui/button";
+import { Card, CardContent } from "@workspace/pico-ui/card";
+import { Badge } from "@workspace/pico-ui/badge";
+import { Input } from "@workspace/pico-ui/input";
+import { Label } from "@workspace/pico-ui/label";
+import { Alert, AlertDescription, AlertTitle } from "@workspace/pico-ui/alert";
 import { InfoIcon, ArrowRight, PaintBucket, Type, Frame, LayoutGrid } from "lucide-react";
 
 const fadeIn = {
@@ -147,7 +147,7 @@ export default function Home() {
       </section>
 
       {/* 3. Color Combinations */}
-      <section className="py-24 px-6 md:px-12 border-b-4 border-foreground bg-[#F8F4E6]">
+      <section className="py-24 px-6 md:px-12 border-b-4 border-foreground bg-background">
         <div className="max-w-5xl mx-auto">
            <motion.div 
             initial="hidden"
@@ -174,10 +174,10 @@ export default function Home() {
                 <h4 className="text-3xl md:text-4xl uppercase mb-4">Loud & Clear</h4>
                 <p className="text-lg font-medium mb-8 max-w-md">This combination is our bread and butter. It's impossible to ignore and perfectly captures the snack-brand energy.</p>
                 <div className="flex flex-wrap gap-4">
-                  <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)] transition-all font-bold">
+                  <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.3)] transition-all font-bold">
                     Solid Action
                   </Button>
-                  <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-foreground hover:text-primary shadow-[4px_4px_0px_0px_#2E1C0F] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#2E1C0F] transition-all font-bold">
+                  <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-foreground hover:text-primary shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
                     Outline Action
                   </Button>
                 </div>
@@ -195,10 +195,10 @@ export default function Home() {
                 <h4 className="text-3xl md:text-4xl uppercase mb-4 text-primary">The Midnight Snack</h4>
                 <p className="text-lg font-medium mb-8 max-w-md text-background/90">Use this for footers, dramatic section breaks, or when you need the reader to stop scrolling and pay attention.</p>
                 <div className="flex flex-wrap gap-4">
-                  <Button size="lg" className="bg-primary text-foreground hover:bg-primary/90 border-2 border-transparent shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] transition-all font-bold">
+                  <Button size="lg" className="bg-primary text-foreground hover:bg-primary/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.2)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.2)] transition-all font-bold">
                     Solid Action
                   </Button>
-                  <Button size="lg" variant="outline" className="border-background text-background hover:bg-background hover:text-foreground shadow-[4px_4px_0px_0px_#F8F4E6] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#F8F4E6] transition-all font-bold">
+                  <Button size="lg" variant="outline" className="border-background text-background hover:bg-background hover:text-foreground shadow-[4px_4px_0px_0px_hsl(var(--background))] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background))] transition-all font-bold">
                     Outline Action
                   </Button>
                 </div>
@@ -216,10 +216,10 @@ export default function Home() {
                 <h4 className="text-3xl md:text-4xl uppercase mb-4">Daily Bread</h4>
                 <p className="text-lg font-medium mb-8 max-w-md">This is where the actual reading happens. It's softer than pure white on black, making it friendlier on the eyes.</p>
                 <div className="flex flex-wrap gap-4">
-                  <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_#2E1C0F] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#2E1C0F] transition-all font-bold">
+                  <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
                     Solid Action
                   </Button>
-                  <Button size="lg" variant="outline" className="border-foreground text-foreground bg-transparent hover:bg-primary shadow-[4px_4px_0px_0px_#2E1C0F] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#2E1C0F] transition-all font-bold">
+                  <Button size="lg" variant="outline" className="border-foreground text-foreground bg-transparent hover:bg-primary shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
                     Outline Action
                   </Button>
                 </div>
@@ -322,7 +322,7 @@ export default function Home() {
                   <div className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit mb-1">{space.token}</div>
                   <div className="text-xs font-bold text-foreground/60">{space.size} / {space.rem}</div>
                 </div>
-                <div className="flex-1 max-w-md h-12 bg-[#F8F4E6] border-2 border-foreground/20 rounded-sm flex items-center px-1">
+                <div className="flex-1 max-w-md h-12 bg-background border-2 border-foreground/20 rounded-sm flex items-center px-1">
                   <motion.div 
                     initial={{ width: 0 }}
                     whileInView={{ width: 'auto' }}
@@ -339,7 +339,7 @@ export default function Home() {
       </section>
 
       {/* 6. Components */}
-      <section className="py-24 px-6 md:px-12 bg-[#F8F4E6]">
+      <section className="py-24 px-6 md:px-12 bg-background">
         <div className="max-w-5xl mx-auto">
           <motion.div 
             initial="hidden"
@@ -361,13 +361,13 @@ export default function Home() {
               <div>
                 <h3 className="text-2xl font-bold uppercase mb-6 border-b-4 border-foreground/10 pb-2">Buttons</h3>
                 <div className="flex flex-wrap gap-6 items-center">
-                  <Button size="lg" className="font-bold border-2 border-transparent shadow-[4px_4px_0px_0px_#2E1C0F] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#2E1C0F] transition-all bg-primary text-foreground hover:bg-primary/90">
+                  <Button size="lg" className="font-bold border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all bg-primary text-foreground hover:bg-primary/90">
                     Primary Action
                   </Button>
-                  <Button size="lg" className="font-bold border-2 border-foreground shadow-[4px_4px_0px_0px_#2E1C0F] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#2E1C0F] transition-all bg-background text-foreground hover:bg-[#FCE883]">
+                  <Button size="lg" className="font-bold border-2 border-foreground shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all bg-background text-foreground hover:bg-primary/80">
                     Secondary Outline
                   </Button>
-                  <Button size="icon" className="font-bold border-2 border-transparent shadow-[4px_4px_0px_0px_#2E1C0F] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#2E1C0F] transition-all bg-foreground text-background hover:bg-foreground/90 rounded-full w-12 h-12">
+                  <Button size="icon" className="font-bold border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all bg-foreground text-background hover:bg-foreground/90 rounded-full w-12 h-12">
                     <ArrowRight className="w-5 h-5" />
                   </Button>
                 </div>
@@ -376,9 +376,9 @@ export default function Home() {
               <div>
                 <h3 className="text-2xl font-bold uppercase mb-6 border-b-4 border-foreground/10 pb-2">Badges</h3>
                 <div className="flex flex-wrap gap-4">
-                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-primary text-foreground border-2 border-foreground rounded-sm shadow-[2px_2px_0px_0px_#2E1C0F]">New Feature</Badge>
-                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-foreground text-background border-2 border-foreground rounded-sm shadow-[2px_2px_0px_0px_#2E1C0F]">Sold Out</Badge>
-                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-background text-foreground border-2 border-foreground rounded-sm shadow-[2px_2px_0px_0px_#2E1C0F]">Limited Edition</Badge>
+                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-primary text-foreground border-2 border-foreground rounded-sm shadow-xs">New Feature</Badge>
+                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-foreground text-background border-2 border-foreground rounded-sm shadow-xs">Sold Out</Badge>
+                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-background text-foreground border-2 border-foreground rounded-sm shadow-xs">Limited Edition</Badge>
                 </div>
               </div>
             </div>
@@ -386,14 +386,14 @@ export default function Home() {
             {/* Forms & Inputs */}
             <div>
               <h3 className="text-2xl font-bold uppercase mb-6 border-b-4 border-foreground/10 pb-2">Forms</h3>
-              <Card className="border-4 border-foreground shadow-[8px_8px_0px_0px_#2E1C0F] rounded-sm bg-background">
+              <Card className="border-4 border-foreground shadow-md rounded-sm bg-background">
                 <CardContent className="p-8 space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="email" className="font-bold uppercase text-sm">Email Address</Label>
                     <Input 
                       id="email" 
                       placeholder="hello@snack.com" 
-                      className="border-2 border-foreground shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.1)] focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:border-foreground bg-white text-lg py-6"
+                      className="border-2 border-foreground shadow-[inset_2px_2px_0px_0px_hsl(var(--foreground)/0.1)] focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:border-foreground bg-background text-lg py-6"
                     />
                   </div>
                   <div className="space-y-2">
@@ -402,9 +402,9 @@ export default function Home() {
                       <Input 
                         id="promo" 
                         defaultValue="CRUNCHY20" 
-                        className="border-2 border-foreground shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.1)] focus-visible:ring-primary focus-visible:ring-offset-0 bg-white text-lg py-6 font-mono font-bold"
+                        className="border-2 border-foreground shadow-[inset_2px_2px_0px_0px_hsl(var(--foreground)/0.1)] focus-visible:ring-primary focus-visible:ring-offset-0 bg-background text-lg py-6 font-mono font-bold"
                       />
-                      <Button size="lg" className="h-auto font-bold border-2 border-transparent shadow-[4px_4px_0px_0px_#2E1C0F] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#2E1C0F] bg-foreground text-background transition-all">
+                      <Button size="lg" className="h-auto font-bold border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs bg-foreground text-background transition-all">
                         Apply
                       </Button>
                     </div>
@@ -416,7 +416,7 @@ export default function Home() {
             {/* Alerts */}
             <div className="md:col-span-2 mt-8">
               <h3 className="text-2xl font-bold uppercase mb-6 border-b-4 border-foreground/10 pb-2">Alerts</h3>
-              <Alert className="border-4 border-foreground shadow-[8px_8px_0px_0px_#2E1C0F] bg-primary text-foreground rounded-sm flex items-start gap-4 p-6">
+              <Alert className="border-4 border-foreground shadow-md bg-primary text-foreground rounded-sm flex items-start gap-4 p-6">
                 <InfoIcon className="h-6 w-6 mt-1 flex-shrink-0" />
                 <div>
                   <AlertTitle className="text-xl font-bold uppercase mb-2">Attention Shoppers!</AlertTitle>

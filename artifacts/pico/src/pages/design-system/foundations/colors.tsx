@@ -1,5 +1,5 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@workspace/pico-ui/badge";
+import { Button } from "@workspace/pico-ui/button";
 
 export default function Colors() {
   return (
@@ -79,10 +79,10 @@ export default function Colors() {
               <h4 className="text-3xl md:text-4xl uppercase mb-4 font-display font-black">Loud & Clear</h4>
               <p className="text-lg font-medium mb-8 max-w-md">This combination is our bread and butter. It's impossible to ignore and perfectly captures the snack-brand energy.</p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)] transition-all font-bold">
+                <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.3)] transition-all font-bold">
                   Solid Action
                 </Button>
-                <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-foreground hover:text-primary shadow-[4px_4px_0px_0px_#2E1C0F] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#2E1C0F] transition-all font-bold">
+                <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-foreground hover:text-primary shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
                   Outline Action
                 </Button>
               </div>
@@ -100,10 +100,10 @@ export default function Colors() {
               <h4 className="text-3xl md:text-4xl uppercase mb-4 text-primary font-display font-black">The Midnight Snack</h4>
               <p className="text-lg font-medium mb-8 max-w-md text-background/90">Use this for footers, dramatic section breaks, or when you need the reader to stop scrolling and pay attention.</p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="bg-primary text-foreground hover:bg-primary/90 border-2 border-transparent shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] transition-all font-bold">
+                <Button size="lg" className="bg-primary text-foreground hover:bg-primary/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.2)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.2)] transition-all font-bold">
                   Solid Action
                 </Button>
-                <Button size="lg" variant="outline" className="border-background text-background hover:bg-background hover:text-foreground shadow-[4px_4px_0px_0px_#F8F4E6] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#F8F4E6] transition-all font-bold">
+                <Button size="lg" variant="outline" className="border-background text-background hover:bg-background hover:text-foreground shadow-[4px_4px_0px_0px_hsl(var(--background))] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background))] transition-all font-bold">
                   Outline Action
                 </Button>
               </div>
@@ -121,10 +121,10 @@ export default function Colors() {
               <h4 className="text-3xl md:text-4xl uppercase mb-4 font-display font-black">Daily Bread</h4>
               <p className="text-lg font-medium mb-8 max-w-md">This is where the actual reading happens. It's softer than pure white on black, making it friendlier on the eyes.</p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_#2E1C0F] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#2E1C0F] transition-all font-bold">
+                <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
                   Solid Action
                 </Button>
-                <Button size="lg" variant="outline" className="border-foreground text-foreground bg-transparent hover:bg-primary shadow-[4px_4px_0px_0px_#2E1C0F] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#2E1C0F] transition-all font-bold">
+                <Button size="lg" variant="outline" className="border-foreground text-foreground bg-transparent hover:bg-primary shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
                   Outline Action
                 </Button>
               </div>
