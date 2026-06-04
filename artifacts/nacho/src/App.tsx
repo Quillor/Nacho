@@ -29,6 +29,7 @@ import LibraryPage from "@/pages/library";
 import Editor from "@/pages/editor";
 import PublicView from "@/pages/public-view";
 import SettingsPage from "@/pages/settings";
+import Terms from "@/pages/terms";
 
 const queryClient = new QueryClient();
 
@@ -192,6 +193,7 @@ function Router() {
       <Route path="/sign-in/*?" component={SignInPage} />
       <Route path="/sign-up/*?" component={SignUpPage} />
       <Route path="/v/:shareId" component={PublicView} />
+      <Route path="/terms" component={Terms} />
       <Route path="/studio">
         <Protected>
           <Studio />

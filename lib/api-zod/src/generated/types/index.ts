@@ -6,15 +6,30 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './adminRecordingActivity';
+export * from './adminRole';
+export * from './adminSummary';
+export * from './adminUser';
 export * from './chapter';
 export * from './errorResponse';
+export * from './groupInput';
+export * from './groupUpdate';
 export * from './healthStatus';
+export * from './impersonationTicket';
+export * from './notificationAudience';
+export * from './notificationInput';
+export * from './notificationResult';
 export * from './publishedRecording';
 export * from './recordingInput';
 export * from './recordingUpdateInput';
+export * from './roleInput';
+export * from './tosDocument';
+export * from './tosInput';
 export * from './transcriptSegment';
 export * from './uploadUrlInput';
 export * from './uploadUrlResponse';
+export * from './userGroup';
+export * from './userGroupAssignment';
 export * from './versionInfo';
 export * from './viewCount';
 export * from './visibility';

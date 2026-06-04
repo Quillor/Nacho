@@ -34,6 +34,7 @@ isValidation = true
 [agent]
 stack = "PNPM_WORKSPACE"
 expertMode = true
+integrations = ["resend:1.0.0"]
 
 [postMerge]
 path = "scripts/post-merge.sh"
@@ -58,6 +59,10 @@ externalPort = 3002
 [[ports]]
 localPort = 20637
 externalPort = 3000
+
+[[ports]]
+localPort = 23744
+externalPort = 3003
 
 [nix]
 channel = "stable-25_05"

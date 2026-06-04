@@ -312,7 +312,7 @@ export default function Home() {
             <a href="#" className="hover:text-foreground hover:underline transition-colors">Twitter</a>
             <a href="#" className="hover:text-foreground hover:underline transition-colors">LinkedIn</a>
             <a href="#" className="hover:text-foreground hover:underline transition-colors">Privacy</a>
-            <a href="#" className="hover:text-foreground hover:underline transition-colors">Terms</a>
+            <Link href="/terms" className="hover:text-foreground hover:underline transition-colors">Terms</Link>
             <a href="/design-system/" className="hover:text-foreground hover:underline transition-colors">Design System</a>
           </div>
         </div>

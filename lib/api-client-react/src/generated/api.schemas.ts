@@ -109,3 +109,115 @@ export interface VersionInfo {
   releaseDate?: string | null;
 }
 
+export type AdminRole = typeof AdminRole[keyof typeof AdminRole];
+
+
+export const AdminRole = {
+  super_admin: 'super_admin',
+  user: 'user',
+} as const;
+
+export interface UserGroup {
+  id: number;
+  name: string;
+  /** @nullable */
+  description?: string | null;
+  memberCount: number;
+  createdAt: string;
+}
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  /** @nullable */
+  displayName?: string | null;
+  /** @nullable */
+  imageUrl?: string | null;
+  role: AdminRole;
+  groups: UserGroup[];
+  recordingCount?: number;
+  createdAt: string;
+  /** @nullable */
+  lastSignInAt?: string | null;
+}
+
+export interface RoleInput {
+  role: AdminRole;
+}
+
+export interface GroupInput {
+  /** @minLength 1 */
+  name: string;
+  description?: string;
+}
+
+export interface GroupUpdate {
+  /** @minLength 1 */
+  name?: string;
+  /** @nullable */
+  description?: string | null;
+}
+
+export interface UserGroupAssignment {
+  groupIds: number[];
+}
+
+export interface ImpersonationTicket {
+  token: string;
+  ticketUrl: string;
+}
+
+export type NotificationAudience = typeof NotificationAudience[keyof typeof NotificationAudience];
+
+
+export const NotificationAudience = {
+  all: 'all',
+  group: 'group',
+} as const;
+
+export interface NotificationInput {
+  /** @minLength 1 */
+  subject: string;
+  /** @minLength 1 */
+  body: string;
+  audience: NotificationAudience;
+  /** @nullable */
+  groupId?: number | null;
+}
+
+export interface NotificationResult {
+  sent: number;
+  failed: number;
+  total: number;
+  /** @nullable */
+  message?: string | null;
+}
+
+export interface TosDocument {
+  content: string;
+  updatedAt: string;
+}
+
+export interface TosInput {
+  /** @minLength 1 */
+  content: string;
+}
+
+export interface AdminRecordingActivity {
+  shareId: string;
+  title: string;
+  views: number;
+  visibility: Visibility;
+  createdAt: string;
+  /** @nullable */
+  ownerEmail?: string | null;
+}
+
+export interface AdminSummary {
+  totalUsers: number;
+  totalRecordings: number;
+  totalViews: number;
+  recentSignups: AdminUser[];
+  recentRecordings: AdminRecordingActivity[];
+}
+

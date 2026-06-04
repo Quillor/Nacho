@@ -207,3 +207,273 @@ export const GetVersionResponse = zod.object({
 })
 
 
+/**
+ * @summary Dashboard summary counts and recent activity
+ */
+export const GetAdminSummaryResponse = zod.object({
+  "totalUsers": zod.number(),
+  "totalRecordings": zod.number(),
+  "totalViews": zod.number(),
+  "recentSignups": zod.array(zod.object({
+  "id": zod.string(),
+  "email": zod.string(),
+  "displayName": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "role": zod.enum(['super_admin', 'user']),
+  "groups": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "description": zod.string().nullish(),
+  "memberCount": zod.number(),
+  "createdAt": zod.string()
+})),
+  "recordingCount": zod.number().optional(),
+  "createdAt": zod.string(),
+  "lastSignInAt": zod.string().nullish()
+})),
+  "recentRecordings": zod.array(zod.object({
+  "shareId": zod.string(),
+  "title": zod.string(),
+  "views": zod.number(),
+  "visibility": zod.enum(['private', 'public']),
+  "createdAt": zod.string(),
+  "ownerEmail": zod.string().nullish()
+}))
+})
+
+
+/**
+ * @summary List all users with their roles and groups
+ */
+export const ListAdminUsersResponseItem = zod.object({
+  "id": zod.string(),
+  "email": zod.string(),
+  "displayName": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "role": zod.enum(['super_admin', 'user']),
+  "groups": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "description": zod.string().nullish(),
+  "memberCount": zod.number(),
+  "createdAt": zod.string()
+})),
+  "recordingCount": zod.number().optional(),
+  "createdAt": zod.string(),
+  "lastSignInAt": zod.string().nullish()
+})
+export const ListAdminUsersResponse = zod.array(ListAdminUsersResponseItem)
+
+
+/**
+ * @summary Get a single user's detail
+ */
+export const GetAdminUserParams = zod.object({
+  "userId": zod.coerce.string()
+})
+
+export const GetAdminUserResponse = zod.object({
+  "id": zod.string(),
+  "email": zod.string(),
+  "displayName": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "role": zod.enum(['super_admin', 'user']),
+  "groups": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "description": zod.string().nullish(),
+  "memberCount": zod.number(),
+  "createdAt": zod.string()
+})),
+  "recordingCount": zod.number().optional(),
+  "createdAt": zod.string(),
+  "lastSignInAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Promote or demote a user (super_admin / user)
+ */
+export const SetUserRoleParams = zod.object({
+  "userId": zod.coerce.string()
+})
+
+export const SetUserRoleBody = zod.object({
+  "role": zod.enum(['super_admin', 'user'])
+})
+
+export const SetUserRoleResponse = zod.object({
+  "id": zod.string(),
+  "email": zod.string(),
+  "displayName": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "role": zod.enum(['super_admin', 'user']),
+  "groups": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "description": zod.string().nullish(),
+  "memberCount": zod.number(),
+  "createdAt": zod.string()
+})),
+  "recordingCount": zod.number().optional(),
+  "createdAt": zod.string(),
+  "lastSignInAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Replace the set of groups a user belongs to
+ */
+export const SetUserGroupsParams = zod.object({
+  "userId": zod.coerce.string()
+})
+
+export const SetUserGroupsBody = zod.object({
+  "groupIds": zod.array(zod.number())
+})
+
+export const SetUserGroupsResponse = zod.object({
+  "id": zod.string(),
+  "email": zod.string(),
+  "displayName": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "role": zod.enum(['super_admin', 'user']),
+  "groups": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "description": zod.string().nullish(),
+  "memberCount": zod.number(),
+  "createdAt": zod.string()
+})),
+  "recordingCount": zod.number().optional(),
+  "createdAt": zod.string(),
+  "lastSignInAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Create a Clerk actor token to log in as a user
+ */
+export const ImpersonateUserParams = zod.object({
+  "userId": zod.coerce.string()
+})
+
+export const ImpersonateUserResponse = zod.object({
+  "token": zod.string(),
+  "ticketUrl": zod.string()
+})
+
+
+/**
+ * @summary List all user groups
+ */
+export const ListGroupsResponseItem = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "description": zod.string().nullish(),
+  "memberCount": zod.number(),
+  "createdAt": zod.string()
+})
+export const ListGroupsResponse = zod.array(ListGroupsResponseItem)
+
+
+/**
+ * @summary Create a user group
+ */
+
+
+
+export const CreateGroupBody = zod.object({
+  "name": zod.string().min(1),
+  "description": zod.string().optional()
+})
+
+
+/**
+ * @summary Rename or update a user group
+ */
+export const UpdateGroupParams = zod.object({
+  "groupId": zod.coerce.number()
+})
+
+
+
+
+export const UpdateGroupBody = zod.object({
+  "name": zod.string().min(1).optional(),
+  "description": zod.string().nullish()
+})
+
+export const UpdateGroupResponse = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "description": zod.string().nullish(),
+  "memberCount": zod.number(),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Delete a user group
+ */
+export const DeleteGroupParams = zod.object({
+  "groupId": zod.coerce.number()
+})
+
+
+/**
+ * @summary Send an email notification to all users or a group
+ */
+
+
+
+
+export const SendNotificationBody = zod.object({
+  "subject": zod.string().min(1),
+  "body": zod.string().min(1),
+  "audience": zod.enum(['all', 'group']),
+  "groupId": zod.number().nullish()
+})
+
+export const SendNotificationResponse = zod.object({
+  "sent": zod.number(),
+  "failed": zod.number(),
+  "total": zod.number(),
+  "message": zod.string().nullish()
+})
+
+
+/**
+ * @summary Get the current terms of service (admin)
+ */
+export const GetTosAdminResponse = zod.object({
+  "content": zod.string(),
+  "updatedAt": zod.string()
+})
+
+
+/**
+ * @summary Update the terms of service
+ */
+
+
+
+export const UpdateTosBody = zod.object({
+  "content": zod.string().min(1)
+})
+
+export const UpdateTosResponse = zod.object({
+  "content": zod.string(),
+  "updatedAt": zod.string()
+})
+
+
+/**
+ * @summary Get the current public terms of service
+ */
+export const GetPublicTosResponse = zod.object({
+  "content": zod.string(),
+  "updatedAt": zod.string()
+})
+
+

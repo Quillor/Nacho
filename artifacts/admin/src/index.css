@@ -1,0 +1,7 @@
+@layer theme, base, clerk, components, utilities;
+@import "tailwindcss";
+@import "@clerk/themes/shadcn.css";
+@import "tw-animate-css";
+@import "@workspace/pico-theme/theme.css";
+@plugin "@tailwindcss/typography";
+@source "../../../lib/pico-ui/src";

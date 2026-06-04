@@ -22,10 +22,11 @@ A single-page design system documentation site for "Pico" — a bold, playful, h
 
 ## Where things live
 
-- Nacho recorder app: `artifacts/nacho/src` — `lib/` (recorder, transcribe, gif, publish, db IndexedDB, api helpers), `pages/` (home, studio, library, editor, public-view, settings), `components/` (app-shell, rich-text-editor).
-- Backend: `artifacts/api-server/src/routes` — `recordings.ts` (publish/get/views), `version.ts`, `share.ts` (`/s/:shareId` OG unfurl HTML).
+- Nacho recorder app: `artifacts/nacho/src` — `lib/` (recorder, transcribe, gif, publish, db IndexedDB, api helpers), `pages/` (home, studio, library, editor, public-view, settings, terms), `components/` (app-shell, rich-text-editor).
+- Admin dashboard: `artifacts/admin/src` — served at `/admin/`, muted/denser Pico tone. `pages/` (dashboard, users, user-detail, groups, notifications, content). Super-admin-gated operator console for Nacho.
+- Backend: `artifacts/api-server/src/routes` — `recordings.ts` (publish/get/views), `version.ts`, `share.ts` (`/s/:shareId` OG unfurl HTML), `admin.ts` (super-admin-gated: summary, users, roles, groups, impersonation, notifications, ToS editor), `content.ts` (public `/api/tos`). Admin helpers: `lib/clerk.ts` (clerkClient + role helpers), `lib/email.ts` (Resend via connectors proxy), `middlewares/requireSuperAdmin.ts`.
 - API contract source of truth: `lib/api-spec/openapi.yaml` → codegen produces hooks + zod in `@workspace/api-client-react`.
-- DB schema source of truth: `lib/db/src/schema/recordings.ts` (`published_recordings`).
+- DB schema source of truth: `lib/db/src/schema/` — `recordings.ts` (`published_recordings`), `userGroups.ts` (`user_groups`, `user_group_members`), `tos.ts` (`tos_document`).
 - Pico theme tokens: `lib/pico-theme/theme.css` (CSS vars like `--color-card`, `--color-primary`).
 
 ## Architecture decisions
@@ -37,10 +38,12 @@ A single-page design system documentation site for "Pico" — a bold, playful, h
 - Description HTML is sanitized with DOMPurify both before publish and again at render in `public-view.tsx` (defense in depth against stored XSS).
 - OG unfurl: `api-server` serves `/s/:shareId` server-rendered HTML with meta tags + JS redirect to the SPA `/v/:shareId`; copy-link uses `/s/:shareId`. Nacho previewPath is `/nacho/`.
 - Auth: Replit-managed Clerk (`@clerk/react`) gates the app UI only — recordings stay local-first, routes are not per-user. `<ClerkProvider>` wraps everything in `App.tsx`; landing `/` and public `/v/:shareId` are open, while `/studio`, `/library`, `/editor/:id`, `/settings` are wrapped in a `Protected` gate that redirects signed-out visitors to `/sign-in`. Signed-in users hitting `/` are redirected to `/studio`. Sign-in/up live at `/sign-in/*?` and `/sign-up/*?` (Clerk needs the `/*?` wildcard + full `path` incl. base). `api-server` mounts the Clerk proxy (`/api/__clerk`) + `clerkMiddleware`; the proxy/`VITE_CLERK_PROXY_URL` are prod-only (empty in dev). Account delete uses `user.delete()` in Settings; sign-out uses `useClerk().signOut()`.
+- Admin: super-admin role lives in Clerk `publicMetadata.role` (`super_admin`); `hello@timrosenberg.com` is a permanent super admin enforced in code (`isPermanentSuperAdmin`), independent of metadata. `requireSuperAdmin` middleware gates all `/api/admin/*` via `getAuth(req)` + role check. User management reads/writes Clerk via `clerkClient` (`@clerk/backend`). Impersonation ("Log in as user") mints a Clerk actor token (`clerkClient.actorTokens.create`) and redirects to `/sign-in?__clerk_ticket=<token>` — works because Nacho is served at root `/` and shares the Clerk session. Groups are DB-backed (`user_group_members` stores Clerk user IDs). Email notifications go through Resend via the connectors proxy (`lib/email.ts`); from-address overridable with `NOTIFICATION_FROM_EMAIL`.
+- Terms of Service: single DB row (`tos_document`, id=1), edited in admin Content page, served publicly at `/api/tos` and rendered at Nacho `/terms` (linked in footer). Clerk's legal-consent checkbox at signup is configured in the Clerk Auth pane (not settable via Backend API); point its Terms URL at `/terms`.
 
 ## Product
 
-Nacho is a browser-based screen recorder (Loom alternative). Record screen, camera, or both (with PiP), plus mic/system audio. Recordings save locally; edit title/description, trim, add chapters, and review an auto transcript. Publish to get a public share link with OG preview and view counts. Sign up / sign in (Clerk) is required to use the app; the marketing landing page and public shared-recording view stay open to everyone.
+Nacho is a browser-based screen recorder (Loom alternative). Record screen, camera, or both (with PiP), plus mic/system audio. Recordings save locally; edit title/description, trim, add chapters, and review an auto transcript. Publish to get a public share link with OG preview and view counts. Sign up / sign in (Clerk) is required to use the app; the marketing landing page and public shared-recording view stay open to everyone. A separate super-admin dashboard at `/admin/` operates Nacho: usage summary, user management (roles, groups, impersonation), email notifications, and a Terms of Service editor.
 
 ## User preferences
 
