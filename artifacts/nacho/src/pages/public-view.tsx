@@ -135,7 +135,7 @@ export default function PublicView() {
 
                 {rec.description && (
                   <div
-                    className="prose prose-sm max-w-none prose-headings:font-display prose-a:text-primary"
+                    className="prose prose-sm max-w-none prose-headings:font-display prose-a:font-bold prose-a:text-foreground prose-a:underline prose-a:decoration-2 prose-a:underline-offset-2"
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(rec.description),
                     }}
@@ -190,7 +190,7 @@ export default function PublicView() {
                           onClick={() => seek(seg.start)}
                           className="flex w-full gap-3 border-2 border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
                         >
-                          <span className="shrink-0 font-mono text-xs font-bold text-primary">
+                          <span className="shrink-0 font-mono text-xs font-bold text-foreground">
                             {formatTimestamp(seg.start)}
                           </span>
                           <span className="text-sm">{seg.text}</span>

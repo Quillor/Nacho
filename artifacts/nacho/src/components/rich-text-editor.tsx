@@ -79,7 +79,7 @@ export function RichTextEditor({
         data-placeholder={placeholder}
         className={cn(
           "prose prose-sm min-h-[140px] max-w-none p-4 focus:outline-none",
-          "prose-headings:font-display prose-a:text-primary",
+          "prose-headings:font-display prose-a:font-bold prose-a:text-foreground prose-a:underline prose-a:decoration-2 prose-a:underline-offset-2",
           "empty:before:text-muted-foreground empty:before:content-[attr(data-placeholder)]",
         )}
       />

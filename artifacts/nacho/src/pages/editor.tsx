@@ -446,7 +446,7 @@ export default function Editor() {
                       onClick={() => seek(seg.start)}
                       className="flex w-full gap-3 border-2 border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
                     >
-                      <span className="shrink-0 font-mono text-xs font-bold text-primary">
+                      <span className="shrink-0 font-mono text-xs font-bold text-foreground">
                         {formatTimestamp(seg.start)}
                       </span>
                       <span className="text-sm">{seg.text}</span>

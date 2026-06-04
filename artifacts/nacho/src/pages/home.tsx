@@ -258,7 +258,7 @@ export default function Home() {
           >
             {['Slack', 'Notion', 'Linear', 'Jira', 'GitHub', 'Figma', 'Discord', 'Gmail', 'Confluence', 'Trello'].map((tool, i) => (
               <div key={i} className="px-8 py-4 border-4 border-foreground bg-card text-card-foreground shadow-lg font-display font-bold text-2xl uppercase inline-flex items-center gap-2">
-                <CheckCircle2 className="w-6 h-6 text-primary" />
+                <CheckCircle2 className="w-6 h-6 text-foreground" />
                 {tool}
               </div>
             ))}
@@ -288,11 +288,11 @@ export default function Home() {
             <Logo className="h-10" />
           </Link>
           <div className="flex gap-6 font-medium font-bold text-foreground/80">
-            <a href="#" className="hover:text-primary transition-colors">Twitter</a>
-            <a href="#" className="hover:text-primary transition-colors">LinkedIn</a>
-            <a href="#" className="hover:text-primary transition-colors">Privacy</a>
-            <a href="#" className="hover:text-primary transition-colors">Terms</a>
-            <a href="/design-system/" className="hover:text-primary transition-colors">Design System</a>
+            <a href="#" className="hover:text-foreground hover:underline transition-colors">Twitter</a>
+            <a href="#" className="hover:text-foreground hover:underline transition-colors">LinkedIn</a>
+            <a href="#" className="hover:text-foreground hover:underline transition-colors">Privacy</a>
+            <a href="#" className="hover:text-foreground hover:underline transition-colors">Terms</a>
+            <a href="/design-system/" className="hover:text-foreground hover:underline transition-colors">Design System</a>
           </div>
         </div>
       </footer>

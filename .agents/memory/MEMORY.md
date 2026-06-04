@@ -5,3 +5,4 @@
 - [Server-side Clerk auth](clerk-server-auth.md) — api-server uses `getAuth(req)` (works in dev too); owner-gate mutations, send `credentials:"include"`, keep public reads open.
 - [Nacho illustrations lib](nacho-illustrations-lib.md) — `@workspace/nacho-illustrations` is assets-only (no TS); import PNGs via `/assets/<name>.png`, shared across artifacts.
 - [Published recording sync](recording-publish-sync.md) — editing a published recording must PATCH the server copy; trim is metadata-only, only the GIF preview is re-uploaded on trim change.
+- [Pico contrast rules](pico-contrast-rules.md) — never use `text-primary` (yellow) on cream/light surfaces; yellow is a fill (`bg-primary` + brown text), readable text on light is `text-foreground`.
