@@ -15,7 +15,7 @@ import {
   type UiToCode,
   type CodeToUi,
 } from "../shared/messages";
-import { buildHexToTokenMap } from "../shared/tokens";
+import { buildHexToTokenMap, validatePicoTokens } from "../shared/tokens";
 
 const $ = <T extends HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -333,9 +333,31 @@ $("device").addEventListener("change", () => {
   $("custom-size").classList.toggle("show", custom);
 });
 
-$("btn-sync-tokens").addEventListener("click", () => {
-  setStatus("info", "Syncing tokens…");
-  post({ type: "sync-tokens" });
+$("btn-sync-tokens").addEventListener("click", async () => {
+  const tokensUrl = ($("tokens-url") as HTMLInputElement).value.trim();
+  if (!tokensUrl) {
+    setStatus("info", "Syncing bundled tokens…");
+    post({ type: "sync-tokens" });
+    return;
+  }
+  if (!/^https?:\/\//i.test(tokensUrl)) {
+    setStatus("error", "Tokens URL must be an http(s) link.");
+    return;
+  }
+  setStatus("info", "Fetching latest tokens…");
+  try {
+    const res = await fetch(tokensUrl, { credentials: "omit" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = validatePicoTokens(await res.json());
+    setStatus("info", "Syncing tokens from URL…");
+    post({ type: "sync-tokens", tokens: data, sourceLabel: tokensUrl });
+  } catch (e) {
+    setStatus(
+      "error",
+      `Couldn't use ${tokensUrl} (${(e as Error).message}). Falling back to bundled tokens…`,
+    );
+    post({ type: "sync-tokens" });
+  }
 });
 
 $("btn-generate-components").addEventListener("click", () => {

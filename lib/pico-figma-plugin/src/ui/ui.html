@@ -116,9 +116,13 @@
 
     <div class="group">
       <div class="group-label">Design tokens &amp; library</div>
+      <label class="field">
+        <span>Tokens URL (optional)</span>
+        <input id="tokens-url" type="url" placeholder="https://your-app.replit.app/tokens.json" />
+      </label>
       <button class="action primary" id="btn-sync-tokens">
         Sync tokens
-        <small>Create / update Figma variables, text &amp; effect styles</small>
+        <small>Fetch from the URL above, or use the bundled copy when empty</small>
       </button>
       <button class="action" id="btn-generate-components">
         Generate components

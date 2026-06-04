@@ -30,10 +30,11 @@ figma.ui.onmessage = async (msg: UiToCode) => {
     switch (msg.type) {
       case "sync-tokens": {
         const log = makeLogger();
-        const r = await syncTokens(log);
+        const source = msg.sourceLabel || "bundled tokens";
+        const r = await syncTokens(log, msg.tokens);
         status(
           "success",
-          `Tokens synced — ${r.colors} colors, ${r.radius} radii, ${r.shadows} shadows, ${r.text} text styles.`,
+          `Tokens synced from ${source} — ${r.colors} colors, ${r.radius} radii, ${r.shadows} shadows, ${r.text} text styles.`,
         );
         break;
       }

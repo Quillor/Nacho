@@ -2,6 +2,8 @@
 // plugin code (Figma sandbox, has the Figma API). Keep these shapes stable;
 // both sides import this module.
 
+import type { PicoTokens } from "./tokens";
+
 export type DeviceSizeId = "desktop" | "tablet" | "mobile" | "custom";
 
 export interface DeviceSize {
@@ -74,7 +76,16 @@ export interface ParsedPage {
 // ---- UI -> code messages -------------------------------------------------
 
 export type UiToCode =
-  | { type: "sync-tokens" }
+  | {
+      type: "sync-tokens";
+      /**
+       * Tokens fetched live from a "tokens URL" in the UI. When omitted the
+       * code side uses the copy bundled at build time.
+       */
+      tokens?: PicoTokens;
+      /** Where the tokens came from, for the status message (e.g. the URL or "bundled"). */
+      sourceLabel?: string;
+    }
   | { type: "generate-components" }
   | { type: "generate-placeholder"; name?: string }
   | { type: "reconstruct-page"; page: ParsedPage; device: DeviceSize }

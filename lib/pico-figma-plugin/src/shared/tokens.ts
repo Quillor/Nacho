@@ -39,6 +39,40 @@ export const tokens = rawTokens as unknown as PicoTokens;
 /** Ordered list of color token names (light mode is authoritative for keys). */
 export const COLOR_TOKEN_NAMES = Object.keys(tokens.colors.light);
 
+/** Color token names for an arbitrary token set (light mode is authoritative). */
+export function colorTokenNames(set: PicoTokens): string[] {
+  return Object.keys(set.colors.light);
+}
+
+/**
+ * Validate that an arbitrary parsed JSON value has the shape of a Pico token
+ * manifest. Throws with a human-readable message on the first missing piece so
+ * a bad fetched URL fails loudly (and the caller can fall back to bundled).
+ */
+export function validatePicoTokens(data: unknown): PicoTokens {
+  const fail = (why: string): never => {
+    throw new Error(`Not a valid Pico tokens manifest: ${why}.`);
+  };
+  if (typeof data !== "object" || data === null) fail("expected a JSON object");
+  const d = data as Record<string, unknown>;
+  const colors = d.colors as { light?: unknown; dark?: unknown } | undefined;
+  if (!colors || typeof colors !== "object") fail("missing `colors`");
+  const light = colors!.light as Record<string, unknown> | undefined;
+  const dark = colors!.dark as Record<string, unknown> | undefined;
+  if (!light || typeof light !== "object" || Object.keys(light).length === 0) {
+    fail("missing `colors.light`");
+  }
+  if (!dark || typeof dark !== "object") fail("missing `colors.dark`");
+  const radius = d.radius as { base?: unknown; scale?: unknown } | undefined;
+  if (!radius || typeof radius.base !== "string" || typeof radius.scale !== "object") {
+    fail("missing `radius.base` / `radius.scale`");
+  }
+  const shadows = d.shadows as { light?: unknown; dark?: unknown } | undefined;
+  if (!shadows || typeof shadows.light !== "object") fail("missing `shadows.light`");
+  if (!d.fonts || typeof d.fonts !== "object") fail("missing `fonts`");
+  return data as PicoTokens;
+}
+
 /** Radius token keys in scale order. */
 export const RADIUS_KEYS = ["sm", "md", "lg", "xl"] as const;
 

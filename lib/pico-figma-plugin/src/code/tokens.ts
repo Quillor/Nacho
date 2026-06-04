@@ -2,13 +2,14 @@
 // (Light/Dark modes), text styles, and effect styles. Idempotent.
 
 import {
-  tokens,
-  COLOR_TOKEN_NAMES,
+  tokens as bundledTokens,
+  colorTokenNames,
   RADIUS_KEYS,
   SHADOW_KEYS,
   hslToRgb01,
   hexToRgb01,
   parseShadow,
+  type PicoTokens,
 } from "../shared/tokens";
 import {
   getOrCreateCollection,
@@ -48,6 +49,7 @@ function resolveRadiusPx(expr: string, basePx: number): number {
 
 export async function syncTokens(
   log: (msg: string) => void,
+  tokens: PicoTokens = bundledTokens,
 ): Promise<{ colors: number; radius: number; shadows: number; text: number }> {
   await ensureFonts();
   const collection = await getOrCreateCollection();
@@ -56,7 +58,7 @@ export async function syncTokens(
 
   // --- Colors (Light + Dark modes) ---
   let colorCount = 0;
-  for (const name of COLOR_TOKEN_NAMES) {
+  for (const name of colorTokenNames(tokens)) {
     const variable = await getOrCreateVariable(
       `color/${name}`,
       collection,
