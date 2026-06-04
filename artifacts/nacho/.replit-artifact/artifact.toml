@@ -1,5 +1,5 @@
 kind = "web"
-previewPath = "/nacho/"
+previewPath = "/"
 title = "Nacho"
 version = "1.0.0"
 id = "artifacts/nacho"
@@ -11,7 +11,7 @@ version = "1.0.0"
 
 [[services]]
 name = "web"
-paths = [ "/nacho/" ]
+paths = [ "/" ]
 localPort = 18301
 
 [services.development]
@@ -28,4 +28,4 @@ to = "/index.html"
 
 [services.env]
 PORT = "18301"
-BASE_PATH = "/nacho/"
+BASE_PATH = "/"

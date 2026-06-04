@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-import BlankPage from "@/pages/blank";
 import NotFound from "@/pages/not-found";
 import { DocsLayout } from "@/components/layout/DocsLayout";
 
@@ -31,43 +30,33 @@ const queryClient = new QueryClient();
 
 function Router() {
   return (
-    <Switch>
-      {/* Root route is blank */}
-      <Route path="/" component={BlankPage} />
-      
-      {/* All design system routes wrapped in layout */}
-      <Route path="/design-system/*?">
-        <DocsLayout>
-          <Switch>
-            <Route path="/design-system" component={Introduction} />
-            <Route path="/design-system/installation" component={Installation} />
-            
-            {/* Foundations */}
-            <Route path="/design-system/foundations/colors" component={Colors} />
-            <Route path="/design-system/foundations/typography" component={Typography} />
-            <Route path="/design-system/foundations/spacing" component={Spacing} />
-            <Route path="/design-system/foundations/shadows" component={Shadows} />
-            <Route path="/design-system/foundations/radius" component={Radius} />
+    <DocsLayout>
+      <Switch>
+        <Route path="/" component={Introduction} />
+        <Route path="/installation" component={Installation} />
 
-            {/* Components */}
-            <Route path="/design-system/components/button" component={ButtonDocs} />
-            <Route path="/design-system/components/badge" component={BadgeDocs} />
-            <Route path="/design-system/components/card" component={CardDocs} />
-            <Route path="/design-system/components/input" component={InputDocs} />
-            <Route path="/design-system/components/alert" component={AlertDocs} />
-            <Route path="/design-system/components/tabs" component={TabsDocs} />
-            <Route path="/design-system/components/switch" component={SwitchDocs} />
-            <Route path="/design-system/components/checkbox" component={CheckboxDocs} />
-            <Route path="/design-system/components/avatar" component={AvatarDocs} />
-            <Route path="/design-system/components/dialog" component={DialogDocs} />
+        {/* Foundations */}
+        <Route path="/foundations/colors" component={Colors} />
+        <Route path="/foundations/typography" component={Typography} />
+        <Route path="/foundations/spacing" component={Spacing} />
+        <Route path="/foundations/shadows" component={Shadows} />
+        <Route path="/foundations/radius" component={Radius} />
 
-            <Route component={NotFound} />
-          </Switch>
-        </DocsLayout>
-      </Route>
+        {/* Components */}
+        <Route path="/components/button" component={ButtonDocs} />
+        <Route path="/components/badge" component={BadgeDocs} />
+        <Route path="/components/card" component={CardDocs} />
+        <Route path="/components/input" component={InputDocs} />
+        <Route path="/components/alert" component={AlertDocs} />
+        <Route path="/components/tabs" component={TabsDocs} />
+        <Route path="/components/switch" component={SwitchDocs} />
+        <Route path="/components/checkbox" component={CheckboxDocs} />
+        <Route path="/components/avatar" component={AvatarDocs} />
+        <Route path="/components/dialog" component={DialogDocs} />
 
-      <Route component={NotFound} />
-    </Switch>
+        <Route component={NotFound} />
+      </Switch>
+    </DocsLayout>
   );
 }
 

@@ -20,33 +20,33 @@ const NAVIGATION = [
   {
     title: "Getting Started",
     links: [
-      { title: "Introduction", href: "/design-system" },
-      { title: "Installation", href: "/design-system/installation" },
+      { title: "Introduction", href: "/" },
+      { title: "Installation", href: "/installation" },
     ]
   },
   {
     title: "Foundations",
     links: [
-      { title: "Colors", href: "/design-system/foundations/colors" },
-      { title: "Typography", href: "/design-system/foundations/typography" },
-      { title: "Spacing", href: "/design-system/foundations/spacing" },
-      { title: "Shadows", href: "/design-system/foundations/shadows" },
-      { title: "Radius", href: "/design-system/foundations/radius" },
+      { title: "Colors", href: "/foundations/colors" },
+      { title: "Typography", href: "/foundations/typography" },
+      { title: "Spacing", href: "/foundations/spacing" },
+      { title: "Shadows", href: "/foundations/shadows" },
+      { title: "Radius", href: "/foundations/radius" },
     ]
   },
   {
     title: "Components",
     links: [
-      { title: "Button", href: "/design-system/components/button" },
-      { title: "Badge", href: "/design-system/components/badge" },
-      { title: "Card", href: "/design-system/components/card" },
-      { title: "Input", href: "/design-system/components/input" },
-      { title: "Alert", href: "/design-system/components/alert" },
-      { title: "Tabs", href: "/design-system/components/tabs" },
-      { title: "Switch", href: "/design-system/components/switch" },
-      { title: "Checkbox", href: "/design-system/components/checkbox" },
-      { title: "Avatar", href: "/design-system/components/avatar" },
-      { title: "Dialog", href: "/design-system/components/dialog" },
+      { title: "Button", href: "/components/button" },
+      { title: "Badge", href: "/components/badge" },
+      { title: "Card", href: "/components/card" },
+      { title: "Input", href: "/components/input" },
+      { title: "Alert", href: "/components/alert" },
+      { title: "Tabs", href: "/components/tabs" },
+      { title: "Switch", href: "/components/switch" },
+      { title: "Checkbox", href: "/components/checkbox" },
+      { title: "Avatar", href: "/components/avatar" },
+      { title: "Dialog", href: "/components/dialog" },
     ]
   }
 ];
@@ -58,7 +58,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <Sidebar className="border-r-4 border-foreground" variant="sidebar" collapsible="offcanvas">
         <SidebarHeader className="border-b-4 border-foreground p-6 bg-primary">
-          <Link href="/design-system" className="font-display font-black text-3xl tracking-tight uppercase text-foreground">
+          <Link href="/" className="font-display font-black text-3xl tracking-tight uppercase text-foreground">
             Pico.
           </Link>
           <div className="font-bold uppercase text-xs tracking-widest mt-1">Design System</div>
