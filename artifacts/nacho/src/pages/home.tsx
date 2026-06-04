@@ -295,6 +295,7 @@ export default function Home() {
             <a href="#" className="hover:text-primary transition-colors">LinkedIn</a>
             <a href="#" className="hover:text-primary transition-colors">Privacy</a>
             <a href="#" className="hover:text-primary transition-colors">Terms</a>
+            <a href="/design-system/" className="hover:text-primary transition-colors">Design System</a>
           </div>
         </div>
       </footer>
