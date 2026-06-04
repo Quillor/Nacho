@@ -1,0 +1,1 @@
+- [Shared Pico theme lib](pico-shared-theme.md) — `@workspace/pico-theme/theme.css` is the single source of truth for design tokens; all artifacts import it so token edits propagate.

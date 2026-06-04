@@ -1,0 +1,26 @@
+Build "Nacho" — a personal screen-recording app (Loom alternative)
+Build a Mac desktop screen-recording app called Nacho, plus a small companion website that hosts the app's download page and renders public share links. Apply my own design system for all visual styling — you decide layout and interaction, I'll theme it. Do not add authentication anywhere; this is for personal/local use. Recordings are stored locally on the user's machine; publishing a recording uploads a copy to the companion site so its public link works for anyone.
+
+What it does: Records the screen with the webcam composited as a circular bubble + mic audio mixed in, saves locally, and gives a polished library + editor to title, trim, add chapters/description, pick a thumbnail, review an auto transcript, and publish a shareable public link.
+
+App shell: Header with "Nacho" home button (left), "Settings" + "New recording" (right) — hidden on the public share view. Views: Library, Recording Studio, Editor/Playback, Public View, Settings.
+
+1) Recording Studio — Two columns. Left: "What to share" (Full screen / A window as live source thumbnails + Refresh); "Inputs" (Self camera toggle + camera dropdown preferring built-in/FaceTime + 4-corner bubble position picker; Microphone toggle); "Speaker notes" rich-text editor. Right: live canvas preview of exactly what records (screen full-bleed + mirrored circular webcam bubble with ring). Flow: 3-2-1 countdown → minimize app + show always-on-top content-protected overlay with timer + pause/resume/stop (never appears in recording); bubble + mic baked in. After stop → Review & Save: clamped preview, dual-handle trim slider (soft trim), title pre-filled with date/time, Save / Discard.
+
+2) Library — Grid ↔ list toggle. Sort by Recent / Duration / Size / Views. Cards show thumbnail, title, date, duration badge, view count; still by default, hover plays the animated GIF (fallback: custom thumbnail → first frame → "No preview"). Multi-select + bulk delete with confirm. Empty-state CTA "Make your first recording."
+
+3) Editor/Playback — Title + actions (Copy link/Publish, Download, Delete, open Public View) above the video. View-count indicator. Custom player: trim-scaled timeline, play/pause, time, volume/mute, fullscreen, chapter markers, CC toggle. Sub-nav tabs: Chapters (add at current time, seek, remove; times relative to trim), Description (rich-text with links), Thumbnail (Animated GIF default / timeline frame / upload; ~4s GIF sampled evenly across trim). Transcript sidebar collapsed by default with consistent top-right toggle; click line to seek, active line highlights/scrolls. Captions overlay active line when on.
+
+4) Public View — Read-only: player, title, description, chapters, transcript, captions; no editing/chrome. Opening counts a view. No date under title; description above chapters with no heading; description links open in default browser. Transcript collapsed (same toggle spot). Real hosted URLs that unfurl with Open Graph preview (thumbnail + title) in chat apps.
+
+5) Transcription — Auto on-device timestamped transcript (no third-party LLM); powers sidebar + toggleable captions in Editor and Public View.
+
+6) Rich-text editor (notes + description) — Clean block structure; line-start markdown (#/##/###, -/*, 1., ---/***/___) transforms in place keeping cursor; Enter after heading → paragraph; undoable; bold/italic/bullet/numbered/divider; Preview/Edit toggle. Description links: in-app URL input, Cmd/Ctrl+K, and paste-URL-over-selection wraps it.
+
+7) Settings — One "Grant permissions" (screen, camera, mic, speech) + "Open System Settings" + read-only status of all four. Update the Mac app: current vs. latest version, "Check for updates", and download/install with progress pulling the latest build from the Replit download page. No API keys/accounts.
+
+8) Companion site (Replit) — Download page serving latest build + exposing current version (for the in-app updater); public share pages rendering the read-only view with Open Graph metadata.
+
+Data per recording: id, title (+ auto title), duration, size, trim start/end, captured thumbnail, optional custom thumbnail + mode (gif/frame/upload), has-gif, view count, has-audio, transcript segments, description, chapters (time + label), created timestamp.
+
+Acceptance: (1) record with bubble + mic baked in, countdown, minimize + protected overlay; (2) trim, title, save; (3) library grid/list, sort, duration + views, hover GIF, bulk delete; (4) editor tabs + transcript + captions work; (5) publish → public URL, counts views, unfurls with preview; (6) settings grants permissions + version-check/download; (7) no auth, local-first, upload only on publish.

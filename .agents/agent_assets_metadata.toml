@@ -1,0 +1,26 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "cZhlvtqPDB6o0LvGHaXK1"
+uri = "file://artifacts/nacho/public/hero-mockup.png"
+type = "image"
+title = "screen recording app UI mockup"
+
+[[generated]]
+id = "fZXWp30Z_CVFFbq9MGVKm"
+uri = "file://artifacts/nacho/public/feature-camera.png"
+type = "image"
+title = "webcam recording bubble illustration"
+
+[[generated]]
+id = "_lhHs40wRNkR5qX0Wxjq0"
+uri = "file://artifacts/nacho/public/feature-share.png"
+type = "image"
+title = "share link chat illustration"
+
+[[generated]]
+id = "dTpzEZ8W4x4nNDeNtUzxY"
+uri = "file://artifacts/nacho/public/feature-trim.png"
+type = "image"
+title = "video trimming illustration"

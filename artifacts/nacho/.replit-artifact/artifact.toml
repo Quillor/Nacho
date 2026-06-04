@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/nacho/"
+title = "Nacho"
+version = "1.0.0"
+id = "artifacts/nacho"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/nacho/" ]
+localPort = 18301
+
+[services.development]
+run = "pnpm --filter @workspace/nacho run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/nacho", "run", "build" ]
+publicDir = "artifacts/nacho/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18301"
+BASE_PATH = "/nacho/"
