@@ -55,13 +55,13 @@ export default function Home() {
             className="max-w-2xl"
           >
             <motion.div variants={fadeIn} className="inline-block mb-6 px-4 py-2 bg-background border-2 border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-sm text-foreground">
-              Stop typing. Start talking.
+              Snack-sized screen clips
             </motion.div>
  <motion.h1 variants={fadeIn} className="text-6xl md:text-8xl font-display font-extrabold tracking-tight leading-[0.9] mb-8 text-foreground">
-              Send a <br/> video, not <br/> a novel.
+              Send a clip. <br/> Save a meeting.
             </motion.h1>
             <motion.p variants={fadeIn} className="text-xl md:text-2xl font-medium leading-relaxed text-foreground/90 mb-10 max-w-lg">
-              Record your screen, camera, and mic. Share an instant link. Nacho is the fastest way to get your point across without typing a 10-paragraph email.
+              Record a snackable screen walkthrough in seconds and drop the link wherever your team works. They watch on their own time — and the meeting that could've been an email never happens.
             </motion.p>
             <motion.div variants={fadeIn} className="flex flex-wrap gap-4">
               <Button asChild size="lg" className="h-16 px-8 text-lg font-bold border-4 border-foreground shadow-lg hover:translate-y-[2px] hover:shadow-md transition-all bg-background text-foreground hover:bg-background/90 rounded-none">
@@ -84,7 +84,7 @@ export default function Home() {
             </div>
             {/* Decoration */}
  <div className="absolute -bottom-6 -left-6 bg-secondary text-secondary-foreground font-display font-extrabold text-2xl py-3 px-6 border-4 border-foreground shadow-lg -rotate-6">
-              Instant Link!
+              Skip the meeting!
             </div>
           </motion.div>
         </div>
@@ -109,8 +109,8 @@ export default function Home() {
               viewport={{ once: true }}
  className="text-4xl md:text-6xl font-display font-extrabold leading-tight mb-8"
             >
-              You speak 7x faster than you type. <br/>
-              <span className="text-primary">Why are you still typing?</span>
+              Why book a meeting <br/>
+              <span className="text-primary">when a snack will do?</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0, y: 30 }}
@@ -119,7 +119,7 @@ export default function Home() {
               transition={{ delay: 0.1 }}
               className="text-xl md:text-2xl font-medium text-background/80"
             >
-              Emails get misread. Meetings take too long. A quick Nacho video captures your tone, your screen, and your exact point in seconds.
+              Calendars fill up and threads get misread. A quick Nacho clip captures your screen, your voice, and your exact point — bite-sized enough to digest in a minute, watched on their schedule instead of stealing everyone's.
             </motion.p>
           </div>
         </div>
@@ -147,10 +147,10 @@ export default function Home() {
               </div>
               <div className="p-8 flex-1 flex flex-col justify-between">
                 <div>
- <h3 className="text-3xl font-display font-bold mb-4 text-card-foreground">Record Anything</h3>
-                  <p className="text-card-foreground/80 font-medium text-lg mb-6">Capture your screen, your face, or both. Nacho lives in your menu bar, ready to roll.</p>
+ <h3 className="text-3xl font-display font-bold mb-4 text-card-foreground">Record in a snap</h3>
+                  <p className="text-card-foreground/80 font-medium text-lg mb-6">Capture your screen, your face, or both in a quick clip. Nacho lives in your menu bar, ready to roll in seconds.</p>
                 </div>
-                <Badge className="w-fit text-sm font-bold uppercase tracking-wider px-3 py-1 bg-primary text-primary-foreground border-2 border-foreground rounded-none shadow-sm">1-Click Record</Badge>
+                <Badge className="w-fit text-sm font-bold uppercase tracking-wider px-3 py-1 bg-primary text-primary-foreground border-2 border-foreground rounded-none shadow-sm">Quick clips</Badge>
               </div>
             </motion.div>
 
@@ -166,10 +166,10 @@ export default function Home() {
               </div>
               <div className="p-8 flex-1 flex flex-col justify-between">
                 <div>
- <h3 className="text-3xl font-display font-bold mb-4 text-card-foreground">Share Instantly</h3>
-                  <p className="text-card-foreground/80 font-medium text-lg mb-6">The moment you hit stop, a link is copied to your clipboard. No uploading, no waiting.</p>
+ <h3 className="text-3xl font-display font-bold mb-4 text-card-foreground">Share with everyone</h3>
+                  <p className="text-card-foreground/80 font-medium text-lg mb-6">The moment you hit stop, a link lands on your clipboard. Record once and send it to one teammate or the whole company.</p>
                 </div>
-                <Badge className="w-fit text-sm font-bold uppercase tracking-wider px-3 py-1 bg-secondary text-secondary-foreground border-2 border-foreground rounded-none shadow-sm">Zero Wait Time</Badge>
+                <Badge className="w-fit text-sm font-bold uppercase tracking-wider px-3 py-1 bg-secondary text-secondary-foreground border-2 border-foreground rounded-none shadow-sm">Record once, reach many</Badge>
               </div>
             </motion.div>
 
@@ -185,10 +185,10 @@ export default function Home() {
               </div>
               <div className="p-8 flex-1 flex flex-col justify-between">
                 <div>
- <h3 className="text-3xl font-display font-bold mb-4 text-card-foreground">Trim the Fat</h3>
-                  <p className="text-card-foreground/80 font-medium text-lg mb-6">Messed up the intro? Sneezed at the end? Chop it off with the built-in lightning-fast editor.</p>
+ <h3 className="text-3xl font-display font-bold mb-4 text-card-foreground">Keep it snackable</h3>
+                  <p className="text-card-foreground/80 font-medium text-lg mb-6">Messed up the intro? Rambled at the end? Trim it down to the good parts so every clip stays short and easy to digest.</p>
                 </div>
-                <Badge className="w-fit text-sm font-bold uppercase tracking-wider px-3 py-1 bg-destructive text-destructive-foreground border-2 border-foreground rounded-none shadow-sm">Easy Edits</Badge>
+                <Badge className="w-fit text-sm font-bold uppercase tracking-wider px-3 py-1 bg-destructive text-destructive-foreground border-2 border-foreground rounded-none shadow-sm">Bite-sized</Badge>
               </div>
             </motion.div>
           </div>
@@ -198,7 +198,7 @@ export default function Home() {
       {/* 4. How it Works (Steps) */}
       <section data-pico-section="how-it-works" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-secondary text-secondary-foreground relative overflow-hidden">
         <div className="max-w-5xl mx-auto relative z-10">
- <h2 className="text-5xl md:text-7xl font-display font-extrabold text-center mb-6 text-secondary-foreground">As simple as 1, 2, 3.</h2>
+ <h2 className="text-5xl md:text-7xl font-display font-extrabold text-center mb-6 text-secondary-foreground">Record once, share with everyone.</h2>
           <motion.img
             src={hammockNacho}
             alt="A relaxed nacho mascot lounging in a hammock with a drink"
@@ -211,9 +211,9 @@ export default function Home() {
 
           <div className="space-y-16">
             {[
-              { num: "01", title: "Hit Record", desc: "Click the Nacho icon or use the global shortcut to start capturing." },
-              { num: "02", title: "Talk it out", desc: "Show your screen, point things out, explain exactly what you mean." },
-              { num: "03", title: "Paste the link", desc: "Stop recording and immediately paste the link into Slack, Email, or anywhere." }
+              { num: "01", title: "Hit record", desc: "Click the Nacho icon or use the global shortcut. Most clips are done in under two minutes." },
+              { num: "02", title: "Make your point", desc: "Show your screen, point things out, explain it once — clearly, the way you would in person." },
+              { num: "03", title: "Share with everyone", desc: "Drop the link into Slack, email, or anywhere. Send it to one person or a hundred — you only had to record it once." }
             ].map((step, i) => (
               <motion.div 
                 key={i}
@@ -246,7 +246,7 @@ export default function Home() {
           >
             <MessageSquare className="w-16 h-16 mx-auto mb-8 text-foreground" />
  <h2 className="text-4xl md:text-6xl font-display font-extrabold leading-tight text-foreground mb-12">
-              "We banned internal meetings. Now we just send Nachos. Productivity is up 400% and nobody is mad about it."
+              "We swapped our standup for snackable Nachos. I record once and the whole team watches whenever — it's like being in ten places at once without repeating myself."
             </h2>
             <div className="flex items-center justify-center gap-4">
               <div className="w-16 h-16 rounded-full border-4 border-foreground bg-background overflow-hidden">
@@ -254,7 +254,7 @@ export default function Home() {
               </div>
               <div className="text-left">
  <div className="font-display font-bold text-2xl text-foreground">Sarah Jenkins</div>
-                <div className="font-medium text-foreground/80">VP of Getting Things Done</div>
+                <div className="font-medium text-foreground/80">VP of Skipping Meetings</div>
               </div>
             </div>
           </motion.div>
@@ -265,7 +265,7 @@ export default function Home() {
       <section data-pico-section="integrations" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-background overflow-hidden">
         <div className="max-w-7xl mx-auto text-center mb-16">
  <h2 className="text-4xl md:text-6xl font-display font-extrabold mb-6 text-foreground">Plays nice with others</h2>
-          <p className="text-xl font-medium text-foreground/80 max-w-2xl mx-auto">Paste a Nacho link anywhere and it automatically unfurls into a beautiful playable embed.</p>
+          <p className="text-xl font-medium text-foreground/80 max-w-2xl mx-auto">Drop a Nacho link wherever your team already works and it unfurls into a beautiful, playable clip — no app to install, no meeting to schedule.</p>
         </div>
 
         {/* Marquee effect */}
@@ -289,10 +289,10 @@ export default function Home() {
       <section data-pico-section="cta" className="py-32 px-6 md:px-12 bg-foreground text-background">
         <div className="max-w-4xl mx-auto text-center">
  <h2 className="text-5xl md:text-8xl font-display font-extrabold tracking-tight mb-8">
-            Ready to stop typing?
+            Ready to multiply yourself?
           </h2>
           <p className="text-2xl font-medium text-background/80 mb-12">
-            Join 100,000+ people who communicate better, faster.
+            Join 100,000+ people who record once, skip the meeting, and show up everywhere at once.
           </p>
           <Button asChild size="lg" className="h-20 px-12 text-2xl font-display font-extrabold uppercase tracking-wider border-4 border-foreground shadow-xl hover:translate-y-[4px] hover:shadow-lg transition-all bg-primary text-foreground hover:bg-primary/90 rounded-none">
             <Link href="/sign-up">Get Nacho For Free</Link>
