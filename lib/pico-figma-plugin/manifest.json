@@ -1,0 +1,13 @@
+{
+  "name": "Pico Design System",
+  "id": "pico-design-system-figma-plugin",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["*"],
+    "reasoning": "Page-from-URL fetches a public page's rendered HTML so the plugin can reconstruct it in Figma."
+  }
+}

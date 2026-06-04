@@ -22,6 +22,7 @@ const NAVIGATION = [
     links: [
       { title: "Introduction", href: "/" },
       { title: "Installation", href: "/installation" },
+      { title: "Figma Plugin", href: "/figma-plugin" },
     ]
   },
   {

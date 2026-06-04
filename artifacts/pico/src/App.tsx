@@ -9,6 +9,7 @@ import { DocsLayout } from "@/components/layout/DocsLayout";
 // Docs Pages
 import Introduction from "@/pages/design-system/introduction";
 import Installation from "@/pages/design-system/installation";
+import FigmaPlugin from "@/pages/design-system/figma-plugin";
 import ContentGuidelines from "@/pages/design-system/content-guidelines";
 import Colors from "@/pages/design-system/foundations/colors";
 import Logo from "@/pages/design-system/foundations/logo";
@@ -91,6 +92,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Introduction} />
         <Route path="/installation" component={Installation} />
+        <Route path="/figma-plugin" component={FigmaPlugin} />
 
         {/* Guidelines */}
         <Route path="/guidelines/voice-and-tone" component={ContentGuidelines} />

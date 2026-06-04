@@ -883,6 +883,19 @@ importers:
 
   lib/nacho-illustrations: {}
 
+  lib/pico-figma-plugin:
+    dependencies:
+      '@workspace/pico-theme':
+        specifier: workspace:*
+        version: link:../pico-theme
+    devDependencies:
+      '@figma/plugin-typings':
+        specifier: ^1.109.0
+        version: 1.127.0
+      esbuild:
+        specifier: 0.27.3
+        version: 0.27.3
+
   lib/pico-theme: {}
 
   lib/pico-ui:
@@ -1177,6 +1190,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [linux]
+
+  '@figma/plugin-typings@1.127.0':
+    resolution: {integrity: sha512-Y8fjfUCdWN6bUTs1wsd9GFZ3zF4USDVNmmxfUo/4Ia7NmFemSK2nBxOu7BKcusEHCERwiO7N8iOqw5jwvbL80g==}
 
   '@floating-ui/core@1.7.5':
     resolution: {integrity: sha512-1Ih4WTWyw0+lKyFMcBHGbb5U5FtuHJuujoyyr5zTaWS5EYMeT6Jb2AuDeftsCsEuchO+mM2ij5+q9crhydzLhQ==}
@@ -4116,6 +4132,8 @@ snapshots:
 
   '@esbuild/linux-x64@0.27.3':
     optional: true
+
+  '@figma/plugin-typings@1.127.0': {}
 
   '@floating-ui/core@1.7.5':
     dependencies:
