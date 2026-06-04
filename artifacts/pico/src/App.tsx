@@ -26,6 +26,16 @@ import CheckboxDocs from "@/pages/design-system/components/checkbox";
 import AvatarDocs from "@/pages/design-system/components/avatar";
 import DialogDocs from "@/pages/design-system/components/dialog";
 
+import PatternsOverview from "@/pages/design-system/patterns/overview";
+import FormsPattern from "@/pages/design-system/patterns/forms";
+import LayoutPattern from "@/pages/design-system/patterns/layout";
+import EmptyStatesPattern from "@/pages/design-system/patterns/empty-states";
+import LoadingPattern from "@/pages/design-system/patterns/loading";
+import FeedbackPattern from "@/pages/design-system/patterns/feedback";
+import ConfirmationPattern from "@/pages/design-system/patterns/confirmation";
+import CardsListsPattern from "@/pages/design-system/patterns/cards-lists";
+import OverlaysPattern from "@/pages/design-system/patterns/overlays";
+
 const queryClient = new QueryClient();
 
 function Router() {
@@ -53,6 +63,17 @@ function Router() {
         <Route path="/components/checkbox" component={CheckboxDocs} />
         <Route path="/components/avatar" component={AvatarDocs} />
         <Route path="/components/dialog" component={DialogDocs} />
+
+        {/* Patterns */}
+        <Route path="/patterns" component={PatternsOverview} />
+        <Route path="/patterns/forms" component={FormsPattern} />
+        <Route path="/patterns/layout" component={LayoutPattern} />
+        <Route path="/patterns/empty-states" component={EmptyStatesPattern} />
+        <Route path="/patterns/loading" component={LoadingPattern} />
+        <Route path="/patterns/feedback" component={FeedbackPattern} />
+        <Route path="/patterns/confirmation" component={ConfirmationPattern} />
+        <Route path="/patterns/cards-lists" component={CardsListsPattern} />
+        <Route path="/patterns/overlays" component={OverlaysPattern} />
 
         <Route component={NotFound} />
       </Switch>

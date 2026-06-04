@@ -48,6 +48,20 @@ const NAVIGATION = [
       { title: "Avatar", href: "/components/avatar" },
       { title: "Dialog", href: "/components/dialog" },
     ]
+  },
+  {
+    title: "Patterns",
+    links: [
+      { title: "Overview", href: "/patterns" },
+      { title: "Forms", href: "/patterns/forms" },
+      { title: "Layout & Nav", href: "/patterns/layout" },
+      { title: "Empty States", href: "/patterns/empty-states" },
+      { title: "Loading & Progress", href: "/patterns/loading" },
+      { title: "Feedback", href: "/patterns/feedback" },
+      { title: "Confirmation", href: "/patterns/confirmation" },
+      { title: "Cards & Lists", href: "/patterns/cards-lists" },
+      { title: "Overlays", href: "/patterns/overlays" },
+    ]
   }
 ];
 
