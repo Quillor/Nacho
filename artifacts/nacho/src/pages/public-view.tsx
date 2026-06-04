@@ -1,64 +1,53 @@
 import { useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 import { useRoute, Link } from "wouter";
-import { Eye, Copy, Check, List } from "lucide-react";
+import { Copy, Check, List, FileText, X } from "lucide-react";
+import {
+  useGetRecording,
+  useAddRecordingView,
+  getGetRecordingQueryKey,
+} from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
+import { VideoPlayer, type VideoPlayerHandle } from "@/components/video-player";
 import { storageUrl, shareUrl } from "@/lib/api";
 import { formatTimestamp, formatRelativeDate } from "@/lib/format";
-import type { Chapter, TranscriptSegment } from "@/lib/types";
-
-interface PublicRecording {
-  shareId: string;
-  title: string;
-  description: string;
-  durationSec: number;
-  trimStart: number;
-  trimEnd: number;
-  hasAudio: boolean;
-  videoPath: string;
-  thumbnailPath: string | null;
-  gifPath: string | null;
-  chapters: Chapter[];
-  transcript: TranscriptSegment[];
-  views: number;
-  createdAt: string;
-}
 
 export default function PublicView() {
   const [, params] = useRoute("/v/:shareId");
-  const shareId = params?.shareId;
+  const shareId = params?.shareId ?? "";
 
-  const [rec, setRec] = useState<PublicRecording | null>(null);
-  const [error, setError] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  // The server enforces the privacy model: public recordings resolve for
+  // anyone, private ones only for the signed-in author. Sending credentials
+  // lets it identify the owner; a non-match comes back as a clean 404.
+  const {
+    data: rec,
+    isError,
+    isLoading,
+  } = useGetRecording(shareId, {
+    request: { credentials: "include" },
+    query: {
+      queryKey: getGetRecordingQueryKey(shareId),
+      enabled: !!shareId,
+      retry: false,
+    },
+  });
+
+  const addView = useAddRecordingView({ request: { credentials: "include" } });
   const viewCounted = useRef(false);
-
-  useEffect(() => {
-    if (!shareId) return;
-    fetch(`/api/recordings/${shareId}`)
-      .then((r) => {
-        if (!r.ok) throw new Error("not found");
-        return r.json();
-      })
-      .then((data: PublicRecording) => setRec(data))
-      .catch(() => setError(true));
-  }, [shareId]);
+  const playerRef = useRef<VideoPlayerHandle>(null);
+  const [copied, setCopied] = useState(false);
+  const [transcriptOpen, setTranscriptOpen] = useState(false);
 
   useEffect(() => {
     if (!shareId || !rec || viewCounted.current) return;
     viewCounted.current = true;
-    fetch(`/api/recordings/${shareId}/views`, { method: "POST" }).catch(
-      () => undefined,
-    );
-  }, [shareId, rec]);
+    addView.mutate({ shareId });
+  }, [shareId, rec]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const seek = (t: number) => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.currentTime = t;
-    void v.play();
+    playerRef.current?.seek(t);
+    playerRef.current?.play();
   };
 
   const copyLink = async () => {
@@ -67,6 +56,8 @@ export default function PublicView() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const hasTranscript = (rec?.transcript.length ?? 0) > 0;
 
   return (
     <div className="min-h-[100dvh] bg-background font-sans text-foreground">
@@ -92,50 +83,56 @@ export default function PublicView() {
       </header>
 
       <main className="mx-auto max-w-5xl px-6 py-10">
-        {error ? (
+        {isError || !shareId ? (
           <div className="py-24 text-center">
             <h1 className="font-display text-4xl font-black uppercase">
-              Recording not found
+              This recording isn&apos;t available
             </h1>
             <p className="mt-2 text-muted-foreground">
-              This link may have been removed.
+              It may be private, or the link may have been removed.
             </p>
           </div>
-        ) : !rec ? (
+        ) : !rec || isLoading ? (
           <div className="aspect-video w-full animate-pulse border-4 border-foreground bg-muted" />
         ) : (
           <>
-            <div className="overflow-hidden border-4 border-foreground bg-foreground shadow-md">
-              <video
-                ref={videoRef}
-                src={storageUrl(rec.videoPath)}
-                poster={
-                  rec.thumbnailPath ? storageUrl(rec.thumbnailPath) : undefined
-                }
-                controls
-                playsInline
-                className="aspect-video w-full bg-foreground object-contain"
-                onLoadedMetadata={(e) => {
-                  if (rec.trimStart > 0) e.currentTarget.currentTime = rec.trimStart;
-                }}
-              />
-            </div>
+            <div className="flex flex-col gap-8 lg:flex-row">
+              <div className="min-w-0 flex-1 space-y-6">
+                <VideoPlayer
+                  ref={playerRef}
+                  src={storageUrl(rec.videoPath)}
+                  poster={
+                    rec.thumbnailPath
+                      ? storageUrl(rec.thumbnailPath)
+                      : undefined
+                  }
+                  chapters={rec.chapters}
+                  transcript={rec.transcript}
+                  startTime={rec.trimStart}
+                  endTime={rec.trimEnd || undefined}
+                />
 
-            <div className="mt-6 flex flex-wrap items-start justify-between gap-4">
-              <h1 className="font-display text-4xl font-black uppercase leading-tight">
-                {rec.title}
-              </h1>
-              <div className="flex items-center gap-2 border-2 border-foreground bg-card px-3 py-1.5 font-bold">
-                <Eye className="h-4 w-4" /> {rec.views}
-                <span className="text-muted-foreground">·</span>
-                <span className="text-muted-foreground">
-                  {formatRelativeDate(new Date(rec.createdAt).getTime())}
-                </span>
-              </div>
-            </div>
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div className="space-y-2">
+                    <h1 className="font-display text-4xl font-black uppercase leading-tight">
+                      {rec.title}
+                    </h1>
+                    <p className="text-sm font-bold text-muted-foreground">
+                      {formatRelativeDate(new Date(rec.createdAt).getTime())}
+                    </p>
+                  </div>
+                  {hasTranscript && (
+                    <Button
+                      onClick={() => setTranscriptOpen((o) => !o)}
+                      aria-pressed={transcriptOpen}
+                      className="border-2 border-foreground bg-card font-bold uppercase text-foreground hover:bg-muted"
+                    >
+                      <FileText className="mr-2 h-4 w-4" />
+                      {transcriptOpen ? "Hide transcript" : "Transcript"}
+                    </Button>
+                  )}
+                </div>
 
-            <div className="mt-8 grid gap-8 lg:grid-cols-[1.6fr_1fr]">
-              <div className="space-y-8">
                 {rec.description && (
                   <div
                     className="prose prose-sm max-w-none prose-headings:font-display prose-a:text-primary"
@@ -145,37 +142,12 @@ export default function PublicView() {
                   />
                 )}
 
-                {rec.transcript.length > 0 && (
-                  <div>
-                    <h2 className="mb-3 font-display text-2xl font-black uppercase">
-                      Transcript
-                    </h2>
-                    <div className="space-y-2 border-4 border-foreground bg-card p-4">
-                      {rec.transcript.map((seg, i) => (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => seek(seg.start)}
-                          className="flex w-full gap-3 border-2 border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
-                        >
-                          <span className="shrink-0 font-mono text-xs font-bold text-primary">
-                            {formatTimestamp(seg.start)}
-                          </span>
-                          <span className="text-sm">{seg.text}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <aside>
                 {rec.chapters.length > 0 && (
-                  <div className="border-4 border-foreground bg-card p-4">
-                    <h2 className="mb-3 flex items-center gap-2 font-display text-lg font-black uppercase">
+                  <div>
+                    <h2 className="mb-3 flex items-center gap-2 font-display text-xl font-black uppercase">
                       <List className="h-5 w-5" /> Chapters
                     </h2>
-                    <div className="space-y-1">
+                    <div className="space-y-1 border-4 border-foreground bg-card p-4">
                       {rec.chapters.map((c, i) => (
                         <button
                           key={i}
@@ -192,7 +164,42 @@ export default function PublicView() {
                     </div>
                   </div>
                 )}
-              </aside>
+              </div>
+
+              {hasTranscript && transcriptOpen && (
+                <aside className="shrink-0 lg:w-80">
+                  <div className="border-4 border-foreground bg-card lg:sticky lg:top-6">
+                    <div className="flex items-center justify-between border-b-4 border-foreground px-4 py-3">
+                      <h2 className="flex items-center gap-2 font-display text-lg font-black uppercase">
+                        <FileText className="h-5 w-5" /> Transcript
+                      </h2>
+                      <button
+                        type="button"
+                        onClick={() => setTranscriptOpen(false)}
+                        aria-label="Close transcript"
+                        className="flex h-8 w-8 items-center justify-center border-2 border-foreground bg-background transition-colors hover:bg-muted"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                    <div className="max-h-[60vh] space-y-2 overflow-y-auto p-4">
+                      {rec.transcript.map((seg, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => seek(seg.start)}
+                          className="flex w-full gap-3 border-2 border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
+                        >
+                          <span className="shrink-0 font-mono text-xs font-bold text-primary">
+                            {formatTimestamp(seg.start)}
+                          </span>
+                          <span className="text-sm">{seg.text}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </aside>
+              )}
             </div>
 
             <div className="mt-16 flex flex-col items-center gap-4 border-t-4 border-foreground py-10 text-center">
