@@ -1,0 +1,5 @@
+<svg width="200" height="48" viewBox="0 0 200 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="3" y="6" width="36" height="36" rx="4" fill="hsl(47,91%,53%)" stroke="hsl(25,51%,12%)" stroke-width="4"/>
+  <path d="M16 16.5C16 15.6716 16.8954 15.1716 17.6 15.6L27.2 21.1C27.8667 21.5 27.8667 22.5 27.2 22.9L17.6 28.4C16.8954 28.8284 16 28.3284 16 27.5V16.5Z" fill="hsl(25,51%,12%)"/>
+  <text x="50" y="33" font-family="'Bricolage Grotesque', sans-serif" font-size="28" font-weight="800" letter-spacing="-1" fill="hsl(25,51%,12%)">NACHO</text>
+</svg>

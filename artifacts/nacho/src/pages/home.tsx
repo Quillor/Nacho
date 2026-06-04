@@ -34,10 +34,10 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-4">
           <Button asChild variant="outline" className="hidden md:flex font-bold border-2 border-transparent text-foreground hover:bg-muted transition-all">
-            <Link href="/library">Library</Link>
+            <Link href="/sign-in">Sign In</Link>
           </Button>
           <Button asChild className="font-bold border-2 border-foreground shadow-sm hover:translate-y-[2px] hover:shadow-none transition-all bg-primary text-foreground hover:bg-primary/90">
-            <Link href="/studio">Get Started</Link>
+            <Link href="/sign-up">Get Started</Link>
           </Button>
         </div>
       </nav>
@@ -62,10 +62,10 @@ export default function Home() {
             </motion.p>
             <motion.div variants={fadeIn} className="flex flex-wrap gap-4">
               <Button asChild size="lg" className="h-16 px-8 text-lg font-bold border-4 border-foreground shadow-lg hover:translate-y-[2px] hover:shadow-md transition-all bg-background text-foreground hover:bg-background/90 rounded-none">
-                <Link href="/studio">Start Recording Free</Link>
+                <Link href="/sign-up">Start Recording Free</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="h-16 px-8 text-lg font-bold border-4 border-foreground shadow-lg hover:translate-y-[2px] hover:shadow-md transition-all bg-transparent text-foreground hover:bg-foreground hover:text-background rounded-none">
-                <Link href="/library">My Library</Link>
+                <Link href="/sign-in">My Library</Link>
               </Button>
             </motion.div>
           </motion.div>
@@ -278,7 +278,7 @@ export default function Home() {
             Join 100,000+ people who communicate better, faster.
           </p>
           <Button asChild size="lg" className="h-20 px-12 text-2xl font-display font-black uppercase tracking-wider border-4 border-foreground shadow-xl hover:translate-y-[4px] hover:shadow-lg transition-all bg-primary text-foreground hover:bg-primary/90 rounded-none">
-            <Link href="/studio">Get Nacho For Free</Link>
+            <Link href="/sign-up">Get Nacho For Free</Link>
           </Button>
         </div>
       </section>

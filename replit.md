@@ -35,10 +35,11 @@ A single-page design system documentation site for "Pico" — a bold, playful, h
 - Transcription via Web Speech API runs during recording and is paused/resumed in lockstep with the recorder so segment timestamps stay aligned.
 - Description HTML is sanitized with DOMPurify both before publish and again at render in `public-view.tsx` (defense in depth against stored XSS).
 - OG unfurl: `api-server` serves `/s/:shareId` server-rendered HTML with meta tags + JS redirect to the SPA `/v/:shareId`; copy-link uses `/s/:shareId`. Nacho previewPath is `/nacho/`.
+- Auth: Replit-managed Clerk (`@clerk/react`) gates the app UI only — recordings stay local-first, routes are not per-user. `<ClerkProvider>` wraps everything in `App.tsx`; landing `/` and public `/v/:shareId` are open, while `/studio`, `/library`, `/editor/:id`, `/settings` are wrapped in a `Protected` gate that redirects signed-out visitors to `/sign-in`. Signed-in users hitting `/` are redirected to `/studio`. Sign-in/up live at `/sign-in/*?` and `/sign-up/*?` (Clerk needs the `/*?` wildcard + full `path` incl. base). `api-server` mounts the Clerk proxy (`/api/__clerk`) + `clerkMiddleware`; the proxy/`VITE_CLERK_PROXY_URL` are prod-only (empty in dev). Account delete uses `user.delete()` in Settings; sign-out uses `useClerk().signOut()`.
 
 ## Product
 
-Nacho is a browser-based screen recorder (Loom alternative). Record screen, camera, or both (with PiP), plus mic/system audio. Recordings save locally; edit title/description, trim, add chapters, and review an auto transcript. Publish to get a public share link with OG preview and view counts. No login required.
+Nacho is a browser-based screen recorder (Loom alternative). Record screen, camera, or both (with PiP), plus mic/system audio. Recordings save locally; edit title/description, trim, add chapters, and review an auto transcript. Publish to get a public share link with OG preview and view counts. Sign up / sign in (Clerk) is required to use the app; the marketing landing page and public shared-recording view stay open to everyone.
 
 ## User preferences
 

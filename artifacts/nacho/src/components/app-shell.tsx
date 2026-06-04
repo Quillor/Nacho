@@ -1,5 +1,6 @@
 import { Link, useLocation } from "wouter";
-import { Video, Library, Settings, CircleDot } from "lucide-react";
+import { Video, Library, Settings, CircleDot, LogOut } from "lucide-react";
+import { useClerk, useUser } from "@clerk/react";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -14,13 +15,53 @@ const NAV: NavItem[] = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+function UserControl() {
+  const { user } = useUser();
+  const { signOut } = useClerk();
+
+  const email = user?.primaryEmailAddress?.emailAddress;
+  const label =
+    user?.fullName ||
+    user?.firstName ||
+    email?.split("@")[0] ||
+    "Account";
+  const initial = (label.charAt(0) || "?").toUpperCase();
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="hidden items-center gap-2 border-2 border-foreground bg-card px-3 py-1.5 sm:flex">
+        <div className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-foreground bg-primary text-sm font-black text-primary-foreground">
+          {initial}
+        </div>
+        <span
+          className="max-w-[12rem] truncate text-sm font-bold"
+          title={email ?? label}
+        >
+          {label}
+        </span>
+      </div>
+      <button
+        type="button"
+        onClick={() => signOut({ redirectUrl: basePath || "/" })}
+        className="flex items-center gap-2 border-2 border-transparent px-3 py-2 font-bold uppercase tracking-wide text-foreground transition-all hover:border-foreground hover:bg-destructive hover:text-destructive-foreground"
+        aria-label="Sign out"
+      >
+        <LogOut className="h-4 w-4" />
+        <span className="hidden sm:inline">Sign out</span>
+      </button>
+    </div>
+  );
+}
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground font-sans">
       <nav className="sticky top-0 z-50 border-b-4 border-foreground bg-background">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
           <Link
             href="/library"
             className="flex items-center gap-2 transition-transform hover:-translate-y-0.5"
@@ -55,6 +96,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </Link>
               );
             })}
+            <div className="mx-1 hidden h-8 w-0.5 bg-foreground/20 sm:block" />
+            <UserControl />
           </div>
         </div>
       </nav>
