@@ -31,6 +31,16 @@ wrapper's name on that child element; the child's own picoMeta runs first and th
 wins, so the wrapper identity is what reaches the DOM (this compiles fine). After editing
 theme.css, rerun `generate-tokens` so `tokens.json` stays in sync.
 
+**Generator granularity (page reconstruction):** the plugin's page resolver matches a parsed
+node by its exact `data-pico-component` name and, on a hit, places an INSTANCE and RETURNS —
+it does NOT recurse into that node's children. So Figma component generators must be authored
+at the granularity the DOM actually emits and at the level that carries the visual identity.
+For composites this means generating the emitted sub-part names (e.g. `TabsList` containing its
+triggers, `SelectTrigger`, `DialogContent`, `AccordionItem`, `RadioGroupItem`, `PopoverContent`),
+NOT an outer wrapper like `Tabs`/`Select` that never renders the box. A generator named for a
+name the DOM never emits (the old `Tooltip` vs emitted `TooltipTrigger`/`TooltipContent`) will
+never resolve. The generator's component/set `.name` IS the match key.
+
 **Coverage gate:** `pnpm --filter @workspace/pico-ui run check-pico-meta` (also the `pico-meta`
 validation command) is AST-based and PER-COMPONENT: it enumerates every exported PascalCase
 component and FAILS unless each one calls `picoMeta(` or is in the script's ALLOWLIST. Only

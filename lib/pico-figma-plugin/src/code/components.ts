@@ -479,6 +479,418 @@ async function buildSpinner(page: PageNode, x: number, y: number) {
   return comp;
 }
 
+async function buildTabsList(page: PageNode, x: number, y: number) {
+  const comp = figma.createComponent();
+  comp.name = "TabsList";
+  await applyContainerStyle(comp, {
+    direction: "row",
+    gap: 4,
+    paddingX: 4,
+    paddingY: 4,
+    align: "MIN",
+    cross: "CENTER",
+    bgToken: "muted",
+    radiusToken: "lg",
+  });
+  const labels = ["Account", "Password", "Settings"];
+  for (let i = 0; i < labels.length; i++) {
+    const active = i === 0;
+    const trigger = await makeFrame({
+      name: "TabsTrigger",
+      direction: "row",
+      paddingX: 12,
+      paddingY: 4,
+      align: "CENTER",
+      cross: "CENTER",
+      bgToken: active ? "background" : undefined,
+      radiusToken: "md",
+      shadowToken: active ? "sm" : undefined,
+    });
+    const label = await makeText({
+      text: labels[i],
+      role: "bold",
+      size: 14,
+      colorToken: active ? "foreground" : "muted-foreground",
+    });
+    trigger.appendChild(label);
+    comp.appendChild(trigger);
+  }
+  page.appendChild(comp);
+  comp.x = x;
+  comp.y = y;
+  return comp;
+}
+
+async function buildTabsTrigger(page: PageNode, x: number, y: number) {
+  const states: Array<{ name: string; active: boolean }> = [
+    { name: "state=active", active: true },
+    { name: "state=inactive", active: false },
+  ];
+  const nodes: ComponentNode[] = [];
+  for (const st of states) {
+    const comp = figma.createComponent();
+    comp.name = st.name;
+    await applyContainerStyle(comp, {
+      direction: "row",
+      paddingX: 12,
+      paddingY: 4,
+      align: "CENTER",
+      cross: "CENTER",
+      bgToken: st.active ? "background" : undefined,
+      radiusToken: "md",
+      shadowToken: st.active ? "sm" : undefined,
+    });
+    const label = await makeText({
+      text: "Tab",
+      role: "bold",
+      size: 14,
+      colorToken: st.active ? "foreground" : "muted-foreground",
+    });
+    comp.appendChild(label);
+    nodes.push(comp);
+  }
+  nodes.forEach((n) => page.appendChild(n));
+  const set = figma.combineAsVariants(nodes, page);
+  set.name = "TabsTrigger";
+  configureSet(set, x, y);
+  return set;
+}
+
+async function buildSelectTrigger(page: PageNode, x: number, y: number) {
+  const comp = figma.createComponent();
+  comp.name = "SelectTrigger";
+  await applyContainerStyle(comp, {
+    direction: "row",
+    gap: 8,
+    paddingX: 12,
+    paddingY: 8,
+    align: "SPACE_BETWEEN",
+    cross: "CENTER",
+    bgToken: "background",
+    radiusToken: "md",
+    strokeToken: "input",
+    strokeWeight: 1,
+    shadowToken: "sm",
+  });
+  comp.resize(220, 36);
+  comp.primaryAxisSizingMode = "FIXED";
+  comp.counterAxisSizingMode = "FIXED";
+  const value = await makeText({
+    text: "Select an option",
+    role: "body",
+    size: 14,
+    colorToken: "muted-foreground",
+  });
+  const chevron = await makeText({
+    text: "▾",
+    role: "body",
+    size: 12,
+    colorToken: "foreground",
+  });
+  comp.appendChild(value);
+  comp.appendChild(chevron);
+  page.appendChild(comp);
+  comp.x = x;
+  comp.y = y;
+  return comp;
+}
+
+async function buildDialogContent(page: PageNode, x: number, y: number) {
+  const comp = figma.createComponent();
+  comp.name = "DialogContent";
+  await applyContainerStyle(comp, {
+    direction: "column",
+    gap: 16,
+    paddingX: 24,
+    paddingY: 24,
+    bgToken: "background",
+    radiusToken: "lg",
+    strokeToken: "border",
+    strokeWeight: 1,
+    shadowToken: "lg",
+  });
+  comp.resize(420, comp.height);
+  comp.counterAxisSizingMode = "FIXED";
+
+  const header = await makeFrame({
+    name: "DialogHeader",
+    direction: "column",
+    gap: 6,
+  });
+  header.layoutAlign = "STRETCH";
+  const title = await makeText({
+    text: "Are you absolutely sure?",
+    role: "display",
+    size: 18,
+    colorToken: "foreground",
+  });
+  const desc = await makeText({
+    text: "This action cannot be undone. This will permanently delete your data.",
+    role: "body",
+    size: 14,
+    colorToken: "muted-foreground",
+  });
+  title.layoutAlign = "STRETCH";
+  desc.layoutAlign = "STRETCH";
+  header.appendChild(title);
+  header.appendChild(desc);
+
+  const footer = await makeFrame({
+    name: "DialogFooter",
+    direction: "row",
+    gap: 8,
+    align: "MAX",
+    cross: "CENTER",
+  });
+  footer.layoutAlign = "STRETCH";
+  const cancel = await makeFrame({
+    name: "Button",
+    direction: "row",
+    paddingX: 16,
+    paddingY: 0,
+    align: "CENTER",
+    cross: "CENTER",
+    radiusToken: "md",
+    strokeToken: "foreground",
+    strokeWeight: 1,
+    shadowToken: "xs",
+    height: 36,
+  });
+  cancel.appendChild(
+    await makeText({ text: "Cancel", role: "bold", size: 14, colorToken: "foreground" }),
+  );
+  const confirm = await makeFrame({
+    name: "Button",
+    direction: "row",
+    paddingX: 16,
+    paddingY: 0,
+    align: "CENTER",
+    cross: "CENTER",
+    bgToken: "primary",
+    radiusToken: "md",
+    strokeToken: "foreground",
+    strokeWeight: 1,
+    height: 36,
+  });
+  confirm.appendChild(
+    await makeText({ text: "Continue", role: "bold", size: 14, colorToken: "primary-foreground" }),
+  );
+  footer.appendChild(cancel);
+  footer.appendChild(confirm);
+
+  comp.appendChild(header);
+  comp.appendChild(footer);
+  page.appendChild(comp);
+  comp.x = x;
+  comp.y = y;
+  return comp;
+}
+
+async function buildAccordionItem(page: PageNode, x: number, y: number) {
+  const comp = figma.createComponent();
+  comp.name = "AccordionItem";
+  await applyContainerStyle(comp, { direction: "column", gap: 0 });
+  comp.resize(360, comp.height);
+  comp.counterAxisSizingMode = "FIXED";
+
+  const trigger = await makeFrame({
+    name: "AccordionTrigger",
+    direction: "row",
+    paddingY: 16,
+    align: "SPACE_BETWEEN",
+    cross: "CENTER",
+  });
+  trigger.layoutAlign = "STRETCH";
+  trigger.appendChild(
+    await makeText({ text: "Is it accessible?", role: "bold", size: 14, colorToken: "foreground" }),
+  );
+  trigger.appendChild(
+    await makeText({ text: "▾", role: "body", size: 14, colorToken: "muted-foreground" }),
+  );
+
+  const content = await makeFrame({
+    name: "AccordionContent",
+    direction: "column",
+    gap: 0,
+  });
+  content.layoutAlign = "STRETCH";
+  content.paddingBottom = 16;
+  const body = await makeText({
+    text: "Yes. It adheres to the WAI-ARIA design pattern.",
+    role: "body",
+    size: 14,
+    colorToken: "muted-foreground",
+  });
+  body.layoutAlign = "STRETCH";
+  content.appendChild(body);
+
+  const rule = await makeFrame({ name: "Border", bgToken: "border" });
+  rule.resize(360, 2);
+  rule.layoutAlign = "STRETCH";
+
+  comp.appendChild(trigger);
+  comp.appendChild(content);
+  comp.appendChild(rule);
+  page.appendChild(comp);
+  comp.x = x;
+  comp.y = y;
+  return comp;
+}
+
+async function buildSlider(page: PageNode, x: number, y: number) {
+  const comp = figma.createComponent();
+  comp.name = "Slider";
+  // Absolute layout: the thumb overlaps the track, which auto-layout can't do.
+  await applyContainerStyle(comp, { direction: "none" });
+  comp.resize(280, 16);
+
+  const track = await makeFrame({ name: "Track", bgToken: "muted", radiusPx: 999 });
+  track.resize(280, 6);
+  track.x = 0;
+  track.y = 5;
+  const range = await makeFrame({ name: "Range", bgToken: "primary", radiusPx: 999 });
+  range.resize(140, 6);
+  range.x = 0;
+  range.y = 5;
+  const thumb = await makeFrame({
+    name: "Thumb",
+    bgToken: "background",
+    radiusPx: 999,
+    strokeToken: "primary",
+    strokeWeight: 1,
+    shadowToken: "sm",
+  });
+  thumb.resize(16, 16);
+  thumb.x = 132;
+  thumb.y = 0;
+
+  comp.appendChild(track);
+  comp.appendChild(range);
+  comp.appendChild(thumb);
+  page.appendChild(comp);
+  comp.x = x;
+  comp.y = y;
+  return comp;
+}
+
+async function buildRadioGroupItem(page: PageNode, x: number, y: number) {
+  const states: Array<{ name: string; checked: boolean }> = [
+    { name: "state=unchecked", checked: false },
+    { name: "state=checked", checked: true },
+  ];
+  const nodes: ComponentNode[] = [];
+  for (const st of states) {
+    const comp = figma.createComponent();
+    comp.name = st.name;
+    await applyContainerStyle(comp, {
+      direction: "row",
+      align: "CENTER",
+      cross: "CENTER",
+      radiusPx: 999,
+      strokeToken: "primary",
+      strokeWeight: 1,
+      shadowToken: "DEFAULT",
+    });
+    comp.resize(16, 16);
+    comp.primaryAxisSizingMode = "FIXED";
+    comp.counterAxisSizingMode = "FIXED";
+    if (st.checked) {
+      const dot = await makeFrame({ name: "Indicator", bgToken: "primary", radiusPx: 999 });
+      dot.resize(8, 8);
+      comp.appendChild(dot);
+    }
+    nodes.push(comp);
+  }
+  nodes.forEach((n) => page.appendChild(n));
+  const set = figma.combineAsVariants(nodes, page);
+  set.name = "RadioGroupItem";
+  configureSet(set, x, y);
+  return set;
+}
+
+async function buildToggle(page: PageNode, x: number, y: number) {
+  const variants: Record<string, { strokeToken?: string; shadowToken?: string }> = {
+    default: {},
+    outline: { strokeToken: "input", shadowToken: "sm" },
+  };
+  const sizes: Record<string, { padX: number; h: number; minW: number }> = {
+    default: { padX: 8, h: 36, minW: 36 },
+    sm: { padX: 6, h: 32, minW: 32 },
+    lg: { padX: 10, h: 40, minW: 40 },
+  };
+  const nodes: ComponentNode[] = [];
+  for (const [variant, vStyle] of Object.entries(variants)) {
+    for (const [size, sz] of Object.entries(sizes)) {
+      const comp = figma.createComponent();
+      comp.name = `variant=${variant}, size=${size}`;
+      await applyContainerStyle(comp, {
+        direction: "row",
+        paddingX: sz.padX,
+        align: "CENTER",
+        cross: "CENTER",
+        radiusToken: "md",
+        strokeToken: vStyle.strokeToken,
+        strokeWeight: vStyle.strokeToken ? 1 : undefined,
+        shadowToken: vStyle.shadowToken,
+      });
+      comp.resize(sz.minW, sz.h);
+      comp.counterAxisSizingMode = "FIXED";
+      comp.primaryAxisSizingMode = "FIXED";
+      const label = await makeText({
+        text: "B",
+        role: "bold",
+        size: 14,
+        colorToken: "foreground",
+      });
+      comp.appendChild(label);
+      nodes.push(comp);
+    }
+  }
+  nodes.forEach((n) => page.appendChild(n));
+  const set = figma.combineAsVariants(nodes, page);
+  set.name = "Toggle";
+  configureSet(set, x, y);
+  return set;
+}
+
+async function buildPopoverContent(page: PageNode, x: number, y: number) {
+  const comp = figma.createComponent();
+  comp.name = "PopoverContent";
+  await applyContainerStyle(comp, {
+    direction: "column",
+    gap: 8,
+    paddingX: 16,
+    paddingY: 16,
+    bgToken: "popover",
+    radiusToken: "md",
+    strokeToken: "popover-border",
+    strokeWeight: 1,
+    shadowToken: "md",
+  });
+  comp.resize(288, comp.height);
+  comp.counterAxisSizingMode = "FIXED";
+  const title = await makeText({
+    text: "Dimensions",
+    role: "bold",
+    size: 14,
+    colorToken: "popover-foreground",
+  });
+  const desc = await makeText({
+    text: "Set the dimensions for the layer.",
+    role: "body",
+    size: 13,
+    colorToken: "muted-foreground",
+  });
+  title.layoutAlign = "STRETCH";
+  desc.layoutAlign = "STRETCH";
+  comp.appendChild(title);
+  comp.appendChild(desc);
+  page.appendChild(comp);
+  comp.x = x;
+  comp.y = y;
+  return comp;
+}
+
 /** Lay out a component set's variants in a tidy wrapped grid and place it. */
 function configureSet(set: ComponentSetNode, x: number, y: number) {
   set.layoutMode = "HORIZONTAL";
@@ -513,6 +925,15 @@ const BUILDERS: Array<{ name: string; build: Builder }> = [
   { name: "Progress", build: buildProgress },
   { name: "Skeleton", build: buildSkeleton },
   { name: "Spinner", build: buildSpinner },
+  { name: "TabsList", build: buildTabsList },
+  { name: "TabsTrigger", build: buildTabsTrigger },
+  { name: "SelectTrigger", build: buildSelectTrigger },
+  { name: "DialogContent", build: buildDialogContent },
+  { name: "AccordionItem", build: buildAccordionItem },
+  { name: "Slider", build: buildSlider },
+  { name: "RadioGroupItem", build: buildRadioGroupItem },
+  { name: "Toggle", build: buildToggle },
+  { name: "PopoverContent", build: buildPopoverContent },
 ];
 
 export async function generateComponents(
