@@ -31,7 +31,7 @@ export default function EmptyStatesPattern() {
             <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-primary shadow-md">
               <CircleDot className="h-10 w-10 text-primary-foreground" />
             </div>
- <h3 className="font-display text-3xl font-black">
+ <h3 className="font-display text-3xl font-extrabold">
               No recordings yet
             </h3>
             <p className="mt-2 max-w-md font-medium text-muted-foreground">
@@ -47,7 +47,7 @@ export default function EmptyStatesPattern() {
   <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-primary shadow-md">
     <CircleDot className="h-10 w-10 text-primary-foreground" />
   </div>
- <h3 className="font-display text-3xl font-black">No recordings yet</h3>
+ <h3 className="font-display text-3xl font-extrabold">No recordings yet</h3>
   <p className="mt-2 max-w-md font-medium text-muted-foreground">
     Hit record, talk it out, and your video will show up right here.
   </p>

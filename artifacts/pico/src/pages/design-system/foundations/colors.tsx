@@ -5,7 +5,7 @@ export default function Colors() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
- <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
+ <h1 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[0.9] text-foreground">
           Colors
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -14,13 +14,13 @@ export default function Colors() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-black">Core Palette</h2>
+ <h2 className="text-3xl font-display font-extrabold">Core Palette</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Primary */}
           <div className="group border-4 border-foreground rounded-sm overflow-hidden shadow-md hover:-translate-y-2 transition-transform duration-300">
             <div className="h-48 bg-primary w-full border-b-4 border-foreground p-4 flex items-end">
-              <span className="font-display text-4xl font-black text-foreground">Aa</span>
+              <span className="font-display text-4xl font-extrabold text-foreground">Aa</span>
             </div>
             <div className="p-6 bg-background">
               <div className="flex justify-between items-start mb-2">
@@ -35,7 +35,7 @@ export default function Colors() {
           {/* Dark */}
           <div className="group border-4 border-foreground rounded-sm overflow-hidden shadow-md hover:-translate-y-2 transition-transform duration-300">
             <div className="h-48 bg-foreground w-full border-b-4 border-foreground p-4 flex items-end">
-              <span className="font-display text-4xl font-black text-background">Aa</span>
+              <span className="font-display text-4xl font-extrabold text-background">Aa</span>
             </div>
             <div className="p-6 bg-background">
               <div className="flex justify-between items-start mb-2">
@@ -50,7 +50,7 @@ export default function Colors() {
           {/* Light */}
           <div className="group border-4 border-foreground rounded-sm overflow-hidden shadow-md hover:-translate-y-2 transition-transform duration-300">
             <div className="h-48 bg-background w-full border-b-4 border-foreground p-4 flex items-end relative overflow-hidden">
-              <span className="font-display text-4xl font-black text-foreground relative z-10">Aa</span>
+              <span className="font-display text-4xl font-extrabold text-foreground relative z-10">Aa</span>
             </div>
             <div className="p-6 bg-background">
               <div className="flex justify-between items-start mb-2">
@@ -65,7 +65,7 @@ export default function Colors() {
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-black">Approved Combinations</h2>
+ <h2 className="text-3xl font-display font-extrabold">Approved Combinations</h2>
         
         <div className="space-y-12">
           {/* Combo A */}
@@ -76,7 +76,7 @@ export default function Colors() {
               <Badge variant="outline" className="w-fit border-background text-background">Accessible AAA</Badge>
             </div>
             <div className="bg-primary text-foreground p-8 md:p-12 flex flex-col justify-center">
- <h4 className="text-3xl md:text-4xl mb-4 font-display font-black">Loud & Clear</h4>
+ <h4 className="text-3xl md:text-4xl mb-4 font-display font-extrabold">Loud & Clear</h4>
               <p className="text-lg font-medium mb-8 max-w-md">This combination is our bread and butter. It's impossible to ignore and perfectly captures the snack-brand energy.</p>
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.3)] transition-all font-bold">
@@ -97,7 +97,7 @@ export default function Colors() {
               <Badge variant="outline" className="w-fit border-foreground text-foreground">Accessible AAA</Badge>
             </div>
             <div className="bg-foreground text-background p-8 md:p-12 flex flex-col justify-center">
- <h4 className="text-3xl md:text-4xl mb-4 text-primary font-display font-black">The Midnight Snack</h4>
+ <h4 className="text-3xl md:text-4xl mb-4 text-primary font-display font-extrabold">The Midnight Snack</h4>
               <p className="text-lg font-medium mb-8 max-w-md text-background/90">Use this for footers, dramatic section breaks, or when you need the reader to stop scrolling and pay attention.</p>
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" className="bg-primary text-foreground hover:bg-primary/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.2)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.2)] transition-all font-bold">
@@ -118,7 +118,7 @@ export default function Colors() {
               <Badge variant="outline" className="w-fit border-foreground text-foreground">Accessible AAA</Badge>
             </div>
             <div className="bg-background text-foreground p-8 md:p-12 flex flex-col justify-center">
- <h4 className="text-3xl md:text-4xl mb-4 font-display font-black">Daily Bread</h4>
+ <h4 className="text-3xl md:text-4xl mb-4 font-display font-extrabold">Daily Bread</h4>
               <p className="text-lg font-medium mb-8 max-w-md">This is where the actual reading happens. It's softer than pure white on black, making it friendlier on the eyes.</p>
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">

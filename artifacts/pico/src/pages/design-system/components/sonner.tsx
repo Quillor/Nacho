@@ -7,7 +7,7 @@ export default function SonnerDocs() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
- <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
+ <h1 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[0.9] text-foreground">
           Sonner
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -16,7 +16,7 @@ export default function SonnerDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Usage</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
         <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <Button
             onClick={() =>
@@ -44,7 +44,7 @@ import { Button } from "@workspace/pico-ui/button"
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">With an action</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">With an action</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Attach an action button for a quick follow-up — like undoing a delete from your recordings.
         </p>
@@ -74,7 +74,7 @@ import { Button } from "@workspace/pico-ui/button"
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Setup</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Setup</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Mount the <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">{"<Toaster />"}</code> once near the root of your app so toasts have somewhere to render.
         </p>

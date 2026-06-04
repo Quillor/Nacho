@@ -84,7 +84,7 @@ export default function SettingsPage() {
 
   return (
     <AppShell>
- <h1 className="mb-2 font-display text-5xl font-black tracking-tight">
+ <h1 className="mb-2 font-display text-5xl font-extrabold tracking-tight">
         Settings
       </h1>
       <p className="mb-10 text-lg font-medium text-muted-foreground">
@@ -99,7 +99,7 @@ export default function SettingsPage() {
         <div className="border-4 border-foreground bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <HardDrive className="h-5 w-5" />
- <h2 className="font-display text-xl font-black">
+ <h2 className="font-display text-xl font-extrabold">
               Videos
             </h2>
           </div>
@@ -134,7 +134,7 @@ export default function SettingsPage() {
         <div className="border-4 border-foreground bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <Info className="h-5 w-5" />
- <h2 className="font-display text-xl font-black">About</h2>
+ <h2 className="font-display text-xl font-extrabold">About</h2>
           </div>
           <dl className="space-y-3">
             <div className="flex justify-between border-b-2 border-dashed border-foreground pb-2">
@@ -163,7 +163,7 @@ export default function SettingsPage() {
       <div className="mt-6 border-4 border-destructive bg-card p-6">
         <div className="mb-4 flex items-center gap-2">
           <UserX className="h-5 w-5 text-destructive" />
- <h2 className="font-display text-xl font-black text-destructive">
+ <h2 className="font-display text-xl font-extrabold text-destructive">
             Account
           </h2>
         </div>

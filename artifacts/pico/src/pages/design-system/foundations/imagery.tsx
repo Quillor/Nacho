@@ -104,7 +104,7 @@ export default function Imagery() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
- <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
+ <h1 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[0.9] text-foreground">
           Imagery
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -113,7 +113,7 @@ export default function Imagery() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-black">The Cast</h2>
+ <h2 className="text-3xl font-display font-extrabold">The Cast</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {ILLUSTRATIONS.map((ill) => (
@@ -146,7 +146,7 @@ export default function Imagery() {
       </section>
 
       <section className="space-y-6">
- <h2 className="text-3xl font-display font-black">Usage Guidance</h2>
+ <h2 className="text-3xl font-display font-extrabold">Usage Guidance</h2>
         <ul className="space-y-3 max-w-2xl">
           {[
             "One illustration per view. These characters are loud; let a single one own the moment.",
@@ -155,7 +155,7 @@ export default function Imagery() {
             "Match the character to the moment: hammock for empty/done states, cheese-jump for celebrations, empty-bowl for zero-results.",
           ].map((tip, i) => (
             <li key={i} className="flex gap-3 font-medium text-foreground/80">
-              <span className="font-display font-black text-primary-foreground bg-foreground rounded-sm w-6 h-6 shrink-0 flex items-center justify-center text-sm">{i + 1}</span>
+              <span className="font-display font-extrabold text-primary-foreground bg-foreground rounded-sm w-6 h-6 shrink-0 flex items-center justify-center text-sm">{i + 1}</span>
               <span>{tip}</span>
             </li>
           ))}
@@ -163,7 +163,7 @@ export default function Imagery() {
       </section>
 
       <section className="space-y-6">
- <h2 className="text-3xl font-display font-black">Prompt Template</h2>
+ <h2 className="text-3xl font-display font-extrabold">Prompt Template</h2>
         <p className="font-medium text-foreground/80 max-w-2xl">
           Need a new illustration? Generate it in the exact same style. Copy the template below and replace <code className="bg-foreground/10 px-1 rounded-sm">{"{SUBJECT/SCENE}"}</code> with what you want to show.
         </p>

@@ -7,7 +7,7 @@ export default function Logo() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
- <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
+ <h1 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[0.9] text-foreground">
           Logo
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">

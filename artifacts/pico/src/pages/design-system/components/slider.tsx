@@ -6,7 +6,7 @@ export default function SliderDocs() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
- <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
+ <h1 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[0.9] text-foreground">
           Slider
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -15,7 +15,7 @@ export default function SliderDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Usage</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
         <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
           <div className="w-full max-w-md space-y-3">
             <Label className="uppercase tracking-wide">Volume</Label>
@@ -28,7 +28,7 @@ export default function SliderDocs() {
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Range</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Range</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Pass two values to trim a clip — one thumb for the in point, one for the out point.
         </p>

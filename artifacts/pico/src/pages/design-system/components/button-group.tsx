@@ -11,7 +11,7 @@ export default function ButtonGroupDocs() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
- <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
+ <h1 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[0.9] text-foreground">
           Button Group
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -20,7 +20,7 @@ export default function ButtonGroupDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">Usage</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
         <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <ButtonGroup>
             <Button variant="outline">
@@ -54,7 +54,7 @@ import { SkipBack, Play, SkipForward } from "lucide-react"
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-black border-b-4 border-foreground pb-2">With label and separator</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">With label and separator</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Drop in <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">ButtonGroupText</code> for a static label and <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">ButtonGroupSeparator</code> to divide intent.
         </p>

@@ -85,7 +85,7 @@ export default function PublicView() {
       <main data-pico-section="recording" className="mx-auto max-w-5xl px-6 py-10">
         {isError || !shareId ? (
           <div className="py-24 text-center">
- <h1 className="font-display text-4xl font-black">
+ <h1 className="font-display text-4xl font-extrabold">
               This recording isn&apos;t available
             </h1>
             <p className="mt-2 text-muted-foreground">
@@ -114,7 +114,7 @@ export default function PublicView() {
 
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div className="space-y-2">
- <h1 className="font-display text-4xl font-black leading-tight">
+ <h1 className="font-display text-4xl font-extrabold leading-tight">
                       {rec.title}
                     </h1>
                     <p className="text-sm font-bold text-muted-foreground">
@@ -144,7 +144,7 @@ export default function PublicView() {
 
                 {rec.chapters.length > 0 && (
                   <div>
- <h2 className="mb-3 flex items-center gap-2 font-display text-xl font-black">
+ <h2 className="mb-3 flex items-center gap-2 font-display text-xl font-extrabold">
                       <List className="h-5 w-5" /> Chapters
                     </h2>
                     <div className="space-y-1 border-4 border-foreground bg-card p-4">
@@ -170,7 +170,7 @@ export default function PublicView() {
                 <aside className="shrink-0 lg:w-80">
                   <div className="border-4 border-foreground bg-card lg:sticky lg:top-6">
                     <div className="flex items-center justify-between border-b-4 border-foreground px-4 py-3">
- <h2 className="flex items-center gap-2 font-display text-lg font-black">
+ <h2 className="flex items-center gap-2 font-display text-lg font-extrabold">
                         <FileText className="h-5 w-5" /> Transcript
                       </h2>
                       <button
@@ -203,7 +203,7 @@ export default function PublicView() {
             </div>
 
             <div data-pico-section="cta" className="mt-16 flex flex-col items-center gap-4 border-t-4 border-foreground py-10 text-center">
- <p className="font-display text-2xl font-black">
+ <p className="font-display text-2xl font-extrabold">
                 Made with Nacho
               </p>
               <Button

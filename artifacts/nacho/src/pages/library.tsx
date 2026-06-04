@@ -154,7 +154,7 @@ export default function LibraryPage() {
     <AppShell>
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
- <h1 className="font-display text-5xl font-black tracking-tight">
+ <h1 className="font-display text-5xl font-extrabold tracking-tight">
             Your Library
           </h1>
           <p className="mt-2 text-lg font-medium text-muted-foreground">
@@ -187,7 +187,7 @@ export default function LibraryPage() {
           <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-primary shadow-md">
             <CircleDot className="h-10 w-10 text-primary-foreground" />
           </div>
- <h2 className="font-display text-3xl font-black">
+ <h2 className="font-display text-3xl font-extrabold">
             No recordings yet
           </h2>
           <p className="mt-2 max-w-md text-muted-foreground">

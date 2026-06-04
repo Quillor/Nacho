@@ -4,7 +4,7 @@ export default function FigmaPlugin() {
   return (
     <div className="space-y-12">
       <div className="space-y-4">
-        <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground uppercase">
+        <h1 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[0.9] text-foreground uppercase">
           Figma Plugin
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -17,10 +17,10 @@ export default function FigmaPlugin() {
 
       <div className="space-y-8">
         <section className="space-y-4">
-          <h2 className="text-3xl font-display font-black uppercase">What It Does</h2>
+          <h2 className="text-3xl font-display font-extrabold uppercase">What It Does</h2>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
-              <h3 className="text-xl font-display font-black uppercase">Sync Tokens</h3>
+              <h3 className="text-xl font-display font-extrabold uppercase">Sync Tokens</h3>
               <p className="font-medium text-foreground/80">
                 Reads <code className="bg-foreground/10 px-1 rounded-sm">tokens.json</code> and
                 creates a <strong>Pico</strong> variable collection with Light and
@@ -29,7 +29,7 @@ export default function FigmaPlugin() {
               </p>
             </div>
             <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
-              <h3 className="text-xl font-display font-black uppercase">Generate Components</h3>
+              <h3 className="text-xl font-display font-extrabold uppercase">Generate Components</h3>
               <p className="font-medium text-foreground/80">
                 Builds the Pico components — Button, Badge, Card, Input, Alert,
                 Label, Switch, Checkbox, Separator, Avatar, Textarea, Tooltip,
@@ -39,7 +39,7 @@ export default function FigmaPlugin() {
               </p>
             </div>
             <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
-              <h3 className="text-xl font-display font-black uppercase">Page From URL</h3>
+              <h3 className="text-xl font-display font-extrabold uppercase">Page From URL</h3>
               <p className="font-medium text-foreground/80">
                 Paste a URL and pick a device size. The plugin reads the rendered
                 page, maps each <code className="bg-foreground/10 px-1 rounded-sm">data-pico-*</code> instrumented
@@ -48,7 +48,7 @@ export default function FigmaPlugin() {
               </p>
             </div>
             <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
-              <h3 className="text-xl font-display font-black uppercase">Placeholder Pages</h3>
+              <h3 className="text-xl font-display font-extrabold uppercase">Placeholder Pages</h3>
               <p className="font-medium text-foreground/80">
                 Generates a ready-made sample layout from real instances and
                 tokens. Auth-walled URLs (sign-in redirects, 401/403) are routed
@@ -60,7 +60,7 @@ export default function FigmaPlugin() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-3xl font-display font-black uppercase">Build & Load</h2>
+          <h2 className="text-3xl font-display font-extrabold uppercase">Build & Load</h2>
           <p className="font-medium text-foreground/80">
             The plugin lives in the workspace at{" "}
             <code className="bg-foreground/10 px-1 rounded-sm">lib/pico-figma-plugin</code>.
@@ -92,7 +92,7 @@ pnpm --filter @workspace/pico-figma-plugin run build
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-3xl font-display font-black uppercase">Recommended Order</h2>
+          <h2 className="text-3xl font-display font-extrabold uppercase">Recommended Order</h2>
           <p className="font-medium text-foreground/80">
             Each action is idempotent — re-running updates existing variables,
             styles, and components in place rather than duplicating them. For a
@@ -129,7 +129,7 @@ pnpm --filter @workspace/pico-figma-plugin run build
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-3xl font-display font-black uppercase">How Page-From-URL Works</h2>
+          <h2 className="text-3xl font-display font-extrabold uppercase">How Page-From-URL Works</h2>
           <p className="font-medium text-foreground/80">
             Figma can't run a browser, so the plugin uses a fetch step to obtain
             the page's HTML and then walks the DOM looking for the same
@@ -164,7 +164,7 @@ pnpm --filter @workspace/pico-figma-plugin run build
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-3xl font-display font-black uppercase">Render Service (Optional)</h2>
+          <h2 className="text-3xl font-display font-extrabold uppercase">Render Service (Optional)</h2>
           <p className="font-medium text-foreground/80">
             The plugin iframe can fetch URLs directly, but browsers block most
             cross-origin requests (CORS), and server-rendered markup is what the
@@ -187,7 +187,7 @@ GET /api/render?url=<page-url>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-3xl font-display font-black uppercase">Contrast Rules Apply</h2>
+          <h2 className="text-3xl font-display font-extrabold uppercase">Contrast Rules Apply</h2>
           <p className="font-medium text-foreground/80">
             Generated components follow the Pico contrast rules: the yellow
             primary is always a <strong>fill</strong> with brown text on top —

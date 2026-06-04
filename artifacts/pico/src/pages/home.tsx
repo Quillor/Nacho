@@ -72,7 +72,7 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <div className="h-48 bg-primary w-full border-b-4 border-foreground p-4 flex items-end">
-                <span className="font-display text-4xl font-black text-foreground">Aa</span>
+                <span className="font-display text-4xl font-extrabold text-foreground">Aa</span>
               </div>
               <div className="p-6 bg-background">
                 <div className="flex justify-between items-start mb-2">
@@ -92,7 +92,7 @@ export default function Home() {
               transition={{ delay: 0.1 }}
             >
               <div className="h-48 bg-foreground w-full border-b-4 border-foreground p-4 flex items-end">
-                <span className="font-display text-4xl font-black text-background">Aa</span>
+                <span className="font-display text-4xl font-extrabold text-background">Aa</span>
               </div>
               <div className="p-6 bg-background">
                 <div className="flex justify-between items-start mb-2">
@@ -113,7 +113,7 @@ export default function Home() {
             >
               <div className="h-48 bg-background w-full border-b-4 border-foreground p-4 flex items-end relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay"></div>
-                <span className="font-display text-4xl font-black text-foreground relative z-10">Aa</span>
+                <span className="font-display text-4xl font-extrabold text-foreground relative z-10">Aa</span>
               </div>
               <div className="p-6 bg-background">
                 <div className="flex justify-between items-start mb-2">
@@ -250,10 +250,10 @@ export default function Home() {
           <div className="space-y-12">
             <div className="border-b-4 border-foreground/20 pb-8">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
-                <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Display 1 / 8rem / 900 / 0.9</span>
+                <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Display 1 / 8rem / 800 / 0.9</span>
  <span className="text-foreground/70 font-bold">Platypi</span>
               </div>
- <div className="text-[5rem] md:text-[8rem] font-display font-black leading-[0.9] tracking-tight">Giant.</div>
+ <div className="text-[5rem] md:text-[8rem] font-display font-extrabold leading-[0.9] tracking-tight">Giant.</div>
             </div>
 
             <div className="border-b-4 border-foreground/20 pb-8">
@@ -434,7 +434,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-foreground text-background py-12 px-6 md:px-12 border-t-8 border-primary">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="font-display font-black text-4xl uppercase tracking-widest text-primary">Pico.</div>
+          <div className="font-display font-extrabold text-4xl uppercase tracking-widest text-primary">Pico.</div>
           <p className="font-bold uppercase tracking-wider text-sm opacity-80">© {new Date().getFullYear()} Pico Design System</p>
         </div>
       </footer>

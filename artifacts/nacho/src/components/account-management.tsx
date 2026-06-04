@@ -22,7 +22,7 @@ function errMessage(err: unknown, fallback: string): string {
 }
 
 const cardClass = "rounded-none border-4 border-foreground bg-card p-6 shadow-none";
-const headingClass ="font-display text-xl font-black";
+const headingClass ="font-display text-xl font-extrabold";
 const inputClass = "border-2 border-foreground bg-background";
 const labelClass = "mb-1.5 block font-bold uppercase tracking-wide text-sm";
 

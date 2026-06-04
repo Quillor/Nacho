@@ -288,7 +288,7 @@ export default function Studio() {
   return (
     <AppShell>
       <div className="mx-auto max-w-6xl">
- <h1 className="mb-2 font-display text-5xl font-black tracking-tight">
+ <h1 className="mb-2 font-display text-5xl font-extrabold tracking-tight">
           Studio
         </h1>
         <p className="mb-8 text-lg font-medium text-muted-foreground">
@@ -502,7 +502,7 @@ export default function Studio() {
 
               {phase === "countdown" && (
                 <div className="absolute inset-0 flex items-center justify-center bg-foreground/60">
-                  <span className="font-display text-[8rem] font-black text-background">
+                  <span className="font-display text-[8rem] font-extrabold text-background">
                     {countdown}
                   </span>
                 </div>

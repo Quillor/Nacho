@@ -125,7 +125,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <Sidebar data-pico-section="sidebar" className="border-r-4 border-foreground" variant="sidebar" collapsible="offcanvas">
         <SidebarHeader className="border-b-4 border-foreground p-6 bg-primary">
-          <Link href="/" className="font-display font-black text-3xl tracking-tight uppercase text-foreground">
+          <Link href="/" className="font-display font-extrabold text-3xl tracking-tight uppercase text-foreground">
             Pico.
           </Link>
           <div className="font-bold uppercase text-xs tracking-widest mt-1">Design System</div>
@@ -133,7 +133,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
         <SidebarContent className="bg-background pt-4">
           {NAVIGATION.map((group) => (
             <SidebarGroup key={group.title} className="mb-6">
-              <SidebarGroupLabel className="font-display font-black uppercase text-foreground/50 tracking-wider text-sm mb-2 px-4">
+              <SidebarGroupLabel className="font-display font-extrabold uppercase text-foreground/50 tracking-wider text-sm mb-2 px-4">
                 {group.title}
               </SidebarGroupLabel>
               <SidebarGroupContent>
@@ -165,7 +165,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
       <SidebarInset className="bg-background min-h-[100dvh] flex flex-col">
         <header className="md:hidden flex items-center p-4 border-b-4 border-foreground bg-primary">
           <SidebarTrigger className="bg-foreground text-background hover:bg-foreground/90 border-2 border-foreground shadow-xs rounded-sm" />
-          <span className="ml-4 font-display font-black text-xl tracking-tight uppercase">Pico.</span>
+          <span className="ml-4 font-display font-extrabold text-xl tracking-tight uppercase">Pico.</span>
         </header>
         <main data-pico-section="content" className="flex-1 w-full max-w-5xl mx-auto p-6 md:p-12 lg:p-16 overflow-x-hidden">
           <AnimatePresence mode="wait">

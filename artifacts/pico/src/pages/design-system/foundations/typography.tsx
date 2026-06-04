@@ -2,7 +2,7 @@ export default function Typography() {
   return (
     <div className="space-y-16">
       <div className="space-y-4">
- <h1 className="text-5xl md:text-6xl font-display font-black tracking-tight leading-[0.9] text-foreground">
+ <h1 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[0.9] text-foreground">
           Typography
         </h1>
         <p className="text-xl max-w-2xl font-medium leading-relaxed text-foreground/80">
@@ -13,10 +13,10 @@ export default function Typography() {
       <div className="space-y-12">
         <div className="border-b-4 border-foreground/20 pb-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
-            <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Display 1 / 8rem / 900 / 0.9</span>
+            <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Display 1 / 8rem / 800 / 0.9</span>
  <span className="text-foreground/70 font-bold">Platypi</span>
           </div>
- <div className="text-[5rem] md:text-[8rem] font-display font-black leading-[0.9] tracking-tight">Giant.</div>
+ <div className="text-[5rem] md:text-[8rem] font-display font-extrabold leading-[0.9] tracking-tight">Giant.</div>
         </div>
 
         <div className="border-b-4 border-foreground/20 pb-8">

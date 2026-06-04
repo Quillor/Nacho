@@ -32,7 +32,7 @@ export default function LayoutPattern() {
                 <div className="flex h-9 w-9 items-center justify-center rounded-sm border-2 border-foreground bg-primary shadow-sm">
                   <Video className="h-5 w-5 text-primary-foreground" />
                 </div>
- <span className="font-display text-xl font-black tracking-tight">
+ <span className="font-display text-xl font-extrabold tracking-tight">
                   Nacho
                 </span>
               </div>
@@ -66,7 +66,7 @@ export default function LayoutPattern() {
         <Preview>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
- <h3 className="font-display text-4xl font-black tracking-tight">
+ <h3 className="font-display text-4xl font-extrabold tracking-tight">
                 Your Library
               </h3>
               <p className="mt-2 font-medium text-muted-foreground">

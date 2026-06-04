@@ -57,7 +57,7 @@ export default function Home() {
             <motion.div variants={fadeIn} className="inline-block mb-6 px-4 py-2 bg-background border-2 border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-sm text-foreground">
               Stop typing. Start talking.
             </motion.div>
- <motion.h1 variants={fadeIn} className="text-6xl md:text-8xl font-display font-black tracking-tight leading-[0.9] mb-8 text-foreground">
+ <motion.h1 variants={fadeIn} className="text-6xl md:text-8xl font-display font-extrabold tracking-tight leading-[0.9] mb-8 text-foreground">
               Send a <br/> video, not <br/> a novel.
             </motion.h1>
             <motion.p variants={fadeIn} className="text-xl md:text-2xl font-medium leading-relaxed text-foreground/90 mb-10 max-w-lg">
@@ -83,7 +83,7 @@ export default function Home() {
               <img src={videoPlayerNacho} alt="Nacho mascot presenting in a video player" className="w-full h-full object-contain" />
             </div>
             {/* Decoration */}
- <div className="absolute -bottom-6 -left-6 bg-secondary text-secondary-foreground font-display font-black text-2xl py-3 px-6 border-4 border-foreground shadow-lg -rotate-6">
+ <div className="absolute -bottom-6 -left-6 bg-secondary text-secondary-foreground font-display font-extrabold text-2xl py-3 px-6 border-4 border-foreground shadow-lg -rotate-6">
               Instant Link!
             </div>
           </motion.div>
@@ -107,7 +107,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
- className="text-4xl md:text-6xl font-display font-black leading-tight mb-8"
+ className="text-4xl md:text-6xl font-display font-extrabold leading-tight mb-8"
             >
               You speak 7x faster than you type. <br/>
               <span className="text-primary">Why are you still typing?</span>
@@ -132,7 +132,7 @@ export default function Home() {
             <div className="w-12 h-12 bg-primary border-4 border-foreground rounded-none shadow-sm flex items-center justify-center">
               <Zap className="w-6 h-6 text-foreground" />
             </div>
- <h2 className="text-5xl md:text-6xl font-display font-black text-foreground">Power Moves</h2>
+ <h2 className="text-5xl md:text-6xl font-display font-extrabold text-foreground">Power Moves</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -198,7 +198,7 @@ export default function Home() {
       {/* 4. How it Works (Steps) */}
       <section data-pico-section="how-it-works" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-secondary text-secondary-foreground relative overflow-hidden">
         <div className="max-w-5xl mx-auto relative z-10">
- <h2 className="text-5xl md:text-7xl font-display font-black text-center mb-6 text-secondary-foreground">As simple as 1, 2, 3.</h2>
+ <h2 className="text-5xl md:text-7xl font-display font-extrabold text-center mb-6 text-secondary-foreground">As simple as 1, 2, 3.</h2>
           <motion.img
             src={hammockNacho}
             alt="A relaxed nacho mascot lounging in a hammock with a drink"
@@ -223,7 +223,7 @@ export default function Home() {
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 className="flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-12"
               >
-                <div className="text-8xl md:text-[10rem] font-display font-black text-primary leading-none shadow-md">
+                <div className="text-8xl md:text-[10rem] font-display font-extrabold text-primary leading-none shadow-md">
                   {step.num}
                 </div>
                 <div>
@@ -245,7 +245,7 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <MessageSquare className="w-16 h-16 mx-auto mb-8 text-foreground" />
- <h2 className="text-4xl md:text-6xl font-display font-black leading-tight text-foreground mb-12">
+ <h2 className="text-4xl md:text-6xl font-display font-extrabold leading-tight text-foreground mb-12">
               "We banned internal meetings. Now we just send Nachos. Productivity is up 400% and nobody is mad about it."
             </h2>
             <div className="flex items-center justify-center gap-4">
@@ -264,7 +264,7 @@ export default function Home() {
       {/* 6. Integrations */}
       <section data-pico-section="integrations" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-background overflow-hidden">
         <div className="max-w-7xl mx-auto text-center mb-16">
- <h2 className="text-4xl md:text-6xl font-display font-black mb-6 text-foreground">Plays nice with others</h2>
+ <h2 className="text-4xl md:text-6xl font-display font-extrabold mb-6 text-foreground">Plays nice with others</h2>
           <p className="text-xl font-medium text-foreground/80 max-w-2xl mx-auto">Paste a Nacho link anywhere and it automatically unfurls into a beautiful playable embed.</p>
         </div>
 
@@ -288,13 +288,13 @@ export default function Home() {
       {/* 7. CTA */}
       <section data-pico-section="cta" className="py-32 px-6 md:px-12 bg-foreground text-background">
         <div className="max-w-4xl mx-auto text-center">
- <h2 className="text-5xl md:text-8xl font-display font-black tracking-tight mb-8">
+ <h2 className="text-5xl md:text-8xl font-display font-extrabold tracking-tight mb-8">
             Ready to stop typing?
           </h2>
           <p className="text-2xl font-medium text-background/80 mb-12">
             Join 100,000+ people who communicate better, faster.
           </p>
-          <Button asChild size="lg" className="h-20 px-12 text-2xl font-display font-black uppercase tracking-wider border-4 border-foreground shadow-xl hover:translate-y-[4px] hover:shadow-lg transition-all bg-primary text-foreground hover:bg-primary/90 rounded-none">
+          <Button asChild size="lg" className="h-20 px-12 text-2xl font-display font-extrabold uppercase tracking-wider border-4 border-foreground shadow-xl hover:translate-y-[4px] hover:shadow-lg transition-all bg-primary text-foreground hover:bg-primary/90 rounded-none">
             <Link href="/sign-up">Get Nacho For Free</Link>
           </Button>
         </div>
