@@ -1,0 +1,12 @@
+{
+  "name": "@workspace/nacho-illustrations",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./assets/*": "./assets/*"
+  },
+  "files": [
+    "assets"
+  ]
+}

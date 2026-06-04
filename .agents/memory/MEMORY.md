@@ -3,3 +3,4 @@
 - [Two-phase recording](recorder-two-phase.md) — Nacho acquires media streams on an explicit gesture before recording (live preview); selfie corner/caption lang change live, capture options force re-acquire.
 - [Nacho base path](nacho-base-path.md) — Nacho is served at `/` (not `/nacho/`); share/unfurl URLs use `/v/:shareId`, and `/s/:shareId` unfurl is mounted by api-server.
 - [Server-side Clerk auth](clerk-server-auth.md) — api-server uses `getAuth(req)` (works in dev too); owner-gate mutations, send `credentials:"include"`, keep public reads open.
+- [Nacho illustrations lib](nacho-illustrations-lib.md) — `@workspace/nacho-illustrations` is assets-only (no TS); import PNGs via `/assets/<name>.png`, shared across artifacts.

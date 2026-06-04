@@ -16,6 +16,7 @@ import Typography from "@/pages/design-system/foundations/typography";
 import Spacing from "@/pages/design-system/foundations/spacing";
 import Shadows from "@/pages/design-system/foundations/shadows";
 import Radius from "@/pages/design-system/foundations/radius";
+import Imagery from "@/pages/design-system/foundations/imagery";
 
 import ButtonDocs from "@/pages/design-system/components/button";
 import BadgeDocs from "@/pages/design-system/components/badge";
@@ -57,6 +58,7 @@ function Router() {
         <Route path="/foundations/spacing" component={Spacing} />
         <Route path="/foundations/shadows" component={Shadows} />
         <Route path="/foundations/radius" component={Radius} />
+        <Route path="/foundations/imagery" component={Imagery} />
 
         {/* Components */}
         <Route path="/components/button" component={ButtonDocs} />
