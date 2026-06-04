@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 import { useRoute, Link } from "wouter";
-import { Video, Eye, Copy, Check, List } from "lucide-react";
+import { Eye, Copy, Check, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/logo";
 import { storageUrl, shareUrl } from "@/lib/api";
 import { formatTimestamp, formatRelativeDate } from "@/lib/format";
 import type { Chapter, TranscriptSegment } from "@/lib/types";
@@ -71,13 +72,8 @@ export default function PublicView() {
     <div className="min-h-[100dvh] bg-background font-sans text-foreground">
       <header className="border-b-4 border-foreground bg-background">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-sm border-2 border-foreground bg-primary shadow-sm">
-              <Video className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <span className="font-display text-xl font-black uppercase tracking-tight">
-              Nacho
-            </span>
+          <Link href="/" className="flex items-center" aria-label="Nacho home">
+            <Logo className="h-8" />
           </Link>
           {rec && (
             <Button

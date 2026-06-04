@@ -60,9 +60,12 @@ router.get("/s/:shareId", async (req, res): Promise<void> => {
 
   const origin = `${req.protocol}://${req.get("host")}`;
   const appUrl = `${origin}${NACHO_BASE}v/${shareId}`;
+  // Prefer the recording's own thumbnail; otherwise fall back to the Nacho
+  // brand card so the link still unfurls with the brand mark.
+  const brandImage = `${origin}${NACHO_BASE}opengraph.jpg`;
   const image = row.thumbnailPath
     ? `${origin}/api/storage${row.thumbnailPath}`
-    : "";
+    : brandImage;
   const videoUrl = `${origin}/api/storage${row.videoPath}`;
 
   const title = esc(row.title || "Nacho recording");

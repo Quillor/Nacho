@@ -3,7 +3,8 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Video, Share2, Scissors, Zap, MessageSquare, ArrowRight, Play, CheckCircle2 } from "lucide-react";
+import { Share2, Scissors, Zap, MessageSquare, ArrowRight, Play, CheckCircle2 } from "lucide-react";
+import { Logo } from "@/components/logo";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -26,12 +27,9 @@ export default function Home() {
       
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b-4 border-foreground bg-background py-4 px-6 md:px-12 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-primary border-2 border-foreground shadow-sm rounded-sm flex items-center justify-center">
-            <Video className="w-6 h-6 text-foreground" />
-          </div>
-          <span className="font-display font-black text-2xl uppercase tracking-tight">Nacho</span>
-        </div>
+        <Link href="/" className="flex items-center" aria-label="Nacho home">
+          <Logo className="h-9" />
+        </Link>
         <div className="flex items-center gap-4">
           <Button asChild variant="outline" className="hidden md:flex font-bold border-2 border-transparent text-foreground hover:bg-muted transition-all">
             <Link href="/sign-in">Sign In</Link>
@@ -286,10 +284,9 @@ export default function Home() {
       {/* Footer */}
       <footer className="py-12 px-6 md:px-12 border-t-4 border-foreground bg-background text-foreground">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-            <Video className="w-8 h-8 text-foreground" />
-            <span className="font-display font-black text-3xl uppercase tracking-tight">Nacho</span>
-          </div>
+          <Link href="/" className="flex items-center" aria-label="Nacho home">
+            <Logo className="h-10" />
+          </Link>
           <div className="flex gap-6 font-medium font-bold text-foreground/80">
             <a href="#" className="hover:text-primary transition-colors">Twitter</a>
             <a href="#" className="hover:text-primary transition-colors">LinkedIn</a>

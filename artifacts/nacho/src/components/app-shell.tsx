@@ -1,13 +1,14 @@
 import { Link, useLocation } from "wouter";
-import { Video, Library, Settings, CircleDot, LogOut } from "lucide-react";
+import { Library, Settings, CircleDot, LogOut, type LucideIcon } from "lucide-react";
 import { useClerk, useUser } from "@clerk/react";
 import { cn } from "@/lib/utils";
 import { getDisplayName } from "@/components/account-management";
+import { Logo } from "@/components/logo";
 
 interface NavItem {
   href: string;
   label: string;
-  icon: typeof Video;
+  icon: LucideIcon;
 }
 
 const NAV: NavItem[] = [
@@ -66,14 +67,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
           <Link
             href="/library"
-            className="flex items-center gap-2 transition-transform hover:-translate-y-0.5"
+            className="flex items-center transition-transform hover:-translate-y-0.5"
+            aria-label="Nacho home"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-sm border-2 border-foreground bg-primary shadow-sm">
-              <Video className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <span className="font-display text-2xl font-black uppercase tracking-tight">
-              Nacho
-            </span>
+            <Logo className="h-9" />
           </Link>
 
           <div className="flex items-center gap-2">
