@@ -7,11 +7,13 @@
  */
 import type { Chapter } from './chapter';
 import type { TranscriptSegment } from './transcriptSegment';
+import type { Visibility } from './visibility';
 
 export interface PublishedRecording {
   shareId: string;
   title: string;
   description: string;
+  visibility: Visibility;
   durationSec: number;
   trimStart: number;
   trimEnd: number;

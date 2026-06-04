@@ -35,10 +35,23 @@ export interface TranscriptSegment {
   text: string;
 }
 
+export type Visibility = typeof Visibility[keyof typeof Visibility];
+
+
+export const Visibility = {
+  private: 'private',
+  public: 'public',
+} as const;
+
+export interface VisibilityInput {
+  visibility: Visibility;
+}
+
 export interface RecordingInput {
   /** @minLength 1 */
   title: string;
   description?: string;
+  visibility?: Visibility;
   durationSec: number;
   trimStart: number;
   trimEnd: number;
@@ -56,6 +69,7 @@ export interface PublishedRecording {
   shareId: string;
   title: string;
   description: string;
+  visibility: Visibility;
   durationSec: number;
   trimStart: number;
   trimEnd: number;

@@ -252,6 +252,7 @@ export default function Studio() {
         blob,
         thumbnail,
         mimeType: c.mimeType,
+        visibility: "private",
         shareId: null,
         videoPath: null,
         thumbnailPath: null,

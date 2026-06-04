@@ -13,6 +13,10 @@ export type RecordingSource = "screen" | "camera" | "screen-camera";
 
 export type RecordingStatus = "local" | "published";
 
+/** Whether a recording has a resolvable public share link. Saved videos are
+ * private by default; a public link is generated only on demand. */
+export type Visibility = "private" | "public";
+
 export interface LocalRecording {
   id: string;
   title: string;
@@ -29,6 +33,7 @@ export interface LocalRecording {
   blob: Blob;
   thumbnail: Blob | null;
   mimeType: string;
+  visibility: Visibility;
   shareId: string | null;
   videoPath: string | null;
   thumbnailPath: string | null;
@@ -39,6 +44,7 @@ export type LocalRecordingMeta = Omit<LocalRecording, "blob">;
 
 export interface PublishResult {
   shareId: string;
+  visibility: Visibility;
   videoPath: string;
   thumbnailPath: string | null;
   gifPath: string | null;

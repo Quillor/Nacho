@@ -7,7 +7,9 @@ import {
   Share2,
   Globe,
   Lock,
+  Link2,
   Eye,
+  Loader2,
   Pencil,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
@@ -24,7 +26,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { listRecordings, deleteRecording } from "@/lib/db";
+import {
+  listRecordings,
+  deleteRecording,
+  getRecording,
+  updateRecording,
+} from "@/lib/db";
+import { getPublicLink, unpublishRecording } from "@/lib/publish";
 import { shareUrl } from "@/lib/api";
 import { formatDuration, formatRelativeDate } from "@/lib/format";
 import type { LocalRecordingMeta } from "@/lib/types";
@@ -67,6 +75,7 @@ export default function LibraryPage() {
     null,
   );
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   const refresh = () => {
     listRecordings().then(setRecordings);
@@ -79,6 +88,58 @@ export default function LibraryPage() {
   const handleCopy = async (shareId: string) => {
     await navigator.clipboard.writeText(shareUrl(shareId));
     toast({ title: "Link copied", description: "Share it anywhere." });
+  };
+
+  const handleGetLink = async (rec: LocalRecordingMeta) => {
+    setBusyId(rec.id);
+    try {
+      const full = await getRecording(rec.id);
+      if (!full) throw new Error("missing recording");
+      const result = await getPublicLink(full);
+      await updateRecording(rec.id, {
+        visibility: "public",
+        shareId: result.shareId,
+        videoPath: result.videoPath,
+        thumbnailPath: result.thumbnailPath,
+        gifPath: result.gifPath,
+      });
+      await navigator.clipboard.writeText(shareUrl(result.shareId));
+      refresh();
+      toast({
+        title: "Public link ready",
+        description: "Link copied — anyone with it can watch.",
+      });
+    } catch {
+      toast({
+        title: "Couldn't create link",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const handleUnpublish = async (rec: LocalRecordingMeta) => {
+    if (!rec.shareId) return;
+    setBusyId(rec.id);
+    try {
+      await unpublishRecording(rec.shareId);
+      await updateRecording(rec.id, { visibility: "private" });
+      refresh();
+      toast({
+        title: "Made private",
+        description: "The public link no longer works.",
+      });
+    } catch {
+      toast({
+        title: "Couldn't unpublish",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setBusyId(null);
+    }
   };
 
   const handleDelete = async () => {
@@ -156,16 +217,16 @@ export default function LibraryPage() {
               </button>
               <div className="flex flex-1 flex-col p-5">
                 <div className="mb-2 flex items-center justify-between gap-2">
-                  {rec.shareId ? (
+                  {rec.visibility === "public" ? (
                     <Badge className="border-2 border-foreground bg-secondary text-secondary-foreground">
-                      <Globe className="mr-1 h-3 w-3" /> Published
+                      <Globe className="mr-1 h-3 w-3" /> Public
                     </Badge>
                   ) : (
                     <Badge
                       variant="outline"
                       className="border-2 border-foreground"
                     >
-                      <Lock className="mr-1 h-3 w-3" /> Local
+                      <Lock className="mr-1 h-3 w-3" /> Private
                     </Badge>
                   )}
                   <span className="text-xs font-medium text-muted-foreground">
@@ -185,7 +246,7 @@ export default function LibraryPage() {
                   >
                     <Pencil className="mr-1 h-4 w-4" /> Edit
                   </Button>
-                  {rec.shareId ? (
+                  {rec.visibility === "public" && rec.shareId ? (
                     <>
                       <Button
                         size="sm"
@@ -200,10 +261,38 @@ export default function LibraryPage() {
                         className="border-2 border-foreground bg-primary font-bold text-primary-foreground"
                         onClick={() => handleCopy(rec.shareId!)}
                       >
-                        <Share2 className="mr-1 h-4 w-4" /> Copy
+                        <Share2 className="mr-1 h-4 w-4" /> Copy link
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-2 border-foreground font-bold"
+                        disabled={busyId === rec.id}
+                        onClick={() => handleUnpublish(rec)}
+                      >
+                        {busyId === rec.id ? (
+                          <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                        ) : (
+                          <Lock className="mr-1 h-4 w-4" />
+                        )}
+                        Unpublish
                       </Button>
                     </>
-                  ) : null}
+                  ) : (
+                    <Button
+                      size="sm"
+                      className="border-2 border-foreground bg-primary font-bold text-primary-foreground"
+                      disabled={busyId === rec.id}
+                      onClick={() => handleGetLink(rec)}
+                    >
+                      {busyId === rec.id ? (
+                        <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                      ) : (
+                        <Link2 className="mr-1 h-4 w-4" />
+                      )}
+                      Get public link
+                    </Button>
+                  )}
                   <Button
                     size="sm"
                     variant="ghost"

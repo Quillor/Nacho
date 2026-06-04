@@ -5,7 +5,12 @@ import { db, publishedRecordingsTable } from "@workspace/db";
 const router: IRouter = Router();
 
 // Base path of the Nacho web app SPA (where the rich public view lives).
-const NACHO_BASE = process.env.NACHO_BASE_PATH || "/nacho/";
+// The Nacho artifact is served at the root ("/"), so the public viewer route is
+// "/v/:shareId". Keep a trailing slash so it composes cleanly with "v/:shareId".
+const rawNachoBase = process.env.NACHO_BASE_PATH || "/";
+const NACHO_BASE = rawNachoBase.endsWith("/")
+  ? rawNachoBase
+  : `${rawNachoBase}/`;
 
 function esc(value: string): string {
   return value.replace(/[&<>"']/g, (c) => {
@@ -47,7 +52,8 @@ router.get("/s/:shareId", async (req, res): Promise<void> => {
     .from(publishedRecordingsTable)
     .where(eq(publishedRecordingsTable.shareId, shareId));
 
-  if (!row) {
+  // Private recordings have no public link and must not unfurl.
+  if (!row || row.visibility !== "public") {
     res.status(404).send("Recording not found");
     return;
   }

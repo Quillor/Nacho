@@ -26,8 +26,13 @@ function getDB(): Promise<IDBPDatabase<NachoDB>> {
   return dbPromise;
 }
 
+// Records saved before the visibility model existed default to private.
+function normalize<T extends Partial<LocalRecording>>(rec: T): T {
+  return rec.visibility ? rec : { ...rec, visibility: "private" };
+}
+
 function stripBlobs(rec: LocalRecording): LocalRecordingMeta {
-  const { blob: _blob, ...meta } = rec;
+  const { blob: _blob, ...meta } = normalize(rec);
   return meta;
 }
 
@@ -40,7 +45,8 @@ export async function getRecording(
   id: string,
 ): Promise<LocalRecording | undefined> {
   const db = await getDB();
-  return db.get("recordings", id);
+  const rec = await db.get("recordings", id);
+  return rec ? normalize(rec) : undefined;
 }
 
 export async function listRecordings(): Promise<LocalRecordingMeta[]> {

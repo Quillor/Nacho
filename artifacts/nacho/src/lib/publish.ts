@@ -1,5 +1,5 @@
 import DOMPurify from "dompurify";
-import type { LocalRecording, PublishResult } from "./types";
+import type { LocalRecording, PublishResult, Visibility } from "./types";
 
 interface UploadUrlResponse {
   uploadURL: string;
@@ -33,8 +33,14 @@ export interface PublishOptions {
   onProgress?: (label: string) => void;
 }
 
-export async function publishRecording(
+/**
+ * Upload a recording's media to object storage and create the server-side
+ * record with the given visibility. Defaults to private (saved to the account
+ * with no public link). Used as the building block for saving and publishing.
+ */
+async function uploadRecording(
   rec: LocalRecording,
+  visibility: Visibility,
   options: PublishOptions = {},
 ): Promise<PublishResult> {
   const { gifBlob, onProgress } = options;
@@ -55,13 +61,15 @@ export async function publishRecording(
     gifPath = await uploadBlob(gifBlob, `${rec.id}.gif`);
   }
 
-  onProgress?.("Creating share link…");
+  onProgress?.("Saving…");
   const res = await fetch("/api/recordings", {
     method: "POST",
+    credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       title: rec.title,
       description: DOMPurify.sanitize(rec.description),
+      visibility,
       durationSec: rec.durationSec,
       trimStart: rec.trimStart,
       trimEnd: rec.trimEnd,
@@ -73,8 +81,73 @@ export async function publishRecording(
       transcript: rec.transcript,
     }),
   });
-  if (!res.ok) throw new Error("Failed to publish recording");
-  const data = (await res.json()) as { shareId: string };
+  if (!res.ok) throw new Error("Failed to save recording");
+  const data = (await res.json()) as {
+    shareId: string;
+    visibility: Visibility;
+  };
 
-  return { shareId: data.shareId, videoPath, thumbnailPath, gifPath };
+  return { shareId: data.shareId, visibility, videoPath, thumbnailPath, gifPath };
+}
+
+/**
+ * Save a recording to the account as private (no public link). Other surfaces
+ * call this to persist a video before — or instead of — generating a link.
+ */
+export function saveRecordingPrivate(
+  rec: LocalRecording,
+  options: PublishOptions = {},
+): Promise<PublishResult> {
+  return uploadRecording(rec, "private", options);
+}
+
+/** Flip an already-saved recording's visibility on the server. */
+async function setVisibility(
+  shareId: string,
+  visibility: Visibility,
+): Promise<void> {
+  const res = await fetch(`/api/recordings/${shareId}/visibility`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ visibility }),
+  });
+  if (!res.ok) throw new Error("Failed to update visibility");
+}
+
+/**
+ * Generate (or re-enable) the public share link for a recording. If the video
+ * has not been saved to the server yet, it is uploaded first as public.
+ */
+export async function getPublicLink(
+  rec: LocalRecording,
+  options: PublishOptions = {},
+): Promise<PublishResult> {
+  if (rec.shareId && rec.videoPath) {
+    await setVisibility(rec.shareId, "public");
+    return {
+      shareId: rec.shareId,
+      visibility: "public",
+      videoPath: rec.videoPath,
+      thumbnailPath: rec.thumbnailPath,
+      gifPath: rec.gifPath,
+    };
+  }
+  return uploadRecording(rec, "public", options);
+}
+
+/** Return a recording to private state; its public link stops resolving. */
+export async function unpublishRecording(shareId: string): Promise<void> {
+  await setVisibility(shareId, "private");
+}
+
+/**
+ * Publish a recording and return its share link. Kept for the editor flow;
+ * equivalent to uploading and immediately making it public.
+ */
+export function publishRecording(
+  rec: LocalRecording,
+  options: PublishOptions = {},
+): Promise<PublishResult> {
+  return uploadRecording(rec, "public", options);
 }

@@ -27,7 +27,8 @@ import type {
   UploadUrlInput,
   UploadUrlResponse,
   VersionInfo,
-  ViewCount
+  ViewCount,
+  VisibilityInput
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -338,6 +339,78 @@ export function useGetRecording<TData = Awaited<ReturnType<typeof getRecording>>
 
 
 
+
+export const getSetRecordingVisibilityUrl = (shareId: string,) => {
+
+
+
+
+  return `/api/recordings/${shareId}/visibility`
+}
+
+/**
+ * @summary Change a recording's visibility (publish / unpublish)
+ */
+export const setRecordingVisibility = async (shareId: string,
+    visibilityInput: VisibilityInput, options?: RequestInit): Promise<PublishedRecording> => {
+
+  return customFetch<PublishedRecording>(getSetRecordingVisibilityUrl(shareId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      visibilityInput,)
+  }
+);}
+
+
+
+
+export const getSetRecordingVisibilityMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof setRecordingVisibility>>, TError,{shareId: string;data: BodyType<VisibilityInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof setRecordingVisibility>>, TError,{shareId: string;data: BodyType<VisibilityInput>}, TContext> => {
+
+const mutationKey = ['setRecordingVisibility'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof setRecordingVisibility>>, {shareId: string;data: BodyType<VisibilityInput>}> = (props) => {
+          const {shareId,data} = props ?? {};
+
+          return  setRecordingVisibility(shareId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SetRecordingVisibilityMutationResult = NonNullable<Awaited<ReturnType<typeof setRecordingVisibility>>>
+    export type SetRecordingVisibilityMutationBody = BodyType<VisibilityInput>
+    export type SetRecordingVisibilityMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Change a recording's visibility (publish / unpublish)
+ */
+export const useSetRecordingVisibility = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof setRecordingVisibility>>, TError,{shareId: string;data: BodyType<VisibilityInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof setRecordingVisibility>>,
+        TError,
+        {shareId: string;data: BodyType<VisibilityInput>},
+        TContext
+      > => {
+      return useMutation(getSetRecordingVisibilityMutationOptions(options));
+    }
 
 export const getAddRecordingViewUrl = (shareId: string,) => {
 

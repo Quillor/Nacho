@@ -13,12 +13,18 @@ import { z } from "zod/v4";
 
 export type Chapter = { time: number; label: string };
 export type TranscriptSegment = { start: number; end: number; text: string };
+export type Visibility = "private" | "public";
 
 export const publishedRecordingsTable = pgTable("published_recordings", {
   id: serial("id").primaryKey(),
   shareId: text("share_id").notNull().unique(),
+  ownerUserId: text("owner_user_id"),
   title: text("title").notNull(),
   description: text("description").notNull().default(""),
+  visibility: text("visibility")
+    .$type<Visibility>()
+    .notNull()
+    .default("private"),
   durationSec: real("duration_sec").notNull(),
   trimStart: real("trim_start").notNull().default(0),
   trimEnd: real("trim_end").notNull(),
@@ -36,7 +42,7 @@ export const publishedRecordingsTable = pgTable("published_recordings", {
 
 export const insertPublishedRecordingSchema = createInsertSchema(
   publishedRecordingsTable,
-).omit({ id: true, views: true, createdAt: true });
+).omit({ id: true, ownerUserId: true, views: true, createdAt: true });
 export type InsertPublishedRecording = z.infer<
   typeof insertPublishedRecordingSchema
 >;

@@ -171,6 +171,7 @@ export default function Editor() {
         { gifBlob, onProgress: setPublishStep },
       );
       await updateRecording(current.id, {
+        visibility: result.visibility,
         shareId: result.shareId,
         videoPath: result.videoPath,
         thumbnailPath: result.thumbnailPath,

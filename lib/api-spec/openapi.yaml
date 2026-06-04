@@ -90,6 +90,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /recordings/{shareId}/visibility:
+    patch:
+      operationId: setRecordingVisibility
+      tags: [recordings]
+      summary: Change a recording's visibility (publish / unpublish)
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisibilityInput"
+      responses:
+        "200":
+          description: The updated recording
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedRecording"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /recordings/{shareId}/views:
     post:
       operationId: addRecordingView
@@ -178,6 +208,15 @@ components:
           type: number
         text:
           type: string
+    Visibility:
+      type: string
+      enum: [private, public]
+    VisibilityInput:
+      type: object
+      required: [visibility]
+      properties:
+        visibility:
+          $ref: "#/components/schemas/Visibility"
     RecordingInput:
       type: object
       required:
@@ -192,6 +231,8 @@ components:
           minLength: 1
         description:
           type: string
+        visibility:
+          $ref: "#/components/schemas/Visibility"
         durationSec:
           type: number
         trimStart:
@@ -220,6 +261,7 @@ components:
         - shareId
         - title
         - description
+        - visibility
         - durationSec
         - trimStart
         - trimEnd
@@ -236,6 +278,8 @@ components:
           type: string
         description:
           type: string
+        visibility:
+          $ref: "#/components/schemas/Visibility"
         durationSec:
           type: number
         trimStart:

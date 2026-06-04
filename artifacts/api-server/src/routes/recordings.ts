@@ -1,5 +1,6 @@
 import { Router, type IRouter } from "express";
-import { eq, sql } from "drizzle-orm";
+import { getAuth } from "@clerk/express";
+import { and, eq, sql } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import {
   db,
@@ -10,6 +11,8 @@ import {
   PublishRecordingBody,
   GetRecordingParams,
   GetRecordingResponse,
+  SetRecordingVisibilityParams,
+  SetRecordingVisibilityBody,
   AddRecordingViewParams,
   AddRecordingViewResponse,
 } from "@workspace/api-zod";
@@ -21,6 +24,7 @@ function toApi(row: PublishedRecordingRow) {
     shareId: row.shareId,
     title: row.title,
     description: row.description,
+    visibility: row.visibility,
     durationSec: row.durationSec,
     trimStart: row.trimStart,
     trimEnd: row.trimEnd,
@@ -39,6 +43,12 @@ function toApi(row: PublishedRecordingRow) {
 }
 
 router.post("/recordings", async (req, res): Promise<void> => {
+  const { userId } = getAuth(req);
+  if (!userId) {
+    res.status(401).json({ error: "Sign in to save a recording" });
+    return;
+  }
+
   const parsed = PublishRecordingBody.safeParse(req.body);
   if (!parsed.success) {
     req.log.warn({ errors: parsed.error.message }, "Invalid recording input");
@@ -53,8 +63,10 @@ router.post("/recordings", async (req, res): Promise<void> => {
     .insert(publishedRecordingsTable)
     .values({
       shareId,
+      ownerUserId: userId,
       title: data.title,
       description: data.description ?? "",
+      visibility: data.visibility ?? "private",
       durationSec: data.durationSec,
       trimStart: data.trimStart,
       trimEnd: data.trimEnd,
@@ -82,13 +94,57 @@ router.get("/recordings/:shareId", async (req, res): Promise<void> => {
     .from(publishedRecordingsTable)
     .where(eq(publishedRecordingsTable.shareId, params.data.shareId));
 
-  if (!row) {
+  // Private recordings are never resolvable through the public path.
+  if (!row || row.visibility !== "public") {
     res.status(404).json({ error: "Recording not found" });
     return;
   }
 
   res.json(GetRecordingResponse.parse(toApi(row)));
 });
+
+router.patch(
+  "/recordings/:shareId/visibility",
+  async (req, res): Promise<void> => {
+    const params = SetRecordingVisibilityParams.safeParse(req.params);
+    if (!params.success) {
+      res.status(400).json({ error: params.error.message });
+      return;
+    }
+    const body = SetRecordingVisibilityBody.safeParse(req.body);
+    if (!body.success) {
+      res.status(400).json({ error: body.error.message });
+      return;
+    }
+
+    const { userId } = getAuth(req);
+    if (!userId) {
+      res.status(401).json({ error: "Sign in to change visibility" });
+      return;
+    }
+
+    // Only the owner may change visibility. Scope the update by owner so a
+    // leaked shareId can't be toggled by anyone else; a non-match yields 404
+    // (same as not found) to avoid revealing the recording's existence.
+    const [row] = await db
+      .update(publishedRecordingsTable)
+      .set({ visibility: body.data.visibility })
+      .where(
+        and(
+          eq(publishedRecordingsTable.shareId, params.data.shareId),
+          eq(publishedRecordingsTable.ownerUserId, userId),
+        ),
+      )
+      .returning();
+
+    if (!row) {
+      res.status(404).json({ error: "Recording not found" });
+      return;
+    }
+
+    res.json(GetRecordingResponse.parse(toApi(row)));
+  },
+);
 
 router.post("/recordings/:shareId/views", async (req, res): Promise<void> => {
   const params = AddRecordingViewParams.safeParse(req.params);
@@ -100,7 +156,12 @@ router.post("/recordings/:shareId/views", async (req, res): Promise<void> => {
   const [row] = await db
     .update(publishedRecordingsTable)
     .set({ views: sql`${publishedRecordingsTable.views} + 1` })
-    .where(eq(publishedRecordingsTable.shareId, params.data.shareId))
+    .where(
+      and(
+        eq(publishedRecordingsTable.shareId, params.data.shareId),
+        eq(publishedRecordingsTable.visibility, "public"),
+      ),
+    )
     .returning();
 
   if (!row) {

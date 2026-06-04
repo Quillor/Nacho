@@ -16,3 +16,5 @@ export * from './uploadUrlInput';
 export * from './uploadUrlResponse';
 export * from './versionInfo';
 export * from './viewCount';
+export * from './visibility';
+export * from './visibilityInput';

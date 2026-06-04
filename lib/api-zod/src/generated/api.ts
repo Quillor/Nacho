@@ -41,6 +41,7 @@ export const RequestUploadUrlResponse = zod.object({
 export const PublishRecordingBody = zod.object({
   "title": zod.string().min(1),
   "description": zod.string().optional(),
+  "visibility": zod.enum(['private', 'public']).optional(),
   "durationSec": zod.number(),
   "trimStart": zod.number(),
   "trimEnd": zod.number(),
@@ -71,6 +72,44 @@ export const GetRecordingResponse = zod.object({
   "shareId": zod.string(),
   "title": zod.string(),
   "description": zod.string(),
+  "visibility": zod.enum(['private', 'public']),
+  "durationSec": zod.number(),
+  "trimStart": zod.number(),
+  "trimEnd": zod.number(),
+  "hasAudio": zod.boolean(),
+  "videoPath": zod.string(),
+  "thumbnailPath": zod.string().nullish(),
+  "gifPath": zod.string().nullish(),
+  "chapters": zod.array(zod.object({
+  "time": zod.number(),
+  "label": zod.string()
+})),
+  "transcript": zod.array(zod.object({
+  "start": zod.number(),
+  "end": zod.number(),
+  "text": zod.string()
+})),
+  "views": zod.number(),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Change a recording's visibility (publish / unpublish)
+ */
+export const SetRecordingVisibilityParams = zod.object({
+  "shareId": zod.coerce.string()
+})
+
+export const SetRecordingVisibilityBody = zod.object({
+  "visibility": zod.enum(['private', 'public'])
+})
+
+export const SetRecordingVisibilityResponse = zod.object({
+  "shareId": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "visibility": zod.enum(['private', 'public']),
   "durationSec": zod.number(),
   "trimStart": zod.number(),
   "trimEnd": zod.number(),
