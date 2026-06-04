@@ -7,6 +7,7 @@ import jalapenoCharacter from "@workspace/nacho-illustrations/assets/jalapeno-ch
 import nachoCheeseJump from "@workspace/nacho-illustrations/assets/nacho-cheese-jump.png";
 import nachoVideoLesson from "@workspace/nacho-illustrations/assets/nacho-video-lesson.png";
 import nachoHammock from "@workspace/nacho-illustrations/assets/nacho-hammock.png";
+import nachoDipSalesPlayer from "@workspace/nacho-illustrations/assets/nacho-dip-sales-player.png";
 
 interface Illustration {
   src: string;
@@ -35,7 +36,7 @@ const ILLUSTRATIONS: Illustration[] = [
     src: nachoVideoLesson,
     name: "Video Lesson",
     file: "nacho-video-lesson",
-    caption: "Nacho with a pointer beside a \u201CNachos: A Way of Life\u201D player.",
+    caption: "Nacho holding a pointer, mid-lesson teaching pose.",
     usage: "Tutorials, recorded lessons, and anything video-related.",
   },
   {
@@ -58,6 +59,13 @@ const ILLUSTRATIONS: Illustration[] = [
     file: "jalapeno-character",
     caption: "A seated jalape\u00F1o character, the friendly sidekick.",
     usage: "Secondary characters, testimonials, and supporting illustrations.",
+  },
+  {
+    src: nachoDipSalesPlayer,
+    name: "Dip Sales Player",
+    file: "nacho-dip-sales-player",
+    caption: "Nacho presenting a \u201CNacho Dip Sales\u201D dashboard inside a video player.",
+    usage: "Product shots, hero mockups, and demo or feature showcases.",
   },
 ];
 

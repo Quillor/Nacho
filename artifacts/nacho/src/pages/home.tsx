@@ -5,9 +5,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Video, Share2, Scissors, Zap, MessageSquare, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Logo } from "@/components/logo";
-import videoPlayerNacho from "@assets/image_1780547886172.png";
-import hammockNacho from "@assets/image_1780547893759.png";
-import emptyBowlNacho from "@assets/image_1780548006979.png";
+import videoPlayerNacho from "@workspace/nacho-illustrations/assets/nacho-dip-sales-player.png";
+import hammockNacho from "@workspace/nacho-illustrations/assets/nacho-hammock.png";
+import emptyBowlNacho from "@workspace/nacho-illustrations/assets/sad-nacho-empty-bowl.png";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
