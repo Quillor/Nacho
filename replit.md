@@ -1,6 +1,6 @@
-# [Project name]
+# Pico Design System
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A single-page design system documentation site for "Pico" — a bold, playful, high-contrast brand system (golden yellow, deep brown, cream) covering spacing, typography, color palette, color combinations, and common components.
 
 ## Run & Operate
 
