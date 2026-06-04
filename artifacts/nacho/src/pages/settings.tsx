@@ -88,7 +88,7 @@ export default function SettingsPage() {
         Settings
       </h1>
       <p className="mb-10 text-lg font-medium text-muted-foreground">
-        Manage your account, local storage, and see what's running.
+        Manage your account, videos, and see what's running.
       </p>
 
       <div className="mb-6">
@@ -100,7 +100,7 @@ export default function SettingsPage() {
           <div className="mb-4 flex items-center gap-2">
             <HardDrive className="h-5 w-5" />
             <h2 className="font-display text-xl font-black uppercase">
-              Local Storage
+              Videos
             </h2>
           </div>
           <dl className="space-y-3">
