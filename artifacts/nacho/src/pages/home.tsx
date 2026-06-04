@@ -3,8 +3,11 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Share2, Scissors, Zap, MessageSquare, ArrowRight, Play, CheckCircle2 } from "lucide-react";
+import { Video, Share2, Scissors, Zap, MessageSquare, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Logo } from "@/components/logo";
+import videoPlayerNacho from "@assets/image_1780547886172.png";
+import hammockNacho from "@assets/image_1780547893759.png";
+import emptyBowlNacho from "@assets/image_1780548006979.png";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -74,14 +77,8 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="border-4 border-foreground shadow-xl bg-background rounded-xl overflow-hidden aspect-video relative">
-              <img src={`${import.meta.env.BASE_URL}hero-mockup.png`} alt="Nacho Interface" className="w-full h-full object-cover" />
-              {/* Play Button Overlay */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-20 h-20 bg-primary border-4 border-foreground rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 transition-transform">
-                  <Play className="w-10 h-10 text-foreground ml-2" />
-                </div>
-              </div>
+            <div className="border-4 border-foreground shadow-xl bg-background rounded-xl overflow-hidden aspect-video relative flex items-center justify-center p-6">
+              <img src={videoPlayerNacho} alt="Nacho mascot presenting in a video player" className="w-full h-full object-contain" />
             </div>
             {/* Decoration */}
             <div className="absolute -bottom-6 -left-6 bg-secondary text-secondary-foreground font-display font-black uppercase text-2xl py-3 px-6 border-4 border-foreground shadow-lg -rotate-6">
@@ -93,25 +90,36 @@ export default function Home() {
 
       {/* 2. Value Prop (Scrolling Text) */}
       <section className="py-24 px-6 md:px-12 border-b-4 border-foreground bg-foreground text-background">
-        <div className="max-w-5xl mx-auto text-center">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, rotate: 2 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-6xl font-display font-black uppercase leading-tight mb-8"
+            transition={{ duration: 0.6 }}
+            className="order-2 md:order-1"
           >
-            You speak 7x faster than you type. <br/>
-            <span className="text-primary">Why are you still typing?</span>
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-xl md:text-2xl font-medium text-background/80 max-w-3xl mx-auto"
-          >
-            Emails get misread. Meetings take too long. A quick Nacho video captures your tone, your screen, and your exact point in seconds.
-          </motion.p>
+            <img src={emptyBowlNacho} alt="A sad nacho mascot leaning on an empty bowl" className="w-full max-w-md mx-auto object-contain drop-shadow-[6px_6px_0px_rgba(245,197,24,0.25)]" />
+          </motion.div>
+          <div className="order-1 md:order-2 text-center md:text-left">
+            <motion.h2 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl md:text-6xl font-display font-black uppercase leading-tight mb-8"
+            >
+              You speak 7x faster than you type. <br/>
+              <span className="text-primary">Why are you still typing?</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-xl md:text-2xl font-medium text-background/80"
+            >
+              Emails get misread. Meetings take too long. A quick Nacho video captures your tone, your screen, and your exact point in seconds.
+            </motion.p>
+          </div>
         </div>
       </section>
 
@@ -132,8 +140,8 @@ export default function Home() {
               viewport={{ once: true }}
               className="border-4 border-foreground rounded-xl overflow-hidden shadow-xl hover:-translate-y-2 transition-transform duration-300 bg-card group flex flex-col"
             >
-              <div className="aspect-[4/3] bg-muted w-full border-b-4 border-foreground relative overflow-hidden">
-                <img src={`${import.meta.env.BASE_URL}feature-camera.png`} alt="Record" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <div className="aspect-[16/9] bg-primary w-full border-b-4 border-foreground relative overflow-hidden flex items-center justify-center">
+                <Video className="w-24 h-24 text-foreground transition-transform duration-500 group-hover:scale-110" strokeWidth={1.5} />
               </div>
               <div className="p-8 flex-1 flex flex-col justify-between">
                 <div>
@@ -151,8 +159,8 @@ export default function Home() {
               transition={{ delay: 0.1 }}
               className="border-4 border-foreground rounded-xl overflow-hidden shadow-xl hover:-translate-y-2 transition-transform duration-300 bg-card group flex flex-col"
             >
-              <div className="aspect-[4/3] bg-muted w-full border-b-4 border-foreground relative overflow-hidden">
-                <img src={`${import.meta.env.BASE_URL}feature-share.png`} alt="Share" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <div className="aspect-[16/9] bg-secondary w-full border-b-4 border-foreground relative overflow-hidden flex items-center justify-center">
+                <Share2 className="w-24 h-24 text-secondary-foreground transition-transform duration-500 group-hover:scale-110" strokeWidth={1.5} />
               </div>
               <div className="p-8 flex-1 flex flex-col justify-between">
                 <div>
@@ -170,8 +178,8 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="border-4 border-foreground rounded-xl overflow-hidden shadow-xl hover:-translate-y-2 transition-transform duration-300 bg-card group flex flex-col"
             >
-              <div className="aspect-[4/3] bg-muted w-full border-b-4 border-foreground relative overflow-hidden">
-                <img src={`${import.meta.env.BASE_URL}feature-trim.png`} alt="Trim" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <div className="aspect-[16/9] bg-destructive w-full border-b-4 border-foreground relative overflow-hidden flex items-center justify-center">
+                <Scissors className="w-24 h-24 text-destructive-foreground transition-transform duration-500 group-hover:scale-110" strokeWidth={1.5} />
               </div>
               <div className="p-8 flex-1 flex flex-col justify-between">
                 <div>
@@ -188,7 +196,16 @@ export default function Home() {
       {/* 4. How it Works (Steps) */}
       <section className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-secondary text-secondary-foreground relative overflow-hidden">
         <div className="max-w-5xl mx-auto relative z-10">
-          <h2 className="text-5xl md:text-7xl font-display font-black uppercase text-center mb-24 text-secondary-foreground">As simple as 1, 2, 3.</h2>
+          <h2 className="text-5xl md:text-7xl font-display font-black uppercase text-center mb-6 text-secondary-foreground">As simple as 1, 2, 3.</h2>
+          <motion.img
+            src={hammockNacho}
+            alt="A relaxed nacho mascot lounging in a hammock with a drink"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="w-full max-w-xl mx-auto object-contain mb-20"
+          />
 
           <div className="space-y-16">
             {[

@@ -425,6 +425,9 @@ importers:
       '@clerk/themes':
         specifier: ^2.4.57
         version: 2.4.57(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@workspace/nacho-illustrations':
+        specifier: workspace:*
+        version: link:../../lib/nacho-illustrations
       dompurify:
         specifier: ^3.4.7
         version: 3.4.7

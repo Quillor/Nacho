@@ -78,6 +78,7 @@
   "dependencies": {
     "@clerk/react": "^6.7.2",
     "@clerk/themes": "^2.4.57",
+    "@workspace/nacho-illustrations": "workspace:*",
     "dompurify": "^3.4.7",
     "gifenc": "^1.0.3",
     "idb": "^8.0.3",
