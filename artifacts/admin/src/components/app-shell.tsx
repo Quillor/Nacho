@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useUser, useClerk, Show } from "@clerk/react";
+import { useUser, useClerk } from "@clerk/react";
 import {
   LayoutDashboard,
   Users as UsersIcon,
@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@workspace/pico-ui/avatar";
 import { Button } from "@workspace/pico-ui/button";
 import AccessDenied from "@/pages/access-denied";
 import { Redirect } from "wouter";
+import { DEV_AUTH_BYPASS, DEV_USER } from "@/lib/dev-auth";
 
 // Mirrors the server-side rule in api-server lib/clerk.ts: this account is
 // always a super admin regardless of publicMetadata.role.
@@ -30,24 +31,47 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { signOut } = useClerk();
   const [location] = useLocation();
 
-  if (!isLoaded) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-foreground border-t-transparent" />
-      </div>
-    );
+  // Dev-only bypass skips the sign-in + super-admin gate entirely so the
+  // console can be exercised without a real Clerk session. Inert in production.
+  if (!DEV_AUTH_BYPASS) {
+    if (!isLoaded) {
+      return (
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-foreground border-t-transparent" />
+        </div>
+      );
+    }
+
+    if (!user) {
+      return <Redirect to="/sign-in" />;
+    }
+
+    const role = user.publicMetadata?.role;
+    const email = user.primaryEmailAddress?.emailAddress?.toLowerCase();
+    const isPermanentSuperAdmin = email === PERMANENT_SUPER_ADMIN_EMAIL;
+    if (role !== "super_admin" && !isPermanentSuperAdmin) {
+      return <AccessDenied />;
+    }
   }
 
-  if (!user) {
-    return <Redirect to="/sign-in" />;
-  }
+  // Display values fall back to the dev stand-in when there is no real user.
+  const displayName =
+    user?.fullName || (DEV_AUTH_BYPASS ? DEV_USER.displayName : "Admin");
+  const displayEmail =
+    user?.primaryEmailAddress?.emailAddress ??
+    (DEV_AUTH_BYPASS ? DEV_USER.email : undefined);
+  const avatarFallback =
+    user?.firstName?.[0] ||
+    user?.emailAddresses[0]?.emailAddress?.[0]?.toUpperCase() ||
+    displayName[0];
 
-  const role = user.publicMetadata?.role;
-  const email = user.primaryEmailAddress?.emailAddress?.toLowerCase();
-  const isPermanentSuperAdmin = email === PERMANENT_SUPER_ADMIN_EMAIL;
-  if (role !== "super_admin" && !isPermanentSuperAdmin) {
-    return <AccessDenied />;
-  }
+  const handleSignOut = () => {
+    if (DEV_AUTH_BYPASS && !user) {
+      window.location.href = "/sign-in";
+      return;
+    }
+    signOut();
+  };
 
   return (
     <div className="flex min-h-screen w-full bg-muted/20">
@@ -88,24 +112,24 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="border-t border-border p-4">
           <div className="flex items-center gap-3">
             <Avatar className="h-9 w-9 border border-border">
-              <AvatarImage src={user.imageUrl} />
+              <AvatarImage src={user?.imageUrl} />
               <AvatarFallback className="bg-muted text-xs">
-                {user.firstName?.[0] || user.emailAddresses[0]?.emailAddress?.[0]?.toUpperCase()}
+                {avatarFallback}
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-1 flex-col overflow-hidden">
               <span className="truncate text-sm font-medium text-foreground">
-                {user.fullName || "Admin"}
+                {displayName}
               </span>
               <span className="truncate text-xs text-muted-foreground">
-                {user.primaryEmailAddress?.emailAddress}
+                {displayEmail}
               </span>
             </div>
           </div>
           <Button
             variant="ghost"
             className="mt-4 w-full justify-start gap-2 text-muted-foreground hover:text-foreground"
-            onClick={() => signOut()}
+            onClick={handleSignOut}
           >
             <LogOut className="h-4 w-4" />
             Sign out

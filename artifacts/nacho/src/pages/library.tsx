@@ -11,6 +11,7 @@ import {
   Eye,
   Loader2,
   Pencil,
+  Sparkles,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@workspace/pico-ui/button";
@@ -35,6 +36,7 @@ import {
 import { getPublicLink, unpublishRecording } from "@/lib/publish";
 import { shareUrl } from "@/lib/api";
 import { formatDuration, formatRelativeDate } from "@/lib/format";
+import { DEV_AUTH_BYPASS } from "@/lib/dev-auth";
 import type { LocalRecordingMeta } from "@/lib/types";
 
 function Thumb({ rec }: { rec: LocalRecordingMeta }) {
@@ -76,6 +78,7 @@ export default function LibraryPage() {
   );
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [seeding, setSeeding] = useState(false);
 
   const refresh = () => {
     listRecordings().then(setRecordings);
@@ -84,6 +87,45 @@ export default function LibraryPage() {
   useEffect(() => {
     refresh();
   }, []);
+
+  // Dev-only: seed sample recordings once when the bypass is on and the Library
+  // is empty. The dynamic import keeps lib/dev-seed out of production bundles.
+  useEffect(() => {
+    if (!DEV_AUTH_BYPASS) return;
+    let cancelled = false;
+    import("@/lib/dev-seed")
+      .then(async ({ autoSeedIfEmpty }) => {
+        const created = await autoSeedIfEmpty();
+        if (created > 0 && !cancelled) refresh();
+      })
+      .catch(() => {
+        /* seeding is best-effort in dev */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleSeed = async () => {
+    setSeeding(true);
+    try {
+      const { seedSampleRecordings } = await import("@/lib/dev-seed");
+      const created = await seedSampleRecordings();
+      refresh();
+      toast({
+        title: "Sample recordings added",
+        description: `Seeded ${created} recordings into your Library.`,
+      });
+    } catch {
+      toast({
+        title: "Couldn't seed recordings",
+        description: "Sample generation failed. Check the console.",
+        variant: "destructive",
+      });
+    } finally {
+      setSeeding(false);
+    }
+  };
 
   const handleCopy = async (shareId: string) => {
     await navigator.clipboard.writeText(shareUrl(shareId));
@@ -161,16 +203,34 @@ export default function LibraryPage() {
             Every recording lives on this device until you publish it.
           </p>
         </div>
-        <Button
-          asChild
-          size="lg"
- className="h-14 border-4 border-foreground bg-primary px-6 text-lg font-bold text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
-        >
-          <Link href="/studio">
-            <CircleDot className="mr-2 h-5 w-5" />
-            New Recording
-          </Link>
-        </Button>
+        <div className="flex flex-wrap items-center gap-3">
+          {DEV_AUTH_BYPASS && (
+            <Button
+              size="lg"
+              variant="outline"
+              disabled={seeding}
+              onClick={handleSeed}
+              className="h-14 border-4 border-foreground px-6 text-lg font-bold"
+            >
+              {seeding ? (
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              ) : (
+                <Sparkles className="mr-2 h-5 w-5" />
+              )}
+              Seed samples
+            </Button>
+          )}
+          <Button
+            asChild
+            size="lg"
+            className="h-14 border-4 border-foreground bg-primary px-6 text-lg font-bold text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+          >
+            <Link href="/studio">
+              <CircleDot className="mr-2 h-5 w-5" />
+              New Recording
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {recordings === null ? (

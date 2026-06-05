@@ -1242,6 +1242,10 @@ importers:
         version: 19.2.3(@types/react@19.2.14)
 
   scripts:
+    dependencies:
+      '@clerk/backend':
+        specifier: ^3.5.0
+        version: 3.5.0
     devDependencies:
       '@types/node':
         specifier: 'catalog:'

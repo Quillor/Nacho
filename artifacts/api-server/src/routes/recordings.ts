@@ -1,5 +1,4 @@
 import { Router, type IRouter } from "express";
-import { getAuth } from "@clerk/express";
 import { and, eq, sql } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import {
@@ -20,6 +19,7 @@ import {
   AddRecordingViewParams,
   AddRecordingViewResponse,
 } from "@workspace/api-zod";
+import { authUserId } from "../lib/devAuth";
 
 const router: IRouter = Router();
 
@@ -49,7 +49,7 @@ function toApi(row: PublishedRecordingRow) {
 }
 
 router.post("/recordings", async (req, res): Promise<void> => {
-  const { userId } = getAuth(req);
+  const userId = authUserId(req);
   if (!userId) {
     res.status(401).json({ error: "Sign in to save a recording" });
     return;
@@ -124,7 +124,7 @@ router.patch("/recordings/:shareId", async (req, res): Promise<void> => {
     return;
   }
 
-  const { userId } = getAuth(req);
+  const userId = authUserId(req);
   if (!userId) {
     res.status(401).json({ error: "Sign in to update a recording" });
     return;
@@ -179,7 +179,7 @@ router.patch(
       return;
     }
 
-    const { userId } = getAuth(req);
+    const userId = authUserId(req);
     if (!userId) {
       res.status(401).json({ error: "Sign in to change visibility" });
       return;

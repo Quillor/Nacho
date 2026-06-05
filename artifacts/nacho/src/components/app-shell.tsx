@@ -3,6 +3,7 @@ import { Library, Settings, CircleDot, LogOut, type LucideIcon } from "lucide-re
 import { useClerk, useUser } from "@clerk/react";
 import { cn } from "@/lib/utils";
 import { getDisplayName } from "@/components/account-management";
+import { DEV_AUTH_BYPASS, DEV_USER } from "@/lib/dev-auth";
 import { Logo } from "@/components/logo";
 
 interface NavItem {
@@ -23,14 +24,26 @@ function UserControl() {
   const { user } = useUser();
   const { signOut } = useClerk();
 
-  const email = user?.primaryEmailAddress?.emailAddress;
+  const email =
+    user?.primaryEmailAddress?.emailAddress ??
+    (DEV_AUTH_BYPASS && !user ? DEV_USER.email : undefined);
   const label =
     getDisplayName(user?.unsafeMetadata) ||
     user?.fullName ||
     user?.firstName ||
     email?.split("@")[0] ||
+    (DEV_AUTH_BYPASS && !user ? DEV_USER.displayName : "") ||
     "Account";
   const initial = (label.charAt(0) || "?").toUpperCase();
+
+  // With the bypass on there is no Clerk session to end; just return home.
+  const handleSignOut = () => {
+    if (DEV_AUTH_BYPASS && !user) {
+      window.location.href = basePath || "/";
+      return;
+    }
+    signOut({ redirectUrl: basePath || "/" });
+  };
 
   return (
     <div className="flex items-center gap-2">
@@ -47,7 +60,7 @@ function UserControl() {
       </div>
       <button
         type="button"
-        onClick={() => signOut({ redirectUrl: basePath || "/" })}
+        onClick={handleSignOut}
         className="flex items-center gap-2 border-2 border-transparent px-3 py-2 font-bold uppercase tracking-wide text-foreground transition-all hover:border-foreground hover:bg-destructive hover:text-destructive-foreground"
         aria-label="Sign out"
       >

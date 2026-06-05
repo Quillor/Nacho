@@ -9,7 +9,18 @@ A single-page design system documentation site for "Pico" — a bold, playful, h
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
+- `pnpm --filter @workspace/scripts run seed-dev-users` — seed two real Clerk test users (normal + super-admin), idempotent, prints credentials
 - Required env: `DATABASE_URL` — Postgres connection string
+
+### Dev-only testing mode (auth bypass)
+
+A development-only switch to skip the Clerk sign-in wall while testing. Impossible to activate in production; default OFF (the normal Clerk gate is unchanged).
+
+- To enable, set both (in the **development** environment only): `VITE_DEV_AUTH_BYPASS=true` (frontend, Nacho + Admin) and `DEV_AUTH_BYPASS=true` (api-server), then restart the `nacho`, `admin`, and `api-server` workflows.
+- Frontend gate: `import.meta.env.DEV && import.meta.env.VITE_DEV_AUTH_BYPASS === "true"` (folds to `false` in prod builds → dead-code eliminated). Lives in `src/lib/dev-auth.ts` in both `artifacts/nacho` and `artifacts/admin` (duplicated — artifacts can't import each other).
+- Server gate: `process.env.NODE_ENV !== "production" && process.env.DEV_AUTH_BYPASS === "true"` in `artifacts/api-server/src/lib/devAuth.ts`. When on, `authUserId(req)` returns a fixed `DEV_USER_ID` and `requireSuperAdmin` short-circuits before any Clerk lookup.
+- Seeded data: the Nacho Library auto-seeds 3 playable sample recordings (canvas+MediaRecorder, generated at runtime) once when bypass is on and the library is empty; a dev-only "Seed samples" button re-seeds on demand (`artifacts/nacho/src/lib/dev-seed.ts`, loaded via dynamic import so it's excluded from prod bundles).
+- Two seeded Clerk users (`dev-user@nacho.test`, `dev-admin@nacho.test`) are created by the `seed-dev-users` script for the real sign-in path; it refuses to run when `NODE_ENV=production`. Passwords are never committed — each run generates a strong random password (or reads `DEV_SEED_USER_PASSWORD` / `DEV_SEED_ADMIN_PASSWORD` if set) and prints the resulting credentials once on completion.
 
 ## Stack
 

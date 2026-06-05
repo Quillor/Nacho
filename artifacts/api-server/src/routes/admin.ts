@@ -1,5 +1,4 @@
 import { Router, type IRouter } from "express";
-import { getAuth } from "@clerk/express";
 import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import type { User } from "@clerk/backend";
 import {
@@ -33,6 +32,7 @@ import {
   type AdminRole,
 } from "../lib/clerk";
 import { sendEmail } from "../lib/email";
+import { authUserId } from "../lib/devAuth";
 
 const router: IRouter = Router();
 
@@ -356,7 +356,7 @@ router.post(
       res.status(400).json({ error: params.error.message });
       return;
     }
-    const { userId: adminId } = getAuth(req);
+    const adminId = authUserId(req);
     if (!adminId) {
       res.status(401).json({ error: "Sign in to impersonate" });
       return;

@@ -22,6 +22,7 @@ import { publishableKeyFromHost } from "@clerk/react/internal";
 import { shadcn } from "@clerk/themes";
 import { Toaster } from "@workspace/pico-ui/toaster";
 import { TooltipProvider } from "@workspace/pico-ui/tooltip";
+import { DEV_AUTH_BYPASS } from "@/lib/dev-auth";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Studio from "@/pages/studio";
@@ -152,7 +153,10 @@ function HomeRedirect() {
 }
 
 // Gate an app page behind authentication; signed-out visitors go to sign-in.
+// In a dev build with the bypass flag on, render the page directly so gated
+// pages can be tested without signing in (see lib/dev-auth.ts).
 function Protected({ children }: { children: React.ReactNode }) {
+  if (DEV_AUTH_BYPASS) return <>{children}</>;
   return (
     <>
       <Show when="signed-in">{children}</Show>
