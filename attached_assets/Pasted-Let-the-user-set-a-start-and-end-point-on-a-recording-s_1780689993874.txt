@@ -1,0 +1,25 @@
+Let the user set a start and end point on a recording so playback is limited to just that window. Trimming is non-destructive: never cut or re-encode the original file — store trimStart and trimEnd (in seconds) as metadata, and have every player honor them. (Leave a hook for an optional future "hard trim" that actually re-encodes the file.)
+
+Where trimming happens
+
+Immediately after a recording stops, on the Review & Save screen, before it's added to the library. Default trimStart = 0 and trimEnd = full duration (i.e., nothing trimmed) until the user drags.
+Trim control (dual-handle range slider)
+
+A single horizontal track spanning the full recorded duration, with two draggable handles: a start handle and an end handle.
+The region between the handles is visually highlighted as the kept portion; the regions outside are de-emphasized as the discarded portion.
+Handles cannot cross and must keep a small minimum gap (~0.1s): the start handle is clamped to [0, end − 0.1] and the end handle to [start + 0.1, fullDuration].
+Show time labels: the current start time on the left, and end / total on the right (e.g., 0:03 … 1:12 / 1:20), formatted M:SS.
+Live frame preview while dragging
+
+As the user drags a handle, scrub the preview video to that exact frame (pause playback and set the video's current time to the handle's value) so they see precisely where the cut lands.
+While dragging, show a small floating badge over the video reading Trim start · M:SS or Trim end · M:SS for the handle being moved; hide it when they let go.
+Saving
+
+On Save, persist trimStart and trimEnd with the recording's metadata. The original media file is stored untouched.
+How the player honors trim (everywhere the video plays — editor and public view)
+
+The player timeline maps to the trim window, not the raw file: the scrubber's range is [trimStart, trimEnd].
+Displayed current/total times are relative to the trim window — the first kept frame reads 0:00, and total reads trimEnd − trimStart.
+On load, seek the video to trimStart.
+Auto-clamp during playback: if the playhead reaches trimEnd, pause and reset to trimStart; if it ever goes before trimStart, snap forward to trimStart.
+Any other timestamp-driven seek (transcript line, chapter marker) is clamped into [trimStart, trimEnd].
