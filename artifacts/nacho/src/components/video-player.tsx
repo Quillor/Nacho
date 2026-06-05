@@ -33,6 +33,12 @@ export interface VideoPlayerProps {
   startTime?: number;
   /** Clamp playback to an end offset (e.g. trim preview). */
   endTime?: number;
+  /**
+   * Known media duration (seconds) from stored metadata. Used as a fallback
+   * when the browser reports a non-finite duration (common for MediaRecorder
+   * WebM blobs that report `Infinity`).
+   */
+  durationSec?: number;
   /** Show captions on by default when transcript data is present. */
   captionsDefault?: boolean;
   className?: string;
@@ -53,6 +59,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
       transcript = [],
       startTime = 0,
       endTime,
+      durationSec,
       captionsDefault = false,
       className,
       onTimeUpdate,
@@ -177,12 +184,35 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
             playsInline
             className="aspect-video w-full bg-foreground object-contain"
             onLoadedMetadata={(e) => {
-              const d = e.currentTarget.duration;
-              if (Number.isFinite(d)) {
+              const v = e.currentTarget;
+              const d = v.duration;
+              if (Number.isFinite(d) && d > 0) {
                 setDuration(d);
                 onDurationChange?.(d);
+                if (startTime > 0) v.currentTime = startTime;
+                return;
               }
-              if (startTime > 0) e.currentTarget.currentTime = startTime;
+              // MediaRecorder WebM blobs often report `Infinity` here. Prefer
+              // the known duration from stored metadata when available.
+              if (durationSec && durationSec > 0) {
+                setDuration(durationSec);
+                onDurationChange?.(durationSec);
+                if (startTime > 0) v.currentTime = startTime;
+                return;
+              }
+              // Last resort: force the browser to compute the real duration by
+              // seeking past the end, then restore the playhead.
+              const fix = () => {
+                const real = v.duration;
+                if (Number.isFinite(real) && real > 0) {
+                  v.removeEventListener("durationchange", fix);
+                  setDuration(real);
+                  onDurationChange?.(real);
+                  v.currentTime = startTime;
+                }
+              };
+              v.addEventListener("durationchange", fix);
+              v.currentTime = 1e101;
             }}
             onPlay={() => setPlaying(true)}
             onPause={() => setPlaying(false)}

@@ -110,6 +110,7 @@ export default function PublicView() {
                   transcript={rec.transcript}
                   startTime={rec.trimStart}
                   endTime={rec.trimEnd || undefined}
+                  durationSec={rec.durationSec}
                 />
 
                 <div className="flex flex-wrap items-start justify-between gap-4">

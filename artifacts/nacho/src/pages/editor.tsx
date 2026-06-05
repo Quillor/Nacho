@@ -35,6 +35,7 @@ import {
   syncPublishedRecording,
 } from "@/lib/publish";
 import { createGifFromBlob } from "@/lib/gif";
+import { extractFilmstrip } from "@/lib/media";
 import { shareUrl } from "@/lib/api";
 import { formatTimestamp } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -58,6 +59,7 @@ export default function Editor() {
 
   const [current, setCurrent] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [filmstrip, setFilmstrip] = useState<string[]>([]);
 
   const [visibility, setVisibility] = useState<Visibility>("private");
   const [shareId, setShareId] = useState<string | null>(null);
@@ -90,6 +92,22 @@ export default function Editor() {
       if (url) URL.revokeObjectURL(url);
     };
   }, [id]);
+
+  useEffect(() => {
+    if (!rec?.blob) return;
+    let cancelled = false;
+    setFilmstrip([]);
+    extractFilmstrip(rec.blob, 12)
+      .then((frames) => {
+        if (!cancelled) setFilmstrip(frames);
+      })
+      .catch(() => {
+        if (!cancelled) setFilmstrip([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [rec?.blob]);
 
   const seek = (t: number) => playerRef.current?.seek(t);
 
@@ -319,6 +337,7 @@ export default function Editor() {
             transcript={rec.transcript}
             startTime={trimStart}
             endTime={trimEnd || undefined}
+            durationSec={rec.durationSec}
             onTimeUpdate={setCurrent}
             onDurationChange={(d) => {
               setDuration(d);
@@ -338,11 +357,15 @@ export default function Editor() {
               start={trimStart}
               end={trimEnd}
               current={current}
+              filmstrip={filmstrip}
               onStart={(v) => {
                 setTrimStart(v);
                 seek(v);
               }}
-              onEnd={(v) => setTrimEnd(v)}
+              onEnd={(v) => {
+                setTrimEnd(v);
+                seek(v);
+              }}
               onScrub={seek}
             />
             <div className="mt-2 flex justify-between font-mono text-xs font-bold text-muted-foreground">
@@ -554,6 +577,7 @@ function TrimBar({
   start,
   end,
   current,
+  filmstrip = [],
   onStart,
   onEnd,
   onScrub,
@@ -562,6 +586,7 @@ function TrimBar({
   start: number;
   end: number;
   current: number;
+  filmstrip?: string[];
   onStart: (v: number) => void;
   onEnd: (v: number) => void;
   onScrub: (v: number) => void;
@@ -602,18 +627,43 @@ function TrimBar({
   return (
     <div
       ref={trackRef}
-      className="relative h-12 w-full cursor-pointer border-2 border-foreground bg-muted"
+      className="relative h-12 w-full cursor-pointer overflow-hidden border-2 border-foreground bg-muted"
       onPointerDown={(e) => {
         dragging.current = "scrub";
         onScrub(posToTime(e.clientX));
       }}
     >
+      {/* QuickTime-style filmstrip of sampled frames */}
+      {filmstrip.length > 0 ? (
+        <div className="pointer-events-none absolute inset-0 flex">
+          {filmstrip.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt=""
+              draggable={false}
+              className="h-full min-w-0 flex-1 object-cover"
+            />
+          ))}
+        </div>
+      ) : null}
+
+      {/* dim the trimmed-away regions */}
       <div
-        className="absolute inset-y-0 bg-primary/30"
+        className="pointer-events-none absolute inset-y-0 left-0 bg-background/70"
+        style={{ width: `${pct(start)}%` }}
+      />
+      <div
+        className="pointer-events-none absolute inset-y-0 right-0 bg-background/70"
+        style={{ width: `${100 - pct(end)}%` }}
+      />
+
+      <div
+        className="pointer-events-none absolute inset-y-0 bg-primary/30"
         style={{ left: `${pct(start)}%`, width: `${pct(end - start)}%` }}
       />
       <div
-        className="absolute top-1/2 z-10 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-foreground bg-background"
+        className="pointer-events-none absolute inset-y-0 z-30 w-3 -translate-x-1/2 border-2 border-foreground bg-background"
         style={{ left: `${pct(current)}%` }}
       />
       <Handle position={pct(start)} onDown={() => (dragging.current = "start")} />

@@ -88,6 +88,60 @@ export async function captureThumbnail(
   }
 }
 
+/**
+ * Sample evenly-spaced frames across the video as small JPEG data URLs, for a
+ * QuickTime-style filmstrip in the trim UI. `count` frames are captured at the
+ * midpoints of `count` equal segments so each thumbnail represents its slice.
+ */
+export async function extractFilmstrip(
+  blob: Blob,
+  count = 12,
+  thumbHeight = 48,
+): Promise<string[]> {
+  const { video, objectUrl } = await loadVideoElement(blob);
+  try {
+    let duration = video.duration;
+    if (!Number.isFinite(duration) || duration <= 0) {
+      duration = await new Promise<number>((resolve) => {
+        video.currentTime = 1e101;
+        video.ontimeupdate = () => {
+          video.ontimeupdate = null;
+          resolve(Number.isFinite(video.duration) ? video.duration : 0);
+        };
+      });
+    }
+    if (!Number.isFinite(duration) || duration <= 0) return [];
+
+    const aspect =
+      (video.videoWidth || 16) / (video.videoHeight || 9) || 16 / 9;
+    const h = Math.max(2, Math.round(thumbHeight));
+    const w = Math.max(2, Math.round(h * aspect));
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return [];
+
+    const frames: string[] = [];
+    for (let i = 0; i < count; i++) {
+      const t = Math.min(
+        duration - 0.05,
+        Math.max(0, ((i + 0.5) / count) * duration),
+      );
+      await new Promise<void>((resolve, reject) => {
+        video.onseeked = () => resolve();
+        video.onerror = () => reject(new Error("seek failed"));
+        video.currentTime = t;
+      });
+      ctx.drawImage(video, 0, 0, w, h);
+      frames.push(canvas.toDataURL("image/jpeg", 0.7));
+    }
+    return frames;
+  } finally {
+    URL.revokeObjectURL(objectUrl);
+  }
+}
+
 export function pickRecorderMimeType(): string {
   const candidates = [
     "video/webm;codecs=vp9,opus",
