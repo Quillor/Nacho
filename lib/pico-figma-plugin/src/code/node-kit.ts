@@ -8,6 +8,7 @@ import {
   applyShadow,
   findColorVariable,
   ensureFonts,
+  getOrCreateRoleTextStyle,
 } from "./figma-helpers";
 import { tokens, hexToRgb01, RADIUS_KEYS } from "../shared/tokens";
 
@@ -28,6 +29,7 @@ export interface FrameOptions {
   radiusToken?: string;
   radiusPx?: number;
   strokeToken?: string;
+  strokeHex?: string;
   strokeWeight?: number;
   shadowToken?: string;
   align?: "MIN" | "CENTER" | "MAX" | "SPACE_BETWEEN";
@@ -68,10 +70,16 @@ export async function applyContainerStyle(
     if (opts.cross) node.counterAxisAlignItems = opts.cross;
   }
 
-  if (opts.bgToken || opts.bgHex) {
+  // A drop shadow on a transparent node renders an offset "ghost" of the shape
+  // (the Pico shadow is a solid offset, so it only reads correctly behind an
+  // opaque surface). Default any shadowed container with no explicit background
+  // to the page background fill so the shadow sits behind a solid shape.
+  const bgToken =
+    opts.bgToken ?? (opts.shadowToken && !opts.bgHex ? "background" : undefined);
+  if (bgToken || opts.bgHex) {
     await applyFill(
       node as unknown as GeometryMixin & { fills: Paint[] },
-      opts.bgToken,
+      bgToken,
       opts.bgHex ? hexToRgb01(opts.bgHex) : undefined,
     );
   }
@@ -90,8 +98,13 @@ export async function applyContainerStyle(
     node.cornerRadius = opts.radiusPx;
   }
 
-  if (opts.strokeToken) {
-    await applyStroke(node, opts.strokeToken, opts.strokeWeight ?? 2);
+  if (opts.strokeToken || opts.strokeHex) {
+    await applyStroke(
+      node,
+      opts.strokeToken,
+      opts.strokeWeight ?? 2,
+      opts.strokeHex ? hexToRgb01(opts.strokeHex) : undefined,
+    );
   }
   if (opts.shadowToken) {
     await applyShadow(node, opts.shadowToken);
@@ -120,6 +133,10 @@ export interface TextOptions {
   colorToken?: string;
   colorHex?: string;
   uppercase?: boolean;
+  /** Line-height as a unitless ratio (applied as a Figma PERCENT override). */
+  lineHeight?: number;
+  /** Horizontal text alignment override. */
+  align?: "LEFT" | "CENTER" | "RIGHT" | "JUSTIFIED";
 }
 
 export async function makeText(opts: TextOptions): Promise<TextNode> {
@@ -136,9 +153,22 @@ export async function makeText(opts: TextOptions): Promise<TextNode> {
           : f.body;
   node.fontName = font;
   node.characters = opts.uppercase ? opts.text.toUpperCase() : opts.text;
-  node.fontSize =
+  const size =
     opts.size ??
     (role === "display" ? 40 : role === "heading" ? 24 : role === "mono" ? 13 : 15);
+  node.fontSize = size;
+  // Bind to a shared Pico text style so type stays connected to named styles
+  // rather than detached font settings. Color stays variable-bound separately.
+  const textStyle = await getOrCreateRoleTextStyle(role, size, font);
+  await node.setTextStyleIdAsync(textStyle.id);
+  // Per-node overrides for captured leading / alignment (page reconstruction).
+  if (opts.lineHeight && opts.lineHeight > 0) {
+    node.lineHeight = {
+      unit: "PERCENT",
+      value: Math.round(opts.lineHeight * 100),
+    };
+  }
+  if (opts.align) node.textAlignHorizontal = opts.align;
   await applyFill(
     node as unknown as GeometryMixin & { fills: Paint[] },
     opts.colorToken ?? "foreground",

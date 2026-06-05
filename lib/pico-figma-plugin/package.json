@@ -1,11 +1,12 @@
 {
   "name": "@workspace/pico-figma-plugin",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
     "watch": "node build.mjs --watch",
+    "pack": "node pack.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.ui.json --noEmit"
   },
   "dependencies": {
@@ -13,6 +14,8 @@
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.109.0",
-    "esbuild": "0.27.3"
+    "esbuild": "0.27.3",
+    "fflate": "^0.8.3",
+    "lucide-static": "^0.545.0"
   }
 }

@@ -13,6 +13,20 @@ export interface ShadowToken {
   raw: string;
   resolved: string;
 }
+export interface SpacingToken {
+  rem: string;
+  px: number;
+}
+export interface TypeRole {
+  size: string;
+  sizePx: number;
+  lineHeight: number;
+  fontKey: "display" | "body";
+  fontFamily: string;
+  fontWeight: number;
+  textTransform: "none" | "uppercase";
+  letterSpacing: string;
+}
 
 export interface PicoTokens {
   name: string;
@@ -26,7 +40,9 @@ export interface PicoTokens {
     headingFontFamily: string;
     headingFontWeight: number;
     bodyFontFamily: string;
+    scale: Record<string, TypeRole>;
   };
+  spacing: Record<string, SpacingToken>;
   radius: { base: string; scale: Record<string, string> };
   shadows: {
     light: Record<string, ShadowToken>;
@@ -70,11 +86,24 @@ export function validatePicoTokens(data: unknown): PicoTokens {
   const shadows = d.shadows as { light?: unknown; dark?: unknown } | undefined;
   if (!shadows || typeof shadows.light !== "object") fail("missing `shadows.light`");
   if (!d.fonts || typeof d.fonts !== "object") fail("missing `fonts`");
+  const typography = d.typography as { scale?: unknown } | undefined;
+  if (!typography || typeof typography.scale !== "object" || !typography.scale) {
+    fail("missing `typography.scale`");
+  }
+  if (!d.spacing || typeof d.spacing !== "object") fail("missing `spacing`");
   return data as PicoTokens;
 }
 
 /** Radius token keys in scale order. */
 export const RADIUS_KEYS = ["sm", "md", "lg", "xl"] as const;
+
+/** Spacing token keys in scale order (numeric, low → high). */
+export const SPACE_KEYS = Object.keys(tokens.spacing).sort(
+  (a, b) => tokens.spacing[a].px - tokens.spacing[b].px,
+);
+
+/** Type role keys in display → caption order (manifest order is authoritative). */
+export const TYPE_ROLE_KEYS = Object.keys(tokens.typography.scale);
 
 /** Shadow token keys in scale order (DEFAULT is the unsuffixed `--shadow`). */
 export const SHADOW_KEYS = [

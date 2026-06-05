@@ -112,7 +112,7 @@
   </head>
   <body>
     <h1>Pico.</h1>
-    <div class="subtitle">Figma Plugin</div>
+    <div class="subtitle">Figma Plugin · <span id="version"></span></div>
 
     <div class="group">
       <div class="group-label">Design tokens &amp; library</div>
@@ -128,6 +128,10 @@
         Generate components
         <small>Build the Pico component library as Figma components</small>
       </button>
+      <button class="action" id="btn-sync-icons">
+        Sync icons
+        <small>Build every lucide icon used in the app as Figma components</small>
+      </button>
     </div>
 
     <hr />
@@ -137,10 +141,6 @@
       <label class="field">
         <span>URL</span>
         <input id="url" type="url" placeholder="https://example.com/page" />
-      </label>
-      <label class="field">
-        <span>Render service (optional)</span>
-        <input id="render-base" type="url" placeholder="https://your-app.replit.app" />
       </label>
       <label class="field">
         <span>Device size</span>
@@ -163,17 +163,7 @@
       </div>
       <button class="action" id="btn-page">
         Reconstruct page
-        <small>Read the page &amp; rebuild it with components + tokens</small>
-      </button>
-    </div>
-
-    <hr />
-
-    <div class="group">
-      <div class="group-label">Placeholder</div>
-      <button class="action" id="btn-placeholder">
-        Generate sample page
-        <small>A ready-made layout from real instances + tokens</small>
+        <small>Read the page &amp; rebuild it with auto-layout + components + tokens</small>
       </button>
     </div>
 

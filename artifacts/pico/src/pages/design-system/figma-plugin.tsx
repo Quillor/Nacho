@@ -1,6 +1,43 @@
 import { CodeBlock } from "@workspace/pico-ui/code-block";
+import { Download } from "lucide-react";
+import { useEffect, useState } from "react";
+
+const PLUGIN_DOWNLOAD_URL = `${import.meta.env.BASE_URL}pico-figma-plugin.zip`;
+const PLUGIN_VERSION_URL = `${import.meta.env.BASE_URL}pico-figma-plugin.version.json`;
+
+type PluginVersion = {
+  version: string;
+  builtAt: string;
+  label: string;
+  filename: string;
+};
 
 export default function FigmaPlugin() {
+  const [pluginVersion, setPluginVersion] = useState<PluginVersion | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    fetch(PLUGIN_VERSION_URL, { cache: "no-store" })
+      .then((res) => (res.ok ? (res.json() as Promise<PluginVersion>) : null))
+      .then((data) => {
+        if (active) setPluginVersion(data);
+      })
+      .catch(() => {
+        if (active) setPluginVersion(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // Cache-bust so a freshly-shipped zip is never served from a stale cache,
+  // and save the file under the versioned name so designers can see which
+  // build they have.
+  const downloadHref = pluginVersion
+    ? `${PLUGIN_DOWNLOAD_URL}?v=${encodeURIComponent(pluginVersion.builtAt)}`
+    : PLUGIN_DOWNLOAD_URL;
+  const downloadName = pluginVersion?.filename ?? "pico-figma-plugin.zip";
+
   return (
     <div className="space-y-12">
       <div className="space-y-4">
@@ -59,36 +96,102 @@ export default function FigmaPlugin() {
           </div>
         </section>
 
-        <section className="space-y-4">
-          <h2 className="text-3xl font-display font-extrabold uppercase">Build & Load</h2>
+        <section className="space-y-5">
+          <h2 className="text-3xl font-display font-extrabold uppercase">Get the plugin</h2>
           <p className="font-medium text-foreground/80">
-            The plugin lives in the workspace at{" "}
-            <code className="bg-foreground/10 px-1 rounded-sm">lib/pico-figma-plugin</code>.
-            Build it, then load the generated manifest in Figma's desktop app.
+            No terminal, no build step. Download the ready-to-use package,
+            import it into the Figma desktop app once, and you're set. The
+            download is rebuilt from the latest plugin source every time this
+            site ships, so it never goes stale.
           </p>
-          <CodeBlock code={`# From the repo root
-pnpm --filter @workspace/pico-figma-plugin run build
+          <a
+            href={downloadHref}
+            download={downloadName}
+            className="inline-flex items-center gap-3 border-4 border-foreground rounded-sm bg-primary px-6 py-4 font-display font-extrabold uppercase tracking-wide text-foreground shadow-md transition-transform hover:-translate-y-0.5 active:translate-y-0"
+          >
+            <Download className="h-5 w-5" strokeWidth={2.5} />
+            Download plugin
+          </a>
+          <p className="text-sm font-bold text-foreground/70">
+            {pluginVersion ? (
+              <>
+                Latest build:{" "}
+                <code className="bg-foreground/10 px-1 rounded-sm">
+                  {pluginVersion.label}
+                </code>
+              </>
+            ) : (
+              <span className="text-foreground/50">Checking latest build…</span>
+            )}
+          </p>
+          <p className="text-sm font-medium text-foreground/60">
+            Downloads{" "}
+            <code className="bg-foreground/10 px-1 rounded-sm">{downloadName}</code> — a
+            prebuilt bundle (manifest + code + UI). Nothing to compile. The
+            filename and timestamp match the version shown inside the plugin
+            panel, so you can confirm you have the latest.
+          </p>
 
-# Produces:
-#   lib/pico-figma-plugin/dist/code.js
-#   lib/pico-figma-plugin/dist/ui.html
-#   lib/pico-figma-plugin/manifest.json`} />
-          <ol className="list-decimal list-inside space-y-2 font-medium text-foreground/80">
-            <li>Open the Figma desktop app (plugins in development require it).</li>
-            <li>
-              Go to <strong>Plugins → Development → Import plugin from manifest…</strong>
-            </li>
-            <li>
-              Select <code className="bg-foreground/10 px-1 rounded-sm">lib/pico-figma-plugin/manifest.json</code>.
-            </li>
-            <li>
-              Run <strong>Pico</strong> from <strong>Plugins → Development</strong>.
-            </li>
-          </ol>
-          <p className="font-medium text-foreground/80">
-            During active work you can keep esbuild watching for changes:
+          <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-3">
+            <h3 className="text-xl font-display font-extrabold uppercase">Install in Figma</h3>
+            <ol className="list-decimal list-inside space-y-2 font-medium text-foreground/80">
+              <li>Download the zip above and <strong>unzip</strong> it.</li>
+              <li>
+                Open the <strong>Figma desktop app</strong> — importing a plugin
+                from a manifest requires it (the browser version can't).
+              </li>
+              <li>
+                Go to <strong>Plugins → Development → Import plugin from manifest…</strong>
+              </li>
+              <li>
+                Pick <code className="bg-foreground/10 px-1 rounded-sm">manifest.json</code> from
+                the unzipped <code className="bg-foreground/10 px-1 rounded-sm">pico-figma-plugin</code> folder.
+              </li>
+              <li>
+                Run <strong>Pico</strong> from <strong>Plugins → Development</strong>.
+              </li>
+            </ol>
+          </div>
+          <p className="text-sm font-medium text-foreground/60">
+            One day Pico may live in the Figma Community for a true zero-step,
+            one-click install. Until then, the import-from-manifest flow above is
+            the no-terminal path.
           </p>
-          <CodeBlock code={`pnpm --filter @workspace/pico-figma-plugin run watch`} />
+        </section>
+
+        <section className="space-y-4">
+          <h2 className="text-3xl font-display font-extrabold uppercase">Configure it</h2>
+          <p className="font-medium text-foreground/80">
+            All setup happens inside the plugin's own panel — there's nothing to
+            configure on disk. For most designers the defaults just work, so you
+            can skip straight to running an action.
+          </p>
+          <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-3">
+            <div>
+              <h3 className="text-lg font-display font-extrabold uppercase">Tokens URL <span className="text-foreground/50 normal-case font-medium">(optional)</span></h3>
+              <p className="font-medium text-foreground/80">
+                Leave it <strong>empty</strong> to sync the tokens bundled inside
+                the plugin — that's the default and matches this site. Only set a
+                URL if you want the plugin to pull a newer{" "}
+                <code className="bg-foreground/10 px-1 rounded-sm">tokens.json</code> live
+                from a deployed Pico.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-display font-extrabold uppercase">Render service <span className="text-foreground/50 normal-case font-medium">(optional)</span></h3>
+              <p className="font-medium text-foreground/80">
+                Used only by <strong>Page From URL</strong> to fetch a page's HTML
+                server-side (sidestepping CORS). The download ships with this
+                pointed at the deployed Pico API server, so it's prefilled — clear
+                or change it if you host your own.
+              </p>
+            </div>
+          </div>
+          <p className="font-medium text-foreground/80">
+            So the whole story is just two steps: <strong>1. Download</strong> and
+            import, <strong>2. Configure in the plugin</strong> (usually nothing
+            to change).
+          </p>
         </section>
 
         <section className="space-y-4">
@@ -170,8 +273,10 @@ pnpm --filter @workspace/pico-figma-plugin run build
             cross-origin requests (CORS), and server-rendered markup is what the
             reader needs. The <strong>API Server</strong> artifact ships a small
             companion endpoint that fetches a URL server-side and returns its
-            HTML, sidestepping CORS. Paste its base URL into the optional{" "}
-            <strong>Render service</strong> field in the panel.
+            HTML, sidestepping CORS. The downloaded plugin ships with the{" "}
+            <strong>Render service</strong> field prefilled to the deployed Pico
+            API server, so this usually works out of the box — point it at your
+            own host only if you self-host.
           </p>
           <CodeBlock code={`# The endpoint (mounted by the API Server artifact):
 GET /api/render?url=<page-url>

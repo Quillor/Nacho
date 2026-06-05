@@ -7,6 +7,7 @@ export const MODE_LIGHT = "Light";
 export const MODE_DARK = "Dark";
 
 export const COMPONENTS_PAGE = "Pico / Components";
+export const ICONS_PAGE = "Pico / Icons";
 export const PLACEHOLDER_PAGE = "Pico / Placeholder";
 export const PAGES_PAGE = "Pico / Pages";
 
@@ -29,6 +30,8 @@ export async function ensureFonts(): Promise<{
     }
   };
   const display =
+    (await tryLoad("Platypi", "ExtraBold")) ||
+    (await tryLoad("Platypi", "Bold")) ||
     (await tryLoad("Bricolage Grotesque", "ExtraBold")) ||
     (await tryLoad("Inter", "Black")) ||
     (await tryLoad("Inter", "Bold")) || { family: "Inter", style: "Bold" };
@@ -85,6 +88,33 @@ export async function getOrCreateVariable(
   );
   if (found) return found;
   return figma.variables.createVariable(name, collection, type);
+}
+
+// Cache of spacing FLOAT variables keyed by their px value, so page
+// reconstruction can bind auto-layout gap/padding to a Pico space token when the
+// captured pixel value matches one exactly.
+let spaceVarCache: Map<number, Variable> | null = null;
+
+export async function findSpaceVariable(px: number): Promise<Variable | null> {
+  if (!Number.isFinite(px) || px <= 0) return null;
+  if (!spaceVarCache) {
+    spaceVarCache = new Map();
+    const collections = await figma.variables.getLocalVariableCollectionsAsync();
+    const pico = collections.find((c) => c.name === COLLECTION_NAME);
+    const all = await figma.variables.getLocalVariablesAsync();
+    for (const v of all) {
+      if (v.resolvedType !== "FLOAT" || !v.name.startsWith("space/")) continue;
+      if (pico && v.variableCollectionId !== pico.id) continue;
+      const modeId = pico
+        ? pico.modes[0].modeId
+        : Object.keys(v.valuesByMode)[0];
+      const val = v.valuesByMode[modeId];
+      if (typeof val === "number" && !spaceVarCache.has(val)) {
+        spaceVarCache.set(val, v);
+      }
+    }
+  }
+  return spaceVarCache.get(px) ?? null;
 }
 
 // Cache of library color-variable keys by name, and of variables imported from
@@ -206,6 +236,82 @@ export async function getOrCreateTextStyle(name: string): Promise<TextStyle> {
   if (found) return found;
   const style = figma.createTextStyle();
   style.name = name;
+  return style;
+}
+
+const TEXT_ROLE_LABELS: Record<string, string> = {
+  display: "Display",
+  heading: "Heading",
+  body: "Body",
+  bold: "Body Bold",
+  mono: "Mono",
+};
+
+export function textRoleLabel(role: string): string {
+  return TEXT_ROLE_LABELS[role] ?? "Body";
+}
+
+/**
+ * Get-or-create a shared Pico text style for a role + size (e.g. "Pico/Body/14")
+ * and keep its font/size in sync. Text nodes bind to these so the type ramp
+ * stays connected to named styles instead of detached ad-hoc font settings.
+ */
+export async function getOrCreateRoleTextStyle(
+  role: string,
+  size: number,
+  font: FontName,
+): Promise<TextStyle> {
+  const style = await getOrCreateTextStyle(
+    `Pico/${textRoleLabel(role)}/${size}`,
+  );
+  style.fontName = font;
+  style.fontSize = size;
+  return style;
+}
+
+/** Semantic type-scale role key → human label for named Figma text styles. */
+const SCALE_ROLE_LABELS: Record<string, string> = {
+  display: "Display",
+  h1: "H1",
+  h2: "H2",
+  h3: "H3",
+  h4: "H4",
+  "body-lg": "Body Large",
+  body: "Body",
+  caption: "Caption",
+};
+
+export function scaleStyleName(roleKey: string): string {
+  return `Pico/Type/${SCALE_ROLE_LABELS[roleKey] ?? roleKey}`;
+}
+
+/** CSS em letter-spacing ("-0.02em") → Figma PERCENT (1em = 100%). */
+function emToPercent(letterSpacing: string): number {
+  const m = letterSpacing.match(/(-?\d*\.?\d+)\s*em/);
+  return m ? parseFloat(m[1]) * 100 : 0;
+}
+
+/**
+ * Get-or-create a named semantic text style from a Pico type-scale role
+ * (e.g. "Pico/Type/Display") with explicit size, line-height (%) and tracking,
+ * so the Figma type ramp matches the documented Pico scale exactly.
+ */
+export async function getOrCreateScaleTextStyle(
+  roleKey: string,
+  role: { sizePx: number; lineHeight: number; letterSpacing: string },
+  font: FontName,
+): Promise<TextStyle> {
+  const style = await getOrCreateTextStyle(scaleStyleName(roleKey));
+  style.fontName = font;
+  style.fontSize = role.sizePx;
+  style.lineHeight = {
+    unit: "PERCENT",
+    value: Math.round(role.lineHeight * 100),
+  };
+  style.letterSpacing = {
+    unit: "PERCENT",
+    value: emToPercent(role.letterSpacing),
+  };
   return style;
 }
 

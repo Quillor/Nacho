@@ -4,8 +4,8 @@
 import type { UiToCode, CodeToUi } from "../shared/messages";
 import { syncTokens } from "./tokens";
 import { generateComponents } from "./components";
+import { generateIcons } from "./icons";
 import { reconstructPage } from "./page";
-import { generatePlaceholder, generatePlaceholderForUrl } from "./placeholder";
 
 figma.showUI(__html__, { width: 340, height: 640, themeColors: false });
 
@@ -34,7 +34,7 @@ figma.ui.onmessage = async (msg: UiToCode) => {
         const r = await syncTokens(log, msg.tokens);
         status(
           "success",
-          `Tokens synced from ${source} — ${r.colors} colors, ${r.radius} radii, ${r.shadows} shadows, ${r.text} text styles.`,
+          `Tokens synced from ${source} — ${r.colors} colors, ${r.radius} radii, ${r.spacing} spacing, ${r.shadows} shadows, ${r.text} text styles.`,
         );
         break;
       }
@@ -42,6 +42,12 @@ figma.ui.onmessage = async (msg: UiToCode) => {
         const log = makeLogger();
         const n = await generateComponents(log);
         status("success", `Generated ${n} Pico components / sets.`);
+        break;
+      }
+      case "sync-icons": {
+        const log = makeLogger();
+        const n = await generateIcons(log);
+        status("success", `Synced ${n} icon components on the Pico / Icons page.`);
         break;
       }
       case "reconstruct-page": {
@@ -53,22 +59,6 @@ figma.ui.onmessage = async (msg: UiToCode) => {
             ? `Page rebuilt. Missing components: ${r.missing.join(", ")}. Run "Generate components" first for full one-to-one mapping.`
             : `Page rebuilt — ${r.instances} component instances, ${r.frames} frames.`,
         );
-        break;
-      }
-      case "reconstruct-placeholder-for-url": {
-        const log = makeLogger();
-        await generatePlaceholderForUrl(msg.url, msg.device, msg.reason, log);
-        status("success", "Placeholder page created under Pico / Placeholder.");
-        break;
-      }
-      case "generate-placeholder": {
-        const log = makeLogger();
-        await generatePlaceholder(
-          { id: "desktop", label: "Desktop", width: 1440, height: 1024 },
-          log,
-          msg.name,
-        );
-        status("success", "Sample placeholder page created.");
         break;
       }
       default: {

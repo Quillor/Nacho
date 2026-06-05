@@ -40,7 +40,8 @@ A development-only switch to skip the Clerk sign-in wall while testing. Impossib
 - Backend: `artifacts/api-server/src/routes` — `recordings.ts` (publish/get/views), `version.ts`, `share.ts` (`/s/:shareId` OG unfurl HTML), `admin.ts` (super-admin-gated: summary, users, roles, groups, impersonation, notifications, ToS editor), `content.ts` (public `/api/tos`). Admin helpers: `lib/clerk.ts` (clerkClient + role helpers), `lib/email.ts` (Resend via connectors proxy), `middlewares/requireSuperAdmin.ts`.
 - API contract source of truth: `lib/api-spec/openapi.yaml` → codegen produces hooks + zod in `@workspace/api-client-react`.
 - DB schema source of truth: `lib/db/src/schema/` — `recordings.ts` (`published_recordings`), `userGroups.ts` (`user_groups`, `user_group_members`), `tos.ts` (`tos_document`).
-- Pico theme tokens: `lib/pico-theme/theme.css` (CSS vars like `--color-card`, `--color-primary`).
+- Pico theme tokens: `lib/pico-theme/theme.css` (CSS vars like `--color-card`, `--color-primary`, plus the `--space-*` 4px-grid scale and `--text-*`/`--leading-*` type ramp). `generate-tokens.mjs` emits `spacing` + `typography.scale` into `tokens.json`.
+- Figma plugin: `lib/pico-figma-plugin` — no-terminal download. `src/code/` builders: `components.ts` (Pico component sets incl. Logo/Navbar/Footer), `icons.ts` (every lucide-react icon used in code → Figma components on the "Pico / Icons" page), `tokens.ts` (color/radius/shadow/space variables + text styles), `page.ts` (reconstruct a live page). `gen-assets.mjs` scans the codebase at build time → `src/generated/assets.json` (logo SVGs + icon SVGs from `lucide-static`).
 
 ## Architecture decisions
 

@@ -37,13 +37,29 @@ export interface ParsedNode {
   section?: string;
   /** Visible text directly owned by this node (no child element text). */
   text?: string;
+  /** Lowercase HTML tag of a text-bearing node (e.g. "h1", "p"), if any. */
+  tag?: string;
   /** Layout hints read from computed/declared styles. */
   layout?: ParsedNodeLayout;
+  /** Rendered page-relative geometry (headless render), drives hug/fill sizing. */
+  box?: { x: number; y: number; w: number; h: number };
+  /** Raster image (from <img>): absolute src + rendered box. Bytes live in ParsedPage.assets. */
+  image?: { src: string; width: number; height: number };
+  /** Inline SVG (from <svg>): serialized markup + rendered box. Drawn directly, no fetch. */
+  svg?: { markup: string; width: number; height: number };
   children: ParsedNode[];
 }
 
 export interface ParsedNodeLayout {
   direction?: "row" | "column";
+  /** Auto-layout primary axis from the render step ("row"=horizontal, "col"=vertical). */
+  flow?: "row" | "col";
+  /** Grid track count (from grid-template-columns) when the element is a CSS grid. */
+  gridCols?: number;
+  /** Raw CSS justify-content (main-axis distribution). */
+  justify?: string;
+  /** Raw CSS align-items (cross-axis alignment). */
+  align?: string;
   /** Token name resolved for the background fill, e.g. "card" / "primary". */
   bgToken?: string;
   /** Token name resolved for the text color. */
@@ -57,9 +73,29 @@ export interface ParsedNodeLayout {
   shadowToken?: string;
   fontSize?: number;
   fontWeight?: number;
+  /** Line-height as a unitless ratio (line-height px / font-size px). */
+  lineHeight?: number;
+  /** Raw CSS text-align (left/center/right/justify) for text-bearing nodes. */
+  textAlign?: string;
+  /** Resolved font-family string (inlined computed value or class-derived). */
+  fontFamily?: string;
+  /** Border color token when an element has a visible border. */
+  strokeToken?: string;
+  /** Raw hex border color fallback when no token matched. */
+  strokeHex?: string;
+  /** Border width in px (thickest side, applied as a uniform stroke). */
+  strokeWeight?: number;
   paddingX?: number;
   paddingY?: number;
+  /** Right padding (px). Falls back to paddingX when absent. */
+  paddingRight?: number;
+  /** Bottom padding (px). Falls back to paddingY when absent. */
+  paddingBottom?: number;
   gap?: number;
+  /** Row gap (px) when distinct from the shorthand gap. */
+  rowGap?: number;
+  /** Column gap (px) when distinct from the shorthand gap. */
+  colGap?: number;
 }
 
 export interface ParsedPage {
@@ -71,6 +107,20 @@ export interface ParsedPage {
   authWalled: boolean;
   /** Human-readable note about how the read went. */
   note?: string;
+  /** Base64 bytes for each <img> src referenced in the tree, keyed by absolute URL. */
+  assets?: Record<string, { bytes: string; mime: string }>;
+  /** Rendered content width (device viewport width). */
+  contentWidth?: number;
+  /** Rendered content height (full document height). */
+  contentHeight?: number;
+}
+
+/** Page-relative geometry (pixels) stamped by the render step. */
+export interface OpBox {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
 }
 
 // ---- UI -> code messages -------------------------------------------------
@@ -87,14 +137,8 @@ export type UiToCode =
       sourceLabel?: string;
     }
   | { type: "generate-components" }
-  | { type: "generate-placeholder"; name?: string }
-  | { type: "reconstruct-page"; page: ParsedPage; device: DeviceSize }
-  | {
-      type: "reconstruct-placeholder-for-url";
-      url: string;
-      device: DeviceSize;
-      reason: string;
-    };
+  | { type: "sync-icons" }
+  | { type: "reconstruct-page"; page: ParsedPage; device: DeviceSize };
 
 // ---- code -> UI messages -------------------------------------------------
 

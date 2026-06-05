@@ -7,11 +7,15 @@
 - [Published recording sync](recording-publish-sync.md) — editing a published recording must PATCH the server copy; trim is metadata-only, only the GIF preview is re-uploaded on trim change.
 - [Pico contrast rules](pico-contrast-rules.md) — never use `text-primary` (yellow) on cream/light surfaces; yellow is a fill (`bg-primary` + brown text), readable text on light is `text-foreground`.
 - [Figma-readable instrumentation](figma-readable-instrumentation.md) — `picoMeta()` stamps `data-pico-component`/`data-pico-<axis>`; tokens.json from theme.css; `data-pico-section` landmarks. Names are the plugin contract.
+- [Landing page → Figma fidelity](landing-page-figma-fidelity.md) — export renders canonical variants from data-pico attrs, not override classes; drive color/identity from variants+tokens, keep only layout + token utilities.
+- [Figma export coverage](figma-export-coverage.md) — components/icons/spacing/type kept one-to-one with the site; edit tokens at theme source, icons are scanned from lucide-react imports.
 - [Figma plugin tsconfig split](figma-plugin-tsconfig.md) — `lib/pico-figma-plugin` typechecks code+UI separately (figma `fetch` vs DOM `fetch` clash); no `URL`/DOM on code side; parsed tree is `ParsedNode` (not `PageNode`).
 - [Figma plugin page reader](figma-plugin-page-reader.md) — no headless browser (delivered HTML only); SSRF-guarded `/api/render` companion fetch; components/vars resolve local-then-linked-library; idempotency via full page clear.
+- [Page-from-URL never dead-ends](figma-plugin-page-from-url.md) — render SSRF guard blocks Replit-internal IPs + SPAs return shells; typing a URL always composes a page from components.
 - [Pico headline casing](pico-casing.md) — headlines are sentence case; uppercase only for small labels, nav, badges, CTA buttons, and the Pico. wordmark.
 - [Clerk legal consent](clerk-legal-consent.md) — signup ToS consent is Auth-pane managed, NOT Backend-API settable; build /terms, surface the Auth-pane toggle to the user.
 - [Clerk impersonation](clerk-impersonation.md) — "log in as user" via `actorTokens.create` → `/sign-in?__clerk_ticket=<token>`; works because the app shares Clerk session at root.
 - [Resend connector binding](resend-connector-binding.md) — "INSTALLED" header only means npm package; proxy 401 "No connection found" means `proposeIntegration` still needed.
 - [WebM Infinity duration](webm-infinity-duration.md) — recorded WebM blobs report duration=Infinity; resolve via finite check → stored durationSec prop → seek-past-end workaround.
 - [View counting trigger](view-count-trigger.md) — a view (count + notify-on-view email) registers only on actual playback start, not page load; once-per-session dedupe.
+- [Figma plugin download package](figma-plugin-download.md) — pico build/dev packs lib/pico-figma-plugin into public/pico-figma-plugin.zip (flat manifest) via pack.mjs+fflate; regenerated from source, gitignored.

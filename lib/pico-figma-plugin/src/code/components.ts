@@ -9,6 +9,312 @@
 
 import { getOrCreatePage, COMPONENTS_PAGE } from "./figma-helpers";
 import { applyContainerStyle, makeText, fonts, makeFrame } from "./node-kit";
+import assets from "../generated/assets.json";
+
+/** Apply a single-side border (Pico nav/footer use one chunky rule). */
+async function applyEdgeBorder(
+  node: FrameNode | ComponentNode,
+  edge: "top" | "bottom",
+  weight: number,
+): Promise<void> {
+  const { applyStroke } = await import("./figma-helpers");
+  await applyStroke(node, "foreground", weight);
+  node.strokeTopWeight = edge === "top" ? weight : 0;
+  node.strokeBottomWeight = edge === "bottom" ? weight : 0;
+  node.strokeLeftWeight = 0;
+  node.strokeRightWeight = 0;
+}
+
+/** Build a Logo variant by importing the brand SVG and scaling to `targetH`. */
+async function buildLogoVariant(
+  variant: "wordmark" | "mark",
+  targetH: number,
+): Promise<ComponentNode> {
+  const comp = figma.createComponent();
+  comp.name = `variant=${variant}`;
+  comp.fills = [];
+  comp.clipsContent = false;
+  const frame = figma.createNodeFromSvg(assets.logos[variant]);
+  frame.name = "vector";
+  const scale = targetH / frame.height;
+  frame.rescale(scale);
+  comp.resize(frame.width, frame.height);
+  comp.appendChild(frame);
+  frame.x = 0;
+  frame.y = 0;
+  return comp;
+}
+
+async function buildLogo(page: PageNode, x: number, y: number) {
+  const nodes: ComponentNode[] = [
+    await buildLogoVariant("wordmark", 48),
+    await buildLogoVariant("mark", 48),
+  ];
+  nodes.forEach((n) => page.appendChild(n));
+  const set = figma.combineAsVariants(nodes, page);
+  set.name = "Logo";
+  configureSet(set, x, y);
+  return set;
+}
+
+const FOOTER_LINKS = ["Twitter", "LinkedIn", "Privacy", "Terms", "Design System"];
+
+async function buildFooter(page: PageNode, x: number, y: number) {
+  const comp = figma.createComponent();
+  comp.name = "Footer";
+  await applyContainerStyle(comp, {
+    direction: "row",
+    paddingX: 48,
+    paddingY: 48,
+    align: "SPACE_BETWEEN",
+    cross: "CENTER",
+    bgToken: "background",
+  });
+  comp.resize(1200, comp.height);
+  comp.primaryAxisSizingMode = "FIXED";
+  comp.counterAxisSizingMode = "AUTO";
+  await applyEdgeBorder(comp, "top", 4);
+
+  const logo =
+    (await instanceFromSet(page, "Logo", "variant=wordmark")) ??
+    (await makeFrame({ name: "Logo", width: 150, height: 48 }));
+  comp.appendChild(logo);
+
+  const links = await makeFrame({
+    name: "Links",
+    direction: "row",
+    gap: 24,
+    cross: "CENTER",
+  });
+  for (const label of FOOTER_LINKS) {
+    links.appendChild(
+      await makeText({ text: label, role: "bold", size: 16, colorToken: "foreground" }),
+    );
+  }
+  comp.appendChild(links);
+
+  page.appendChild(comp);
+  comp.x = x;
+  comp.y = y;
+  return comp;
+}
+
+/** A nav pill (icon dot + label) used by the signed-in navbar variant. */
+async function navItem(label: string, active: boolean): Promise<FrameNode> {
+  const pill = await makeFrame({
+    name: "NavItem",
+    direction: "row",
+    gap: 8,
+    paddingX: 16,
+    paddingY: 8,
+    align: "CENTER",
+    cross: "CENTER",
+    bgToken: active ? "primary" : undefined,
+    strokeToken: active ? "foreground" : undefined,
+    strokeWeight: active ? 2 : undefined,
+    shadowToken: active ? "sm" : undefined,
+  });
+  const dot = await makeFrame({
+    name: "Icon",
+    bgToken: active ? "primary-foreground" : "foreground",
+    radiusPx: 999,
+  });
+  dot.resize(16, 16);
+  pill.appendChild(dot);
+  pill.appendChild(
+    await makeText({
+      text: label,
+      role: "bold",
+      size: 14,
+      colorToken: active ? "primary-foreground" : "foreground",
+      uppercase: true,
+    }),
+  );
+  return pill;
+}
+
+async function buildNavbarVariant(
+  page: PageNode,
+  state: "signed-in" | "signed-out",
+): Promise<ComponentNode> {
+  const comp = figma.createComponent();
+  comp.name = `state=${state}`;
+  page.appendChild(comp);
+  await applyContainerStyle(comp, {
+    direction: "row",
+    paddingX: 48,
+    paddingY: 16,
+    align: "SPACE_BETWEEN",
+    cross: "CENTER",
+    bgToken: "background",
+  });
+  comp.resize(1200, comp.height);
+  comp.primaryAxisSizingMode = "FIXED";
+  comp.counterAxisSizingMode = "AUTO";
+  await applyEdgeBorder(comp, "bottom", 4);
+
+  const logo =
+    (await instanceFromSet(page, "Logo", "variant=wordmark")) ??
+    (await makeFrame({ name: "Logo", width: 130, height: 36 }));
+  comp.appendChild(logo);
+
+  const right = await makeFrame({
+    name: "Actions",
+    direction: "row",
+    gap: 8,
+    cross: "CENTER",
+  });
+
+  if (state === "signed-out") {
+    const signIn =
+      (await instanceFromSet(
+        comp.parent as PageNode,
+        "Button",
+        "variant=ghost, size=default",
+        "Sign In",
+      )) ?? (await fallbackButton("Sign In", false));
+    const getStarted =
+      (await instanceFromSet(
+        comp.parent as PageNode,
+        "Button",
+        "variant=brand, size=default",
+        "Get Started",
+      )) ?? (await fallbackButton("Get Started", true));
+    right.appendChild(signIn);
+    right.appendChild(getStarted);
+  } else {
+    right.appendChild(await navItem("Record", true));
+    right.appendChild(await navItem("Library", false));
+    right.appendChild(await navItem("Settings", false));
+    const divider = await makeFrame({ name: "Divider", bgToken: "foreground" });
+    divider.resize(2, 32);
+    divider.opacity = 0.2;
+    right.appendChild(divider);
+    const account = await makeFrame({
+      name: "Account",
+      direction: "row",
+      gap: 8,
+      paddingX: 12,
+      paddingY: 6,
+      cross: "CENTER",
+      bgToken: "card",
+      strokeToken: "foreground",
+      strokeWeight: 2,
+    });
+    const avatar = await makeFrame({
+      name: "Avatar",
+      direction: "row",
+      align: "CENTER",
+      cross: "CENTER",
+      bgToken: "primary",
+      strokeToken: "foreground",
+      strokeWeight: 2,
+      radiusPx: 999,
+    });
+    avatar.resize(28, 28);
+    avatar.appendChild(
+      await makeText({ text: "P", role: "bold", size: 14, colorToken: "primary-foreground" }),
+    );
+    account.appendChild(avatar);
+    account.appendChild(
+      await makeText({ text: "Account", role: "bold", size: 14, colorToken: "foreground" }),
+    );
+    right.appendChild(account);
+  }
+
+  comp.appendChild(right);
+  return comp;
+}
+
+async function buildNavbar(page: PageNode, x: number, y: number) {
+  const nodes: ComponentNode[] = [];
+  for (const state of ["signed-out", "signed-in"] as const) {
+    const comp = await buildNavbarVariant(page, state);
+    nodes.push(comp);
+  }
+  const set = figma.combineAsVariants(nodes, page);
+  set.name = "Navbar";
+  set.layoutMode = "VERTICAL";
+  set.itemSpacing = 24;
+  set.counterAxisSizingMode = "AUTO";
+  set.primaryAxisSizingMode = "AUTO";
+  set.paddingLeft = set.paddingRight = 24;
+  set.paddingTop = set.paddingBottom = 24;
+  set.fills = [];
+  set.x = x;
+  set.y = y;
+  return set;
+}
+
+/**
+ * Create an instance of a component set's variant that was already built earlier
+ * in this run (the set lives on `page`), optionally overriding its label. Lets
+ * composite components (e.g. DialogContent) reference real Button instances
+ * instead of detached frames named "Button".
+ */
+async function instanceFromSet(
+  page: PageNode,
+  setName: string,
+  variantName: string,
+  label?: string,
+): Promise<InstanceNode | null> {
+  const set = page.children.find(
+    (c) => c.type === "COMPONENT_SET" && c.name === setName,
+  ) as ComponentSetNode | undefined;
+  if (!set) return null;
+  const variant =
+    (set.children.find(
+      (c) => c.type === "COMPONENT" && c.name === variantName,
+    ) as ComponentNode | undefined) ??
+    (set.defaultVariant as ComponentNode | null) ??
+    (set.children.find((c) => c.type === "COMPONENT") as
+      | ComponentNode
+      | undefined);
+  if (!variant) return null;
+  const inst = variant.createInstance();
+  if (label) {
+    const txt = inst.findOne((n) => n.type === "TEXT") as TextNode | null;
+    if (txt) {
+      try {
+        await figma.loadFontAsync(txt.fontName as FontName);
+        txt.characters = label;
+      } catch {
+        /* font not loaded for override — keep default label */
+      }
+    }
+  }
+  return inst;
+}
+
+/** Fallback button frame, used only if the Button set isn't available yet. */
+async function fallbackButton(
+  label: string,
+  primary: boolean,
+): Promise<FrameNode> {
+  const btn = await makeFrame({
+    name: "Button",
+    direction: "row",
+    paddingX: 16,
+    paddingY: 0,
+    align: "CENTER",
+    cross: "CENTER",
+    bgToken: primary ? "primary" : "background",
+    radiusToken: "md",
+    strokeToken: "foreground",
+    strokeWeight: 1,
+    shadowToken: primary ? undefined : "xs",
+    height: 36,
+  });
+  btn.appendChild(
+    await makeText({
+      text: label,
+      role: "bold",
+      size: 14,
+      colorToken: primary ? "primary-foreground" : "foreground",
+    }),
+  );
+  return btn;
+}
 
 interface ButtonStyle {
   bgToken?: string;
@@ -643,38 +949,22 @@ async function buildDialogContent(page: PageNode, x: number, y: number) {
     cross: "CENTER",
   });
   footer.layoutAlign = "STRETCH";
-  const cancel = await makeFrame({
-    name: "Button",
-    direction: "row",
-    paddingX: 16,
-    paddingY: 0,
-    align: "CENTER",
-    cross: "CENTER",
-    radiusToken: "md",
-    strokeToken: "foreground",
-    strokeWeight: 1,
-    shadowToken: "xs",
-    height: 36,
-  });
-  cancel.appendChild(
-    await makeText({ text: "Cancel", role: "bold", size: 14, colorToken: "foreground" }),
-  );
-  const confirm = await makeFrame({
-    name: "Button",
-    direction: "row",
-    paddingX: 16,
-    paddingY: 0,
-    align: "CENTER",
-    cross: "CENTER",
-    bgToken: "primary",
-    radiusToken: "md",
-    strokeToken: "foreground",
-    strokeWeight: 1,
-    height: 36,
-  });
-  confirm.appendChild(
-    await makeText({ text: "Continue", role: "bold", size: 14, colorToken: "primary-foreground" }),
-  );
+  // Reference real Button instances (Button is built first this run) so the
+  // dialog actually attaches the component instead of detached "Button" frames.
+  const cancel =
+    (await instanceFromSet(
+      page,
+      "Button",
+      "variant=outline, size=default",
+      "Cancel",
+    )) ?? (await fallbackButton("Cancel", false));
+  const confirm =
+    (await instanceFromSet(
+      page,
+      "Button",
+      "variant=default, size=default",
+      "Continue",
+    )) ?? (await fallbackButton("Continue", true));
   footer.appendChild(cancel);
   footer.appendChild(confirm);
 
@@ -911,6 +1201,9 @@ type Builder = (page: PageNode, x: number, y: number) => Promise<SceneNode>;
 
 const BUILDERS: Array<{ name: string; build: Builder }> = [
   { name: "Button", build: buildButton },
+  { name: "Logo", build: buildLogo },
+  { name: "Navbar", build: buildNavbar },
+  { name: "Footer", build: buildFooter },
   { name: "Badge", build: buildBadge },
   { name: "Card", build: buildCard },
   { name: "Input", build: buildInput },

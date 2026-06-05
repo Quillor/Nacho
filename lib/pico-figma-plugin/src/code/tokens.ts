@@ -6,6 +6,8 @@ import {
   colorTokenNames,
   RADIUS_KEYS,
   SHADOW_KEYS,
+  SPACE_KEYS,
+  TYPE_ROLE_KEYS,
   hslToRgb01,
   hexToRgb01,
   parseShadow,
@@ -16,7 +18,8 @@ import {
   getOrCreateVariable,
   getModeId,
   getOrCreateEffectStyle,
-  getOrCreateTextStyle,
+  getOrCreateRoleTextStyle,
+  getOrCreateScaleTextStyle,
   ensureFonts,
   effectStyleName,
   MODE_LIGHT,
@@ -50,7 +53,13 @@ function resolveRadiusPx(expr: string, basePx: number): number {
 export async function syncTokens(
   log: (msg: string) => void,
   tokens: PicoTokens = bundledTokens,
-): Promise<{ colors: number; radius: number; shadows: number; text: number }> {
+): Promise<{
+  colors: number;
+  radius: number;
+  spacing: number;
+  shadows: number;
+  text: number;
+}> {
   await ensureFonts();
   const collection = await getOrCreateCollection();
   const lightId = getModeId(collection, MODE_LIGHT);
@@ -92,6 +101,23 @@ export async function syncTokens(
   }
   log(`Radius: ${radiusCount} variables`);
 
+  // --- Spacing scale (number variables) for auto-layout gap / padding / size ---
+  let spacingCount = 0;
+  for (const key of SPACE_KEYS) {
+    const sp = tokens.spacing[key];
+    if (!sp) continue;
+    const variable = await getOrCreateVariable(
+      `space/${key}`,
+      collection,
+      "FLOAT",
+    );
+    variable.setValueForMode(lightId, sp.px);
+    variable.setValueForMode(darkId, sp.px);
+    variable.scopes = ["GAP", "WIDTH_HEIGHT"];
+    spacingCount++;
+  }
+  log(`Spacing: ${spacingCount} variables`);
+
   // --- Effect styles (chunky offset shadows), Light + Dark via styles ---
   // Figma effect styles are single-mode, so we encode the light (brown) shadow
   // which is the canonical brand look; the resolved color comes from the token.
@@ -120,17 +146,34 @@ export async function syncTokens(
   // --- Text styles (font roles) ---
   const fonts = await ensureFonts();
   let textCount = 0;
-  const textRoles: Array<{ name: string; font: FontName; size: number }> = [
-    { name: "Pico/Display", font: fonts.display, size: 48 },
-    { name: "Pico/Heading", font: fonts.display, size: 28 },
-    { name: "Pico/Body", font: fonts.body, size: 16 },
-    { name: "Pico/Body Bold", font: fonts.bold, size: 16 },
-    { name: "Pico/Mono", font: fonts.mono, size: 14 },
+  // The documented type ramp. Component/page builders bind to these by role+size
+  // (and create any extra role+size combos they need on demand).
+  const textRoles: Array<{ role: string; font: FontName; size: number }> = [
+    { role: "display", font: fonts.display, size: 40 },
+    { role: "display", font: fonts.display, size: 24 },
+    { role: "heading", font: fonts.display, size: 28 },
+    { role: "body", font: fonts.body, size: 16 },
+    { role: "body", font: fonts.body, size: 14 },
+    { role: "bold", font: fonts.bold, size: 16 },
+    { role: "bold", font: fonts.bold, size: 14 },
+    { role: "mono", font: fonts.mono, size: 14 },
   ];
-  for (const role of textRoles) {
-    const style = await getOrCreateTextStyle(role.name);
-    style.fontName = role.font;
-    style.fontSize = role.size;
+  for (const r of textRoles) {
+    await getOrCreateRoleTextStyle(r.role, r.size, r.font);
+    textCount++;
+  }
+  // Semantic named type styles from the Pico type scale (size + line-height +
+  // tracking), e.g. "Pico/Type/Display", "Pico/Type/H1", "Pico/Type/Body".
+  for (const roleKey of TYPE_ROLE_KEYS) {
+    const role = tokens.typography.scale[roleKey];
+    if (!role) continue;
+    const font =
+      role.fontKey === "display"
+        ? fonts.display
+        : role.fontWeight >= 700
+          ? fonts.bold
+          : fonts.body;
+    await getOrCreateScaleTextStyle(roleKey, role, font);
     textCount++;
   }
   log(`Typography: ${textCount} text styles`);
@@ -138,6 +181,7 @@ export async function syncTokens(
   return {
     colors: colorCount,
     radius: radiusCount,
+    spacing: spacingCount,
     shadows: shadowCount,
     text: textCount,
   };
