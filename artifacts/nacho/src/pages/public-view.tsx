@@ -39,11 +39,13 @@ export default function PublicView() {
   const [copied, setCopied] = useState(false);
   const [transcriptOpen, setTranscriptOpen] = useState(false);
 
-  useEffect(() => {
+  // A view counts only when the share link is opened AND playback actually
+  // starts — not on mere page load. Dedupe to once per viewing session.
+  const handlePlay = () => {
     if (!shareId || !rec || viewCounted.current) return;
     viewCounted.current = true;
     addView.mutate({ shareId });
-  }, [shareId, rec]); // eslint-disable-line react-hooks/exhaustive-deps
+  };
 
   const seek = (t: number) => {
     playerRef.current?.seek(t);
@@ -112,6 +114,7 @@ export default function PublicView() {
                   startTime={rec.trimStart}
                   endTime={rec.trimEnd || undefined}
                   durationSec={rec.durationSec}
+                  onPlay={handlePlay}
                 />
 
                 <div className="flex flex-wrap items-start justify-between gap-4">

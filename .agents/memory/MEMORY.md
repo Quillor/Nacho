@@ -14,3 +14,4 @@
 - [Clerk impersonation](clerk-impersonation.md) — "log in as user" via `actorTokens.create` → `/sign-in?__clerk_ticket=<token>`; works because the app shares Clerk session at root.
 - [Resend connector binding](resend-connector-binding.md) — "INSTALLED" header only means npm package; proxy 401 "No connection found" means `proposeIntegration` still needed.
 - [WebM Infinity duration](webm-infinity-duration.md) — recorded WebM blobs report duration=Infinity; resolve via finite check → stored durationSec prop → seek-past-end workaround.
+- [View counting trigger](view-count-trigger.md) — a view (count + notify-on-view email) registers only on actual playback start, not page load; once-per-session dedupe.

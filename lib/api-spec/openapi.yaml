@@ -577,6 +577,8 @@ components:
             $ref: "#/components/schemas/Chapter"
         displayChaptersOnVideo:
           type: boolean
+        notifyOnView:
+          type: boolean
         transcript:
           type: array
           items:
@@ -609,6 +611,8 @@ components:
           items:
             $ref: "#/components/schemas/Chapter"
         displayChaptersOnVideo:
+          type: boolean
+        notifyOnView:
           type: boolean
         transcript:
           type: array
@@ -658,6 +662,8 @@ components:
           items:
             $ref: "#/components/schemas/Chapter"
         displayChaptersOnVideo:
+          type: boolean
+        notifyOnView:
           type: boolean
         transcript:
           type: array

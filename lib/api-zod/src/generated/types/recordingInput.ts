@@ -25,5 +25,6 @@ export interface RecordingInput {
   gifPath?: string | null;
   chapters?: Chapter[];
   displayChaptersOnVideo?: boolean;
+  notifyOnView?: boolean;
   transcript?: TranscriptSegment[];
 }

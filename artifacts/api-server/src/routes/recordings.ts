@@ -7,6 +7,8 @@ import {
   publishedRecordingsTable,
   type PublishedRecordingRow,
 } from "@workspace/db";
+import { clerkClient, primaryEmail } from "../lib/clerk";
+import { sendEmail } from "../lib/email";
 import {
   PublishRecordingBody,
   GetRecordingParams,
@@ -36,6 +38,7 @@ function toApi(row: PublishedRecordingRow) {
     gifPath: row.gifPath,
     chapters: row.chapters,
     displayChaptersOnVideo: row.displayChaptersOnVideo,
+    notifyOnView: row.notifyOnView,
     transcript: row.transcript,
     views: row.views,
     createdAt:
@@ -79,6 +82,7 @@ router.post("/recordings", async (req, res): Promise<void> => {
       gifPath: data.gifPath ?? null,
       chapters: data.chapters ?? [],
       displayChaptersOnVideo: data.displayChaptersOnVideo ?? false,
+      notifyOnView: data.notifyOnView ?? false,
       transcript: data.transcript ?? [],
     })
     .returning();
@@ -142,6 +146,7 @@ router.patch("/recordings/:shareId", async (req, res): Promise<void> => {
       gifPath: data.gifPath ?? null,
       chapters: data.chapters ?? [],
       displayChaptersOnVideo: data.displayChaptersOnVideo ?? false,
+      notifyOnView: data.notifyOnView ?? false,
       transcript: data.transcript ?? [],
     })
     .where(
@@ -226,7 +231,67 @@ router.post("/recordings/:shareId/views", async (req, res): Promise<void> => {
     return;
   }
 
+  // Notify the owner that their recording was just watched. Fire-and-forget so
+  // email delivery never blocks or fails the view-count response.
+  if (row.notifyOnView && row.ownerUserId) {
+    void notifyOwnerOfView(row, req.log);
+  }
+
   res.json(AddRecordingViewResponse.parse({ views: row.views }));
 });
+
+/**
+ * Email the recording owner that their clip was just watched. Best-effort:
+ * any failure is logged and swallowed so it can't affect the view request.
+ */
+async function notifyOwnerOfView(
+  row: PublishedRecordingRow,
+  log: { warn: (obj: unknown, msg: string) => void },
+): Promise<void> {
+  try {
+    if (!row.ownerUserId) return;
+    const user = await clerkClient.users.getUser(row.ownerUserId);
+    const to = primaryEmail(user);
+    if (!to) {
+      log.warn({ shareId: row.shareId }, "Owner has no email for view notice");
+      return;
+    }
+
+    const viewedAt = new Date().toLocaleString("en-US", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+    const safeTitle = escapeHtml(row.title);
+    const subject = `Someone just watched "${row.title}"`;
+    const html = `
+      <div style="font-family: sans-serif; line-height: 1.5; color: #2b2118;">
+        <h2 style="margin: 0 0 12px;">Your recording was just watched</h2>
+        <p style="margin: 0 0 8px;">
+          <strong>${safeTitle}</strong> was viewed on ${escapeHtml(viewedAt)}.
+        </p>
+        <p style="margin: 16px 0 0; color: #6b5d4f;">— Nacho</p>
+      </div>
+    `;
+
+    const result = await sendEmail(to, subject, html);
+    if (!result.ok) {
+      log.warn(
+        { shareId: row.shareId, error: result.error },
+        "View notification email failed",
+      );
+    }
+  } catch (err) {
+    log.warn({ shareId: row.shareId, err }, "View notification threw");
+  }
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 export default router;

@@ -11,6 +11,7 @@ import {
   Copy,
   ArrowLeft,
   Captions,
+  Bell,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@workspace/pico-ui/button";
@@ -59,6 +60,7 @@ export default function Editor() {
   const [trimEnd, setTrimEnd] = useState(0);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [displayChaptersOnVideo, setDisplayChaptersOnVideo] = useState(false);
+  const [notifyOnView, setNotifyOnView] = useState(false);
 
   const [current, setCurrent] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -87,6 +89,7 @@ export default function Editor() {
       setTrimEnd(r.trimEnd || r.durationSec);
       setChapters(r.chapters);
       setDisplayChaptersOnVideo(r.displayChaptersOnVideo);
+      setNotifyOnView(r.notifyOnView);
       setVisibility(r.visibility);
       setShareId(r.shareId);
       url = URL.createObjectURL(r.blob);
@@ -134,6 +137,14 @@ export default function Editor() {
     setChapters((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // The "Notify me when viewed" toggle persists to IndexedDB immediately so the
+  // choice survives leaving the editor without hitting "Save changes". Syncing
+  // to the published server copy still happens on save like other edits.
+  const handleNotifyOnViewChange = (next: boolean) => {
+    setNotifyOnView(next);
+    if (id) void updateRecording(id, { notifyOnView: next });
+  };
+
   const persist = async (): Promise<LocalRecording | undefined> => {
     if (!id) return undefined;
     return updateRecording(id, {
@@ -143,6 +154,7 @@ export default function Editor() {
       trimEnd,
       chapters,
       displayChaptersOnVideo,
+      notifyOnView,
     });
   };
 
@@ -215,6 +227,7 @@ export default function Editor() {
         trimEnd,
         chapters,
         displayChaptersOnVideo,
+        notifyOnView,
       };
 
       let gifBlob: Blob | null = null;
@@ -395,7 +408,7 @@ export default function Editor() {
           </div>
 
           <Tabs defaultValue="description">
-            <TabsList className="grid w-full grid-cols-3 border-4 border-foreground bg-muted p-1">
+            <TabsList className="grid w-full grid-cols-4 border-4 border-foreground bg-muted p-1">
  <TabsTrigger value="description" className="font-bold">
                 Description
               </TabsTrigger>
@@ -404,6 +417,9 @@ export default function Editor() {
               </TabsTrigger>
  <TabsTrigger value="transcript" className="font-bold">
                 Script
+              </TabsTrigger>
+ <TabsTrigger value="settings" className="font-bold">
+                Settings
               </TabsTrigger>
             </TabsList>
 
@@ -495,6 +511,25 @@ export default function Editor() {
                   ))}
                 </div>
               )}
+            </TabsContent>
+
+            <TabsContent value="settings" className="mt-4 space-y-3">
+              <label className="flex items-start justify-between gap-3 border-2 border-foreground bg-muted p-3">
+                <span className="space-y-1">
+                  <span className="flex items-center gap-2 text-sm font-bold">
+                    <Bell className="h-4 w-4" /> Notify me when viewed
+                  </span>
+                  <span className="block text-xs font-medium text-muted-foreground">
+                    Get an email each time someone opens the share link and
+                    presses play.
+                  </span>
+                </span>
+                <Switch
+                  checked={notifyOnView}
+                  onCheckedChange={handleNotifyOnViewChange}
+                  aria-label="Notify me when viewed"
+                />
+              </label>
             </TabsContent>
           </Tabs>
 

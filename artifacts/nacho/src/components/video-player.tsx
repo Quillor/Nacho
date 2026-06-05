@@ -73,6 +73,8 @@ export interface VideoPlayerProps {
   onDurationChange?: (duration: number) => void;
   /** Called when a chapter marker on the scrub bar is clicked. */
   onChapterClick?: (chapter: Chapter, index: number) => void;
+  /** Called when playback actually starts (the video begins playing). */
+  onPlay?: () => void;
 }
 
 export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
@@ -91,6 +93,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
       onTimeUpdate,
       onDurationChange,
       onChapterClick,
+      onPlay,
     },
     ref,
   ) {
@@ -312,7 +315,10 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
               v.addEventListener("durationchange", fix);
               v.currentTime = 1e101;
             }}
-            onPlay={() => setPlaying(true)}
+            onPlay={() => {
+              setPlaying(true);
+              onPlay?.();
+            }}
             onPause={() => setPlaying(false)}
             onTimeUpdate={(e) => {
               const v = e.currentTarget;

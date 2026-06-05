@@ -248,6 +248,7 @@ export default function Studio() {
         captionLang: withCaptions ? captionLang : null,
         chapters: [],
         displayChaptersOnVideo: false,
+        notifyOnView: false,
         transcript: transcriptRef.current,
         createdAt: Date.now(),
         blob,

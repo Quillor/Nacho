@@ -30,6 +30,8 @@ export interface LocalRecording {
   chapters: Chapter[];
   /** When true, the current chapter's title is briefly shown over the video. */
   displayChaptersOnVideo: boolean;
+  /** When true, the owner is emailed each time the recording is watched. */
+  notifyOnView: boolean;
   transcript: TranscriptSegment[];
   createdAt: number;
   blob: Blob;

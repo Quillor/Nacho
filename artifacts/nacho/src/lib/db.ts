@@ -33,6 +33,9 @@ function normalize<T extends Partial<LocalRecording>>(rec: T): T {
   if (out.displayChaptersOnVideo === undefined) {
     out = { ...out, displayChaptersOnVideo: false };
   }
+  if (out.notifyOnView === undefined) {
+    out = { ...out, notifyOnView: false };
+  }
   return out;
 }
 

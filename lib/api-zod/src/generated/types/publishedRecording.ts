@@ -25,6 +25,7 @@ export interface PublishedRecording {
   gifPath?: string | null;
   chapters: Chapter[];
   displayChaptersOnVideo?: boolean;
+  notifyOnView?: boolean;
   transcript: TranscriptSegment[];
   views: number;
   createdAt: string;

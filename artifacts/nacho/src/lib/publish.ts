@@ -79,6 +79,7 @@ async function uploadRecording(
       gifPath,
       chapters: rec.chapters,
       displayChaptersOnVideo: rec.displayChaptersOnVideo,
+      notifyOnView: rec.notifyOnView,
       transcript: rec.transcript,
     }),
   });
@@ -138,6 +139,7 @@ export async function syncPublishedRecording(
       gifPath,
       chapters: rec.chapters,
       displayChaptersOnVideo: rec.displayChaptersOnVideo,
+      notifyOnView: rec.notifyOnView,
       transcript: rec.transcript,
     }),
   });

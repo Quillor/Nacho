@@ -54,6 +54,7 @@ export const PublishRecordingBody = zod.object({
   "label": zod.string()
 })).optional(),
   "displayChaptersOnVideo": zod.boolean().optional(),
+  "notifyOnView": zod.boolean().optional(),
   "transcript": zod.array(zod.object({
   "start": zod.number(),
   "end": zod.number(),
@@ -86,6 +87,7 @@ export const GetRecordingResponse = zod.object({
   "label": zod.string()
 })),
   "displayChaptersOnVideo": zod.boolean().optional(),
+  "notifyOnView": zod.boolean().optional(),
   "transcript": zod.array(zod.object({
   "start": zod.number(),
   "end": zod.number(),
@@ -119,6 +121,7 @@ export const UpdateRecordingBody = zod.object({
   "label": zod.string()
 })).optional(),
   "displayChaptersOnVideo": zod.boolean().optional(),
+  "notifyOnView": zod.boolean().optional(),
   "transcript": zod.array(zod.object({
   "start": zod.number(),
   "end": zod.number(),
@@ -143,6 +146,7 @@ export const UpdateRecordingResponse = zod.object({
   "label": zod.string()
 })),
   "displayChaptersOnVideo": zod.boolean().optional(),
+  "notifyOnView": zod.boolean().optional(),
   "transcript": zod.array(zod.object({
   "start": zod.number(),
   "end": zod.number(),
@@ -181,6 +185,7 @@ export const SetRecordingVisibilityResponse = zod.object({
   "label": zod.string()
 })),
   "displayChaptersOnVideo": zod.boolean().optional(),
+  "notifyOnView": zod.boolean().optional(),
   "transcript": zod.array(zod.object({
   "start": zod.number(),
   "end": zod.number(),
