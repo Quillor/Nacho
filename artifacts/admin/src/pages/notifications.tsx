@@ -59,7 +59,7 @@ export default function Notifications() {
           {result.failed > 0 ? (
             <AlertCircle className="h-6 w-6 text-destructive mt-0.5" />
           ) : (
-            <CheckCircle2 className="h-6 w-6 text-primary mt-0.5" />
+            <CheckCircle2 className="h-6 w-6 text-foreground mt-0.5" />
           )}
           <div>
             <h3 className="font-semibold text-lg">{result.failed > 0 ? "Completed with errors" : "Successfully sent"}</h3>

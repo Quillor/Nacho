@@ -83,82 +83,45 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Signups</CardTitle>
-            <CardDescription>The latest users to join Nacho</CardDescription>
-          </CardHeader>
-          <CardContent className="p-0">
-            {summary.recentSignups.length === 0 ? (
-              <div className="p-6 text-center text-sm text-muted-foreground">No recent signups.</div>
-            ) : (
-              <div className="divide-y divide-border border-t border-border">
-                {summary.recentSignups.map((user) => (
-                  <Link key={user.id} href={`/users/${user.id}`}>
-                    <div className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors cursor-pointer group">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-9 w-9">
-                          <AvatarImage src={user.imageUrl || undefined} />
-                          <AvatarFallback>{user.displayName?.[0] || user.email[0].toUpperCase()}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium">{user.displayName || "Unknown"}</span>
-                          <span className="text-xs text-muted-foreground">{user.email}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        {user.role === "super_admin" && (
-                          <Badge variant="secondary" className="text-[10px]">Admin</Badge>
-                        )}
-                        <span className="text-xs text-muted-foreground whitespace-nowrap">
-                          {formatDate(user.createdAt)}
-                        </span>
-                        <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Signups</CardTitle>
+          <CardDescription>The latest users to join Nacho</CardDescription>
+        </CardHeader>
+        <CardContent className="p-0">
+          {summary.recentSignups.length === 0 ? (
+            <div className="p-6 text-center text-sm text-muted-foreground">No recent signups.</div>
+          ) : (
+            <div className="divide-y divide-border border-t border-border">
+              {summary.recentSignups.map((user) => (
+                <Link key={user.id} href={`/users/${user.id}`}>
+                  <div className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors cursor-pointer group">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-9 w-9">
+                        <AvatarImage src={user.imageUrl || undefined} />
+                        <AvatarFallback>{user.displayName?.[0] || user.email[0].toUpperCase()}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium">{user.displayName || "Unknown"}</span>
+                        <span className="text-xs text-muted-foreground">{user.email}</span>
                       </div>
                     </div>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Recordings</CardTitle>
-            <CardDescription>Latest published activity</CardDescription>
-          </CardHeader>
-          <CardContent className="p-0">
-            {summary.recentRecordings.length === 0 ? (
-              <div className="p-6 text-center text-sm text-muted-foreground">No recent recordings.</div>
-            ) : (
-              <div className="divide-y divide-border border-t border-border">
-                {summary.recentRecordings.map((rec) => (
-                  <div key={rec.shareId} className="flex items-center justify-between p-4">
-                    <div className="flex flex-col overflow-hidden mr-4">
-                      <span className="text-sm font-medium truncate">{rec.title}</span>
-                      <span className="text-xs text-muted-foreground truncate">{rec.ownerEmail || "Unknown owner"}</span>
-                    </div>
-                    <div className="flex items-center gap-3 whitespace-nowrap">
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Eye className="h-3 w-3" />
-                        {rec.views}
-                      </div>
-                      <Badge variant={rec.visibility === "public" ? "default" : "outline"} className="text-[10px]">
-                        {rec.visibility}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground">
-                        {formatDate(rec.createdAt)}
+                    <div className="flex items-center gap-3">
+                      {user.role === "super_admin" && (
+                        <Badge variant="secondary" className="text-[10px]">Admin</Badge>
+                      )}
+                      <span className="text-xs text-muted-foreground whitespace-nowrap">
+                        {formatDate(user.createdAt)}
                       </span>
+                      <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
