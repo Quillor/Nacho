@@ -33,6 +33,9 @@ export const publishedRecordingsTable = pgTable("published_recordings", {
   thumbnailPath: text("thumbnail_path"),
   gifPath: text("gif_path"),
   chapters: jsonb("chapters").$type<Chapter[]>().notNull().default([]),
+  displayChaptersOnVideo: boolean("display_chapters_on_video")
+    .notNull()
+    .default(false),
   transcript: jsonb("transcript").$type<TranscriptSegment[]>().notNull().default([]),
   views: integer("views").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true })

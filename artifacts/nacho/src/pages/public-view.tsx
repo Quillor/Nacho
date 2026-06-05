@@ -107,6 +107,7 @@ export default function PublicView() {
                       : undefined
                   }
                   chapters={rec.chapters}
+                  showChapterTitles={rec.displayChaptersOnVideo}
                   transcript={rec.transcript}
                   startTime={rec.trimStart}
                   endTime={rec.trimEnd || undefined}

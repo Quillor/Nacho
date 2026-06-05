@@ -28,6 +28,8 @@ export interface LocalRecording {
   source: RecordingSource;
   captionLang: string | null;
   chapters: Chapter[];
+  /** When true, the current chapter's title is briefly shown over the video. */
+  displayChaptersOnVideo: boolean;
   transcript: TranscriptSegment[];
   createdAt: number;
   blob: Blob;

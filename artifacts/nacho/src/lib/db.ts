@@ -26,9 +26,14 @@ function getDB(): Promise<IDBPDatabase<NachoDB>> {
   return dbPromise;
 }
 
-// Records saved before the visibility model existed default to private.
+// Records saved before newer fields existed get safe defaults on read.
 function normalize<T extends Partial<LocalRecording>>(rec: T): T {
-  return rec.visibility ? rec : { ...rec, visibility: "private" };
+  let out = rec;
+  if (!out.visibility) out = { ...out, visibility: "private" };
+  if (out.displayChaptersOnVideo === undefined) {
+    out = { ...out, displayChaptersOnVideo: false };
+  }
+  return out;
 }
 
 function stripBlobs(rec: LocalRecording): LocalRecordingMeta {

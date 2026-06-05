@@ -35,6 +35,7 @@ function toApi(row: PublishedRecordingRow) {
     thumbnailPath: row.thumbnailPath,
     gifPath: row.gifPath,
     chapters: row.chapters,
+    displayChaptersOnVideo: row.displayChaptersOnVideo,
     transcript: row.transcript,
     views: row.views,
     createdAt:
@@ -77,6 +78,7 @@ router.post("/recordings", async (req, res): Promise<void> => {
       thumbnailPath: data.thumbnailPath ?? null,
       gifPath: data.gifPath ?? null,
       chapters: data.chapters ?? [],
+      displayChaptersOnVideo: data.displayChaptersOnVideo ?? false,
       transcript: data.transcript ?? [],
     })
     .returning();
@@ -139,6 +141,7 @@ router.patch("/recordings/:shareId", async (req, res): Promise<void> => {
       hasAudio: data.hasAudio ?? true,
       gifPath: data.gifPath ?? null,
       chapters: data.chapters ?? [],
+      displayChaptersOnVideo: data.displayChaptersOnVideo ?? false,
       transcript: data.transcript ?? [],
     })
     .where(

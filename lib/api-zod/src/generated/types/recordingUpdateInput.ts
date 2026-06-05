@@ -19,5 +19,6 @@ export interface RecordingUpdateInput {
   /** @nullable */
   gifPath?: string | null;
   chapters?: Chapter[];
+  displayChaptersOnVideo?: boolean;
   transcript?: TranscriptSegment[];
 }

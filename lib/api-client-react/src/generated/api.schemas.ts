@@ -62,6 +62,7 @@ export interface RecordingInput {
   /** @nullable */
   gifPath?: string | null;
   chapters?: Chapter[];
+  displayChaptersOnVideo?: boolean;
   transcript?: TranscriptSegment[];
 }
 
@@ -76,6 +77,7 @@ export interface RecordingUpdateInput {
   /** @nullable */
   gifPath?: string | null;
   chapters?: Chapter[];
+  displayChaptersOnVideo?: boolean;
   transcript?: TranscriptSegment[];
 }
 
@@ -94,6 +96,7 @@ export interface PublishedRecording {
   /** @nullable */
   gifPath?: string | null;
   chapters: Chapter[];
+  displayChaptersOnVideo?: boolean;
   transcript: TranscriptSegment[];
   views: number;
   createdAt: string;

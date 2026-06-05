@@ -22,10 +22,12 @@ import {
   TabsList,
   TabsTrigger,
 } from "@workspace/pico-ui/tabs";
+import { Switch } from "@workspace/pico-ui/switch";
 import { RichTextEditor } from "@/components/rich-text-editor";
 import {
   VideoPlayer,
   type VideoPlayerHandle,
+  CHAPTER_LABEL_MAX_CHARS,
 } from "@/components/video-player";
 import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { getRecording, updateRecording } from "@/lib/db";
@@ -56,6 +58,7 @@ export default function Editor() {
   const [trimStart, setTrimStart] = useState(0);
   const [trimEnd, setTrimEnd] = useState(0);
   const [chapters, setChapters] = useState<Chapter[]>([]);
+  const [displayChaptersOnVideo, setDisplayChaptersOnVideo] = useState(false);
 
   const [current, setCurrent] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -83,6 +86,7 @@ export default function Editor() {
       setTrimStart(r.trimStart);
       setTrimEnd(r.trimEnd || r.durationSec);
       setChapters(r.chapters);
+      setDisplayChaptersOnVideo(r.displayChaptersOnVideo);
       setVisibility(r.visibility);
       setShareId(r.shareId);
       url = URL.createObjectURL(r.blob);
@@ -138,6 +142,7 @@ export default function Editor() {
       trimStart,
       trimEnd,
       chapters,
+      displayChaptersOnVideo,
     });
   };
 
@@ -209,6 +214,7 @@ export default function Editor() {
         trimStart,
         trimEnd,
         chapters,
+        displayChaptersOnVideo,
       };
 
       let gifBlob: Blob | null = null;
@@ -334,6 +340,7 @@ export default function Editor() {
             ref={playerRef}
             src={objectUrl}
             chapters={chapters}
+            showChapterTitles={displayChaptersOnVideo}
             transcript={rec.transcript}
             startTime={trimStart}
             endTime={trimEnd || undefined}
@@ -409,6 +416,16 @@ export default function Editor() {
             </TabsContent>
 
             <TabsContent value="chapters" className="mt-4 space-y-3">
+              <label className="flex items-center justify-between gap-3 border-2 border-foreground bg-muted p-3">
+                <span className="text-sm font-bold">
+                  Display chapter on video
+                </span>
+                <Switch
+                  checked={displayChaptersOnVideo}
+                  onCheckedChange={setDisplayChaptersOnVideo}
+                  aria-label="Display chapter on video"
+                />
+              </label>
               <Button
                 onClick={addChapter}
                 variant="outline"
@@ -437,6 +454,7 @@ export default function Editor() {
                     <Input
                       value={c.label}
                       onChange={(e) => updateChapter(i, e.target.value)}
+                      maxLength={CHAPTER_LABEL_MAX_CHARS}
                       className="h-9 border-2 border-foreground font-medium"
                     />
                     <Button

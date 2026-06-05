@@ -247,6 +247,7 @@ export default function Studio() {
         source,
         captionLang: withCaptions ? captionLang : null,
         chapters: [],
+        displayChaptersOnVideo: false,
         transcript: transcriptRef.current,
         createdAt: Date.now(),
         blob,
