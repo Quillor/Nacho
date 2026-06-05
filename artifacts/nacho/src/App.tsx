@@ -22,7 +22,9 @@ import { publishableKeyFromHost } from "@clerk/react/internal";
 import { shadcn } from "@clerk/themes";
 import { Toaster } from "@workspace/pico-ui/toaster";
 import { TooltipProvider } from "@workspace/pico-ui/tooltip";
-import { DEV_AUTH_BYPASS } from "@/lib/dev-auth";
+import { isDevAuthBypassEnabled } from "@/lib/dev-auth";
+import { TestingModeBanner } from "@/components/testing-mode-banner";
+import { DevModeToggle } from "@/components/dev-mode-toggle";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Studio from "@/pages/studio";
@@ -114,13 +116,14 @@ const clerkAppearance = {
 
 function SignInPage() {
   return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-background px-4">
+    <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-6 bg-background px-4 py-10">
       <SignIn
         routing="path"
         path={`${basePath}/sign-in`}
         signUpUrl={`${basePath}/sign-up`}
         forceRedirectUrl={`${basePath}/studio`}
       />
+      <DevModeToggle onEnabledPath="/studio" />
     </div>
   );
 }
@@ -156,7 +159,7 @@ function HomeRedirect() {
 // In a dev build with the bypass flag on, render the page directly so gated
 // pages can be tested without signing in (see lib/dev-auth.ts).
 function Protected({ children }: { children: React.ReactNode }) {
-  if (DEV_AUTH_BYPASS) return <>{children}</>;
+  if (isDevAuthBypassEnabled()) return <>{children}</>;
   return (
     <>
       <Show when="signed-in">{children}</Show>
@@ -253,6 +256,7 @@ function ClerkProviderWithRoutes() {
       <QueryClientProvider client={queryClient}>
         <ClerkQueryClientCacheInvalidator />
         <TooltipProvider>
+          <TestingModeBanner />
           <Router />
           <Toaster />
         </TooltipProvider>

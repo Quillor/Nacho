@@ -23,6 +23,8 @@ import { Toaster } from "@workspace/pico-ui/toaster";
 import { TooltipProvider } from "@workspace/pico-ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { AppShell } from "@/components/app-shell";
+import { TestingModeBanner } from "@/components/testing-mode-banner";
+import { DevModeToggle } from "@/components/dev-mode-toggle";
 
 import Dashboard from "@/pages/dashboard";
 import Users from "@/pages/users";
@@ -105,13 +107,14 @@ const clerkAppearance = {
 
 function SignInPage() {
   return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-background px-4">
+    <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-6 bg-background px-4 py-10">
       <SignIn
         routing="path"
         path={`${basePath}/sign-in`}
         signUpUrl={`${basePath}/sign-up`}
         forceRedirectUrl={`${basePath}/`}
       />
+      <DevModeToggle onEnabledPath="/" />
     </div>
   );
 }
@@ -211,6 +214,7 @@ function ClerkProviderWithRoutes() {
       <QueryClientProvider client={queryClient}>
         <ClerkQueryClientCacheInvalidator />
         <TooltipProvider>
+          <TestingModeBanner />
           <Router />
           <Toaster />
         </TooltipProvider>

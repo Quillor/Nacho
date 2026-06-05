@@ -36,7 +36,7 @@ import {
 import { getPublicLink, unpublishRecording } from "@/lib/publish";
 import { shareUrl } from "@/lib/api";
 import { formatDuration, formatRelativeDate } from "@/lib/format";
-import { DEV_AUTH_BYPASS } from "@/lib/dev-auth";
+import { isDevAuthBypassEnabled } from "@/lib/dev-auth";
 import type { LocalRecordingMeta } from "@/lib/types";
 
 function Thumb({ rec }: { rec: LocalRecordingMeta }) {
@@ -91,7 +91,7 @@ export default function LibraryPage() {
   // Dev-only: seed sample recordings once when the bypass is on and the Library
   // is empty. The dynamic import keeps lib/dev-seed out of production bundles.
   useEffect(() => {
-    if (!DEV_AUTH_BYPASS) return;
+    if (!isDevAuthBypassEnabled()) return;
     let cancelled = false;
     import("@/lib/dev-seed")
       .then(async ({ autoSeedIfEmpty }) => {
@@ -204,7 +204,7 @@ export default function LibraryPage() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          {DEV_AUTH_BYPASS && (
+          {isDevAuthBypassEnabled() && (
             <Button
               size="lg"
               variant="outline"

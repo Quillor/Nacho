@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@workspace/pico-ui/avatar";
 import { Button } from "@workspace/pico-ui/button";
 import AccessDenied from "@/pages/access-denied";
 import { Redirect } from "wouter";
-import { DEV_AUTH_BYPASS, DEV_USER } from "@/lib/dev-auth";
+import { isDevAuthBypassEnabled, DEV_USER } from "@/lib/dev-auth";
 
 // Mirrors the server-side rule in api-server lib/clerk.ts: this account is
 // always a super admin regardless of publicMetadata.role.
@@ -33,7 +33,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   // Dev-only bypass skips the sign-in + super-admin gate entirely so the
   // console can be exercised without a real Clerk session. Inert in production.
-  if (!DEV_AUTH_BYPASS) {
+  const bypass = isDevAuthBypassEnabled();
+  if (!bypass) {
     if (!isLoaded) {
       return (
         <div className="flex min-h-screen items-center justify-center bg-background">
@@ -56,17 +57,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   // Display values fall back to the dev stand-in when there is no real user.
   const displayName =
-    user?.fullName || (DEV_AUTH_BYPASS ? DEV_USER.displayName : "Admin");
+    user?.fullName || (bypass ? DEV_USER.displayName : "Admin");
   const displayEmail =
     user?.primaryEmailAddress?.emailAddress ??
-    (DEV_AUTH_BYPASS ? DEV_USER.email : undefined);
+    (bypass ? DEV_USER.email : undefined);
   const avatarFallback =
     user?.firstName?.[0] ||
     user?.emailAddresses[0]?.emailAddress?.[0]?.toUpperCase() ||
     displayName[0];
 
   const handleSignOut = () => {
-    if (DEV_AUTH_BYPASS && !user) {
+    if (bypass && !user) {
       window.location.href = "/sign-in";
       return;
     }
