@@ -36,6 +36,9 @@ function normalize<T extends Partial<LocalRecording>>(rec: T): T {
   if (out.notifyOnView === undefined) {
     out = { ...out, notifyOnView: false };
   }
+  if (out.pinned === undefined) {
+    out = { ...out, pinned: false };
+  }
   if (out.selfieCorner === undefined) {
     out = { ...out, selfieCorner: null };
   }

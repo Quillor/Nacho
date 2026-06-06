@@ -85,6 +85,7 @@ function buildRecording(source: SampleSource, index: number): LocalRecording {
     chapters: SAMPLE_CHAPTERS,
     displayChaptersOnVideo: false,
     notifyOnView: false,
+    pinned: false,
     transcript: SAMPLE_TRANSCRIPT,
     createdAt: Date.now() + index,
     blob,

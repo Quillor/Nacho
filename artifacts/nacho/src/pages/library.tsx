@@ -15,6 +15,7 @@ import {
   UploadCloud,
   CheckCircle2,
   RotateCcw,
+  Pin,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@workspace/pico-ui/button";
@@ -127,7 +128,15 @@ export default function LibraryPage() {
   const [seeding, setSeeding] = useState(false);
 
   const refresh = () => {
-    listRecordings().then(setRecordings);
+    // listRecordings already returns newest-first; keep that order within each
+    // group and float pinned recordings to the top.
+    listRecordings().then((recs) =>
+      setRecordings(
+        [...recs].sort(
+          (a, b) => Number(b.pinned ?? false) - Number(a.pinned ?? false),
+        ),
+      ),
+    );
   };
 
   useEffect(() => {
@@ -171,6 +180,18 @@ export default function LibraryPage() {
     } finally {
       setSeeding(false);
     }
+  };
+
+  const handleTogglePin = async (rec: LocalRecordingMeta) => {
+    const next = !rec.pinned;
+    await updateRecording(rec.id, { pinned: next });
+    refresh();
+    toast({
+      title: next ? "Pinned to top" : "Unpinned",
+      description: next
+        ? "This recording now stays at the top of your Library."
+        : "This recording returns to its usual spot.",
+    });
   };
 
   const handleCopy = async (shareId: string) => {
@@ -328,8 +349,28 @@ export default function LibraryPage() {
           {recordings.map((rec) => (
             <div
               key={rec.id}
-              className="group flex flex-col border-4 border-foreground bg-card shadow-md transition-transform hover:-translate-y-1"
+              className="group relative flex flex-col border-4 border-foreground bg-card shadow-md transition-transform hover:-translate-y-1"
             >
+              <button
+                type="button"
+                onClick={() => handleTogglePin(rec)}
+                aria-pressed={rec.pinned}
+                title={rec.pinned ? "Unpin recording" : "Pin recording"}
+                className={`absolute left-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-sm border-2 border-foreground shadow-sm transition-colors ${
+                  rec.pinned
+                    ? "bg-accent text-accent-foreground"
+                    : "bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+                }`}
+              >
+                {rec.pinned ? (
+                  <Pin className="h-4 w-4 fill-current" />
+                ) : (
+                  <Pin className="h-4 w-4" />
+                )}
+                <span className="sr-only">
+                  {rec.pinned ? "Unpin recording" : "Pin recording"}
+                </span>
+              </button>
               <button
                 type="button"
                 className="block text-left"

@@ -252,6 +252,7 @@ export default function Studio() {
         chapters: [],
         displayChaptersOnVideo: false,
         notifyOnView: false,
+        pinned: false,
         transcript: transcriptRef.current,
         createdAt: Date.now(),
         blob,

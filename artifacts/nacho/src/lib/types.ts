@@ -41,6 +41,8 @@ export interface LocalRecording {
   displayChaptersOnVideo: boolean;
   /** When true, the owner is emailed each time the recording is watched. */
   notifyOnView: boolean;
+  /** When true, the recording is pinned to the top of the Library (per-device). */
+  pinned: boolean;
   transcript: TranscriptSegment[];
   createdAt: number;
   blob: Blob;
