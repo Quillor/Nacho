@@ -439,6 +439,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /admin/emails:
+    get:
+      operationId: listEmailPreviews
+      tags: [admin]
+      summary: Preview every system email rendered with sample data (review-only)
+      responses:
+        "200":
+          description: Email previews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EmailPreview"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /admin/content/tos:
     get:
       operationId: getTosAdmin
@@ -826,6 +846,23 @@ components:
         content:
           type: string
           minLength: 1
+    EmailPreview:
+      type: object
+      required: [id, name, description, subject, html, source]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        subject:
+          type: string
+        html:
+          type: string
+        source:
+          type: string
+          enum: [our, clerk]
     AdminRecordingActivity:
       type: object
       required: [shareId, title, views, visibility, createdAt]

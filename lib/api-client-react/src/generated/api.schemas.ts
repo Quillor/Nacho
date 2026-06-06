@@ -222,6 +222,23 @@ export interface TosInput {
   content: string;
 }
 
+export type EmailPreviewSource = typeof EmailPreviewSource[keyof typeof EmailPreviewSource];
+
+
+export const EmailPreviewSource = {
+  our: 'our',
+  clerk: 'clerk',
+} as const;
+
+export interface EmailPreview {
+  id: string;
+  name: string;
+  description: string;
+  subject: string;
+  html: string;
+  source: EmailPreviewSource;
+}
+
 export interface AdminRecordingActivity {
   shareId: string;
   title: string;

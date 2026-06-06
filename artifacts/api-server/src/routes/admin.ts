@@ -32,7 +32,7 @@ import {
   type AdminRole,
 } from "../lib/clerk";
 import { sendEmail } from "../lib/email";
-import { renderBrandedEmail } from "../lib/emailLayout";
+import { broadcastEmail, emailPreviews } from "../lib/emailTemplates";
 import { authUserId } from "../lib/devAuth";
 
 const router: IRouter = Router();
@@ -520,18 +520,7 @@ router.post("/admin/notifications", async (req, res): Promise<void> => {
     return;
   }
 
-  const messageHtml = message
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;")
-    .replace(/\n/g, "<br/>");
-  const html = renderBrandedEmail({
-    heading: subject,
-    previewText: subject,
-    bodyHtml: `<p style="margin:0;">${messageHtml}</p>`,
-  });
+  const { html } = broadcastEmail({ subject, body: message });
 
   let sent = 0;
   let failed = 0;
@@ -550,6 +539,10 @@ router.post("/admin/notifications", async (req, res): Promise<void> => {
         ? `${sent} sent, ${failed} failed`
         : `Sent to ${sent} recipient${sent === 1 ? "" : "s"}`,
   });
+});
+
+router.get("/admin/emails", async (_req, res): Promise<void> => {
+  res.json(emailPreviews());
 });
 
 async function loadTos(): Promise<{ content: string; updatedAt: string }> {

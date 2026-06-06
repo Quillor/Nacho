@@ -459,6 +459,20 @@ export const SendNotificationResponse = zod.object({
 
 
 /**
+ * @summary Preview every system email rendered with sample data (review-only)
+ */
+export const ListEmailPreviewsResponseItem = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "description": zod.string(),
+  "subject": zod.string(),
+  "html": zod.string(),
+  "source": zod.enum(['our', 'clerk'])
+})
+export const ListEmailPreviewsResponse = zod.array(ListEmailPreviewsResponseItem)
+
+
+/**
  * @summary Get the current terms of service (admin)
  */
 export const GetTosAdminResponse = zod.object({

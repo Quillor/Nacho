@@ -11,6 +11,8 @@ export * from './adminRole';
 export * from './adminSummary';
 export * from './adminUser';
 export * from './chapter';
+export * from './emailPreview';
+export * from './emailPreviewSource';
 export * from './errorResponse';
 export * from './groupInput';
 export * from './groupUpdate';

@@ -8,7 +8,7 @@ import {
 } from "@workspace/db";
 import { clerkClient, primaryEmail } from "../lib/clerk";
 import { sendEmail } from "../lib/email";
-import { renderBrandedEmail } from "../lib/emailLayout";
+import { viewNotificationEmail } from "../lib/emailTemplates";
 import {
   PublishRecordingBody,
   GetRecordingParams,
@@ -265,17 +265,9 @@ async function notifyOwnerOfView(
       dateStyle: "medium",
       timeStyle: "short",
     });
-    const safeTitle = escapeHtml(row.title);
-    const subject = `Someone just watched "${row.title}"`;
-    const html = renderBrandedEmail({
-      heading: "Your recording was just watched",
-      previewText: `"${row.title}" was viewed on ${viewedAt}.`,
-      bodyHtml: `
-        <p style="margin:0 0 12px;">
-          <strong>${safeTitle}</strong> was viewed on ${escapeHtml(viewedAt)}.
-        </p>
-        <p style="margin:16px 0 0;color:#6B472E;">Keep up the great work.</p>
-      `,
+    const { subject, html } = viewNotificationEmail({
+      title: row.title,
+      viewedAt,
     });
 
     const result = await sendEmail(to, subject, html);
@@ -288,15 +280,6 @@ async function notifyOwnerOfView(
   } catch (err) {
     log.warn({ shareId: row.shareId, err }, "View notification threw");
   }
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
 }
 
 export default router;

@@ -5,6 +5,7 @@ import {
   Users as UsersIcon,
   FolderTree,
   Bell,
+  Mail,
   FileText,
   LogOut,
 } from "lucide-react";
@@ -23,6 +24,7 @@ const navigation = [
   { name: "Users", href: "/users", icon: UsersIcon },
   { name: "Groups", href: "/groups", icon: FolderTree },
   { name: "Notifications", href: "/notifications", icon: Bell },
+  { name: "Emails", href: "/emails", icon: Mail },
   { name: "Content", href: "/content", icon: FileText },
 ];
 

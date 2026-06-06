@@ -22,6 +22,7 @@ import type {
 import type {
   AdminSummary,
   AdminUser,
+  EmailPreview,
   ErrorResponse,
   GroupInput,
   GroupUpdate,
@@ -1449,6 +1450,83 @@ export const useSendNotification = <TError = ErrorType<ErrorResponse>,
       > => {
       return useMutation(getSendNotificationMutationOptions(options));
     }
+
+export const getListEmailPreviewsUrl = () => {
+
+
+
+
+  return `/api/admin/emails`
+}
+
+/**
+ * @summary Preview every system email rendered with sample data (review-only)
+ */
+export const listEmailPreviews = async ( options?: RequestInit): Promise<EmailPreview[]> => {
+
+  return customFetch<EmailPreview[]>(getListEmailPreviewsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListEmailPreviewsQueryKey = () => {
+    return [
+    `/api/admin/emails`
+    ] as const;
+    }
+
+
+export const getListEmailPreviewsQueryOptions = <TData = Awaited<ReturnType<typeof listEmailPreviews>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listEmailPreviews>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListEmailPreviewsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listEmailPreviews>>> = ({ signal }) => listEmailPreviews({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listEmailPreviews>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListEmailPreviewsQueryResult = NonNullable<Awaited<ReturnType<typeof listEmailPreviews>>>
+export type ListEmailPreviewsQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Preview every system email rendered with sample data (review-only)
+ */
+
+export function useListEmailPreviews<TData = Awaited<ReturnType<typeof listEmailPreviews>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listEmailPreviews>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListEmailPreviewsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export const getGetTosAdminUrl = () => {
 

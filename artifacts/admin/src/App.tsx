@@ -31,6 +31,7 @@ import Users from "@/pages/users";
 import UserDetail from "@/pages/user-detail";
 import Groups from "@/pages/groups";
 import Notifications from "@/pages/notifications";
+import Emails from "@/pages/emails";
 import Content from "@/pages/content";
 
 const queryClient = new QueryClient();
@@ -180,6 +181,9 @@ function Router() {
       </Route>
       <Route path="/notifications">
         <AppShell><Notifications /></AppShell>
+      </Route>
+      <Route path="/emails">
+        <AppShell><Emails /></AppShell>
       </Route>
       <Route path="/content">
         <AppShell><Content /></AppShell>
