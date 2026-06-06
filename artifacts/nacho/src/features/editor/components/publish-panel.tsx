@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   RotateCcw,
+  Save,
 } from "lucide-react";
 import { Button } from "@workspace/pico-ui/button";
 import { Input } from "@workspace/pico-ui/input";
@@ -22,6 +23,7 @@ export function PublishPanel({
   shareId,
   copied,
   busy,
+  dirty,
   publishStep,
   upload,
   onCopyLink,
@@ -35,6 +37,7 @@ export function PublishPanel({
   shareId: string | null;
   copied: boolean;
   busy: boolean;
+  dirty: boolean;
   publishStep: string;
   upload: UploadState;
   onCopyLink: () => void;
@@ -44,6 +47,7 @@ export function PublishPanel({
   onRetryUpload: () => void;
   onSave: () => void;
 }) {
+  const uploadFailed = upload.phase === "failed";
   return (
     <div className="space-y-3 border-t-2 border-foreground pt-6">
       {isPublic ? (
@@ -65,12 +69,25 @@ export function PublishPanel({
               className="h-10 shrink-0 border border-foreground bg-accent font-bold text-accent-foreground"
             >
               {copied ? (
-                <Check className="h-4 w-4" />
+                <>
+                  <Check className="mr-2 h-4 w-4" /> Copied!
+                </>
               ) : (
-                <Copy className="h-4 w-4" />
+                <>
+                  <Copy className="mr-2 h-4 w-4" /> Copy
+                </>
               )}
             </Button>
           </div>
+          {copied && (
+            <p
+              role="status"
+              aria-live="polite"
+              className="flex items-center gap-1.5 text-sm font-bold"
+            >
+              <Check className="h-4 w-4" /> Link copied to your clipboard.
+            </p>
+          )}
           <Button
             onClick={onOpenPublic}
             variant="outline"
@@ -126,48 +143,66 @@ export function PublishPanel({
               Saved — sharing will be instant.
             </div>
           )}
-          {upload.phase === "failed" && (
-            <div className="space-y-2 border border-foreground bg-background p-2">
+          {uploadFailed ? (
+            // Failed upload: a single, unambiguous recovery action. The video
+            // must finish saving to the cloud before a public link is possible,
+            // so we hide "Get public link" and only offer the retry here.
+            <div className="space-y-2 border-2 border-foreground bg-background p-3">
               <div className="flex items-center gap-2 text-sm font-bold">
                 <AlertTriangle className="h-4 w-4" />
-                Upload failed.
+                Couldn't save to the cloud.
               </div>
+              <p className="text-xs font-medium text-muted-foreground">
+                Your recording is still safe on this device. Retry the save —
+                you can share a public link once it finishes.
+              </p>
               <Button
                 onClick={onRetryUpload}
-                variant="outline"
-                size="sm"
-                className="border border-foreground font-bold"
+                disabled={busy}
+                size="lg"
+                className="h-14 w-full border-2 border-foreground bg-accent text-lg font-black text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
               >
-                <RotateCcw className="mr-2 h-4 w-4" /> Retry upload
+                <RotateCcw className="mr-2 h-5 w-5" /> Retry save
               </Button>
             </div>
+          ) : (
+            <Button
+              onClick={onGetLink}
+              disabled={busy}
+              size="lg"
+              className="h-14 w-full border-2 border-foreground bg-accent text-lg font-black text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+            >
+              {busy ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  {publishStep || "Working…"}
+                </>
+              ) : (
+                <>
+                  <Globe className="mr-2 h-5 w-5" /> Get public link
+                </>
+              )}
+            </Button>
           )}
-          <Button
-            onClick={onGetLink}
-            disabled={busy}
-            size="lg"
-            className="h-14 w-full border-2 border-foreground bg-accent text-lg font-black text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
-          >
-            {busy ? (
-              <>
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                {publishStep || "Working…"}
-              </>
-            ) : (
-              <>
-                <Globe className="mr-2 h-5 w-5" /> Get public link
-              </>
-            )}
-          </Button>
         </div>
       )}
-      <Button
-        onClick={onSave}
-        variant="outline"
-        className="w-full border-2 border-foreground font-bold"
-      >
-        Save changes
-      </Button>
+      {dirty ? (
+        <Button
+          onClick={onSave}
+          disabled={busy}
+          className="w-full border-2 border-foreground bg-accent font-black text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+        >
+          <Save className="mr-2 h-4 w-4" /> Save changes
+        </Button>
+      ) : (
+        <Button
+          disabled
+          variant="outline"
+          className="w-full border-2 border-foreground font-bold"
+        >
+          <Check className="mr-2 h-4 w-4" /> All changes saved
+        </Button>
+      )}
     </div>
   );
 }

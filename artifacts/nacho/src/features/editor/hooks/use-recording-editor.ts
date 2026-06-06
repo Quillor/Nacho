@@ -138,7 +138,10 @@ export function useRecordingEditor() {
   // to the published server copy still happens on save like other edits.
   const handleNotifyOnViewChange = (next: boolean) => {
     setNotifyOnView(next);
-    if (id) void updateRecording(id, { notifyOnView: next });
+    if (id)
+      void updateRecording(id, { notifyOnView: next }).then((updated) => {
+        if (updated) setRec(updated);
+      });
   };
 
   const persist = async (): Promise<LocalRecording | undefined> => {
@@ -160,6 +163,8 @@ export function useRecordingEditor() {
       trimStart !== rec.trimStart || trimEnd !== (rec.trimEnd || rec.durationSec);
     const updated = await persist();
     const saved = updated ?? rec;
+    // Reflect the just-persisted values so the editor reads as "clean" again.
+    if (updated) setRec(updated);
 
     // Local-only recording: persist locally and we're done.
     if (saved.visibility !== "public" || !saved.shareId || !saved.videoPath) {
@@ -260,13 +265,15 @@ export function useRecordingEditor() {
         gifBlob,
         onProgress: setPublishStep,
       });
-      await updateRecording(draft.id, {
+      const finalRec = await updateRecording(draft.id, {
         visibility: result.visibility,
         shareId: result.shareId,
         videoPath: result.videoPath,
         thumbnailPath: result.thumbnailPath,
         gifPath: result.gifPath,
       });
+      // Reflect the persisted edits so the editor reads as "clean" again.
+      if (finalRec) setRec(finalRec);
       setVisibility(result.visibility);
       setShareId(result.shareId);
       await navigator.clipboard.writeText(shareUrl(result.shareId));
@@ -326,6 +333,40 @@ export function useRecordingEditor() {
     [trimStart, trimEnd],
   );
 
+  // Has the user changed any "Save changes"-backed field since it was last
+  // loaded/saved? notifyOnView is excluded because it persists to IndexedDB
+  // immediately (it can't be lost by navigating away).
+  const dirty = useMemo(() => {
+    if (!rec) return false;
+    return (
+      title !== rec.title ||
+      description !== rec.description ||
+      trimStart !== rec.trimStart ||
+      trimEnd !== (rec.trimEnd || rec.durationSec) ||
+      displayChaptersOnVideo !== rec.displayChaptersOnVideo ||
+      JSON.stringify(chapters) !== JSON.stringify(rec.chapters)
+    );
+  }, [
+    rec,
+    title,
+    description,
+    trimStart,
+    trimEnd,
+    displayChaptersOnVideo,
+    chapters,
+  ]);
+
+  // Warn before a full page unload / tab close while there are unsaved edits.
+  useEffect(() => {
+    if (!dirty) return;
+    const handler = (ev: BeforeUnloadEvent) => {
+      ev.preventDefault();
+      ev.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [dirty]);
+
   const isPublic = visibility === "public" && !!shareId;
 
   return {
@@ -368,5 +409,6 @@ export function useRecordingEditor() {
     retry,
     trimmedDuration,
     isPublic,
+    dirty,
   };
 }

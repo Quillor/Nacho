@@ -1,9 +1,20 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { Scissors, ArrowLeft } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@workspace/pico-ui/button";
 import { Input } from "@workspace/pico-ui/input";
 import { Label } from "@workspace/pico-ui/label";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@workspace/pico-ui/alert-dialog";
 import { VideoPlayer } from "@/features/sharing";
 import { formatTimestamp } from "@workspace/shared";
 import { useRecordingEditor } from "../hooks/use-recording-editor";
@@ -13,6 +24,17 @@ import { PublishPanel } from "./publish-panel";
 
 export function Editor() {
   const e = useRecordingEditor();
+  const [confirmLeave, setConfirmLeave] = useState(false);
+
+  // Guard navigation back to the Library: if there are unsaved edits, ask
+  // before throwing the work away.
+  const leaveToLibrary = () => {
+    if (e.dirty) {
+      setConfirmLeave(true);
+      return;
+    }
+    e.navigate("/library");
+  };
 
   if (e.notFound) {
     return (
@@ -46,7 +68,7 @@ export function Editor() {
     <AppShell>
       <Button
         variant="ghost"
-        onClick={() => e.navigate("/library")}
+        onClick={leaveToLibrary}
         className="mb-4 font-bold text-muted-foreground"
       >
         <ArrowLeft className="mr-2 h-4 w-4" /> Library
@@ -134,6 +156,7 @@ export function Editor() {
             shareId={e.shareId}
             copied={e.copied}
             busy={e.busy}
+            dirty={e.dirty}
             publishStep={e.publishStep}
             upload={e.upload}
             onCopyLink={e.copyLink}
@@ -145,6 +168,29 @@ export function Editor() {
           />
         </div>
       </div>
+
+      <AlertDialog open={confirmLeave} onOpenChange={setConfirmLeave}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Leave without saving?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You have unsaved changes. If you go back to the Library now,
+              they'll be lost.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep editing</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setConfirmLeave(false);
+                e.navigate("/library");
+              }}
+            >
+              Discard &amp; leave
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AppShell>
   );
 }
