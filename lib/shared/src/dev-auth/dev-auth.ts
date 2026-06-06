@@ -1,9 +1,12 @@
-// Dev-only auth bypass ("testing mode") for the Nacho user app.
+// Dev-only auth bypass ("testing mode") client logic, shared by the Nacho user
+// app and the Nacho Admin console (artifacts can't import each other, so this
+// lives in a shared lib — one source of truth).
 //
 // The bypass is hard-gated behind a development build (import.meta.env.DEV).
 // Vite statically replaces import.meta.env.DEV with false in production builds,
 // so every branch below folds to the inert path and is dead-code eliminated —
-// there is no way to switch testing mode on in production.
+// there is no way to switch testing mode on in production. Each app still
+// enforces its own server gate; this flag only affects the client UI.
 //
 // State is read at runtime so an in-app toggle (on the sign-in page) can flip it
 // without env vars or restarts. Resolution order:
@@ -12,21 +15,11 @@
 // Flipping the toggle also writes a same-origin cookie the API server reads so
 // the frontend gate and the server gate stay in lockstep.
 
-const STORAGE_KEY = "nacho_dev_bypass";
-// Must match COOKIE_NAME in api-server/src/lib/devAuth.ts.
-const COOKIE_NAME = "nacho_dev_bypass";
+import { STORAGE_KEY, COOKIE_NAME } from "./constants";
 
 // Legacy/default: the original build-time env var. Only meaningful in a dev build.
 const ENV_DEFAULT =
   import.meta.env.DEV && import.meta.env.VITE_DEV_AUTH_BYPASS === "true";
-
-// Display-only stand-in shown while the bypass is on and there is no real Clerk
-// session. Account-editing surfaces stay guarded on the real user, so this is
-// never used to make Clerk API calls.
-export const DEV_USER = {
-  displayName: "Dev User",
-  email: "dev-user@nacho.test",
-};
 
 function readPersisted(): boolean | null {
   try {

@@ -13,11 +13,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@workspace/pico-ui/avatar";
 import { Button } from "@workspace/pico-ui/button";
 import AccessDenied from "@/pages/access-denied";
 import { Redirect } from "wouter";
-import { isDevAuthBypassEnabled, DEV_USER } from "@/lib/dev-auth";
+import { isDevAuthBypassEnabled } from "@workspace/shared";
 
 // Mirrors the server-side rule in api-server lib/clerk.ts: this account is
 // always a super admin regardless of publicMetadata.role.
 const PERMANENT_SUPER_ADMIN_EMAIL = "hello@timrosenberg.com";
+
+// Display-only stand-in shown in the sidebar while the bypass is on and there
+// is no real Clerk session.
+const DEV_USER = {
+  displayName: "Dev Super Admin",
+  email: "dev-admin@nacho.test",
+};
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },

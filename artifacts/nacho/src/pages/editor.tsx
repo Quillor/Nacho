@@ -51,7 +51,7 @@ import {
 import { createGifFromBlob } from "@/lib/gif";
 import { extractFilmstrip } from "@/lib/media";
 import { shareUrl } from "@/lib/api";
-import { formatTimestamp } from "@/lib/format";
+import { formatTimestamp } from "@workspace/shared";
 import { cn } from "@/lib/utils";
 import type { LocalRecording, Chapter, Visibility } from "@/lib/types";
 

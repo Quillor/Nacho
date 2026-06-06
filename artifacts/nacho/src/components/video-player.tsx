@@ -9,7 +9,7 @@ import {
 } from "react";
 import { Play, Pause, Captions, CaptionsOff } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { formatTimestamp } from "@/lib/format";
+import { formatTimestamp } from "@workspace/shared";
 import type { Chapter, TranscriptSegment, SelfieCorner } from "@/lib/types";
 
 /**

@@ -11,14 +11,17 @@ import {
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
-export type Chapter = { time: number; label: string };
-export type TranscriptSegment = { start: number; end: number; text: string };
-export type Visibility = "private" | "public";
-export type SelfieCorner =
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right";
+// Shared recording domain primitives live in @workspace/shared (single source of
+// truth, also consumed by the Nacho app). Imported for the column $type<>
+// bindings below and re-exported so existing `@workspace/db` consumers keep
+// importing them from here.
+import type {
+  Chapter,
+  TranscriptSegment,
+  Visibility,
+  SelfieCorner,
+} from "@workspace/shared/types";
+export type { Chapter, TranscriptSegment, Visibility, SelfieCorner };
 
 export const publishedRecordingsTable = pgTable("published_recordings", {
   id: serial("id").primaryKey(),

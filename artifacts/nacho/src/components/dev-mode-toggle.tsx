@@ -1,6 +1,6 @@
 import { Button } from "@workspace/pico-ui/button";
 import { FlaskConical } from "lucide-react";
-import { setDevAuthBypass } from "@/lib/dev-auth";
+import { setDevAuthBypass } from "@workspace/shared";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 

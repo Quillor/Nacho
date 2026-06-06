@@ -1,28 +1,24 @@
-export interface Chapter {
-  time: number;
-  label: string;
-}
+// Recording domain primitives shared with the DB schema live in
+// @workspace/shared (single source of truth). Re-exported here so existing
+// `@/lib/types` imports keep resolving.
+export type {
+  Chapter,
+  TranscriptSegment,
+  Visibility,
+  SelfieCorner,
+} from "@workspace/shared/types";
+import type {
+  Chapter,
+  TranscriptSegment,
+  Visibility,
+  SelfieCorner,
+} from "@workspace/shared/types";
 
-export interface TranscriptSegment {
-  start: number;
-  end: number;
-  text: string;
-}
+// --- Nacho-only (local-first) types ---
 
 export type RecordingSource = "screen" | "camera" | "screen-camera";
 
-/** Which corner the camera bubble (selfie) sits in for a screen+cam recording. */
-export type SelfieCorner =
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right";
-
 export type RecordingStatus = "local" | "published";
-
-/** Whether a recording has a resolvable public share link. Saved videos are
- * private by default; a public link is generated only on demand. */
-export type Visibility = "private" | "public";
 
 export interface LocalRecording {
   id: string;

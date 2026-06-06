@@ -40,7 +40,7 @@ import {
 } from "@workspace/pico-ui/alert-dialog";
 import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { Plus, Edit2, Trash2 } from "lucide-react";
-import { formatDate } from "@/lib/format";
+import { formatDate } from "@workspace/shared";
 
 type GroupDialogMode = "create" | "edit" | null;
 

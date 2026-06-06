@@ -310,6 +310,9 @@ importers:
       '@workspace/pico-ui':
         specifier: workspace:*
         version: link:../../lib/pico-ui
+      '@workspace/shared':
+        specifier: workspace:*
+        version: link:../../lib/shared
       class-variance-authority:
         specifier: 'catalog:'
         version: 0.7.1
@@ -409,6 +412,9 @@ importers:
       '@workspace/pico-theme':
         specifier: workspace:*
         version: link:../../lib/pico-theme
+      '@workspace/shared':
+        specifier: workspace:*
+        version: link:../../lib/shared
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
@@ -807,6 +813,9 @@ importers:
       '@workspace/pico-ui':
         specifier: workspace:*
         version: link:../../lib/pico-ui
+      '@workspace/shared':
+        specifier: workspace:*
+        version: link:../../lib/shared
       class-variance-authority:
         specifier: 'catalog:'
         version: 0.7.1
@@ -1104,6 +1113,9 @@ importers:
 
   lib/db:
     dependencies:
+      '@workspace/shared':
+        specifier: workspace:*
+        version: link:../shared
       drizzle-orm:
         specifier: 'catalog:'
         version: 0.45.2(@types/pg@8.20.0)(pg@8.20.0)
@@ -1282,6 +1294,12 @@ importers:
       '@types/react-dom':
         specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.14)
+
+  lib/shared:
+    dependencies:
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
 
   scripts:
     dependencies:

@@ -30,7 +30,7 @@ import {
 import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { ArrowLeft, UserSquare, ShieldAlert } from "lucide-react";
 import { Link } from "wouter";
-import { formatDateTime } from "@/lib/format";
+import { formatDateTime } from "@workspace/shared";
 
 export default function UserDetail({ userId }: { userId: string }) {
   const queryClient = useQueryClient();

@@ -3,8 +3,16 @@ import { Library, Settings, CircleDot, LogOut, type LucideIcon } from "lucide-re
 import { useClerk, useUser } from "@clerk/react";
 import { cn } from "@/lib/utils";
 import { getDisplayName } from "@/components/account-management";
-import { isDevAuthBypassEnabled, DEV_USER } from "@/lib/dev-auth";
+import { isDevAuthBypassEnabled } from "@workspace/shared";
 import { Logo } from "@/components/logo";
+
+// Display-only stand-in shown while the bypass is on and there is no real Clerk
+// session. Account-editing surfaces stay guarded on the real user, so this is
+// never used to make Clerk API calls.
+const DEV_USER = {
+  displayName: "Dev User",
+  email: "dev-user@nacho.test",
+};
 
 interface NavItem {
   href: string;

@@ -20,7 +20,7 @@ import {
 } from "@/components/account-management";
 import { useGetVersion } from "@workspace/api-client-react";
 import { listRecordings, deleteRecording } from "@/lib/db";
-import { formatBytes } from "@/lib/format";
+import { formatBytes } from "@workspace/shared";
 import type { LocalRecordingMeta } from "@/lib/types";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");

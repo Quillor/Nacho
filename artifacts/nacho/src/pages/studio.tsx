@@ -52,7 +52,7 @@ import {
 import { captureThumbnail, getBlobDuration } from "@/lib/media";
 import { saveRecording } from "@/lib/db";
 import { startBackgroundUpload } from "@/lib/upload-manager";
-import { formatDuration } from "@/lib/format";
+import { formatDuration } from "@workspace/shared";
 import type {
   RecordingSource,
   TranscriptSegment,

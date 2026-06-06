@@ -10,6 +10,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
+    "@workspace/shared": "workspace:*",
     "@clerk/react": "^6.7.2",
     "@clerk/themes": "^2.4.57",
     "@hookform/resolvers": "^3.10.0",

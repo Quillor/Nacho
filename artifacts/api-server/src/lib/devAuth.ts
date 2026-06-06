@@ -1,5 +1,6 @@
 import type { Request } from "express";
 import { getAuth } from "@clerk/express";
+import { COOKIE_NAME, DEV_USER_ID } from "@workspace/shared/dev-auth-constants";
 
 // Dev-only auth bypass ("testing mode"). Honored only OUTSIDE production. The
 // production gate below makes every code path here inert when NODE_ENV is
@@ -9,14 +10,13 @@ import { getAuth } from "@clerk/express";
 //   1. a dev-only cookie set same-origin by the frontend toggle, if present
 //      ("1" → on, "0" → off; an explicit "0" overrides an env default of ON)
 //   2. otherwise the legacy DEV_AUTH_BYPASS env var
-const COOKIE_NAME = "nacho_dev_bypass";
 
 // Legacy/default env var. Read once at module load.
 const ENV_DEFAULT = process.env.DEV_AUTH_BYPASS === "true";
 
-// Fixed identity attributed to all requests while the bypass is on. Recordings
-// created during testing are owned by this id so owner-scoped reads/writes work.
-export const DEV_USER_ID = "user_dev_bypass";
+// Re-exported from the shared dev-auth constants so other server modules can
+// keep importing the dev user id from here.
+export { DEV_USER_ID };
 
 // Tri-state read of the dev cookie: true ("1"), false ("0"), or null (absent).
 function readBypassCookie(req: Request): boolean | null {

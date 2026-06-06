@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@work
 import { Skeleton } from "@workspace/pico-ui/skeleton";
 import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { Save } from "lucide-react";
-import { formatDateTime } from "@/lib/format";
+import { formatDateTime } from "@workspace/shared";
 
 export default function Content() {
   const queryClient = useQueryClient();

@@ -23,7 +23,7 @@ import { publishableKeyFromHost } from "@clerk/react/internal";
 import { shadcn } from "@clerk/themes";
 import { Toaster } from "@workspace/pico-ui/toaster";
 import { TooltipProvider } from "@workspace/pico-ui/tooltip";
-import { isDevAuthBypassEnabled } from "@/lib/dev-auth";
+import { isDevAuthBypassEnabled } from "@workspace/shared";
 import { TestingModeBanner } from "@/components/testing-mode-banner";
 import { DevModeToggle } from "@/components/dev-mode-toggle";
 import NotFound from "@/pages/not-found";

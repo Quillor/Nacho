@@ -11,7 +11,7 @@ import { Button } from "@workspace/pico-ui/button";
 import { Logo } from "@/components/logo";
 import { VideoPlayer, type VideoPlayerHandle } from "@/components/video-player";
 import { storageUrl, shareUrl } from "@/lib/api";
-import { formatTimestamp, formatRelativeDate } from "@/lib/format";
+import { formatTimestamp, formatRelativeDate } from "@workspace/shared";
 
 export default function PublicView() {
   const [, params] = useRoute("/v/:shareId");

@@ -1,5 +1,5 @@
 import { TriangleAlert } from "lucide-react";
-import { isDevAuthBypassEnabled } from "@/lib/dev-auth";
+import { isDevAuthBypassEnabled } from "@workspace/shared";
 
 // Persistent, high-contrast banner shown across the app whenever testing mode
 // (the dev auth bypass) is active, so it's obvious the sign-in wall is off.

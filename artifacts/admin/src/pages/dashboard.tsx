@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@workspace/pico-ui/avatar";
 import { Badge } from "@workspace/pico-ui/badge";
 import { Skeleton } from "@workspace/pico-ui/skeleton";
 import { Users, Video, Eye, ArrowRight } from "lucide-react";
-import { formatDate, formatNumber } from "@/lib/format";
+import { formatDate, formatNumber } from "@workspace/shared";
 
 export default function Dashboard() {
   const { data: summary, isLoading, isError } = useGetAdminSummary();

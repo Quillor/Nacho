@@ -14,7 +14,7 @@ import { Badge } from "@workspace/pico-ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@workspace/pico-ui/avatar";
 import { Skeleton } from "@workspace/pico-ui/skeleton";
 import { Search } from "lucide-react";
-import { formatDate } from "@/lib/format";
+import { formatDate } from "@workspace/shared";
 
 export default function Users() {
   const { data: users, isLoading } = useListAdminUsers();

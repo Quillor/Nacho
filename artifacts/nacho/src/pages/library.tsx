@@ -51,8 +51,8 @@ import {
   retryUpload,
 } from "@/lib/upload-manager";
 import { shareUrl } from "@/lib/api";
-import { formatDuration, formatRelativeDate } from "@/lib/format";
-import { isDevAuthBypassEnabled } from "@/lib/dev-auth";
+import { formatDuration, formatRelativeDate } from "@workspace/shared";
+import { isDevAuthBypassEnabled } from "@workspace/shared";
 import type { LocalRecordingMeta } from "@/lib/types";
 
 function Thumb({ rec }: { rec: LocalRecordingMeta }) {
