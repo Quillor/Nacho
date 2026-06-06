@@ -247,18 +247,25 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
       Math.round(stageWidth * CHAPTER_OVERLAY_FONT_RATIO),
     );
 
+    // The scrub bar represents only the trimmed (playable) range: position 0%
+    // is the trim start and 100% is the trim end. For untrimmed recordings this
+    // is the whole clip (0 → duration).
+    const playableRange = Math.max(0, upperBound - lowerBound);
+
     const pct = (v: number) =>
-      duration > 0 ? Math.max(0, Math.min(100, (v / duration) * 100)) : 0;
+      playableRange > 0
+        ? Math.max(0, Math.min(100, ((v - lowerBound) / playableRange) * 100))
+        : 0;
 
     const posToTime = (clientX: number) => {
       const el = trackRef.current;
-      if (!el || duration <= 0) return 0;
+      if (!el || playableRange <= 0) return lowerBound;
       const rect = el.getBoundingClientRect();
       const ratio = Math.max(
         0,
         Math.min(1, (clientX - rect.left) / rect.width),
       );
-      return ratio * duration;
+      return lowerBound + ratio * playableRange;
     };
 
     useEffect(() => {
@@ -396,24 +403,6 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
               seek(posToTime(e.clientX));
             }}
           >
-            {/* trim region shading */}
-            {(startTime > 0 || endTime) && duration > 0 ? (
-              <>
-                {startTime > 0 ? (
-                  <div
-                    className="absolute inset-y-0 left-0 bg-foreground/20"
-                    style={{ width: `${pct(startTime)}%` }}
-                  />
-                ) : null}
-                {endTime ? (
-                  <div
-                    className="absolute inset-y-0 right-0 bg-foreground/20"
-                    style={{ width: `${100 - pct(endTime)}%` }}
-                  />
-                ) : null}
-              </>
-            ) : null}
-
             {/* played progress */}
             <div
               className="absolute inset-y-0 left-0 bg-primary"
@@ -446,7 +435,8 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
           </div>
 
           <span className="shrink-0 font-mono text-xs font-bold tabular-nums text-foreground">
-            {formatTimestamp(current)} / {formatTimestamp(upperBound)}
+            {formatTimestamp(Math.max(0, current - lowerBound))} /{" "}
+            {formatTimestamp(playableRange)}
           </span>
 
           {hasCaptions ? (
