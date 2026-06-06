@@ -19,3 +19,4 @@
 - [WebM Infinity duration](webm-infinity-duration.md) — recorded WebM blobs report duration=Infinity; resolve via finite check → stored durationSec prop → seek-past-end workaround.
 - [View counting trigger](view-count-trigger.md) — a view (count + notify-on-view email) registers only on actual playback start, not page load; once-per-session dedupe.
 - [Figma plugin download package](figma-plugin-download.md) — pico build/dev packs lib/pico-figma-plugin into public/pico-figma-plugin.zip (flat manifest) via pack.mjs+fflate; regenerated from source, gitignored.
+- [Description editor (TipTap)](description-editor-tiptap.md) — recording descriptions use a TipTap WYSIWYG editor that outputs HTML; replaced the old execCommand contentEditable.

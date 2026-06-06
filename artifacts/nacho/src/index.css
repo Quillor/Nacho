@@ -5,3 +5,13 @@
 @import "@workspace/pico-theme/theme.css";
 @plugin "@tailwindcss/typography";
 @source "../../../lib/pico-ui/src";
+
+@layer components {
+  .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    color: var(--color-muted-foreground);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
+}
