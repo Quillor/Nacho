@@ -1,0 +1,87 @@
+Improve the Markdown editor so it supports a simple, reliable writing experience with standard headline shortcuts.
+
+Goal:
+Create or fix an easy-to-use Markdown editor where I can quickly type Markdown-style shortcuts and have them convert into formatted text without unexpected cursor movement or broken line behavior.
+
+Main issue to solve:
+When I type a headline shortcut like `##` and then press `space`, the editor currently jumps back to the previous line. This should not happen.
+
+Expected behavior:
+- When I type a valid headline shortcut at the beginning of a line and press `space`, the current line should become the matching headline level.
+- The cursor should remain on the same line after the headline formatting is applied.
+- The editor should not move the cursor to the previous line.
+- The editor should not delete the current line.
+- The editor should not merge the current line with the previous line.
+- The editor should not create unexpected blank lines.
+- This should work consistently for all supported headline levels.
+
+Headline shortcuts to support:
+- `# ` Heading 1
+- `## ` Heading 2
+- `### ` Heading 3
+- Additional heading levels should be supported if the editor supports them.
+
+Formatting shortcuts to support:
+- Headings
+- Bold
+- Italic
+- Bullet lists
+- Numbered lists
+- Horizontal divider
+
+Editor behavior:
+- Markdown shortcuts should only trigger when used in the appropriate context, such as the beginning of a line for headings and lists.
+- Pressing `space` after a heading shortcut should apply formatting to the current line only.
+- Cursor position should be handled carefully after formatting.
+- Undo should restore the previous text state.
+- Pressing `Enter` after a heading should create a normal paragraph on the next line.
+- The editor should feel predictable, fast, and easy to use.
+- The editor should preserve the user’s content while switching between editing and previewing.
+- The underlying content should remain easy to save, load, and render.
+
+Bug reproduction case:
+1. Place the cursor on a new empty line.
+2. Type `##`
+3. Press `space`
+
+Current broken result:
+- Cursor jumps back to the previous line.
+
+Correct result:
+- The current line becomes a Heading 2.
+- The cursor stays on that same Heading 2 line.
+- I can immediately continue typing the heading text.
+
+User experience requirements:
+- The editor should feel lightweight and familiar.
+- Users should be able to type naturally without needing to use the mouse.
+- Markdown shortcuts should behave consistently and be easy to reverse with undo.
+- Avoid surprising behavior, especially around line breaks, cursor placement, and heading conversion.
+
+Toolbar:
+Include a small, simple toolbar for common formatting actions:
+- Heading
+- Bold
+- Italic
+- Bullet list
+- Numbered list
+- Divider
+
+Modes:
+Support:
+- Edit mode
+- Preview mode
+- Split view
+
+Acceptance criteria:
+- Typing `# ` turns the current line into Heading 1.
+- Typing `## ` turns the current line into Heading 2.
+- Typing `### ` turns the current line into Heading 3.
+- Supported heading levels behave consistently.
+- Cursor remains on the same line after heading formatting is applied.
+- The editor does not jump to the previous line.
+- The editor does not merge or delete lines unexpectedly.
+- Bold, italic, bullet list, numbered list, and divider shortcuts work.
+- Undo works correctly after shortcut conversion.
+- Preview mode renders the formatted content correctly.
+- The final editor is simple, stable, and easy to extend.

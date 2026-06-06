@@ -416,7 +416,7 @@ export default function Editor() {
                 Chapters
               </TabsTrigger>
  <TabsTrigger value="transcript" className="font-bold">
-                Script
+                Transcript
               </TabsTrigger>
  <TabsTrigger value="settings" className="font-bold">
                 Settings
