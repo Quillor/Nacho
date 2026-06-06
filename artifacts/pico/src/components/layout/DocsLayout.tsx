@@ -46,7 +46,7 @@ const NAVIGATION = [
       { title: "Spacing", href: "/foundations/spacing" },
       { title: "Shadows", href: "/foundations/shadows" },
       { title: "Radius", href: "/foundations/radius" },
-      { title: "Imagery", href: "/foundations/imagery" },
+      { title: "Character Prompt Spec", href: "/foundations/imagery" },
     ]
   },
   {
