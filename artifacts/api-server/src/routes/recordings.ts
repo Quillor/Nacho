@@ -8,6 +8,7 @@ import {
 } from "@workspace/db";
 import { clerkClient, primaryEmail } from "../lib/clerk";
 import { sendEmail } from "../lib/email";
+import { renderBrandedEmail } from "../lib/emailLayout";
 import {
   PublishRecordingBody,
   GetRecordingParams,
@@ -266,15 +267,16 @@ async function notifyOwnerOfView(
     });
     const safeTitle = escapeHtml(row.title);
     const subject = `Someone just watched "${row.title}"`;
-    const html = `
-      <div style="font-family: sans-serif; line-height: 1.5; color: #2b2118;">
-        <h2 style="margin: 0 0 12px;">Your recording was just watched</h2>
-        <p style="margin: 0 0 8px;">
+    const html = renderBrandedEmail({
+      heading: "Your recording was just watched",
+      previewText: `"${row.title}" was viewed on ${viewedAt}.`,
+      bodyHtml: `
+        <p style="margin:0 0 12px;">
           <strong>${safeTitle}</strong> was viewed on ${escapeHtml(viewedAt)}.
         </p>
-        <p style="margin: 16px 0 0; color: #6b5d4f;">— Nacho</p>
-      </div>
-    `;
+        <p style="margin:16px 0 0;color:#6B472E;">Keep up the great work.</p>
+      `,
+    });
 
     const result = await sendEmail(to, subject, html);
     if (!result.ok) {

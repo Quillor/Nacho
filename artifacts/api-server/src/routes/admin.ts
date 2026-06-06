@@ -32,6 +32,7 @@ import {
   type AdminRole,
 } from "../lib/clerk";
 import { sendEmail } from "../lib/email";
+import { renderBrandedEmail } from "../lib/emailLayout";
 import { authUserId } from "../lib/devAuth";
 
 const router: IRouter = Router();
@@ -519,10 +520,18 @@ router.post("/admin/notifications", async (req, res): Promise<void> => {
     return;
   }
 
-  const html = `<div style="font-family:system-ui,sans-serif;line-height:1.6">${message.replace(
-    /\n/g,
-    "<br/>",
-  )}</div>`;
+  const messageHtml = message
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/\n/g, "<br/>");
+  const html = renderBrandedEmail({
+    heading: subject,
+    previewText: subject,
+    bodyHtml: `<p style="margin:0;">${messageHtml}</p>`,
+  });
 
   let sent = 0;
   let failed = 0;
