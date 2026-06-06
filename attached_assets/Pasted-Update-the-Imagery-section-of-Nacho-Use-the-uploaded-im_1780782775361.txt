@@ -1,0 +1,913 @@
+Update the Imagery section of Nacho. 
+
+Use the uploaded image assets from the `Nacho` folder. Reference the assets by file name exactly as listed below. Build this as a detailed documentation page for designers, developers, and AI image-generation workflows.
+
+Do not redesign the mascot. The purpose of this page is to document the existing character system, visual rules, reusable poses, texture rules, proportions, and asset usage guidelines.
+
+PAGE TITLE
+Character Prompt Spec 
+
+PAGE DESCRIPTION
+Nacho is the anthropomorphic nacho chip mascot used across the Nacho brand system. Nacho should feel like a vintage 1930s rubber-hose cartoon character adapted for a modern product brand: expressive, warm, slightly mischievous, and highly recognizable. The mascot is built from a puffy triangular tortilla chip body, black rubber-hose limbs, oversized white gloves, oversized white shoes, bold hand-inked outlines, halftone shading, toasted chip edges, and visible tortilla speckle texture.
+
+Create the page with these sections:
+
+---
+
+SECTION 1: Overview
+
+Use asset:
+- `Slice 17.png`
+
+Content:
+Nacho is the primary brand mascot. The character is a living tortilla chip with a single chip-shaped body that also functions as the head. Nacho’s personality should feel cheerful, helpful, confident, expressive, and a little playful. Nacho should never feel corporate, sterile, realistic, glossy, 3D, or overly polished.
+
+Nacho works best when used as a guide, presenter, celebrator, explainer, or friendly visual accent inside Nacho product and marketing experiences.
+
+Core personality traits:
+- Helpful
+- Energetic
+- Playful
+- Friendly
+- Slightly mischievous
+- Optimistic
+- Expressive
+- Vintage-inspired
+- Simple and readable
+
+Do not portray Nacho as:
+- Mean
+- Aggressive
+- Realistic food
+- A 3D mascot
+- A taco
+- A bag mascot
+- A human child
+- A flat corporate illustration
+- A generic emoji-style character
+
+---
+
+SECTION 2: Character Proportions
+
+Use assets:
+- `Slice 18.png`
+- `Slice 11.png`
+
+Content:
+Nacho’s body is a rounded triangular tortilla chip with irregular scalloped edges. The body is intentionally imperfect and organic. It should not be a perfect triangle.
+
+Core proportion rules:
+- Body shape: wide rounded triangle
+- Approximate width-to-height ratio: 1.15:1
+- Head and torso are one continuous chip shape
+- Eyes sit in the upper-center area of the chip
+- Nose sits between and slightly below the eyes
+- Mouth sits below the nose, centered slightly low on the face
+- Arms attach to the left and right sides of the chip
+- Legs attach under the lower edge of the chip
+- Shoes are large and rounded
+- Gloves are oversized compared to the thin arms
+- Feet and gloves help balance the simple chip body
+
+Proportion guidance:
+Nacho should read clearly even at small sizes. The eyes, mouth, gloves, and shoes should remain oversized and graphic. The body should stay compact and recognizable. Do not stretch Nacho into a tall, narrow triangle or flatten Nacho into a wide tortilla chip.
+
+Use `Slice 18.png` to show the measured proportion reference. Use `Slice 11.png` as the neutral full-body reference.
+
+---
+
+SECTION 3: Shape Language
+
+Use assets:
+- `Slice 16.png`
+- `Slice 20.png`
+
+Content:
+Nacho’s silhouette is built around soft, rounded, vintage cartoon shapes.
+
+Body shape rules:
+- Rounded triangular chip body
+- Puffy, slightly dimensional form
+- Uneven scalloped edge
+- Toasted orange side edge visible on one side
+- Organic curves instead of geometric precision
+- Small bumps along the chip edge
+- No sharp corners
+- No perfectly straight sides
+
+Edge rules:
+The toasted edge gives Nacho depth and makes the mascot feel like a real chip without becoming realistic. The edge should appear as an orange-brown dimensional side plane, usually visible along the left or rear edge of the chip.
+
+Use `Slice 16.png` and `Slice 20.png` to document the scalloped edge, toasted side treatment, and dimensional chip thickness.
+
+---
+
+SECTION 4: Color Palette
+
+Create a palette table with swatches, names, hex values, and usage notes.
+
+Colors:
+- Chip Fill — `#F4C51A`
+  Main yellow tortilla chip body.
+- Chip Highlight — `#FFE36A`
+  Warm highlight used on raised chip areas and subtle surface variation.
+- Toasted Edge — `#C96A14`
+  Orange toasted side edge and deeper baked areas.
+- Deep Toast Shadow — `#8A3F0B`
+  Dark toasted speckles, edge shadows, and warm depth.
+- Ink / Limb Black — `#11100D`
+  Primary outline, arms, legs, pupils, and strong facial details.
+- Mouth Interior — `#0B0907`
+  Solid black filled mouth shape.
+- Tongue Orange — `#D96728`
+  Simple warm orange tongue shape inside open mouths.
+- Glove White — `#FFF8E8`
+  White gloves with warm vintage tone.
+- Shoe White — `#F7F0DD`
+  White shoes with subtle cream shading.
+- Shadow Brown — `#2E1C0F`
+  Ground shadows and low-opacity stippled shadows.
+- Halftone Grain Brown — `#6B3A13`
+  Printed texture, halftone shadows, and warm stipple.
+- Background Cream — `#FFF8DC`
+  Preferred documentation and illustration background.
+
+Usage rules:
+- Nacho should always use the warm yellow chip palette.
+- Do not shift the chip body toward neon yellow.
+- Do not make the chip beige, brown, green, red, or orange overall.
+- Black should be used confidently for outlines, limbs, pupils, and mouth interiors.
+- Whites should be warm and slightly creamy, not pure cold white.
+- Shadows should be warm brown or stippled black, not cool gray.
+
+---
+
+SECTION 5: Line Quality
+
+Use assets:
+- `Slice 17.png`
+- `Slice 22.png`
+
+Content:
+Nacho uses bold hand-inked cartoon linework inspired by 1930s animation.
+
+Line rules:
+- Outer character outline is thick and black
+- Inner facial details are slightly thinner but still bold
+- Arms and legs are solid black rubber-hose forms
+- Lines should feel hand-drawn and slightly imperfect
+- Use organic curves and subtle wobble
+- Avoid mechanical vector precision
+- Avoid thin outlines
+- Avoid clean corporate icon strokes
+- Avoid sketchy unfinished lines
+
+The linework should feel confident and printed. It should not feel delicate, technical, or digital-first.
+
+Use `Slice 22.png` to show the textured black limb line quality.
+
+---
+
+SECTION 6: Texture System
+
+Use assets:
+- `Slice 19.png`
+- `Slice 21.png`
+- `Slice 23.png`
+- `Slice 24.png`
+
+Content:
+Nacho’s surface texture is a key identity feature. The character should always include tortilla speckles, grain, halftone shading, and print-inspired imperfections.
+
+Texture types:
+1. Tortilla speckles
+   Use `Slice 19.png`
+   - Small brown dots scattered across the chip body
+   - Irregular spacing
+   - Varying dot size
+   - Should feel baked into the chip
+   - Not too dense or noisy
+
+2. Toasted edge texture
+   Use `Slice 20.png`
+   - Orange-brown edge with darker speckles
+   - Creates depth and baked character
+   - Should appear on the chip’s side edge
+
+3. Halftone shading
+   Use `Slice 21.png`
+   - Dot-based shading inspired by vintage print
+   - Used in shadows and warm gradients
+   - Should be subtle and controlled
+
+4. Rubber-hose limb grain
+   Use `Slice 22.png`
+   - Black limbs include light grain and texture
+   - Prevents arms and legs from feeling flat or digitally perfect
+
+5. Ground shadow
+   Use `Slice 23.png`
+   - Stippled black/brown shadow under feet
+   - Soft printed feel
+   - Keeps character grounded without realistic cast shadows
+
+6. Paper texture
+   Use `Slice 24.png`
+   - Subtle cream paper grain
+   - Good for backgrounds, cards, and documentation examples
+
+Texture rules:
+- Texture should be visible but not distracting.
+- Do not remove the tortilla speckles.
+- Do not make the chip smooth or plastic.
+- Do not use glossy gradients.
+- Do not use realistic food photography texture.
+- Do not over-texture the face so much that the expression becomes hard to read.
+- Keep texture warm, printed, and vintage.
+
+---
+
+SECTION 7: Facial Features
+
+Use assets:
+- `Slice 12.png`
+- `Slice 13.png`
+- `Slice 17.png`
+
+Content:
+Nacho’s face is the primary consistency anchor. The eyes, nose, and mouth must remain consistent across poses.
+
+Eyes:
+Use `Slice 12.png`.
+
+Eye rules:
+- Large vertical oval eyes
+- Thick black eye outlines
+- Tall black pupils
+- Pupils sit inside cream-white eye shapes
+- Small white pupil highlights
+- Eyes are close together
+- Eyes occupy roughly 28–35% of body height
+- Eyes sit in the upper center of the chip
+- Eyes should be expressive and slightly asymmetrical
+- Do not use small dot eyes
+- Do not use realistic eyes
+- Do not use anime eyes
+- Do not use separated eyes placed too far apart
+
+Nose:
+Use `Slice 17.png` as the correct full-face nose reference.
+
+Nose rules:
+- One single small black rounded nose
+- Nose sits between and slightly below the eyes
+- Nose has a simple oval/bean shape
+- Nose may include a small white highlight
+- Do not create two noses
+- Do not stack a second nose above the main nose
+- Do not make the nose realistic, pointed, or animal-like
+
+Mouth:
+Use `Slice 13.png`.
+
+Mouth rules:
+- Solid black filled cartoon mouth
+- No teeth
+- No rows of teeth
+- No white tooth shapes
+- Optional tiny white shine is allowed only if it does not read as teeth
+- Orange tongue may appear inside open mouths
+- Mouth should be bold, simple, and graphic
+- Smile shapes can be exaggerated
+- Mouth should follow the curve of the chip face
+- Avoid thin-line mouths for happy/excited poses unless the expression requires it
+
+---
+
+SECTION 8: Hands, Arms, Legs, and Shoes
+
+Use assets:
+- `Slice 14.png`
+- `Slice 15.png`
+- `Slice 11.png`
+
+Content:
+Nacho uses classic rubber-hose cartoon limbs.
+
+Arms:
+- Always show both arms when possible
+- Arms are black rubber-hose tubes
+- Arms attach to the left and right sides of the chip body
+- Arms should curve naturally
+- Arms should not be thin, broken, or disconnected
+- Hands should not float without arms
+- In most poses, at least part of both arms should be visible
+
+Gloves:
+Use `Slice 14.png`.
+
+Glove rules:
+- Oversized white cartoon gloves
+- Puffy rounded shape
+- Simple finger divisions
+- Warm off-white fill
+- Thick black outline
+- Slight stippled shading
+- Should feel vintage, not realistic
+- Avoid human hand anatomy
+- Avoid thin fingers
+
+Legs:
+- Black rubber-hose legs
+- Attach under the chip body
+- Usually visible as two vertical or curved black forms
+- Legs should not disappear unless intentionally hidden by the pose
+- For full-body poses, always show both legs
+
+Shoes:
+Use `Slice 15.png`.
+
+Shoe rules:
+- Oversized white vintage cartoon shoes
+- Rounded toe box
+- Thick black outline
+- Warm cream shading
+- Simple sole detail
+- Shoes should be large enough to stabilize the character
+- In jumping or dipping poses, both shoes must remain visible
+- Do not hide both shoes behind sauce, objects, or body overlap
+
+---
+
+SECTION 9: Expression Library
+
+Create a documentation grid for expressions. Use existing available assets where possible, especially:
+- `Slice 17.png`
+- `Slice 6.png`
+- `Slice 13.png`
+
+Expression rules:
+All expressions should preserve Nacho’s core facial structure: large oval eyes, single rounded nose, bold mouth shape, and simple curved eyebrows.
+
+Document these standard expressions:
+
+1. Cheerful
+Description: Open black-filled smile, raised brows, friendly eyes.
+Usage: Default mascot expression for product guidance and brand moments.
+
+2. Excited
+Description: Wide eyes, open smile, energetic posture.
+Usage: Success states, celebration, launches, or positive feedback.
+
+3. Sad
+Use asset:
+- `Slice 6.png`
+Description: Droopy eyes, raised inner brows, downturned mouth, slumped posture.
+Usage: Empty states, errors, soft failure moments, or “nothing here yet” illustrations.
+
+4. Worried
+Description: Raised inner brows, small uncertain mouth, eyes looking slightly off-center.
+Usage: Caution, warning, unresolved tasks, or “needs attention” states.
+
+5. Confident
+Description: Slight smirk, one brow raised, strong stance.
+Usage: Tips, shortcuts, feature education, or product confidence.
+
+6. Surprised
+Description: Round open mouth, wide eyes.
+Usage: Discovery moments, unexpected insights, alerts.
+
+7. Determined
+Description: Angled brows, focused eyes, tighter mouth.
+Usage: Progress, action, productivity, or challenge states.
+
+8. Tired / Defeated
+Description: Half-lidded eyes, small frown, low energy posture.
+Usage: Error recovery, downtime, or humorous fatigue moments.
+
+Expression constraints:
+- Do not change eye style between expressions.
+- Do not add teeth.
+- Do not use realistic facial anatomy.
+- Do not overcomplicate eyebrows.
+- Do not make expressions scary or aggressive.
+- Keep all expressions readable at small sizes.
+
+---
+
+SECTION 10: Pose Library
+
+Create a grid of documented pose assets.
+
+Use these assets:
+
+1. Speaking / Presenting
+Asset:
+- `Slice 1.png`
+Description:
+Nacho stands facing forward with one arm extended in a friendly presenting gesture. Use this for introductions, callouts, tips, and educational content.
+
+Rules:
+- Both arms should be visible
+- Mouth should be black filled
+- Use when Nacho is explaining or guiding
+
+2. Thumbs Up
+Asset:
+- `Slice 2.png`
+Description:
+Nacho gives a large thumbs-up with a confident happy expression. Use for success, approval, completion, and positive confirmation states.
+
+Rules:
+- Thumb should be oversized and readable
+- Both shoes visible
+- Keep smile open and friendly
+
+3. Dipping / Queso Jump
+Asset:
+- `Slice 3.png`
+Description:
+Nacho jumps feet-first into a bowl of queso with both arms raised, both gloves visible, both legs visible, and both shoes visible above the sauce splash.
+
+Rules:
+- Use this as the canonical dipping pose
+- Both feet must be visible
+- Character jumps feet-first
+- Sauce splash may surround shoes but should not hide them
+- Bowl should sit below the character
+- Mouth should be black filled with optional orange tongue
+- Do not crop away arms or shoes
+
+4. Pointing
+Asset:
+- `Slice 4.png`
+Description:
+Nacho points to the side with a helpful expression. Use for directional guidance, feature highlights, UI callouts, and annotations.
+
+Rules:
+- Pointing arm should be clearly attached to body
+- Non-pointing arm should remain visible
+- Pointer should not look aggressive
+
+5. Checklist
+Asset:
+- `Slice 5.png`
+Description:
+Nacho holds a checklist board with simple checkmarks and unreadable lines. Use for tasks, setup steps, onboarding, completion lists, or quality checks.
+
+Rules:
+- Checklist content should remain generic and mostly unreadable
+- Nacho should stay visible beside the board
+- Avoid adding real product copy inside the board unless intentionally designed
+
+6. Sad
+Asset:
+- `Slice 6.png`
+Description:
+Nacho looks disappointed with droopy eyes and a small frown. Use for empty states, no results, unavailable content, or soft error states.
+
+Rules:
+- Keep the tone gentle, not dramatic
+- Avoid making Nacho cry unless specifically needed
+- Maintain visible arms, gloves, legs, and shoes
+
+7. Jumping
+Asset:
+- `Slice 7.png`
+Description:
+Nacho is airborne with both hands raised and both shoes visible. Use for celebration, energetic transitions, and playful brand moments.
+
+Rules:
+- Both arms visible
+- Both shoes visible
+- Feet should not be hidden by the body
+- Add simple motion lines sparingly
+
+8. Running
+Asset:
+- `Slice 8.png`
+Description:
+Nacho runs with rubber-hose motion, one leg forward, one leg back, and arms pumping. Use for speed, momentum, progress, or “moving fast” concepts.
+
+Rules:
+- Use simple dust puffs or motion lines
+- Keep facial expression positive
+- Do not over-stretch the body
+
+9. Walking
+Asset:
+- `Slice 9.png`
+Description:
+Nacho walks with one foot forward and arms swinging. Use for onboarding journeys, progress, step-by-step flows, and transitions.
+
+Rules:
+- Mouth must remain solid black filled with orange tongue if open
+- No teeth
+- Both arms and legs should remain readable
+- Shoes should remain oversized
+
+10. Hero Pose
+Asset:
+- `Slice 10.png`
+Description:
+Nacho stands confidently with one finger raised. Use for tips, recommendations, feature education, and “pro tip” moments.
+
+Rules:
+- Gesture should feel helpful, not lecturing
+- Keep stance stable
+- Maintain friendly expression
+
+11. Neutral Stand
+Asset:
+- `Slice 11.png`
+Description:
+Nacho stands neutrally with both arms visible, both legs visible, and a relaxed smile. Use as the default baseline mascot pose.
+
+Rules:
+- This is the canonical neutral pose
+- Use for identity, overview, documentation, and simple placements
+- Both arms must be visible
+- Both shoes must be visible
+
+12. Eye Detail
+Asset:
+- `Slice 12.png`
+Description:
+Close-up reference for Nacho’s eyes and nose placement. Use in documentation only.
+
+13. Mouth Detail
+Asset:
+- `Slice 13.png`
+Description:
+Close-up reference for Nacho’s mouth style. Use in documentation only.
+
+14. Glove Detail
+Asset:
+- `Slice 14.png`
+Description:
+Close-up reference for Nacho’s white cartoon glove. Use in documentation only.
+
+15. Shoe Detail
+Asset:
+- `Slice 15.png`
+Description:
+Close-up reference for Nacho’s oversized vintage cartoon shoe. Use in documentation only.
+
+16. Edge Detail
+Asset:
+- `Slice 16.png`
+Description:
+Close-up reference for Nacho’s scalloped toasted chip edge. Use in documentation only.
+
+17. Face / Head Detail
+Asset:
+- `Slice 17.png`
+Description:
+Close-up reference for Nacho’s face, chip body, eye placement, nose, mouth, and expression style.
+
+18. Proportion Detail
+Asset:
+- `Slice 18.png`
+Description:
+Measured reference showing Nacho’s width-to-height ratio. Use as the canonical proportion guide.
+
+19. Chip Texture
+Asset:
+- `Slice 19.png`
+Description:
+Close-up tortilla speckle texture reference.
+
+20. Toasted Edge Texture
+Asset:
+- `Slice 20.png`
+Description:
+Close-up toasted edge and side-shadow texture reference.
+
+21. Halftone Texture
+Asset:
+- `Slice 21.png`
+Description:
+Close-up halftone print texture reference.
+
+22. Limb Texture
+Asset:
+- `Slice 22.png`
+Description:
+Close-up black rubber-hose limb texture reference.
+
+23. Ground Shadow Texture
+Asset:
+- `Slice 23.png`
+Description:
+Close-up stippled ground shadow reference.
+
+24. Paper Texture
+Asset:
+- `Slice 24.png`
+Description:
+Close-up warm paper grain reference.
+
+---
+
+SECTION 11: Usage Guidelines
+
+Content:
+Use Nacho when the interface or communication benefits from warmth, playfulness, personality, or explanation.
+
+Good use cases:
+- Empty states
+- Product onboarding
+- Feature education
+- Celebration moments
+- Social media graphics
+- Marketing illustrations
+- Video player scenes
+- Dashboard explainers
+- Error states with light humor
+- Setup checklists
+- Product tips
+- Campaign visuals
+
+Avoid using Nacho:
+- In dense data tables
+- In serious legal or financial warnings
+- In high-risk destructive actions
+- As a replacement for clear UI copy
+- Too many times on a single screen
+- As a tiny decorative element where details are lost
+- In styles that conflict with the mascot system
+
+Placement rules:
+- Give Nacho enough whitespace
+- Do not crop off important limbs unless intentionally composed
+- Avoid placing Nacho over visually busy backgrounds
+- Use cream or warm neutral backgrounds when possible
+- Keep contrast high enough for black outlines to remain crisp
+- Do not place Nacho on colors that clash with the yellow chip body
+
+---
+
+SECTION 12: Size and Cropping
+
+Content:
+Nacho is detailed and texture-rich, so use care when scaling.
+
+Recommended usage:
+- Large hero illustrations
+- Medium empty-state illustrations
+- Small UI accents only when simplified or cropped intentionally
+- Documentation thumbnails
+- Marketing cards
+
+Cropping rules:
+- Do not crop off the face
+- Do not crop off both hands
+- Do not crop off both feet
+- Do not crop the mascot so tightly that the chip shape is unclear
+- For action poses, preserve motion lines, shoes, and gloves
+- For dipping pose, preserve the full bowl, sauce splash, feet, arms, and face
+
+Minimum detail rule:
+If Nacho is too small for the eyes, mouth, gloves, and shoes to read clearly, use a simpler icon or avoid using the mascot.
+
+---
+
+SECTION 13: AI Generation Rules
+
+Content:
+Use this section for generating new Nacho scenes with AI image tools.
+
+Base prompt:
+“Create an illustration of Nacho, an anthropomorphic nacho chip mascot in a vintage 1930s rubber-hose cartoon style. Nacho has a rounded triangular tortilla chip body with puffy uneven scalloped edges, warm yellow chip texture, toasted orange-brown side edge, small brown tortilla speckles, thick black hand-inked outlines, black rubber-hose arms and legs, oversized warm white cartoon gloves, oversized warm white vintage shoes, large vertical oval eyes with black pupils and white highlights, one single small rounded black nose, and a solid black filled smiling mouth with optional orange tongue and no teeth. Use subtle halftone shading, grainy paper texture, and warm vintage print texture. Keep the character playful, friendly, helpful, expressive, and consistent with the Nacho mascot system.”
+
+Pose-specific prompt additions:
+- For presenting: “Nacho stands beside a simplified UI card, gesturing toward it with one visible arm while the other arm remains visible.”
+- For pointing: “Nacho points to the side with a clearly attached rubber-hose arm and oversized white glove.”
+- For checklist: “Nacho holds a simple checklist board with checkmarks and unreadable lines.”
+- For dipping: “Nacho jumps feet-first into a bowl of yellow queso. Both arms are raised and visible, both gloves are visible, both black legs are visible, and both oversized white shoes are clearly visible above the sauce splash.”
+- For sad states: “Nacho has droopy eyes, raised inner brows, a small curved frown, and a slumped but readable posture.”
+- For celebration: “Nacho has both arms raised, both shoes visible, an open black-filled smile, and small sauce or confetti accents.”
+
+AI consistency requirements:
+- Always show both arms unless intentionally hidden by a clear object
+- Always show both legs and shoes in full-body poses
+- Use one single nose only
+- Use solid black mouth fill
+- Do not add teeth
+- Maintain eye proportions
+- Maintain chip width-to-height ratio
+- Maintain toasted side edge
+- Maintain tortilla speckles
+- Maintain thick black outlines
+- Maintain warm vintage palette
+- Maintain rubber-hose limbs
+- Maintain oversized gloves and shoes
+
+Negative prompt:
+“Do not generate missing arms, missing legs, hidden shoes, floating gloves, disconnected hands, two noses, duplicate noses, teeth, tooth rows, white teeth shapes, incorrect mouth shape, realistic tortilla chip, 3D mascot, clay render, plush toy, anime style, pixel art, modern flat vector, glossy gradients, photorealism, overly detailed background, realistic human anatomy, sharp triangle corners, thin outlines, clean corporate illustration, inconsistent eyes, taco shape, Dorito bag mascot, corn chip logo, human-child proportions, or unreadable facial features.”
+
+---
+
+SECTION 14: Asset Reference Table
+
+Create a table with these columns:
+- File
+- Type
+- Description
+- Recommended usage
+
+Rows:
+
+`Slice 1.png`
+Type: Pose
+Description: Speaking / presenting gesture
+Recommended usage: Tips, intros, education, product guidance
+
+`Slice 2.png`
+Type: Pose
+Description: Thumbs-up
+Recommended usage: Success, confirmation, approval
+
+`Slice 3.png`
+Type: Pose
+Description: Dipping / queso jump
+Recommended usage: Brand moments, playful loading, food-themed celebration
+
+`Slice 4.png`
+Type: Pose
+Description: Pointing
+Recommended usage: Callouts, annotations, feature highlights
+
+`Slice 5.png`
+Type: Pose
+Description: Checklist
+Recommended usage: Tasks, onboarding, setup, QA
+
+`Slice 6.png`
+Type: Pose / Expression
+Description: Sad / disappointed
+Recommended usage: Empty states, no results, soft errors
+
+`Slice 7.png`
+Type: Pose
+Description: Jumping
+Recommended usage: Celebration, energy, motion
+
+`Slice 8.png`
+Type: Pose
+Description: Running
+Recommended usage: Speed, progress, momentum
+
+`Slice 9.png`
+Type: Pose
+Description: Walking
+Recommended usage: Journeys, onboarding, step-by-step flows
+
+`Slice 10.png`
+Type: Pose
+Description: Hero / tip pose
+Recommended usage: Pro tips, recommendations, guidance
+
+`Slice 11.png`
+Type: Pose
+Description: Neutral stand
+Recommended usage: Default reference, identity, baseline
+
+`Slice 12.png`
+Type: Detail
+Description: Eyes and nose placement
+Recommended usage: Facial consistency reference
+
+`Slice 13.png`
+Type: Detail
+Description: Mouth
+Recommended usage: Mouth style reference
+
+`Slice 14.png`
+Type: Detail
+Description: Glove
+Recommended usage: Hand and glove reference
+
+`Slice 15.png`
+Type: Detail
+Description: Shoe
+Recommended usage: Footwear and leg reference
+
+`Slice 16.png`
+Type: Detail
+Description: Chip edge
+Recommended usage: Shape and edge reference
+
+`Slice 17.png`
+Type: Detail
+Description: Face and chip body
+Recommended usage: Primary close-up identity reference
+
+`Slice 18.png`
+Type: Detail
+Description: Proportions
+Recommended usage: Width/height and body scale reference
+
+`Slice 19.png`
+Type: Texture
+Description: Chip speckles
+Recommended usage: Tortilla surface texture
+
+`Slice 20.png`
+Type: Texture
+Description: Toasted edge texture
+Recommended usage: Edge depth and baked detail
+
+`Slice 21.png`
+Type: Texture
+Description: Halftone shading
+Recommended usage: Vintage print shadows
+
+`Slice 22.png`
+Type: Texture
+Description: Rubber-hose limb texture
+Recommended usage: Arm and leg rendering reference
+
+`Slice 23.png`
+Type: Texture
+Description: Stippled ground shadow
+Recommended usage: Grounding character illustrations
+
+`Slice 24.png`
+Type: Texture
+Description: Paper grain
+Recommended usage: Background and print texture reference
+
+---
+
+SECTION 15: Do / Don’t Guidelines
+
+Create a two-column Do / Don’t layout.
+
+Do:
+- Use the provided Nacho assets as the canonical reference
+- Keep the rounded triangular chip body
+- Preserve the single black nose
+- Use solid black mouth shapes with no teeth
+- Show both arms and both legs in full-body poses
+- Keep both shoes visible in jumping and dipping poses
+- Use warm yellow chip colors
+- Preserve tortilla speckles
+- Preserve thick black outlines
+- Use subtle halftone and paper grain
+- Use Nacho for friendly product guidance and brand moments
+
+Don’t:
+- Don’t remove arms or legs
+- Don’t create floating gloves
+- Don’t add a second nose
+- Don’t add teeth
+- Don’t hide both feet in sauce splashes
+- Don’t make Nacho realistic or 3D
+- Don’t turn Nacho into a taco or bag mascot
+- Don’t use thin vector lines
+- Don’t make the chip a perfect triangle
+- Don’t remove texture
+- Don’t use cold or neon colors
+- Don’t overuse Nacho in dense UI screens
+
+---
+
+SECTION 16: Implementation Notes for the Documentation Site
+
+Build the page visually with:
+- A hero section using `Slice 17.png`
+- A pose library grid using `Slice 1.png` through `Slice 11.png`
+- A detail reference grid using `Slice 12.png` through `Slice 18.png`
+- A texture reference grid using `Slice 19.png` through `Slice 24.png`
+- A color palette table with swatches
+- A usage table
+- A Do / Don’t section
+- Copyable AI prompt blocks
+- Copyable negative prompt block
+
+Recommended page structure:
+1. Hero / overview
+2. Character anatomy
+3. Color palette
+4. Texture and shading
+5. Facial features
+6. Pose library
+7. Asset reference table
+8. AI generation prompt
+9. Do / Don’t rules
+
+Design style:
+- Match the existing Nacho design system documentation site
+- Use clean cards
+- Use warm cream backgrounds
+- Use thin dividers
+- Use compact but readable tables
+- Use the mascot assets as image thumbnails
+- Keep the page practical and scannable
+- Avoid making the page feel like a marketing landing page
+- This should feel like internal brand/design-system documentation
+
+Important:
+Use the exact file names when referencing images in code. Assume the files live in the uploaded `Nacho` asset folder unless the existing project uses a different static asset path. If needed, place the files into the site’s public assets directory and update references consistently.
