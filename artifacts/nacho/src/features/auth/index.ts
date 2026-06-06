@@ -3,5 +3,6 @@
 export { Onboarding } from "./components/onboarding";
 export { DevModeToggle } from "./components/dev-mode-toggle";
 export { TestingModeBanner } from "./components/testing-mode-banner";
+export { useClerkAutocomplete } from "./components/use-clerk-autocomplete";
 export { getProfile, isProfileComplete } from "./profile";
 export type { UserProfile } from "./profile";

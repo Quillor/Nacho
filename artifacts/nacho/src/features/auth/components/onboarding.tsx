@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
-import { useUser } from "@clerk/react";
-import { UserRoundCheck } from "lucide-react";
+import { useUser, useClerk } from "@clerk/react";
+import { LogOut, UserRoundCheck } from "lucide-react";
 import { Button } from "@workspace/pico-ui/button";
 import { Card } from "@workspace/pico-ui/card";
 import { Input } from "@workspace/pico-ui/input";
@@ -30,6 +30,7 @@ function errMessage(err: unknown, fallback: string): string {
 
 export function Onboarding() {
   const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const [firstName, setFirstName] = useState("");
@@ -58,8 +59,27 @@ export function Onboarding() {
     }
   }, [isLoaded, user, setLocation]);
 
-  const canSubmit =
-    !!firstName.trim() && !!lastName.trim() && !!jobTitle.trim() && !saving;
+  const missing = [
+    !firstName.trim() && "first name",
+    !lastName.trim() && "last name",
+    !jobTitle.trim() && "job title",
+  ].filter((v): v is string => Boolean(v));
+  const canSubmit = missing.length === 0 && !saving;
+
+  const missingHint =
+    missing.length === 1
+      ? `Add your ${missing[0]} to continue.`
+      : missing.length === 2
+        ? `Add your ${missing[0]} and ${missing[1]} to continue.`
+        : `Add your ${missing[0]}, ${missing[1]}, and ${missing[2]} to continue.`;
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } finally {
+      setLocation("/sign-in", { replace: true });
+    }
+  };
 
   const submit = async () => {
     if (!user || !canSubmit) return;
@@ -155,14 +175,40 @@ export function Onboarding() {
             </p>
           </div>
 
-          <Button
-            type="submit"
-            disabled={!canSubmit}
-            className="w-full border-2 border-foreground bg-accent font-bold uppercase tracking-wide text-accent-foreground hover:bg-accent/90"
-          >
-            {saving ? "Saving…" : "Continue to Nacho"}
-          </Button>
+          <div>
+            <Button
+              type="submit"
+              variant="brand"
+              size="lg"
+              disabled={!canSubmit}
+              aria-describedby={missing.length > 0 ? "onboarding-hint" : undefined}
+              className="w-full border-2 uppercase tracking-wide"
+            >
+              {saving ? "Saving…" : "Continue to Nacho"}
+            </Button>
+            {missing.length > 0 && !saving && (
+              <p
+                id="onboarding-hint"
+                className="mt-2 text-center text-xs font-medium text-muted-foreground"
+              >
+                {missingHint}
+              </p>
+            )}
+          </div>
         </form>
+
+        <div className="mt-6 border-t-2 border-foreground/15 pt-4 text-center">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => void handleSignOut()}
+            className="font-bold uppercase tracking-wide text-muted-foreground hover:text-foreground"
+          >
+            <LogOut className="h-4 w-4" />
+            Sign out
+          </Button>
+        </div>
       </Card>
     </div>
   );

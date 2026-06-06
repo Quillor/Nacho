@@ -1,2 +1,3 @@
 - [Nacho feature layout](nacho-feature-layout.md) — artifacts/nacho/src is feature-foldered; pages/ are thin default re-exports → feature index.ts; cross-feature imports go through index.ts.
 - [Repo file-size budget](file-size-budget.md) — 400-line cap enforced by scripts/src/check-file-size.ts; split god-files, don't add to LEGACY_ALLOWLIST.
+- [Clerk + Pico button styling](clerk-pico-button-styling.md) — Clerk appearance utilities can't reach Pico brand colors (layer-reversal + shadcn re-aliases --accent); override in @layer base with literal HSL.

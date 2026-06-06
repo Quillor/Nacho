@@ -24,7 +24,12 @@ import { shadcn } from "@clerk/themes";
 import { Toaster } from "@workspace/pico-ui/toaster";
 import { TooltipProvider } from "@workspace/pico-ui/tooltip";
 import { isDevAuthBypassEnabled } from "@workspace/shared";
-import { TestingModeBanner, DevModeToggle, isProfileComplete } from "@/features/auth";
+import {
+  TestingModeBanner,
+  DevModeToggle,
+  isProfileComplete,
+  useClerkAutocomplete,
+} from "@/features/auth";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Studio from "@/pages/studio";
@@ -108,8 +113,12 @@ const clerkAppearance = {
     logoImage: "h-10",
     socialButtonsBlockButton:
       "border border-foreground hover:bg-muted",
+    // Background + text color are forced to the Pico accent in index.css (the
+    // shadcn theme reassigns `--accent` inside the Clerk card, so utility
+    // classes can't reach the brand yellow here). These classes own the border,
+    // weight, and the chunky press animation that match the in-app brand button.
     formButtonPrimary:
-      "bg-accent text-accent-foreground border border-foreground font-bold uppercase tracking-wide shadow-sm transition-all hover:bg-accent/90 hover:translate-y-[2px] hover:shadow-xs active:translate-y-[2px] active:shadow-none",
+      "!border-2 !border-foreground !font-bold uppercase tracking-wide !shadow-sm !py-2.5 transition-all hover:translate-y-[2px] hover:!shadow-xs active:translate-y-[2px] active:!shadow-none",
     formFieldInput: "border border-foreground",
     footerAction: "",
     dividerLine: "bg-foreground",
@@ -118,6 +127,7 @@ const clerkAppearance = {
 };
 
 function SignInPage() {
+  useClerkAutocomplete("sign-in");
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-6 bg-background px-4 py-10">
       <SignIn
@@ -132,6 +142,7 @@ function SignInPage() {
 }
 
 function SignUpPage() {
+  useClerkAutocomplete("sign-up");
   return (
     <div className="flex min-h-[100dvh] items-center justify-center bg-background px-4">
       <SignUp

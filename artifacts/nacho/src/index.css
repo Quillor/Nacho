@@ -6,6 +6,24 @@
 @plugin "@tailwindcss/typography";
 @source "../../../lib/pico-ui/src";
 
+/*
+ * Force the Clerk primary form button ("Continue") to the bold Pico accent
+ * treatment. The appearance `formButtonPrimary` classes land in the `utilities`
+ * layer, but Clerk's shadcn theme sets the button background with `!important`
+ * from the `clerk` layer — and for `!important` declarations the cascade
+ * reverses, so the earlier-declared layer wins. We override from the `base`
+ * layer (declared before `clerk`) so our `!important` background reliably wins.
+ */
+@layer base {
+  .cl-formButtonPrimary {
+    background-color: hsl(47 91% 53%) !important;
+    color: hsl(25 60% 12%) !important;
+  }
+  .cl-formButtonPrimary:hover {
+    background-color: hsl(47 91% 48%) !important;
+  }
+}
+
 @layer components {
   .ProseMirror p.is-editor-empty:first-child::before {
     content: attr(data-placeholder);
