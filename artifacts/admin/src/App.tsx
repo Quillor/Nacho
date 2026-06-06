@@ -26,13 +26,12 @@ import { AppShell } from "@/components/app-shell";
 import { TestingModeBanner } from "@/components/testing-mode-banner";
 import { DevModeToggle } from "@/components/dev-mode-toggle";
 
-import Dashboard from "@/pages/dashboard";
-import Users from "@/pages/users";
-import UserDetail from "@/pages/user-detail";
-import Groups from "@/pages/groups";
-import Notifications from "@/pages/notifications";
-import Emails from "@/pages/emails";
-import Content from "@/pages/content";
+import { DashboardView } from "@/features/dashboard";
+import { UsersView, UserDetailView } from "@/features/users";
+import { GroupsView } from "@/features/groups";
+import { NotificationsView } from "@/features/notifications";
+import { EmailsView } from "@/features/emails";
+import { ContentView } from "@/features/content";
 
 const queryClient = new QueryClient();
 
@@ -163,31 +162,31 @@ function Router() {
       <Route path="/sign-up/*?" component={SignUpPage} />
       
       <Route path="/">
-        <AppShell><Dashboard /></AppShell>
+        <AppShell><DashboardView /></AppShell>
       </Route>
       <Route path="/users">
-        <AppShell><Users /></AppShell>
+        <AppShell><UsersView /></AppShell>
       </Route>
       <Route path="/users/:userId">
         {(params) => (
           params.userId === "groups" ? (
-            <AppShell><Groups /></AppShell>
+            <AppShell><GroupsView /></AppShell>
           ) : (
-            <AppShell><UserDetail userId={params.userId} /></AppShell>
+            <AppShell><UserDetailView userId={params.userId} /></AppShell>
           )
         )}
       </Route>
       <Route path="/groups">
-        <AppShell><Groups /></AppShell>
+        <AppShell><GroupsView /></AppShell>
       </Route>
       <Route path="/notifications">
-        <AppShell><Notifications /></AppShell>
+        <AppShell><NotificationsView /></AppShell>
       </Route>
       <Route path="/emails">
-        <AppShell><Emails /></AppShell>
+        <AppShell><EmailsView /></AppShell>
       </Route>
       <Route path="/content">
-        <AppShell><Content /></AppShell>
+        <AppShell><ContentView /></AppShell>
       </Route>
       
       <Route component={NotFound} />

@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { useListGroups, useSendNotification } from "@workspace/api-client-react";
 import { Button } from "@workspace/pico-ui/button";
 import { Input } from "@workspace/pico-ui/input";
 import { Textarea } from "@workspace/pico-ui/textarea";
@@ -7,48 +5,27 @@ import { Label } from "@workspace/pico-ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@workspace/pico-ui/card";
 import { RadioGroup, RadioGroupItem } from "@workspace/pico-ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/pico-ui/select";
-import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { useNotificationGroups } from "../api";
+import { useBroadcastForm } from "../hooks/use-broadcast-form";
 
-export default function Notifications() {
-  const { toast } = useToast();
-  const { data: groups } = useListGroups();
-  const sendNotification = useSendNotification();
-
-  const [subject, setSubject] = useState("");
-  const [body, setBody] = useState("");
-  const [audience, setAudience] = useState<"all" | "group">("all");
-  const [groupId, setGroupId] = useState<string>("");
-  const [result, setResult] = useState<{ sent: number; failed: number; total: number; message?: string | null } | null>(null);
-
-  const handleSend = () => {
-    if (!subject.trim() || !body.trim()) return;
-    if (audience === "group" && !groupId) return;
-
-    sendNotification.mutate(
-      { 
-        data: { 
-          subject, 
-          body, 
-          audience, 
-          groupId: audience === "group" ? parseInt(groupId, 10) : undefined 
-        } 
-      },
-      {
-        onSuccess: (res) => {
-          setResult(res);
-          toast({ title: "Notifications processed" });
-          setSubject("");
-          setBody("");
-        },
-        onError: () => {
-          toast({ title: "Failed to send notifications", variant: "destructive" });
-        }
-      }
-    );
-  };
-
-  const isReady = subject.trim() && body.trim() && (audience === "all" || (audience === "group" && groupId));
+export function NotificationsView() {
+  const { data: groups } = useNotificationGroups();
+  const {
+    subject,
+    setSubject,
+    body,
+    setBody,
+    audience,
+    setAudience,
+    groupId,
+    setGroupId,
+    result,
+    setResult,
+    isReady,
+    isSending,
+    send,
+  } = useBroadcastForm();
 
   return (
     <div className="p-8 space-y-6 max-w-4xl mx-auto">
@@ -135,11 +112,11 @@ export default function Notifications() {
 
           <Button 
             className="w-full sm:w-auto" 
-            onClick={handleSend}
-            disabled={!isReady || sendNotification.isPending}
+            onClick={send}
+            disabled={!isReady || isSending}
           >
             <Send className="mr-2 h-4 w-4" />
-            {sendNotification.isPending ? "Sending..." : "Send Broadcast"}
+            {isSending ? "Sending..." : "Send Broadcast"}
           </Button>
         </CardContent>
       </Card>

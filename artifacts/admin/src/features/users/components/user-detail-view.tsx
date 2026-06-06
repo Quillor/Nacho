@@ -1,16 +1,5 @@
 import { useState } from "react";
-import {
-  useGetAdminUser,
-  useListGroups,
-  useSetUserRole,
-  useSetUserGroups,
-  useImpersonateUser,
-  getGetAdminUserQueryKey,
-  getListAdminUsersQueryKey,
-} from "@workspace/api-client-react";
-import { useQueryClient } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@workspace/pico-ui/avatar";
-import { Badge } from "@workspace/pico-ui/badge";
 import { Button } from "@workspace/pico-ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@workspace/pico-ui/card";
 import { Skeleton } from "@workspace/pico-ui/skeleton";
@@ -27,70 +16,25 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@workspace/pico-ui/alert-dialog";
-import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { ArrowLeft, UserSquare, ShieldAlert } from "lucide-react";
 import { Link } from "wouter";
 import { formatDateTime } from "@workspace/shared";
+import { useUserDetail, useAssignableGroups } from "../api";
+import { useUserActions } from "../hooks/use-user-actions";
 
-export default function UserDetail({ userId }: { userId: string }) {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  
-  const { data: user, isLoading: isLoadingUser } = useGetAdminUser(userId, {
-    query: { enabled: !!userId, queryKey: getGetAdminUserQueryKey(userId) }
-  });
-  const { data: allGroups } = useListGroups();
-
-  const setRole = useSetUserRole();
-  const setGroups = useSetUserGroups();
-  const impersonate = useImpersonateUser();
+export function UserDetailView({ userId }: { userId: string }) {
+  const { data: user, isLoading: isLoadingUser } = useUserDetail(userId);
+  const { data: allGroups } = useAssignableGroups();
+  const {
+    setSuperAdmin,
+    toggleGroup,
+    impersonateUser,
+    isSettingRole,
+    isSettingGroups,
+    isImpersonating,
+  } = useUserActions(userId);
 
   const [impersonateOpen, setImpersonateOpen] = useState(false);
-
-  const handleRoleToggle = (checked: boolean) => {
-    const role = checked ? "super_admin" : "user";
-    setRole.mutate({ userId, data: { role } }, {
-      onSuccess: () => {
-        toast({ title: "Role updated", description: `User role is now ${role}.` });
-        queryClient.invalidateQueries({ queryKey: getGetAdminUserQueryKey(userId) });
-        queryClient.invalidateQueries({ queryKey: getListAdminUsersQueryKey() });
-      },
-      onError: () => {
-        toast({ title: "Failed to update role", variant: "destructive" });
-      }
-    });
-  };
-
-  const handleGroupToggle = (groupId: number, checked: boolean) => {
-    if (!user) return;
-    const currentIds = user.groups.map(g => g.id);
-    const newIds = checked 
-      ? [...currentIds, groupId]
-      : currentIds.filter(id => id !== groupId);
-
-    setGroups.mutate({ userId, data: { groupIds: newIds } }, {
-      onSuccess: () => {
-        toast({ title: "Groups updated" });
-        queryClient.invalidateQueries({ queryKey: getGetAdminUserQueryKey(userId) });
-        queryClient.invalidateQueries({ queryKey: getListAdminUsersQueryKey() });
-      },
-      onError: () => {
-        toast({ title: "Failed to update groups", variant: "destructive" });
-      }
-    });
-  };
-
-  const handleImpersonate = () => {
-    impersonate.mutate({ userId }, {
-      onSuccess: (res) => {
-        window.location.href = `/sign-in?__clerk_ticket=${encodeURIComponent(res.token)}`;
-      },
-      onError: () => {
-        toast({ title: "Impersonation failed", variant: "destructive" });
-        setImpersonateOpen(false);
-      }
-    });
-  };
 
   if (isLoadingUser) {
     return (
@@ -104,6 +48,8 @@ export default function UserDetail({ userId }: { userId: string }) {
   if (!user) {
     return <div className="p-8 text-center text-muted-foreground">User not found</div>;
   }
+
+  const currentGroupIds = user.groups.map((g) => g.id);
 
   return (
     <div className="p-8 space-y-6 max-w-4xl mx-auto">
@@ -154,8 +100,8 @@ export default function UserDetail({ userId }: { userId: string }) {
                 </div>
                 <Switch
                   checked={user.role === "super_admin"}
-                  onCheckedChange={handleRoleToggle}
-                  disabled={setRole.isPending}
+                  onCheckedChange={setSuperAdmin}
+                  disabled={isSettingRole}
                 />
               </div>
 
@@ -172,8 +118,8 @@ export default function UserDetail({ userId }: { userId: string }) {
                           <Checkbox
                             id={`group-${group.id}`}
                             checked={isMember}
-                            onCheckedChange={(checked) => handleGroupToggle(group.id, checked as boolean)}
-                            disabled={setGroups.isPending}
+                            onCheckedChange={(checked) => toggleGroup(group.id, checked as boolean, currentGroupIds)}
+                            disabled={isSettingGroups}
                           />
                           <Label
                             htmlFor={`group-${group.id}`}
@@ -204,12 +150,12 @@ export default function UserDetail({ userId }: { userId: string }) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={impersonate.isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isImpersonating}>Cancel</AlertDialogCancel>
             <AlertDialogAction 
-              onClick={(e) => { e.preventDefault(); handleImpersonate(); }}
-              disabled={impersonate.isPending}
+              onClick={(e) => { e.preventDefault(); impersonateUser({ onError: () => setImpersonateOpen(false) }); }}
+              disabled={isImpersonating}
             >
-              {impersonate.isPending ? "Connecting..." : "Log in as user"}
+              {isImpersonating ? "Connecting..." : "Log in as user"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

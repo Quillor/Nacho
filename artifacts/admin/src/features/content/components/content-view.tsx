@@ -1,46 +1,14 @@
-import { useState, useEffect, useRef } from "react";
-import { useGetTosAdmin, useUpdateTos, getGetTosAdminQueryKey } from "@workspace/api-client-react";
-import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@workspace/pico-ui/button";
 import { Textarea } from "@workspace/pico-ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@workspace/pico-ui/card";
 import { Skeleton } from "@workspace/pico-ui/skeleton";
-import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { Save } from "lucide-react";
 import { formatDateTime } from "@workspace/shared";
+import { useTosEditor } from "../hooks/use-tos-editor";
 
-export default function Content() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  
-  const { data: tos, isLoading } = useGetTosAdmin();
-  const updateTos = useUpdateTos();
-
-  const [content, setContent] = useState("");
-  const isInitialized = useRef(false);
-
-  useEffect(() => {
-    if (tos && !isInitialized.current) {
-      setContent(tos.content);
-      isInitialized.current = true;
-    }
-  }, [tos]);
-
-  const handleSave = () => {
-    if (!content.trim()) return;
-    
-    updateTos.mutate({ data: { content } }, {
-      onSuccess: () => {
-        toast({ title: "Terms of Service updated" });
-        queryClient.invalidateQueries({ queryKey: getGetTosAdminQueryKey() });
-      },
-      onError: () => {
-        toast({ title: "Failed to update Terms of Service", variant: "destructive" });
-      }
-    });
-  };
-
-  const hasChanges = tos && content !== tos.content;
+export function ContentView() {
+  const { tos, isLoading, content, setContent, hasChanges, isSaving, save } =
+    useTosEditor();
 
   if (isLoading) {
     return (
@@ -67,12 +35,12 @@ export default function Content() {
           )}
         </div>
         <Button 
-          onClick={handleSave} 
-          disabled={!hasChanges || updateTos.isPending}
+          onClick={save} 
+          disabled={!hasChanges || isSaving}
           className="shrink-0"
         >
           <Save className="mr-2 h-4 w-4" />
-          {updateTos.isPending ? "Saving..." : "Save Changes"}
+          {isSaving ? "Saving..." : "Save Changes"}
         </Button>
       </div>
 

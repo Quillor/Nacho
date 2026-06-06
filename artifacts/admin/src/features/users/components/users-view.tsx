@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { Link, useLocation } from "wouter";
-import { useListAdminUsers } from "@workspace/api-client-react";
+import { useLocation } from "wouter";
 import {
   Table,
   TableBody,
@@ -15,17 +13,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@workspace/pico-ui/avatar";
 import { Skeleton } from "@workspace/pico-ui/skeleton";
 import { Search } from "lucide-react";
 import { formatDate } from "@workspace/shared";
+import { useUsersList } from "../api";
+import { useUserSearch } from "../hooks/use-user-search";
 
-export default function Users() {
-  const { data: users, isLoading } = useListAdminUsers();
-  const [search, setSearch] = useState("");
+export function UsersView() {
+  const { data: users, isLoading } = useUsersList();
+  const { search, setSearch, filteredUsers } = useUserSearch(users);
   const [, setLocation] = useLocation();
-
-  const filteredUsers = users?.filter(
-    (u) =>
-      u.email.toLowerCase().includes(search.toLowerCase()) ||
-      (u.displayName || "").toLowerCase().includes(search.toLowerCase())
-  );
 
   return (
     <div className="p-8 space-y-6 max-w-7xl mx-auto">

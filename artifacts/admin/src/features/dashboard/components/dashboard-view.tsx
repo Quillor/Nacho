@@ -1,5 +1,4 @@
 import { Link } from "wouter";
-import { useGetAdminSummary } from "@workspace/api-client-react";
 import {
   Card,
   CardContent,
@@ -12,9 +11,10 @@ import { Badge } from "@workspace/pico-ui/badge";
 import { Skeleton } from "@workspace/pico-ui/skeleton";
 import { Users, Video, Eye, ArrowRight } from "lucide-react";
 import { formatDate, formatNumber } from "@workspace/shared";
+import { useDashboardSummary } from "../api";
 
-export default function Dashboard() {
-  const { data: summary, isLoading, isError } = useGetAdminSummary();
+export function DashboardView() {
+  const { data: summary, isLoading, isError } = useDashboardSummary();
 
   if (isLoading) {
     return (

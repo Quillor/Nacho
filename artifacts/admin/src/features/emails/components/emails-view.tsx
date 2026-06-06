@@ -1,4 +1,3 @@
-import { useListEmailPreviews } from "@workspace/api-client-react";
 import {
   Card,
   CardContent,
@@ -8,9 +7,10 @@ import {
 } from "@workspace/pico-ui/card";
 import { Skeleton } from "@workspace/pico-ui/skeleton";
 import { Mail, AlertCircle, Shield } from "lucide-react";
+import { useEmailPreviews } from "../api";
 
-export default function Emails() {
-  const { data: emails, isLoading, isError } = useListEmailPreviews();
+export function EmailsView() {
+  const { data: emails, isLoading, isError } = useEmailPreviews();
 
   return (
     <div className="p-8 space-y-6 max-w-4xl mx-auto">

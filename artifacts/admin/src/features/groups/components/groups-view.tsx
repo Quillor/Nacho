@@ -1,13 +1,5 @@
 import { useState } from "react";
 import {
-  useListGroups,
-  useCreateGroup,
-  useUpdateGroup,
-  useDeleteGroup,
-  getListGroupsQueryKey,
-} from "@workspace/api-client-react";
-import { useQueryClient } from "@tanstack/react-query";
-import {
   Table,
   TableBody,
   TableCell,
@@ -38,24 +30,20 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@workspace/pico-ui/alert-dialog";
-import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { Plus, Edit2, Trash2 } from "lucide-react";
 import { formatDate } from "@workspace/shared";
+import type { UserGroup } from "@workspace/api-client-react";
+import { useGroupsList } from "../api";
+import { useGroupActions } from "../hooks/use-group-actions";
+import type { GroupDialogMode } from "../types";
 
-type GroupDialogMode = "create" | "edit" | null;
-
-export default function Groups() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  
-  const { data: groups, isLoading } = useListGroups();
-  const createGroup = useCreateGroup();
-  const updateGroup = useUpdateGroup();
-  const deleteGroup = useDeleteGroup();
+export function GroupsView() {
+  const { data: groups, isLoading } = useGroupsList();
+  const { create, update, remove, isSaving, isDeleting } = useGroupActions();
 
   const [dialogMode, setDialogMode] = useState<GroupDialogMode>(null);
   const [activeGroupId, setActiveGroupId] = useState<number | null>(null);
-  
+
   const [formData, setFormData] = useState({ name: "", description: "" });
   const [deleteOpen, setDeleteOpen] = useState(false);
 
@@ -64,7 +52,7 @@ export default function Groups() {
     setDialogMode("create");
   };
 
-  const handleOpenEdit = (group: any) => {
+  const handleOpenEdit = (group: UserGroup) => {
     setFormData({ name: group.name, description: group.description || "" });
     setActiveGroupId(group.id);
     setDialogMode("edit");
@@ -79,39 +67,15 @@ export default function Groups() {
     if (!formData.name.trim()) return;
 
     if (dialogMode === "create") {
-      createGroup.mutate({ data: { name: formData.name, description: formData.description } }, {
-        onSuccess: () => {
-          toast({ title: "Group created" });
-          setDialogMode(null);
-          queryClient.invalidateQueries({ queryKey: getListGroupsQueryKey() });
-        },
-        onError: () => toast({ title: "Failed to create group", variant: "destructive" })
-      });
+      create(formData, { onSuccess: () => setDialogMode(null) });
     } else if (dialogMode === "edit" && activeGroupId) {
-      updateGroup.mutate({ groupId: activeGroupId, data: { name: formData.name, description: formData.description } }, {
-        onSuccess: () => {
-          toast({ title: "Group updated" });
-          setDialogMode(null);
-          queryClient.invalidateQueries({ queryKey: getListGroupsQueryKey() });
-        },
-        onError: () => toast({ title: "Failed to update group", variant: "destructive" })
-      });
+      update(activeGroupId, formData, { onSuccess: () => setDialogMode(null) });
     }
   };
 
   const handleDelete = () => {
     if (!activeGroupId) return;
-    deleteGroup.mutate({ groupId: activeGroupId }, {
-      onSuccess: () => {
-        toast({ title: "Group deleted" });
-        setDeleteOpen(false);
-        queryClient.invalidateQueries({ queryKey: getListGroupsQueryKey() });
-      },
-      onError: () => {
-        toast({ title: "Failed to delete group", variant: "destructive" });
-        setDeleteOpen(false);
-      }
-    });
+    remove(activeGroupId, { onSettled: () => setDeleteOpen(false) });
   };
 
   return (
@@ -209,9 +173,9 @@ export default function Groups() {
             <Button variant="outline" onClick={() => setDialogMode(null)}>Cancel</Button>
             <Button 
               onClick={handleSave} 
-              disabled={!formData.name.trim() || createGroup.isPending || updateGroup.isPending}
+              disabled={!formData.name.trim() || isSaving}
             >
-              {createGroup.isPending || updateGroup.isPending ? "Saving..." : "Save"}
+              {isSaving ? "Saving..." : "Save"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -226,13 +190,13 @@ export default function Groups() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={deleteGroup.isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
             <AlertDialogAction 
               onClick={(e) => { e.preventDefault(); handleDelete(); }}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              disabled={deleteGroup.isPending}
+              disabled={isDeleting}
             >
-              {deleteGroup.isPending ? "Deleting..." : "Delete"}
+              {isDeleting ? "Deleting..." : "Delete"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
