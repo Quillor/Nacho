@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { getAuth } from "@clerk/express";
 import { clerkClient, roleOf } from "../lib/clerk";
-import { isDevAuthBypass } from "../lib/devAuth";
+import { isDevAuthBypass } from "../lib/dev-auth";
 
 // Gate every /api/admin/* route on a verified super-admin. The frontend has its
 // own gate, but that is UX only — authorization is enforced here on every call.

@@ -4,8 +4,11 @@ import {
   RequestUploadUrlBody,
   RequestUploadUrlResponse,
 } from "@workspace/api-zod";
-import { ObjectStorageService, ObjectNotFoundError } from "../lib/objectStorage";
-import { ObjectPermission } from "../lib/objectAcl";
+import {
+  ObjectStorageService,
+  ObjectNotFoundError,
+} from "../../lib/object-storage";
+import { ObjectPermission } from "../../lib/object-acl";
 
 const router: IRouter = Router();
 const objectStorageService = new ObjectStorageService();

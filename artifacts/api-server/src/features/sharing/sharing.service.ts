@@ -1,8 +1,9 @@
-import { Router, type IRouter } from "express";
+// Builds the server-rendered share page (Open Graph unfurl + redirect to the
+// SPA viewer) for a public recording. Crawlers don't run JS, so they read the
+// OG tags; browsers follow the injected redirect to the rich Nacho view.
+
 import { eq } from "drizzle-orm";
 import { db, publishedRecordingsTable } from "@workspace/db";
-
-const router: IRouter = Router();
 
 // Base path of the Nacho web app SPA (where the rich public view lives).
 // The Nacho artifact is served at the root ("/"), so the public viewer route is
@@ -37,28 +38,21 @@ function stripHtml(html: string): string {
 }
 
 /**
- * GET /s/:shareId
- *
- * Server-rendered share page that emits Open Graph meta tags so links unfurl
- * in chat apps, then redirects humans to the rich SPA public view. Crawlers do
- * not run JS, so they read the OG tags; browsers follow the redirect.
+ * Build the OG share page HTML for a public recording. Returns null when the
+ * recording doesn't exist or isn't public (private recordings must not unfurl).
  */
-router.get("/s/:shareId", async (req, res): Promise<void> => {
-  const raw = req.params.shareId;
-  const shareId = Array.isArray(raw) ? raw[0] : raw;
-
+export async function buildSharePage(
+  shareId: string,
+  origin: string,
+): Promise<string | null> {
   const [row] = await db
     .select()
     .from(publishedRecordingsTable)
     .where(eq(publishedRecordingsTable.shareId, shareId));
 
   // Private recordings have no public link and must not unfurl.
-  if (!row || row.visibility !== "public") {
-    res.status(404).send("Recording not found");
-    return;
-  }
+  if (!row || row.visibility !== "public") return null;
 
-  const origin = `${req.protocol}://${req.get("host")}`;
   const appUrl = `${origin}${NACHO_BASE}v/${shareId}`;
   // Prefer the recording's own thumbnail; otherwise fall back to the Nacho
   // brand card so the link still unfurls with the brand mark.
@@ -76,7 +70,7 @@ router.get("/s/:shareId", async (req, res): Promise<void> => {
       : "Watch this recording on Nacho.",
   );
 
-  const html = `<!doctype html>
+  return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -101,8 +95,4 @@ ${image ? `<meta name="twitter:image" content="${esc(image)}" />` : ""}
 <noscript><a href="${esc(appUrl)}">Watch "${title}" on Nacho</a></noscript>
 </body>
 </html>`;
-
-  res.set("Content-Type", "text/html; charset=utf-8").send(html);
-});
-
-export default router;
+}
