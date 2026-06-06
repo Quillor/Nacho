@@ -426,6 +426,76 @@ export const useUpdateRecording = <TError = ErrorType<ErrorResponse>,
       return useMutation(getUpdateRecordingMutationOptions(options));
     }
 
+export const getDeleteRecordingUrl = (shareId: string,) => {
+
+
+
+
+  return `/api/recordings/${shareId}`
+}
+
+/**
+ * @summary Delete a recording's server record (e.g. when deleted locally)
+ */
+export const deleteRecording = async (shareId: string, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteRecordingUrl(shareId),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteRecordingMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteRecording>>, TError,{shareId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteRecording>>, TError,{shareId: string}, TContext> => {
+
+const mutationKey = ['deleteRecording'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteRecording>>, {shareId: string}> = (props) => {
+          const {shareId} = props ?? {};
+
+          return  deleteRecording(shareId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteRecordingMutationResult = NonNullable<Awaited<ReturnType<typeof deleteRecording>>>
+
+    export type DeleteRecordingMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Delete a recording's server record (e.g. when deleted locally)
+ */
+export const useDeleteRecording = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteRecording>>, TError,{shareId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteRecording>>,
+        TError,
+        {shareId: string},
+        TContext
+      > => {
+      return useMutation(getDeleteRecordingMutationOptions(options));
+    }
+
 export const getSetRecordingVisibilityUrl = (shareId: string,) => {
 
 

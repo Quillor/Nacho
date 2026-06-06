@@ -15,6 +15,7 @@ import {
   GetRecordingResponse,
   UpdateRecordingParams,
   UpdateRecordingBody,
+  DeleteRecordingParams,
   SetRecordingVisibilityParams,
   SetRecordingVisibilityBody,
   AddRecordingViewParams,
@@ -167,6 +168,39 @@ router.patch("/recordings/:shareId", async (req, res): Promise<void> => {
   }
 
   res.json(GetRecordingResponse.parse(toApi(row)));
+});
+
+router.delete("/recordings/:shareId", async (req, res): Promise<void> => {
+  const params = DeleteRecordingParams.safeParse(req.params);
+  if (!params.success) {
+    res.status(400).json({ error: params.error.message });
+    return;
+  }
+
+  const userId = authUserId(req);
+  if (!userId) {
+    res.status(401).json({ error: "Sign in to delete a recording" });
+    return;
+  }
+
+  // Only the owner may delete. Scope by owner so a leaked shareId can't be
+  // deleted by anyone else; a non-match yields 404 (same as not found).
+  const [row] = await db
+    .delete(publishedRecordingsTable)
+    .where(
+      and(
+        eq(publishedRecordingsTable.shareId, params.data.shareId),
+        eq(publishedRecordingsTable.ownerUserId, userId),
+      ),
+    )
+    .returning();
+
+  if (!row) {
+    res.status(404).json({ error: "Recording not found" });
+    return;
+  }
+
+  res.status(204).end();
 });
 
 router.patch(

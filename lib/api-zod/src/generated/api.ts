@@ -162,6 +162,14 @@ export const UpdateRecordingResponse = zod.object({
 
 
 /**
+ * @summary Delete a recording's server record (e.g. when deleted locally)
+ */
+export const DeleteRecordingParams = zod.object({
+  "shareId": zod.coerce.string()
+})
+
+
+/**
  * @summary Change a recording's visibility (publish / unpublish)
  */
 export const SetRecordingVisibilityParams = zod.object({

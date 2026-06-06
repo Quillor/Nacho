@@ -123,6 +123,25 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteRecording
+      tags: [recordings]
+      summary: Delete a recording's server record (e.g. when deleted locally)
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /recordings/{shareId}/visibility:
     patch:
       operationId: setRecordingVisibility

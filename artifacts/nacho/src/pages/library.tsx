@@ -12,6 +12,9 @@ import {
   Loader2,
   Pencil,
   Sparkles,
+  UploadCloud,
+  CheckCircle2,
+  RotateCcw,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@workspace/pico-ui/button";
@@ -33,7 +36,18 @@ import {
   getRecording,
   updateRecording,
 } from "@/lib/db";
-import { getPublicLink, unpublishRecording } from "@/lib/publish";
+import {
+  getPublicLink,
+  unpublishRecording,
+  deleteServerRecording,
+} from "@/lib/publish";
+import {
+  useUploadState,
+  waitForUpload,
+  isUploadInFlight,
+  cancelUpload,
+  retryUpload,
+} from "@/lib/upload-manager";
 import { shareUrl } from "@/lib/api";
 import { formatDuration, formatRelativeDate } from "@/lib/format";
 import { isDevAuthBypassEnabled } from "@/lib/dev-auth";
@@ -68,6 +82,38 @@ function Thumb({ rec }: { rec: LocalRecordingMeta }) {
       </span>
     </div>
   );
+}
+
+/** Background-upload status for one library card (subscribes to the manager). */
+function UploadStatus({ id }: { id: string }) {
+  const upload = useUploadState(id);
+  if (upload.phase === "uploading") {
+    return (
+      <span className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+        <UploadCloud className="h-3.5 w-3.5 animate-pulse" />
+        Saving to cloud… {Math.round(upload.progress * 100)}%
+      </span>
+    );
+  }
+  if (upload.phase === "uploaded") {
+    return (
+      <span className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+        <CheckCircle2 className="h-3.5 w-3.5" /> Saved — instant sharing
+      </span>
+    );
+  }
+  if (upload.phase === "failed") {
+    return (
+      <button
+        type="button"
+        onClick={() => retryUpload(id)}
+        className="flex items-center gap-1.5 text-xs font-bold text-destructive hover:underline"
+      >
+        <RotateCcw className="h-3.5 w-3.5" /> Upload failed — retry
+      </button>
+    );
+  }
+  return null;
 }
 
 export default function LibraryPage() {
@@ -135,6 +181,10 @@ export default function LibraryPage() {
   const handleGetLink = async (rec: LocalRecordingMeta) => {
     setBusyId(rec.id);
     try {
+      // Reuse the background upload: wait for the in-flight transfer to finish
+      // so getPublicLink just syncs metadata + flips visibility instead of
+      // re-uploading the whole video.
+      if (isUploadInFlight(rec.id)) await waitForUpload(rec.id);
       const full = await getRecording(rec.id);
       if (!full) throw new Error("missing recording");
       const result = await getPublicLink(full);
@@ -186,7 +236,19 @@ export default function LibraryPage() {
 
   const handleDelete = async () => {
     if (!pendingDelete) return;
-    await deleteRecording(pendingDelete);
+    const id = pendingDelete;
+    // Reload the full record so we have the freshest shareId — a background
+    // upload may have persisted one after the list snapshot was taken.
+    const full = await getRecording(id);
+    // Stop any in-flight upload; if the server record already exists, the
+    // upload task removes it on abort.
+    cancelUpload(id);
+    await deleteRecording(id);
+    // Clean up the server-side record for an already-uploaded private recording
+    // so it doesn't dangle. Best-effort — the local copy is already gone.
+    if (full?.shareId) {
+      void deleteServerRecording(full.shareId).catch(() => undefined);
+    }
     setPendingDelete(null);
     refresh();
     toast({ title: "Recording deleted" });
@@ -296,6 +358,12 @@ export default function LibraryPage() {
  <h3 className="font-display text-xl font-bold leading-tight">
                   {rec.title}
                 </h3>
+
+                {rec.visibility !== "public" && (
+                  <div className="mt-2">
+                    <UploadStatus id={rec.id} />
+                  </div>
+                )}
 
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Button

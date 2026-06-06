@@ -12,6 +12,10 @@ import {
   ArrowLeft,
   Captions,
   Bell,
+  UploadCloud,
+  CheckCircle2,
+  AlertTriangle,
+  RotateCcw,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@workspace/pico-ui/button";
@@ -37,6 +41,13 @@ import {
   unpublishRecording,
   syncPublishedRecording,
 } from "@/lib/publish";
+import {
+  useUploadState,
+  startBackgroundUpload,
+  waitForUpload,
+  isUploadInFlight,
+  retryUpload,
+} from "@/lib/upload-manager";
 import { createGifFromBlob } from "@/lib/gif";
 import { extractFilmstrip } from "@/lib/media";
 import { shareUrl } from "@/lib/api";
@@ -73,6 +84,15 @@ export default function Editor() {
   const [copied, setCopied] = useState(false);
 
   const playerRef = useRef<VideoPlayerHandle>(null);
+
+  const upload = useUploadState(id);
+
+  // Ensure the recording is uploading in the background. The manager is
+  // idempotent (no-op if already uploaded or in flight) and survives route
+  // changes, so this also resumes the upload after a full page reload.
+  useEffect(() => {
+    if (rec) startBackgroundUpload(rec);
+  }, [rec]);
 
   useEffect(() => {
     if (!id) return;
@@ -218,7 +238,21 @@ export default function Editor() {
     setBusy(true);
     try {
       const updated = await persist();
-      const saved = updated ?? rec;
+      let saved = updated ?? rec;
+
+      // Reuse the background upload: if the video is still transferring, wait
+      // for it to finish (rather than starting over), then pick up the shareId
+      // and paths it persisted onto the recording.
+      if (isUploadInFlight(saved.id)) {
+        setPublishStep("Finishing upload…");
+        await waitForUpload(saved.id);
+        const reloaded = await getRecording(saved.id);
+        if (reloaded) saved = reloaded;
+      }
+
+      const trimChanged =
+        trimStart !== rec.trimStart ||
+        trimEnd !== (rec.trimEnd || rec.durationSec);
       const draft: LocalRecording = {
         ...saved,
         title,
@@ -230,8 +264,11 @@ export default function Editor() {
         notifyOnView,
       };
 
+      // Build the GIF preview the first time we publish (none uploaded yet) or
+      // whenever the trim changed. The big video upload already happened in the
+      // background, so this is the only heavy step left.
       let gifBlob: Blob | null = null;
-      if (!draft.shareId || !draft.videoPath) {
+      if (!draft.gifPath || trimChanged) {
         setPublishStep("Building preview…");
         try {
           gifBlob = await createGifFromBlob(draft.blob, {
@@ -585,6 +622,44 @@ export default function Editor() {
                 <p className="text-sm font-medium text-muted-foreground">
                   Only you can see this. Generate a link to share it.
                 </p>
+                {upload.phase === "uploading" && (
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2 text-sm font-bold">
+                      <UploadCloud className="h-4 w-4 animate-pulse" />
+                      Saving to cloud… {Math.round(upload.progress * 100)}%
+                    </div>
+                    <div className="h-3 w-full border-2 border-foreground bg-background">
+                      <div
+                        className="h-full bg-primary transition-all"
+                        style={{
+                          width: `${Math.round(upload.progress * 100)}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+                {upload.phase === "uploaded" && (
+                  <div className="flex items-center gap-2 text-sm font-bold">
+                    <CheckCircle2 className="h-4 w-4" />
+                    Saved — sharing will be instant.
+                  </div>
+                )}
+                {upload.phase === "failed" && (
+                  <div className="space-y-2 border-2 border-foreground bg-background p-2">
+                    <div className="flex items-center gap-2 text-sm font-bold">
+                      <AlertTriangle className="h-4 w-4" />
+                      Upload failed.
+                    </div>
+                    <Button
+                      onClick={() => id && retryUpload(id)}
+                      variant="outline"
+                      size="sm"
+                      className="border-2 border-foreground font-bold"
+                    >
+                      <RotateCcw className="mr-2 h-4 w-4" /> Retry upload
+                    </Button>
+                  </div>
+                )}
                 <Button
                   onClick={handleGetLink}
                   disabled={busy}

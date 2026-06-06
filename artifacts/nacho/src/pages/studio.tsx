@@ -51,6 +51,7 @@ import {
 } from "@/lib/languages";
 import { captureThumbnail, getBlobDuration } from "@/lib/media";
 import { saveRecording } from "@/lib/db";
+import { startBackgroundUpload } from "@/lib/upload-manager";
 import { formatDuration } from "@/lib/format";
 import type {
   RecordingSource,
@@ -263,6 +264,11 @@ export default function Studio() {
         gifPath: null,
       };
       await saveRecording(recording);
+      // Start uploading the video to storage in the background as a private
+      // recording. Runs on the module-level upload manager so it keeps going
+      // after we navigate away from the studio — by the time the user wants a
+      // public link the heavy transfer is already done.
+      startBackgroundUpload(recording);
       navigate(`/editor/${id}`);
     } catch {
       setSaving(false);
