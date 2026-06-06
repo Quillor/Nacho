@@ -279,12 +279,9 @@ export default function LibraryPage() {
     <AppShell>
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
- <h1 className="font-display text-5xl font-extrabold tracking-tight">
+          <h1 className="font-display text-5xl font-extrabold tracking-tight">
             Your Library
           </h1>
-          <p className="mt-2 text-lg font-medium text-muted-foreground">
-            Every recording lives on this device until you publish it.
-          </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           {isDevAuthBypassEnabled() && (
