@@ -5,6 +5,7 @@ import { Button } from "@workspace/pico-ui/button";
 import { Card } from "@workspace/pico-ui/card";
 import { Input } from "@workspace/pico-ui/input";
 import { Label } from "@workspace/pico-ui/label";
+import { Skeleton } from "@workspace/pico-ui/skeleton";
 import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { cardClass, errMessage, headingClass, inputClass, labelClass } from "../account";
 
@@ -13,7 +14,7 @@ import { cardClass, errMessage, headingClass, inputClass, labelClass } from "../
  * promote it to primary, then remove the previous addresses.
  */
 export function EmailCard() {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [newEmail, setNewEmail] = useState("");
@@ -86,9 +87,13 @@ export function EmailCard() {
       </div>
       <div className="flex items-center justify-between gap-4 border-b border-dashed border-foreground pb-3">
         <span className="font-medium text-muted-foreground">Current email</span>
-        <span className="truncate font-bold" title={currentEmail ?? ""}>
-          {currentEmail ?? "…"}
-        </span>
+        {isLoaded ? (
+          <span className="truncate font-bold" title={currentEmail ?? ""}>
+            {currentEmail ?? "—"}
+          </span>
+        ) : (
+          <Skeleton className="h-5 w-40" />
+        )}
       </div>
 
       {!open && (
