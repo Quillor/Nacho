@@ -28,7 +28,7 @@ const features = [
   {
     icon: Video,
     media: "bg-accent",
-    iconColor: "text-foreground",
+    iconColor: "text-accent-foreground",
     title: "Record in a snap",
     desc: "Capture your screen, your face, or both in a quick clip. Nacho lives in your menu bar, ready to roll in seconds.",
     badge: "Quick clips",
@@ -93,21 +93,21 @@ export default function Home() {
             className="max-w-2xl"
           >
             <motion.div variants={fadeIn} className="inline-block mb-6">
-              <Badge variant="outline" className="px-4 py-2 text-sm uppercase tracking-wider">
+              <Badge variant="outline" className="px-4 py-2 text-sm uppercase tracking-wider text-accent-foreground">
                 Snack-sized screen clips
               </Badge>
             </motion.div>
-            <motion.h1 variants={fadeIn} className="text-6xl md:text-8xl font-display font-extrabold tracking-tight leading-[0.9] mb-8 text-foreground">
+            <motion.h1 variants={fadeIn} className="text-6xl md:text-8xl font-display font-extrabold tracking-tight leading-[0.9] mb-8 text-accent-foreground">
               Send a clip. <br/> Save a meeting.
             </motion.h1>
-            <motion.p variants={fadeIn} className="text-xl md:text-2xl font-medium leading-relaxed text-foreground/80 mb-10 max-w-lg">
+            <motion.p variants={fadeIn} className="text-xl md:text-2xl font-medium leading-relaxed text-accent-foreground/80 mb-10 max-w-lg">
               Record a snackable screen walkthrough in seconds and drop the link wherever your team works. They watch on their own time — and the meeting that could've been an email never happens.
             </motion.p>
             <motion.div variants={fadeIn} className="flex flex-wrap gap-4">
               <Button asChild size="lg" variant="secondary" className="border-2 border-foreground shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all">
                 <Link href="/sign-up">Start Recording Free</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-2 border-foreground shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all">
+              <Button asChild size="lg" variant="outline" className="border-2 border-foreground text-accent-foreground shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all">
                 <Link href="/sign-in">My Library</Link>
               </Button>
             </motion.div>
@@ -170,7 +170,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="mb-16 flex items-center gap-4">
             <div className="w-12 h-12 bg-accent border-4 border-foreground rounded-sm shadow-xs flex items-center justify-center">
-              <Zap className="w-6 h-6 text-foreground" />
+              <Zap className="w-6 h-6 text-accent-foreground" />
             </div>
             <h2 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight text-foreground">Power Moves</h2>
           </div>
@@ -229,7 +229,7 @@ export default function Home() {
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 className="flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-12"
               >
-                <div className="text-8xl md:text-9xl font-display font-extrabold text-foreground leading-none tracking-tight">
+                <div className="text-8xl md:text-9xl font-display font-extrabold text-primary-foreground leading-none tracking-tight">
                   {step.num}
                 </div>
                 <div>
@@ -250,8 +250,8 @@ export default function Home() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
-            <MessageSquare className="w-16 h-16 mx-auto mb-8 text-foreground" />
-            <h2 className="text-4xl md:text-6xl font-display font-extrabold tracking-tight leading-[1.05] text-foreground mb-12">
+            <MessageSquare className="w-16 h-16 mx-auto mb-8 text-accent-foreground" />
+            <h2 className="text-4xl md:text-6xl font-display font-extrabold tracking-tight leading-[1.05] text-accent-foreground mb-12">
               "We swapped our standup for snackable Nachos. I record once and the whole team watches whenever — it's like being in ten places at once without repeating myself."
             </h2>
             <div className="flex items-center justify-center gap-4">
@@ -259,8 +259,8 @@ export default function Home() {
                 <div className="w-full h-full bg-primary"></div>
               </div>
               <div className="text-left">
-                <div className="font-display font-extrabold text-2xl text-foreground">Sarah Jenkins</div>
-                <div className="font-medium text-foreground/80">VP of Skipping Meetings</div>
+                <div className="font-display font-extrabold text-2xl text-accent-foreground">Sarah Jenkins</div>
+                <div className="font-medium text-accent-foreground/80">VP of Skipping Meetings</div>
               </div>
             </div>
           </motion.div>

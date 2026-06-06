@@ -181,7 +181,7 @@ function AccentCombo({ group }: { group: SemanticGroup }) {
             <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.3)] transition-all font-bold">
               Solid Action
             </Button>
-            <Button size="lg" variant="outline" className="border-accent-foreground text-accent-foreground hover:bg-foreground hover:text-primary shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
+            <Button size="lg" variant="outline" className="border-accent-foreground text-accent-foreground hover:bg-foreground hover:text-background shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
               Outline Action
             </Button>
           </div>

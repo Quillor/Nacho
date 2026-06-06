@@ -3,7 +3,7 @@ export default function Introduction() {
   return (
     <div className="space-y-12">
       <div className="space-y-4">
-        <div className="inline-block px-4 py-2 bg-accent border-2 border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-sm">
+        <div className="inline-block px-4 py-2 bg-accent border-2 border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-sm text-accent-foreground">
           GETTING STARTED
         </div>
  <h1 className="text-6xl md:text-7xl font-display font-extrabold tracking-tight leading-[0.9] text-foreground">
@@ -17,10 +17,10 @@ export default function Introduction() {
       <div className="border-4 border-foreground rounded-sm overflow-hidden shadow-md bg-accent relative p-12 md:p-24 flex items-center justify-center min-h-[400px]">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none"></div>
         <div className="relative z-10 text-center space-y-8 max-w-xl mx-auto">
- <div className="text-4xl md:text-6xl font-display font-extrabold text-foreground leading-none">
+ <div className="text-4xl md:text-6xl font-display font-extrabold text-accent-foreground leading-none">
             Loud & Clear
           </div>
-          <p className="text-xl font-bold text-foreground/80">
+          <p className="text-xl font-bold text-accent-foreground/80">
             We don't do subtle. We do high contrast, heavy shadows, and typography that demands attention.
           </p>
         </div>

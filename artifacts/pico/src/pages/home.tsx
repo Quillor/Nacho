@@ -177,7 +177,7 @@ export default function Home() {
                   <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.3)] transition-all font-bold">
                     Solid Action
                   </Button>
-                  <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-foreground hover:text-primary shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
+                  <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-foreground hover:text-background shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
                     Outline Action
                   </Button>
                 </div>
@@ -192,7 +192,7 @@ export default function Home() {
                 <Badge variant="outline" className="w-fit border-foreground text-foreground">Accessible AAA</Badge>
               </div>
               <div className="bg-foreground text-background p-8 md:p-12 flex flex-col justify-center">
- <h4 className="text-3xl md:text-4xl mb-4 text-primary">The Midnight Snack</h4>
+ <h4 className="text-3xl md:text-4xl mb-4 text-background">The Midnight Snack</h4>
                 <p className="text-lg font-medium mb-8 max-w-md text-background/90">Use this for footers, dramatic section breaks, or when you need the reader to stop scrolling and pay attention.</p>
                 <div className="flex flex-wrap gap-4">
                   <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.2)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.2)] transition-all font-bold">

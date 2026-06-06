@@ -17,7 +17,7 @@ export function PageHeader({
 }) {
   return (
     <div className="space-y-4">
-      <div className="inline-block px-3 py-1 bg-accent border-2 border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-xs">
+      <div className="inline-block px-3 py-1 bg-accent border-2 border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-xs text-accent-foreground">
         {eyebrow}
       </div>
  <h1 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[0.9] text-foreground">
@@ -81,7 +81,7 @@ export function DoDont({
   return (
     <div className="grid gap-6 md:grid-cols-2">
       <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
-        <div className="mb-3 inline-flex items-center gap-2 border-2 border-foreground bg-accent px-3 py-1 rounded-sm font-black uppercase text-xs tracking-widest">
+        <div className="mb-3 inline-flex items-center gap-2 border-2 border-foreground bg-accent px-3 py-1 rounded-sm font-black uppercase text-xs tracking-widest text-accent-foreground">
           <Check className="h-4 w-4" /> Do
         </div>
         <p className="font-medium leading-relaxed text-foreground/80">

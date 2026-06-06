@@ -69,10 +69,10 @@ function Scenario({
           {icon}
         </div>
         <div>
-          <div className="font-mono text-sm font-bold uppercase tracking-widest text-foreground/70">
+          <div className="font-mono text-sm font-bold uppercase tracking-widest text-accent-foreground/70">
             {index}
           </div>
- <h3 className="font-display text-2xl font-extrabold leading-none text-foreground md:text-3xl">
+ <h3 className="font-display text-2xl font-extrabold leading-none text-accent-foreground md:text-3xl">
             {title}
           </h3>
         </div>
@@ -148,7 +148,7 @@ export default function ContentGuidelines() {
     <div className="space-y-16">
       {/* Hero */}
       <div className="space-y-4">
-        <div className="inline-block border-2 border-foreground bg-accent px-4 py-2 text-sm font-bold uppercase tracking-widest shadow-sm">
+        <div className="inline-block border-2 border-foreground bg-accent px-4 py-2 text-sm font-bold uppercase tracking-widest shadow-sm text-accent-foreground">
           GUIDELINES
         </div>
  <h1 className="font-display text-5xl font-extrabold leading-[0.9] tracking-tight text-foreground md:text-6xl">
@@ -165,7 +165,7 @@ export default function ContentGuidelines() {
       {/* Voice vs Tone */}
       <div className="grid gap-6 md:grid-cols-2">
         <div className="border-4 border-foreground bg-foreground p-6 text-background shadow-md">
- <h2 className="mb-2 font-display text-2xl font-extrabold text-primary">
+ <h2 className="mb-2 font-display text-2xl font-extrabold text-background">
             Voice
           </h2>
           <p className="font-medium leading-relaxed text-background/90">
@@ -473,10 +473,10 @@ export default function ContentGuidelines() {
 
       {/* Closing rule of thumb */}
       <section className="border-4 border-foreground bg-accent p-8 shadow-md md:p-12">
- <h2 className="font-display text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
+ <h2 className="font-display text-3xl font-extrabold leading-tight text-accent-foreground md:text-4xl">
           The 5-second test
         </h2>
-        <p className="mt-4 max-w-2xl text-lg font-medium leading-relaxed text-foreground/80">
+        <p className="mt-4 max-w-2xl text-lg font-medium leading-relaxed text-accent-foreground/80">
           Read your copy out loud. If it sounds like a robot, a lawyer, or a
           help-desk ticket — rewrite it. If it sounds like a confident friend
           who's in a hurry and genuinely wants to help, ship it.

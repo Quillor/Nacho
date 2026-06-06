@@ -75,7 +75,7 @@ function ToolbarButton({
       className={cn(
         "flex h-9 w-9 items-center justify-center border-2 transition-colors disabled:opacity-40",
         active
-          ? "border-foreground bg-primary text-foreground"
+          ? "border-foreground bg-primary text-primary-foreground"
           : "border-transparent hover:border-foreground hover:bg-background",
       )}
     >
