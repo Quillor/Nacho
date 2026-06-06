@@ -7,6 +7,7 @@
     "hello": "tsx ./src/hello.ts",
     "seed-dev-users": "tsx ./src/seed-dev-users.ts",
     "check-contrast": "tsx ./src/check-contrast.ts",
+    "check-file-size": "tsx ./src/check-file-size.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
