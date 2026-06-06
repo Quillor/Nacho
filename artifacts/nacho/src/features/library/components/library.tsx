@@ -1,8 +1,16 @@
 import { Link } from "wouter";
-import { CircleDot, Loader2, Sparkles } from "lucide-react";
+import { CircleDot, Loader2, Search, Sparkles, X } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import emptyBowlNacho from "@workspace/nacho-illustrations/assets/sad-nacho-empty-bowl.png";
 import { Button } from "@workspace/pico-ui/button";
+import { Input } from "@workspace/pico-ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/pico-ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,13 +22,25 @@ import {
   AlertDialogTitle,
 } from "@workspace/pico-ui/alert-dialog";
 import { isDevAuthBypassEnabled } from "@workspace/shared";
-import { useLibrary } from "../hooks/use-library";
+import { useLibrary, type LibrarySort } from "../hooks/use-library";
 import { RecordingCard } from "./recording-card";
+
+const SORT_LABELS: Record<LibrarySort, string> = {
+  pinned: "Pinned first",
+  newest: "Newest first",
+  oldest: "Oldest first",
+  title: "Title (A–Z)",
+};
 
 /** The Library: a grid of locally-stored recordings with publish/pin/delete. */
 export function LibraryPage() {
   const {
     recordings,
+    visibleRecordings,
+    query,
+    setQuery,
+    sort,
+    setSort,
     pendingDelete,
     setPendingDelete,
     busyId,
@@ -34,12 +54,14 @@ export function LibraryPage() {
     handleDelete,
   } = useLibrary();
 
+  const hasRecordings = recordings !== null && recordings.length > 0;
+
   return (
     <AppShell>
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-5xl font-extrabold tracking-tight">
-            Your Library
+            Library
           </h1>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -72,6 +94,50 @@ export function LibraryPage() {
         </div>
       </div>
 
+      {hasRecordings && (
+        <div className="mb-8 flex flex-wrap items-center gap-3">
+          <div className="relative min-w-[14rem] flex-1">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search recordings…"
+              aria-label="Search recordings by title"
+              className="h-12 border-2 border-foreground pl-10 pr-10 text-base font-medium"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                aria-label="Clear search"
+                className="absolute right-2 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+          <Select
+            value={sort}
+            onValueChange={(value) => setSort(value as LibrarySort)}
+          >
+            <SelectTrigger
+              aria-label="Sort recordings"
+              className="h-12 w-[12rem] border-2 border-foreground text-base font-bold"
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="border-2 border-foreground">
+              {(Object.keys(SORT_LABELS) as LibrarySort[]).map((key) => (
+                <SelectItem key={key} value={key} className="font-medium">
+                  {SORT_LABELS[key]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
       {recordings === null ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[0, 1, 2].map((i) => (
@@ -102,9 +168,26 @@ export function LibraryPage() {
             <Link href="/studio">Start Recording</Link>
           </Button>
         </div>
+      ) : visibleRecordings && visibleRecordings.length === 0 ? (
+        <div className="flex flex-col items-center justify-center border-2 border-dashed border-foreground bg-card py-24 text-center">
+          <h2 className="font-display text-3xl font-extrabold">
+            No recordings found
+          </h2>
+          <p className="mt-2 max-w-md text-muted-foreground">
+            No recordings match “{query.trim()}”. Try a different search.
+          </p>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => setQuery("")}
+            className="mt-8 h-12 border-2 border-foreground px-6 text-base font-bold"
+          >
+            Clear search
+          </Button>
+        </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {recordings.map((rec) => (
+          {visibleRecordings?.map((rec) => (
             <RecordingCard
               key={rec.id}
               rec={rec}

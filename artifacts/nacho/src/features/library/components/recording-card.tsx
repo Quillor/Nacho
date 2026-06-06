@@ -13,9 +13,22 @@ import {
   CheckCircle2,
   RotateCcw,
   Pin,
+  MoreHorizontal,
 } from "lucide-react";
 import { Button } from "@workspace/pico-ui/button";
 import { Badge } from "@workspace/pico-ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@workspace/pico-ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@workspace/pico-ui/tooltip";
 import { useUploadState, retryUpload } from "@/features/publishing";
 import { formatDuration, formatRelativeDate } from "@workspace/shared";
 import type { LocalRecordingMeta } from "@/lib/types";
@@ -162,51 +175,19 @@ export function RecordingCard({
           </div>
         )}
 
-        <div className="mt-4 flex flex-wrap gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            className="border border-foreground font-bold"
-            onClick={() => onOpenEditor(rec.id)}
-          >
-            <Pencil className="mr-1 h-4 w-4" /> Edit
-          </Button>
+        <div className="mt-4 flex items-center gap-2">
           {rec.visibility === "public" && rec.shareId ? (
-            <>
-              <Button
-                size="sm"
-                variant="outline"
-                className="border border-foreground font-bold"
-                onClick={() => onView(rec.shareId!)}
-              >
-                <Eye className="mr-1 h-4 w-4" /> View
-              </Button>
-              <Button
-                size="sm"
-                className="border border-foreground bg-accent font-bold text-accent-foreground"
-                onClick={() => onCopy(rec.shareId!)}
-              >
-                <Share2 className="mr-1 h-4 w-4" /> Copy link
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                className="border border-foreground font-bold"
-                disabled={busy}
-                onClick={() => onUnpublish(rec)}
-              >
-                {busy ? (
-                  <Loader2 className="mr-1 h-4 w-4 animate-spin" />
-                ) : (
-                  <Lock className="mr-1 h-4 w-4" />
-                )}
-                Unpublish
-              </Button>
-            </>
+            <Button
+              size="sm"
+              className="flex-1 border border-foreground bg-accent font-bold text-accent-foreground"
+              onClick={() => onCopy(rec.shareId!)}
+            >
+              <Share2 className="mr-1 h-4 w-4" /> Copy link
+            </Button>
           ) : (
             <Button
               size="sm"
-              className="border border-foreground bg-accent font-bold text-accent-foreground"
+              className="flex-1 border border-foreground bg-accent font-bold text-accent-foreground"
               disabled={busy}
               onClick={() => onGetLink(rec)}
             >
@@ -218,14 +199,59 @@ export function RecordingCard({
               Get public link
             </Button>
           )}
-          <Button
-            size="sm"
-            variant="ghost"
-            className="ml-auto font-bold text-destructive hover:bg-destructive hover:text-destructive-foreground"
-            onClick={() => onRequestDelete(rec.id)}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
+
+          <DropdownMenu>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    aria-label="More actions"
+                    className="border border-foreground px-2 font-bold"
+                  >
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+              </TooltipTrigger>
+              <TooltipContent>More actions</TooltipContent>
+            </Tooltip>
+            <DropdownMenuContent
+              align="end"
+              className="border-2 border-foreground"
+            >
+              <DropdownMenuItem
+                className="font-medium"
+                onSelect={() => onOpenEditor(rec.id)}
+              >
+                <Pencil className="mr-2 h-4 w-4" /> Edit
+              </DropdownMenuItem>
+              {rec.visibility === "public" && rec.shareId && (
+                <>
+                  <DropdownMenuItem
+                    className="font-medium"
+                    onSelect={() => onView(rec.shareId!)}
+                  >
+                    <Eye className="mr-2 h-4 w-4" /> View
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="font-medium"
+                    disabled={busy}
+                    onSelect={() => onUnpublish(rec)}
+                  >
+                    <Lock className="mr-2 h-4 w-4" /> Unpublish
+                  </DropdownMenuItem>
+                </>
+              )}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="font-medium text-destructive focus:bg-destructive focus:text-destructive-foreground"
+                onSelect={() => onRequestDelete(rec.id)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" /> Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>
