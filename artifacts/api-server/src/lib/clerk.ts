@@ -31,9 +31,20 @@ export function roleOf(user: User): AdminRole {
 }
 
 export function displayNameOf(user: User): string | null {
-  const meta = (user.unsafeMetadata as { displayName?: unknown } | null)
-    ?.displayName;
-  if (typeof meta === "string" && meta.trim()) return meta.trim();
+  const meta = user.unsafeMetadata as {
+    displayName?: unknown;
+    firstName?: unknown;
+    lastName?: unknown;
+  } | null;
+  if (typeof meta?.displayName === "string" && meta.displayName.trim()) {
+    return meta.displayName.trim();
+  }
+  // Required sign-up profile fields live in unsafeMetadata (the built-in Clerk
+  // first/last name attributes are disabled in this instance).
+  const metaFirst = typeof meta?.firstName === "string" ? meta.firstName : "";
+  const metaLast = typeof meta?.lastName === "string" ? meta.lastName : "";
+  const metaFull = [metaFirst, metaLast].filter((s) => s.trim()).join(" ").trim();
+  if (metaFull) return metaFull;
   const parts = [user.firstName, user.lastName].filter(Boolean);
   if (parts.length) return parts.join(" ");
   return null;

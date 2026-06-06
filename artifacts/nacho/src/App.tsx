@@ -17,6 +17,7 @@ import {
   SignUp,
   Show,
   useClerk,
+  useUser,
 } from "@clerk/react";
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { shadcn } from "@clerk/themes";
@@ -33,6 +34,8 @@ import Editor from "@/pages/editor";
 import PublicView from "@/pages/public-view";
 import SettingsPage from "@/pages/settings";
 import Terms from "@/pages/terms";
+import Onboarding from "@/pages/onboarding";
+import { isProfileComplete } from "@/lib/profile";
 
 const queryClient = new QueryClient();
 
@@ -156,6 +159,18 @@ function HomeRedirect() {
   );
 }
 
+// Require a completed profile (first/last name + job title) before reaching the
+// app. Redirects signed-in users with an incomplete profile to onboarding.
+// Renders nothing until Clerk has loaded the user to avoid a redirect flash.
+function ProfileGate({ children }: { children: React.ReactNode }) {
+  const { user, isLoaded } = useUser();
+  if (!isLoaded) return null;
+  if (user && !isProfileComplete(user.unsafeMetadata)) {
+    return <Redirect to="/onboarding" />;
+  }
+  return <>{children}</>;
+}
+
 // Gate an app page behind authentication; signed-out visitors go to sign-in.
 // In a dev build with the bypass flag on, render the page directly so gated
 // pages can be tested without signing in (see lib/dev-auth.ts).
@@ -163,7 +178,9 @@ function Protected({ children }: { children: React.ReactNode }) {
   if (isDevAuthBypassEnabled()) return <>{children}</>;
   return (
     <>
-      <Show when="signed-in">{children}</Show>
+      <Show when="signed-in">
+        <ProfileGate>{children}</ProfileGate>
+      </Show>
       <Show when="signed-out">
         <Redirect to="/sign-in" />
       </Show>
@@ -202,6 +219,7 @@ function Router() {
       <Route path="/sign-up/*?" component={SignUpPage} />
       <Route path="/v/:shareId" component={PublicView} />
       <Route path="/terms" component={Terms} />
+      <Route path="/onboarding" component={Onboarding} />
       <Route path="/studio">
         <Protected>
           <Studio />

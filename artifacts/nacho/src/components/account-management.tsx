@@ -27,13 +27,20 @@ const inputClass = "border border-foreground bg-background";
 const labelClass = "mb-1.5 block font-bold uppercase tracking-wide text-sm";
 
 export function getDisplayName(unsafeMetadata: unknown): string {
-  if (
-    unsafeMetadata &&
-    typeof unsafeMetadata === "object" &&
-    "displayName" in unsafeMetadata
-  ) {
-    const value = (unsafeMetadata as { displayName?: unknown }).displayName;
-    if (typeof value === "string") return value;
+  if (unsafeMetadata && typeof unsafeMetadata === "object") {
+    const meta = unsafeMetadata as {
+      displayName?: unknown;
+      firstName?: unknown;
+      lastName?: unknown;
+    };
+    if (typeof meta.displayName === "string" && meta.displayName.trim()) {
+      return meta.displayName;
+    }
+    // Fall back to the required sign-up first/last name fields.
+    const first = typeof meta.firstName === "string" ? meta.firstName.trim() : "";
+    const last = typeof meta.lastName === "string" ? meta.lastName.trim() : "";
+    const full = `${first} ${last}`.trim();
+    if (full) return full;
   }
   return "";
 }
