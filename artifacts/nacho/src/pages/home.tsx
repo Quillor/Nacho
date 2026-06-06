@@ -149,8 +149,8 @@ export default function Home() {
               viewport={{ once: true }}
               className="text-4xl md:text-6xl font-display font-extrabold tracking-tight leading-[1.05] mb-8"
             >
-              Why book a meeting <br/>
-              <span className="text-foreground">when a snack will do?</span>
+              Free your calendar. <br/>
+              <span className="text-accent">Send a video</span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
