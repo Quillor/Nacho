@@ -97,6 +97,7 @@ const clerkAppearance = {
     footerActionLink:
       "text-foreground font-bold underline hover:text-foreground/70",
     footerActionText: "text-muted-foreground",
+    resendCodeText: "text-foreground",
     dividerText: "text-muted-foreground",
     identityPreviewEditButton: "text-foreground",
     formFieldSuccessText: "text-foreground",

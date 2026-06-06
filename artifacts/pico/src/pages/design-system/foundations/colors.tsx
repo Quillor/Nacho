@@ -459,6 +459,35 @@ export default function Colors() {
           })}
         </div>
       </section>
+
+      <section className="space-y-8">
+        <h2 className="text-3xl font-display font-extrabold">Forbidden Combinations</h2>
+        <p className="text-lg font-medium text-foreground/80 max-w-2xl">
+          These pairings are strictly off-limits. They fail contrast checks and break the brand's promise of readability.
+        </p>
+
+        <div className="grid md:grid-cols-[1fr_2fr] border-4 border-foreground rounded-sm overflow-hidden shadow-md">
+          <div className="bg-background text-foreground p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
+            <h3 className="text-2xl font-bold mb-2">Never Do</h3>
+            <p className="opacity-80 mb-4">Yellow text on a cream or light background. Completely unreadable.</p>
+            <Badge variant="outline" className="w-fit border-foreground text-foreground">Fails Contrast</Badge>
+          </div>
+          <div className="bg-background text-primary p-8 md:p-12 flex flex-col justify-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-background" />
+            <div className="relative z-10">
+              <h4 className="text-3xl md:text-4xl mb-4 font-display font-extrabold">The Faded Mural</h4>
+              <p className="text-lg font-medium mb-8 max-w-md">
+                Golden yellow on a cream wash is almost invisible. This is why we never allow <code className="font-mono bg-foreground/10 px-1">text-primary</code> on light surfaces.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Button size="lg" disabled className="bg-background text-primary border-2 border-foreground opacity-50 cursor-not-allowed font-bold">
+                  Unreadable Action
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

@@ -150,7 +150,7 @@ export default function Home() {
               className="text-4xl md:text-6xl font-display font-extrabold tracking-tight leading-[1.05] mb-8"
             >
               Why book a meeting <br/>
-              <span className="text-primary">when a snack will do?</span>
+              <span className="text-foreground">when a snack will do?</span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
@@ -229,7 +229,7 @@ export default function Home() {
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 className="flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-12"
               >
-                <div className="text-8xl md:text-9xl font-display font-extrabold text-primary leading-none tracking-tight">
+                <div className="text-8xl md:text-9xl font-display font-extrabold text-foreground leading-none tracking-tight">
                   {step.num}
                 </div>
                 <div>

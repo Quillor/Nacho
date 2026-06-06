@@ -197,7 +197,7 @@ export default function ContentGuidelines() {
               className="flex flex-col border-4 border-foreground bg-background p-6 shadow-md transition-transform duration-300 hover:-translate-y-1"
             >
               <div className="mb-3 flex items-center gap-3">
-                <span className="font-display text-3xl font-extrabold text-primary">
+                <span className="font-display text-3xl font-extrabold text-foreground">
                   {String(i + 1).padStart(2, "0")}
                 </span>
  <h3 className="font-display text-2xl font-extrabold leading-none">

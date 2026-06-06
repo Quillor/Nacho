@@ -6,10 +6,12 @@
   "scripts": {
     "hello": "tsx ./src/hello.ts",
     "seed-dev-users": "tsx ./src/seed-dev-users.ts",
+    "check-contrast": "tsx ./src/check-contrast.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@clerk/backend": "^3.5.0"
+    "@clerk/backend": "^3.5.0",
+    "glob": "^11.0.0"
   },
   "devDependencies": {
     "@types/node": "catalog:",
