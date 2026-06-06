@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
-import { saveRecording, listRecordings } from "./db";
-import { captureThumbnail, getBlobDuration } from "./media";
-import type { Chapter, LocalRecording, TranscriptSegment } from "./types";
+import { saveRecording, listRecordings } from "@/lib/db";
+import { captureThumbnail, getBlobDuration } from "@/lib/media";
+import type { Chapter, LocalRecording, TranscriptSegment } from "@/lib/types";
 
 // Dev-only seeding of the local Library with playable sample recordings. Each
 // seeded recording is an independent copy of a single real, seekable video, so

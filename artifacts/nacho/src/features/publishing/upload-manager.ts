@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "react";
-import { getRecording, updateRecording } from "./db";
+import { getRecording, updateRecording } from "@/lib/db";
 import { saveRecordingPrivate, deleteServerRecording } from "./publish";
-import type { LocalRecording, PublishResult } from "./types";
+import type { LocalRecording, PublishResult } from "@/lib/types";
 
 /**
  * Lifecycle of a recording's background upload to object storage.

@@ -1,0 +1,233 @@
+import { useEffect, useMemo } from "react";
+import {
+  Play,
+  Trash2,
+  Share2,
+  Globe,
+  Lock,
+  Link2,
+  Eye,
+  Loader2,
+  Pencil,
+  UploadCloud,
+  CheckCircle2,
+  RotateCcw,
+  Pin,
+} from "lucide-react";
+import { Button } from "@workspace/pico-ui/button";
+import { Badge } from "@workspace/pico-ui/badge";
+import { useUploadState, retryUpload } from "@/features/publishing";
+import { formatDuration, formatRelativeDate } from "@workspace/shared";
+import type { LocalRecordingMeta } from "@/lib/types";
+
+/** Poster thumbnail for a recording; falls back to a play glyph when absent. */
+function Thumb({ rec }: { rec: LocalRecordingMeta }) {
+  const url = useMemo(
+    () => (rec.thumbnail ? URL.createObjectURL(rec.thumbnail) : null),
+    [rec.thumbnail],
+  );
+  useEffect(() => {
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [url]);
+
+  return (
+    <div className="relative aspect-video w-full overflow-hidden border-b-2 border-foreground bg-muted">
+      {url ? (
+        <img
+          src={url}
+          alt={rec.title}
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center">
+          <Play className="h-10 w-10 text-muted-foreground" />
+        </div>
+      )}
+      <span className="absolute bottom-2 right-2 rounded-sm border border-foreground bg-background px-2 py-0.5 font-mono text-xs font-bold">
+        {formatDuration(rec.trimEnd - rec.trimStart)}
+      </span>
+    </div>
+  );
+}
+
+/** Background-upload status for one library card (subscribes to the manager). */
+function UploadStatus({ id }: { id: string }) {
+  const upload = useUploadState(id);
+  if (upload.phase === "uploading") {
+    return (
+      <span className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+        <UploadCloud className="h-3.5 w-3.5 animate-pulse" />
+        Saving to cloud… {Math.round(upload.progress * 100)}%
+      </span>
+    );
+  }
+  if (upload.phase === "uploaded") {
+    return (
+      <span className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+        <CheckCircle2 className="h-3.5 w-3.5" /> Saved — instant sharing
+      </span>
+    );
+  }
+  if (upload.phase === "failed") {
+    return (
+      <button
+        type="button"
+        onClick={() => retryUpload(id)}
+        className="flex items-center gap-1.5 text-xs font-bold text-destructive hover:underline"
+      >
+        <RotateCcw className="h-3.5 w-3.5" /> Upload failed — retry
+      </button>
+    );
+  }
+  return null;
+}
+
+export interface RecordingCardProps {
+  rec: LocalRecordingMeta;
+  busy: boolean;
+  onTogglePin: (rec: LocalRecordingMeta) => void;
+  onOpenEditor: (id: string) => void;
+  onView: (shareId: string) => void;
+  onCopy: (shareId: string) => void;
+  onGetLink: (rec: LocalRecordingMeta) => void;
+  onUnpublish: (rec: LocalRecordingMeta) => void;
+  onRequestDelete: (id: string) => void;
+}
+
+/** A single recording tile in the Library grid. */
+export function RecordingCard({
+  rec,
+  busy,
+  onTogglePin,
+  onOpenEditor,
+  onView,
+  onCopy,
+  onGetLink,
+  onUnpublish,
+  onRequestDelete,
+}: RecordingCardProps) {
+  return (
+    <div className="group relative flex flex-col border-2 border-foreground bg-card shadow-md transition-transform hover:-translate-y-1">
+      <button
+        type="button"
+        onClick={() => onTogglePin(rec)}
+        aria-pressed={rec.pinned}
+        title={rec.pinned ? "Unpin recording" : "Pin recording"}
+        className={`absolute left-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-sm border border-foreground shadow-sm transition-colors ${
+          rec.pinned
+            ? "bg-accent text-accent-foreground"
+            : "bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+        }`}
+      >
+        {rec.pinned ? (
+          <Pin className="h-4 w-4 fill-current" />
+        ) : (
+          <Pin className="h-4 w-4" />
+        )}
+        <span className="sr-only">
+          {rec.pinned ? "Unpin recording" : "Pin recording"}
+        </span>
+      </button>
+      <button
+        type="button"
+        className="block text-left"
+        onClick={() => onOpenEditor(rec.id)}
+      >
+        <Thumb rec={rec} />
+      </button>
+      <div className="flex flex-1 flex-col p-5">
+        <div className="mb-2 flex items-center justify-between gap-2">
+          {rec.visibility === "public" ? (
+            <Badge className="border border-foreground bg-primary text-primary-foreground">
+              <Globe className="mr-1 h-3 w-3" /> Public
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="border border-foreground">
+              <Lock className="mr-1 h-3 w-3" /> Private
+            </Badge>
+          )}
+          <span className="text-xs font-medium text-muted-foreground">
+            {formatRelativeDate(rec.createdAt)}
+          </span>
+        </div>
+        <h3 className="font-display text-xl font-bold leading-tight">
+          {rec.title}
+        </h3>
+
+        {rec.visibility !== "public" && (
+          <div className="mt-2">
+            <UploadStatus id={rec.id} />
+          </div>
+        )}
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            className="border border-foreground font-bold"
+            onClick={() => onOpenEditor(rec.id)}
+          >
+            <Pencil className="mr-1 h-4 w-4" /> Edit
+          </Button>
+          {rec.visibility === "public" && rec.shareId ? (
+            <>
+              <Button
+                size="sm"
+                variant="outline"
+                className="border border-foreground font-bold"
+                onClick={() => onView(rec.shareId!)}
+              >
+                <Eye className="mr-1 h-4 w-4" /> View
+              </Button>
+              <Button
+                size="sm"
+                className="border border-foreground bg-accent font-bold text-accent-foreground"
+                onClick={() => onCopy(rec.shareId!)}
+              >
+                <Share2 className="mr-1 h-4 w-4" /> Copy link
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="border border-foreground font-bold"
+                disabled={busy}
+                onClick={() => onUnpublish(rec)}
+              >
+                {busy ? (
+                  <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                ) : (
+                  <Lock className="mr-1 h-4 w-4" />
+                )}
+                Unpublish
+              </Button>
+            </>
+          ) : (
+            <Button
+              size="sm"
+              className="border border-foreground bg-accent font-bold text-accent-foreground"
+              disabled={busy}
+              onClick={() => onGetLink(rec)}
+            >
+              {busy ? (
+                <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+              ) : (
+                <Link2 className="mr-1 h-4 w-4" />
+              )}
+              Get public link
+            </Button>
+          )}
+          <Button
+            size="sm"
+            variant="ghost"
+            className="ml-auto font-bold text-destructive hover:bg-destructive hover:text-destructive-foreground"
+            onClick={() => onRequestDelete(rec.id)}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

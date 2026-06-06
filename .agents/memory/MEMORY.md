@@ -1,1 +1,2 @@
-- [@workspace/shared import boundary](shared-lib-boundary.md) — split exports: browser barrel (`.`) vs browser-free subpaths (`./types`, `./dev-auth-constants`); node/server consumers must never import the root barrel.
+- [Nacho feature layout](nacho-feature-layout.md) — artifacts/nacho/src is feature-foldered; pages/ are thin default re-exports → feature index.ts; cross-feature imports go through index.ts.
+- [Repo file-size budget](file-size-budget.md) — 400-line cap enforced by scripts/src/check-file-size.ts; split god-files, don't add to LEGACY_ALLOWLIST.

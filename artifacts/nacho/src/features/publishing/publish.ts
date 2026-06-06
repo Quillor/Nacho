@@ -1,5 +1,5 @@
 import DOMPurify from "dompurify";
-import type { LocalRecording, PublishResult, Visibility } from "./types";
+import type { LocalRecording, PublishResult, Visibility } from "@/lib/types";
 
 interface UploadUrlResponse {
   uploadURL: string;

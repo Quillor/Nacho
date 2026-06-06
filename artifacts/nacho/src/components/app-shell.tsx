@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Library, Settings, CircleDot, LogOut, type LucideIcon } from "lucide-react";
 import { useClerk, useUser } from "@clerk/react";
 import { cn } from "@/lib/utils";
-import { getDisplayName } from "@/components/account-management";
+import { getDisplayName } from "@/features/account";
 import { isDevAuthBypassEnabled } from "@workspace/shared";
 import { Logo } from "@/components/logo";
 

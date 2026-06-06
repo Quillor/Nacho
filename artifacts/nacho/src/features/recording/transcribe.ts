@@ -1,4 +1,4 @@
-import type { TranscriptSegment } from "./types";
+import type { TranscriptSegment } from "@/lib/types";
 
 interface SpeechRecognitionLike {
   continuous: boolean;

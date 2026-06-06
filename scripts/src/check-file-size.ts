@@ -63,11 +63,6 @@ const PERMANENT_EXEMPTIONS: Record<string, string> = {
 // Temporarily allowed — a reorganization task will split these and remove the
 // entry. The value names the owning task for traceability.
 const LEGACY_ALLOWLIST: Record<string, string> = {
-  "artifacts/nacho/src/pages/editor.tsx": "Reorganize Nacho into features",
-  "artifacts/nacho/src/pages/studio.tsx": "Reorganize Nacho into features",
-  "artifacts/nacho/src/pages/library.tsx": "Reorganize Nacho into features",
-  "artifacts/nacho/src/components/video-player.tsx": "Reorganize Nacho into features",
-  "artifacts/nacho/src/components/account-management.tsx": "Reorganize Nacho into features",
   "artifacts/api-server/src/routes/admin.ts": "Reorganize API server with a service layer",
   "artifacts/api-server/src/routes/render.ts": "Reorganize API server with a service layer",
   "artifacts/pico/src/pages/design-system/foundations/colors.tsx": "Reorganize Pico docs & enforce strictly",

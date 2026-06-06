@@ -24,8 +24,7 @@ import { shadcn } from "@clerk/themes";
 import { Toaster } from "@workspace/pico-ui/toaster";
 import { TooltipProvider } from "@workspace/pico-ui/tooltip";
 import { isDevAuthBypassEnabled } from "@workspace/shared";
-import { TestingModeBanner } from "@/components/testing-mode-banner";
-import { DevModeToggle } from "@/components/dev-mode-toggle";
+import { TestingModeBanner, DevModeToggle, isProfileComplete } from "@/features/auth";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Studio from "@/pages/studio";
@@ -36,7 +35,6 @@ import SettingsPage from "@/pages/settings";
 import Terms from "@/pages/terms";
 import Shop from "@/pages/shop";
 import Onboarding from "@/pages/onboarding";
-import { isProfileComplete } from "@/lib/profile";
 
 const queryClient = new QueryClient();
 

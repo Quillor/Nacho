@@ -1,5 +1,5 @@
 import { GIFEncoder, quantize, applyPalette } from "gifenc";
-import { loadVideoElement } from "./media";
+import { loadVideoElement } from "@/lib/media";
 
 function seek(video: HTMLVideoElement, time: number): Promise<void> {
   return new Promise((resolve, reject) => {
