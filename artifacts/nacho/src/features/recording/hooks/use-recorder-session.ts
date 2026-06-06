@@ -57,6 +57,7 @@ export function useRecorderSession() {
   const [paused, setPaused] = useState(false);
   const [preparing, setPreparing] = useState(false);
   const [permissionError, setPermissionError] = useState<string | null>(null);
+  const [permissionDenied, setPermissionDenied] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -87,6 +88,7 @@ export function useRecorderSession() {
   const enablePreview = async () => {
     setPreparing(true);
     setPermissionError(null);
+    setPermissionDenied(false);
     let prepared: PreparedRecorder;
     try {
       prepared = await prepareRecording({
@@ -99,10 +101,11 @@ export function useRecorderSession() {
       const denied =
         err instanceof DOMException &&
         (err.name === "NotAllowedError" || err.name === "SecurityError");
+      setPermissionDenied(denied);
       setPermissionError(
         denied
-          ? "Permission was denied. Allow screen and camera access in your browser, then try again."
-          : "Couldn't access the screen or camera. Make sure a source is available and try again.",
+          ? "Permission was denied, so we couldn't start the preview."
+          : "Couldn't access the screen or camera. Make sure a source is available, then try again.",
       );
       setPreparing(false);
       return;
@@ -117,6 +120,8 @@ export function useRecorderSession() {
     preparedRef.current?.dispose();
     preparedRef.current = null;
     if (videoRef.current) videoRef.current.srcObject = null;
+    setPermissionError(null);
+    setPermissionDenied(false);
     setPhase("setup");
   };
 
@@ -296,6 +301,7 @@ export function useRecorderSession() {
     paused,
     preparing,
     permissionError,
+    permissionDenied,
     saving,
     showPreview,
     captionsAvailable,

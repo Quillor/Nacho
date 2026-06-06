@@ -141,12 +141,43 @@ export function Studio() {
             </div>
 
             {s.permissionError && (
-              <div className="flex items-start gap-3 border-2 border-destructive bg-destructive/10 p-4">
-                <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
-                <p className="text-sm font-bold text-destructive">
-                  {s.permissionError}
-                </p>
+              <div className="space-y-3 border-2 border-destructive bg-destructive/10 p-4">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-bold text-destructive">
+                      {s.permissionError}
+                    </p>
+                    {s.permissionDenied && (
+                      <p className="text-sm font-medium text-destructive/80">
+                        Click the camera or lock icon in your browser's address
+                        bar, set screen and camera access to “Allow”, then try
+                        again.
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <Button
+                  onClick={() => void s.enablePreview()}
+                  disabled={s.preparing}
+                  className="h-11 w-full border-2 border-destructive bg-destructive font-bold text-destructive-foreground hover:bg-destructive/90 disabled:opacity-70"
+                >
+                  <RotateCcw className="mr-2 h-5 w-5" />
+                  {s.preparing ? "Requesting access…" : "Try again"}
+                </Button>
               </div>
+            )}
+
+            {s.phase === "setup" && (
+              <Button
+                size="lg"
+                onClick={() => void s.enablePreview()}
+                disabled={s.preparing}
+                className="h-16 w-full border-2 border-foreground bg-accent text-xl font-black uppercase tracking-wide text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
+              >
+                <Eye className="mr-2 h-6 w-6" />
+                {s.preparing ? "Requesting access…" : "Enable Preview"}
+              </Button>
             )}
 
             {s.phase === "ready" && (
@@ -272,15 +303,9 @@ export function Studio() {
             </div>
 
             {s.phase === "setup" && (
-              <Button
-                size="lg"
-                onClick={() => void s.enablePreview()}
-                disabled={s.preparing}
-                className="mt-3 h-16 w-full border-2 border-foreground bg-accent text-xl font-black uppercase tracking-wide text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
-              >
-                <Eye className="mr-2 h-6 w-6" />
-                {s.preparing ? "Requesting access…" : "Enable Preview"}
-              </Button>
+              <p className="mt-3 text-center text-sm font-bold uppercase tracking-wide text-muted-foreground">
+                Use “Enable Preview” to grant access and see your feed.
+              </p>
             )}
 
             {s.phase === "ready" && s.source !== "screen-camera" && (
