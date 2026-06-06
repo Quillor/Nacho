@@ -126,10 +126,6 @@ export default function Home() {
             <div className="overflow-hidden aspect-video relative flex items-center justify-center p-6">
               <img src={videoPlayerNacho} alt="Nacho mascot presenting in a video player" className="w-full h-full object-contain" />
             </div>
-            {/* Decoration */}
-            <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground font-display font-extrabold text-2xl py-3 px-6 border-2 border-foreground shadow-lg -rotate-6">
-              Skip the meeting!
-            </div>
           </motion.div>
         </div>
       </section>
