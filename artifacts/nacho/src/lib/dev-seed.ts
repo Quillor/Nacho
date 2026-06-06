@@ -1,147 +1,79 @@
 import { nanoid } from "nanoid";
 import { saveRecording, listRecordings } from "./db";
-import { captureThumbnail, getBlobDuration, pickRecorderMimeType } from "./media";
+import { captureThumbnail, getBlobDuration } from "./media";
 import type { Chapter, LocalRecording, TranscriptSegment } from "./types";
 
-// Dev-only seeding of the local Library with playable sample recordings. This
-// module is only ever loaded via a dynamic import behind DEV_AUTH_BYPASS, so it
-// is dead-code eliminated from production bundles. Sample clips are generated at
-// runtime (canvas → MediaRecorder), producing real, seekable video blobs — no
-// binary assets ship with the app.
+// Dev-only seeding of the local Library with playable sample recordings. Each
+// seeded recording is an independent copy of a single real, seekable video, so
+// the Library, editor, and publish flows can be exercised with realistic data
+// without recording anything.
+//
+// The ~19MB placeholder video is fetched at runtime from a dev-only Vite
+// middleware (see vite.config.ts) rather than imported as an asset, so it is
+// never copied into the production bundle. This module itself is only ever
+// loaded via a dynamic import behind the dev-auth bypass.
+const PLACEHOLDER_VIDEO_URL = `${import.meta.env.BASE_URL}__dev-placeholder-video.webm`;
 
-interface ClipSpec {
-  title: string;
-  bg: string;
-  fg: string;
-  durationSec: number;
-  chapters: Chapter[];
-  transcript: TranscriptSegment[];
-}
+// How many sample copies to create on auto-seed and on the "Seed samples" button.
+const SAMPLE_COUNT = 5;
 
-const SAMPLES: ClipSpec[] = [
-  {
-    title: "Sample · Product walkthrough",
-    bg: "#3b2a18",
-    fg: "#f5c518",
-    durationSec: 3,
-    chapters: [
-      { time: 0, label: "Intro" },
-      { time: 1.5, label: "Highlights" },
-    ],
-    transcript: [
-      { start: 0, end: 1.5, text: "Welcome to the product walkthrough." },
-      { start: 1.5, end: 3, text: "Here are the highlights." },
-    ],
-  },
-  {
-    title: "Sample · Quick bug report",
-    bg: "#1d2a3a",
-    fg: "#7fd1ff",
-    durationSec: 2,
-    chapters: [],
-    transcript: [
-      { start: 0, end: 2, text: "Reproducing the bug step by step." },
-    ],
-  },
-  {
-    title: "Sample · Team standup",
-    bg: "#2a1d2e",
-    fg: "#ff9ecb",
-    durationSec: 2,
-    chapters: [{ time: 0, label: "Updates" }],
-    transcript: [{ start: 0, end: 2, text: "Today's standup updates." }],
-  },
+const SAMPLE_CHAPTERS: Chapter[] = [
+  { time: 0, label: "Intro" },
+  { time: 1, label: "Highlights" },
 ];
 
-function generateClip(
-  spec: ClipSpec,
-): Promise<{ blob: Blob; mimeType: string }> {
-  return new Promise((resolve, reject) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = 640;
-    canvas.height = 360;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      reject(new Error("Canvas not supported"));
-      return;
-    }
+const SAMPLE_TRANSCRIPT: TranscriptSegment[] = [
+  { start: 0, end: 1, text: "Welcome to this sample recording." },
+  { start: 1, end: 2, text: "This is dev-only placeholder content." },
+];
 
-    const stream = canvas.captureStream(30);
-    const mimeType = pickRecorderMimeType();
-    let recorder: MediaRecorder;
-    try {
-      recorder = new MediaRecorder(stream, {
-        mimeType,
-        videoBitsPerSecond: 1_000_000,
-      });
-    } catch (err) {
-      reject(err instanceof Error ? err : new Error("MediaRecorder failed"));
-      return;
-    }
-
-    const chunks: Blob[] = [];
-    recorder.ondataavailable = (e) => {
-      if (e.data.size > 0) chunks.push(e.data);
-    };
-
-    let rafId = 0;
-    const start = performance.now();
-
-    const draw = () => {
-      const t = (performance.now() - start) / 1000;
-      ctx.fillStyle = spec.bg;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      const x = canvas.width / 2 + Math.sin(t * 2.2) * 220;
-      ctx.fillStyle = spec.fg;
-      ctx.beginPath();
-      ctx.arc(x, 150, 36, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.font = "bold 30px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(spec.title, canvas.width / 2, 300);
-      ctx.font = "bold 20px monospace";
-      ctx.fillText(`${t.toFixed(1)}s`, canvas.width / 2, 60);
-      if (t < spec.durationSec) rafId = requestAnimationFrame(draw);
-    };
-
-    recorder.onstop = () => {
-      cancelAnimationFrame(rafId);
-      stream.getTracks().forEach((track) => track.stop());
-      resolve({ blob: new Blob(chunks, { type: mimeType }), mimeType });
-    };
-    recorder.onerror = () => {
-      cancelAnimationFrame(rafId);
-      stream.getTracks().forEach((track) => track.stop());
-      reject(new Error("Recording failed"));
-    };
-
-    recorder.start();
-    draw();
-    window.setTimeout(() => {
-      if (recorder.state !== "inactive") recorder.stop();
-    }, spec.durationSec * 1000 + 200);
-  });
+interface SampleSource {
+  blob: Blob;
+  mimeType: string;
+  duration: number;
+  thumbnail: Blob | null;
 }
 
-async function buildRecording(spec: ClipSpec): Promise<LocalRecording> {
-  const { blob, mimeType } = await generateClip(spec);
-  let duration = spec.durationSec;
+// Fetch the placeholder video once and derive its duration + a thumbnail so the
+// per-copy work is just cloning the blob and writing a record.
+async function loadSampleSource(): Promise<SampleSource> {
+  const res = await fetch(PLACEHOLDER_VIDEO_URL);
+  if (!res.ok) {
+    throw new Error(`Failed to load placeholder video (${res.status})`);
+  }
+  const blob = await res.blob();
+  const mimeType = blob.type || "video/webm";
+
+  let duration = 0;
   try {
     const measured = await getBlobDuration(blob);
     if (Number.isFinite(measured) && measured > 0) duration = measured;
   } catch {
-    /* keep nominal duration */
+    /* fall back to 0; cards still render */
   }
+
   let thumbnail: Blob | null = null;
   try {
-    thumbnail = await captureThumbnail(blob, Math.min(0.2, duration / 2));
+    thumbnail = await captureThumbnail(
+      blob,
+      duration > 0 ? Math.min(0.2, duration / 2) : 0.1,
+    );
   } catch {
     thumbnail = null;
   }
 
+  return { blob, mimeType, duration, thumbnail };
+}
+
+function buildRecording(source: SampleSource, index: number): LocalRecording {
+  // Each record gets its own Blob handle; IndexedDB structured-clones it on save
+  // so the stored copies are fully independent.
+  const blob = source.blob.slice(0, source.blob.size, source.mimeType);
+  const duration = source.duration;
+
   return {
     id: nanoid(12),
-    title: spec.title,
+    title: `Sample recording ${index + 1}`,
     description: "<p>Dev-only sample recording for testing.</p>",
     durationSec: duration,
     trimStart: 0,
@@ -150,14 +82,14 @@ async function buildRecording(spec: ClipSpec): Promise<LocalRecording> {
     source: "screen",
     selfieCorner: null,
     captionLang: null,
-    chapters: spec.chapters,
+    chapters: SAMPLE_CHAPTERS,
     displayChaptersOnVideo: false,
     notifyOnView: false,
-    transcript: spec.transcript,
-    createdAt: Date.now(),
+    transcript: SAMPLE_TRANSCRIPT,
+    createdAt: Date.now() + index,
     blob,
-    thumbnail,
-    mimeType,
+    thumbnail: source.thumbnail,
+    mimeType: source.mimeType,
     visibility: "private",
     shareId: null,
     videoPath: null,
@@ -167,15 +99,16 @@ async function buildRecording(spec: ClipSpec): Promise<LocalRecording> {
 }
 
 /**
- * Write 3 playable sample recordings into IndexedDB so the Library, editor and
- * publish flows can be exercised without recording anything. Returns the number
- * of recordings created.
+ * Write {@link SAMPLE_COUNT} playable sample recordings into IndexedDB so the
+ * Library, editor and publish flows can be exercised without recording anything.
+ * Each recording is an independent copy of the same real placeholder video.
+ * Returns the number of recordings created.
  */
 export async function seedSampleRecordings(): Promise<number> {
+  const source = await loadSampleSource();
   let created = 0;
-  for (const spec of SAMPLES) {
-    const recording = await buildRecording(spec);
-    await saveRecording(recording);
+  for (let i = 0; i < SAMPLE_COUNT; i++) {
+    await saveRecording(buildRecording(source, i));
     created += 1;
   }
   return created;

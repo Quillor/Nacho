@@ -21,3 +21,4 @@
 - [View counting trigger](view-count-trigger.md) — a view (count + notify-on-view email) registers only on actual playback start, not page load; once-per-session dedupe.
 - [Figma plugin download package](figma-plugin-download.md) — pico build/dev packs lib/pico-figma-plugin into public/pico-figma-plugin.zip (flat manifest) via pack.mjs+fflate; regenerated from source, gitignored.
 - [Description editor (TipTap)](description-editor-tiptap.md) — recording descriptions use a TipTap WYSIWYG editor that outputs HTML; replaced the old execCommand contentEditable.
+- [Vite dev-only large assets](vite-dev-only-assets.md) — asset `?url` imports in dynamically-imported dev-only modules still ship to prod; serve via an `apply:"serve"` plugin middleware + runtime fetch instead.

@@ -1,8 +1,44 @@
-import { defineConfig } from "vite";
+import { defineConfig, type PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import fs from "fs";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+
+// Dev-only: serve the ~19MB placeholder video used by the Library dev-seed at a
+// stable URL. `apply: "serve"` means this never participates in production
+// builds, so the asset is never copied into the prod bundle.
+const DEV_PLACEHOLDER_VIDEO_PATH = "/__dev-placeholder-video.webm";
+
+function devPlaceholderVideo(): PluginOption {
+  const assetPath = path.resolve(
+    import.meta.dirname,
+    "..",
+    "..",
+    "attached_assets",
+    "placeholder_1780720147726.webm",
+  );
+  return {
+    name: "nacho-dev-placeholder-video",
+    apply: "serve",
+    configureServer(server) {
+      server.middlewares.use(DEV_PLACEHOLDER_VIDEO_PATH, (_req, res) => {
+        if (!fs.existsSync(assetPath)) {
+          res.statusCode = 404;
+          res.end();
+          return;
+        }
+        res.writeHead(200, { "Content-Type": "video/webm" });
+        fs.createReadStream(assetPath)
+          .on("error", () => {
+            res.statusCode = 500;
+            res.end();
+          })
+          .pipe(res);
+      });
+    },
+  };
+}
 
 const rawPort = process.env.PORT;
 
@@ -32,6 +68,7 @@ export default defineConfig({
     react(),
     tailwindcss({ optimize: false }),
     runtimeErrorOverlay(),
+    devPlaceholderVideo(),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [
