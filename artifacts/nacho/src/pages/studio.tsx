@@ -526,17 +526,26 @@ export default function Studio() {
                           aria-pressed={selected}
                           onClick={() => changeCorner(c.id)}
                           className={cn(
-                            "pointer-events-auto absolute flex items-center justify-center rounded-full border-2 border-foreground transition-all",
+                            "pointer-events-auto absolute flex items-center justify-center rounded-full border-2 border-foreground bg-primary text-primary-foreground transition-all",
                             c.pos,
                             selected
-                              ? "h-14 w-14 bg-primary text-primary-foreground shadow-md"
-                              : "h-10 w-10 bg-background/70 text-foreground hover:bg-background hover:scale-105",
+                              ? "h-28 w-28 ring-4 ring-foreground shadow-md"
+                              : "h-20 w-20 bg-primary/70 hover:bg-primary hover:scale-105",
                           )}
                         >
-                          {selected && <User className="h-7 w-7" />}
+                          {selected && <User className="h-14 w-14" />}
                         </button>
                       );
                     })}
+                  </div>
+                )}
+
+              {source === "screen-camera" &&
+                (phase === "setup" || phase === "ready") && (
+                  <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center px-4">
+                    <p className="border-2 border-foreground bg-background px-3 py-1.5 text-center text-xs font-bold uppercase tracking-wide text-foreground shadow-md">
+                      Tap a corner to place your selfie.
+                    </p>
                   </div>
                 )}
             </div>
@@ -552,13 +561,6 @@ export default function Studio() {
                 {preparing ? "Requesting access…" : "Enable Preview"}
               </Button>
             )}
-
-            {source === "screen-camera" &&
-              (phase === "setup" || phase === "ready") && (
-                <p className="mt-3 text-center text-sm font-bold uppercase tracking-wide text-muted-foreground">
-                  Tap a corner to place your selfie.
-                </p>
-              )}
 
             {phase === "ready" && source !== "screen-camera" && (
               <p className="mt-3 text-center text-sm font-bold uppercase tracking-wide text-muted-foreground">
