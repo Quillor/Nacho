@@ -62,7 +62,7 @@ function UserControl() {
       <button
         type="button"
         onClick={handleSignOut}
-        className="flex items-center gap-2 border-2 border-transparent px-3 py-2 font-bold uppercase tracking-wide text-foreground transition-all hover:border-foreground hover:bg-destructive hover:text-destructive-foreground"
+        className="flex items-center gap-2 border-2 border-foreground px-3 py-2 font-bold uppercase tracking-wide text-foreground transition-all hover:bg-muted"
         aria-label="Sign out"
       >
         <LogOut className="h-4 w-4" />
