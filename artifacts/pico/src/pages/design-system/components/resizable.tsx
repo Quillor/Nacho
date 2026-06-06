@@ -18,11 +18,11 @@ export default function ResizableDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <ResizablePanelGroup
             direction="horizontal"
-            className="min-h-[240px] w-full max-w-xl border-2 border-foreground shadow-sm rounded-sm bg-card"
+            className="min-h-[240px] w-full max-w-xl border border-foreground shadow-sm rounded-sm bg-card"
           >
             <ResizablePanel defaultSize={60}>
               <div className="flex h-full items-center justify-center p-6">
@@ -43,7 +43,7 @@ export default function ResizableDocs() {
   ResizableHandle,
 } from "@workspace/pico-ui/resizable"
 
-<ResizablePanelGroup direction="horizontal" className="min-h-[240px] border-2 border-foreground rounded-sm">
+<ResizablePanelGroup direction="horizontal" className="min-h-[240px] border border-foreground rounded-sm">
   <ResizablePanel defaultSize={60}>
     <div className="flex h-full items-center justify-center p-6">Player</div>
   </ResizablePanel>

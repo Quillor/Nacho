@@ -45,7 +45,7 @@ export default function LoadingPattern() {
         <Preview>
           <div className="grid gap-6 sm:grid-cols-3">
             {[0, 1, 2].map((i) => (
-              <div key={i} className="border-4 border-foreground bg-card">
+              <div key={i} className="border-2 border-foreground bg-card">
                 <Skeleton className="aspect-video w-full rounded-none" />
                 <div className="space-y-2 p-4">
                   <Skeleton className="h-4 w-1/2" />
@@ -69,7 +69,7 @@ export default function LoadingPattern() {
               <span>Uploading recording</span>
               <span>64%</span>
             </div>
-            <Progress value={64} className="border-2 border-foreground" />
+            <Progress value={64} className="border border-foreground" />
           </div>
         </Preview>
       </Section>

@@ -73,7 +73,7 @@ function ToolbarButton({
         onClick();
       }}
       className={cn(
-        "flex h-9 w-9 items-center justify-center border-2 transition-colors disabled:opacity-40",
+        "flex h-9 w-9 items-center justify-center border transition-colors disabled:opacity-40",
         active
           ? "border-foreground bg-primary text-primary-foreground"
           : "border-transparent hover:border-foreground hover:bg-background",
@@ -133,8 +133,8 @@ export function RichTextEditor({
   if (!editor) return null;
 
   return (
-    <div className="border-4 border-foreground bg-background">
-      <div className="flex flex-wrap items-center gap-1 border-b-4 border-foreground bg-muted p-2">
+    <div className="border-2 border-foreground bg-background">
+      <div className="flex flex-wrap items-center gap-1 border-b-2 border-foreground bg-muted p-2">
         <ToolbarButton
           label="Paragraph"
           active={editor.isActive("paragraph")}

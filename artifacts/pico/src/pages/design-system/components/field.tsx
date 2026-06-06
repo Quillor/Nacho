@@ -26,8 +26,8 @@ export default function FieldDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <FieldSet className="w-full max-w-sm">
             <FieldLegend className="uppercase tracking-wide">
               Recording settings
@@ -40,7 +40,7 @@ export default function FieldDocs() {
                 <Input
                   id="title"
                   placeholder="Q3 product walkthrough"
-                  className="border-2 border-foreground font-medium"
+                  className="border border-foreground font-medium"
                 />
                 <FieldDescription>
                   Shown in your library and on the share page.

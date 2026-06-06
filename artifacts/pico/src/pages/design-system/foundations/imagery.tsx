@@ -119,9 +119,9 @@ export default function Imagery() {
           {ILLUSTRATIONS.map((ill) => (
             <div
               key={ill.file}
-              className="group border-4 border-foreground rounded-sm overflow-hidden shadow-md bg-background flex flex-col hover:-translate-y-2 transition-transform duration-300"
+              className="group border-2 border-foreground rounded-sm overflow-hidden shadow-md bg-background flex flex-col hover:-translate-y-2 transition-transform duration-300"
             >
-              <div className="aspect-square w-full bg-accent/10 border-b-4 border-foreground p-6 flex items-center justify-center overflow-hidden">
+              <div className="aspect-square w-full bg-accent/10 border-b-2 border-foreground p-6 flex items-center justify-center overflow-hidden">
                 <img
                   src={ill.src}
                   alt={ill.caption}
@@ -172,12 +172,12 @@ export default function Imagery() {
           <button
             onClick={copyPrompt}
             aria-label="Copy prompt template"
-            className="absolute top-3 right-3 z-10 flex items-center gap-1.5 bg-accent text-accent-foreground border-2 border-foreground rounded-sm px-3 py-1.5 text-xs font-bold uppercase tracking-wide shadow-xs hover:translate-y-[2px] hover:shadow-none transition-all"
+            className="absolute top-3 right-3 z-10 flex items-center gap-1.5 bg-accent text-accent-foreground border border-foreground rounded-sm px-3 py-1.5 text-xs font-bold uppercase tracking-wide shadow-xs hover:translate-y-[2px] hover:shadow-none transition-all"
           >
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             {copied ? "Copied" : "Copy"}
           </button>
-          <pre className="bg-foreground text-background p-5 pt-14 rounded-sm border-4 border-foreground overflow-x-auto text-sm font-mono leading-relaxed shadow-[4px_4px_0px_0px_var(--primary)] whitespace-pre-wrap">
+          <pre className="bg-foreground text-background p-5 pt-14 rounded-sm border-2 border-foreground overflow-x-auto text-sm font-mono leading-relaxed shadow-[4px_4px_0px_0px_var(--primary)] whitespace-pre-wrap">
             <code>{PROMPT_TEMPLATE}</code>
           </pre>
         </div>
@@ -186,7 +186,7 @@ export default function Imagery() {
           <h3 className="text-sm font-bold uppercase tracking-wider text-foreground/50">Example fills for {"{SUBJECT/SCENE}"}</h3>
           <ul className="space-y-2 max-w-2xl">
             {EXAMPLE_FILLS.map((ex, i) => (
-              <li key={i} className="font-mono text-sm bg-accent/10 border-2 border-foreground/20 rounded-sm px-3 py-2 text-foreground/80">
+              <li key={i} className="font-mono text-sm bg-accent/10 border border-foreground/20 rounded-sm px-3 py-2 text-foreground/80">
                 {ex}
               </li>
             ))}

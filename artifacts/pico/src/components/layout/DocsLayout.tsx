@@ -171,7 +171,7 @@ function ThemeToggle({
       type="button"
       onClick={onToggle}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-sm border-2 border-foreground bg-background text-foreground shadow-xs transition-all hover:-translate-y-0.5 active:translate-y-0 ${className}`}
+      className={`inline-flex h-9 w-9 items-center justify-center rounded-sm border border-foreground bg-background text-foreground shadow-xs transition-all hover:-translate-y-0.5 active:translate-y-0 ${className}`}
     >
       {theme === "dark" ? (
         <Sun className="h-4 w-4" />
@@ -224,8 +224,8 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <SidebarProvider>
-      <Sidebar data-pico-section="sidebar" className="border-r-4 border-foreground" variant="sidebar" collapsible="offcanvas">
-        <SidebarHeader className="border-b-4 border-foreground p-6 bg-accent">
+      <Sidebar data-pico-section="sidebar" className="border-r-2 border-foreground" variant="sidebar" collapsible="offcanvas">
+        <SidebarHeader className="border-b-2 border-foreground p-6 bg-accent">
           <div className="flex items-start justify-between gap-2">
             <div className="text-accent-foreground">
               <Link href="/" className="font-display font-extrabold text-3xl tracking-tight uppercase text-accent-foreground">
@@ -286,8 +286,8 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
         </SidebarContent>
       </Sidebar>
       <SidebarInset className="bg-background min-h-[100dvh] flex flex-col">
-        <header className="md:hidden flex items-center p-4 border-b-4 border-foreground bg-accent">
-          <SidebarTrigger className="bg-foreground text-background hover:bg-foreground/90 border-2 border-foreground shadow-xs rounded-sm" />
+        <header className="md:hidden flex items-center p-4 border-b-2 border-foreground bg-accent">
+          <SidebarTrigger className="bg-foreground text-background hover:bg-foreground/90 border border-foreground shadow-xs rounded-sm" />
           <span className="ml-4 font-display font-extrabold text-xl tracking-tight uppercase text-accent-foreground">Pico.</span>
           <ThemeToggle theme={theme} onToggle={toggleTheme} className="ml-auto" />
         </header>

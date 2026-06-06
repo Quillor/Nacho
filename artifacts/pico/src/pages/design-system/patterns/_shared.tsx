@@ -17,7 +17,7 @@ export function PageHeader({
 }) {
   return (
     <div className="space-y-4">
-      <div className="inline-block px-3 py-1 bg-accent border-2 border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-xs text-accent-foreground">
+      <div className="inline-block px-3 py-1 bg-accent border border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-xs text-accent-foreground">
         {eyebrow}
       </div>
  <h1 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[0.9] text-foreground">
@@ -39,7 +39,7 @@ export function Section({
 }) {
   return (
     <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">
         {title}
       </h2>
       {children}
@@ -56,7 +56,7 @@ export function Preview({
 }) {
   return (
     <div
-      className={`p-8 border-4 border-foreground rounded-sm bg-background/50 ${className}`}
+      className={`p-8 border-2 border-foreground rounded-sm bg-background/50 ${className}`}
     >
       {children}
     </div>
@@ -80,16 +80,16 @@ export function DoDont({
 }) {
   return (
     <div className="grid gap-6 md:grid-cols-2">
-      <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
-        <div className="mb-3 inline-flex items-center gap-2 border-2 border-foreground bg-accent px-3 py-1 rounded-sm font-black uppercase text-xs tracking-widest text-accent-foreground">
+      <div className="border-2 border-foreground rounded-sm bg-background p-6 shadow-sm">
+        <div className="mb-3 inline-flex items-center gap-2 border border-foreground bg-accent px-3 py-1 rounded-sm font-black uppercase text-xs tracking-widest text-accent-foreground">
           <Check className="h-4 w-4" /> Do
         </div>
         <p className="font-medium leading-relaxed text-foreground/80">
           {doText}
         </p>
       </div>
-      <div className="border-4 border-destructive rounded-sm bg-background p-6 shadow-sm">
-        <div className="mb-3 inline-flex items-center gap-2 border-2 border-destructive bg-destructive px-3 py-1 rounded-sm font-black uppercase text-xs tracking-widest text-destructive-foreground">
+      <div className="border-2 border-destructive rounded-sm bg-background p-6 shadow-sm">
+        <div className="mb-3 inline-flex items-center gap-2 border border-destructive bg-destructive px-3 py-1 rounded-sm font-black uppercase text-xs tracking-widest text-destructive-foreground">
           <X className="h-4 w-4" /> Don't
         </div>
         <p className="font-medium leading-relaxed text-foreground/80">
@@ -116,7 +116,7 @@ export function BuiltWith({
         <Link
           key={item.href}
           href={item.href}
-          className="inline-flex items-center gap-1 border-2 border-foreground bg-card px-3 py-1 rounded-sm font-bold uppercase text-xs tracking-wide shadow-xs transition-transform hover:-translate-y-0.5"
+          className="inline-flex items-center gap-1 border border-foreground bg-card px-3 py-1 rounded-sm font-bold uppercase text-xs tracking-wide shadow-xs transition-transform hover:-translate-y-0.5"
         >
           {item.title}
           <ArrowRight className="h-3 w-3" />
@@ -138,7 +138,7 @@ export function PatternIndexCard({
   return (
     <Link
       href={href}
-      className="group flex flex-col border-4 border-foreground p-6 rounded-sm bg-background shadow-md transition-transform hover:-translate-y-1"
+      className="group flex flex-col border-2 border-foreground p-6 rounded-sm bg-background shadow-md transition-transform hover:-translate-y-1"
     >
  <h3 className="text-2xl font-display font-extrabold mb-2">
         {title}

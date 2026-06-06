@@ -22,13 +22,13 @@ export default function CarouselDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <Carousel className="w-full max-w-xs">
             <CarouselContent>
               {recordings.map((title, index) => (
                 <CarouselItem key={index}>
-                  <div className="flex aspect-video flex-col items-center justify-center gap-2 border-2 border-foreground rounded-sm bg-card shadow-sm p-6">
+                  <div className="flex aspect-video flex-col items-center justify-center gap-2 border border-foreground rounded-sm bg-card shadow-sm p-6">
                     <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
                       Recording {index + 1}
                     </span>
@@ -55,7 +55,7 @@ export default function CarouselDocs() {
   <CarouselContent>
     {recordings.map((title, index) => (
       <CarouselItem key={index}>
-        <div className="flex aspect-video flex-col items-center justify-center border-2 border-foreground rounded-sm bg-card shadow-sm p-6">
+        <div className="flex aspect-video flex-col items-center justify-center border border-foreground rounded-sm bg-card shadow-sm p-6">
           {title}
         </div>
       </CarouselItem>

@@ -116,7 +116,7 @@ export default function UserDetail({ userId }: { userId: string }) {
         <div className="flex-1 space-y-6">
           <Card>
             <CardContent className="p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-              <Avatar className="h-20 w-20 border-2 border-border">
+              <Avatar className="h-20 w-20 border border-border">
                 <AvatarImage src={user.imageUrl || undefined} />
                 <AvatarFallback className="text-2xl">
                   {user.displayName?.[0] || user.email[0].toUpperCase()}

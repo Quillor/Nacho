@@ -67,7 +67,7 @@ export default function Home() {
     <div className="min-h-[100dvh] bg-background text-foreground overflow-hidden selection:bg-accent selection:text-accent-foreground font-sans">
 
       {/* Navigation */}
-      <nav data-pico-section="navbar" className="fixed top-0 left-0 right-0 z-50 border-b-4 border-foreground bg-background py-4 px-6 md:px-12 flex items-center justify-between">
+      <nav data-pico-section="navbar" className="fixed top-0 left-0 right-0 z-50 border-b-2 border-foreground bg-background py-4 px-6 md:px-12 flex items-center justify-between">
         <Link href="/" className="flex items-center" aria-label="Nacho home">
           <Logo className="h-9" />
         </Link>
@@ -84,7 +84,7 @@ export default function Home() {
       <main>
 
       {/* 1. Hero Section */}
-      <section data-pico-section="hero" className="relative pt-40 pb-24 px-6 md:px-12 border-b-4 border-foreground overflow-hidden bg-accent">
+      <section data-pico-section="hero" className="relative pt-40 pb-24 px-6 md:px-12 border-b-2 border-foreground overflow-hidden bg-accent">
         <div className="max-w-7xl mx-auto relative z-10 grid md:grid-cols-2 gap-12 items-center">
           <motion.div
             initial="hidden"
@@ -104,10 +104,10 @@ export default function Home() {
               Record a snackable screen walkthrough in seconds and drop the link wherever your team works. They watch on their own time — and the meeting that could've been an email never happens.
             </motion.p>
             <motion.div variants={fadeIn} className="flex flex-wrap gap-4">
-              <Button asChild size="lg" variant="secondary" className="border-2 border-foreground shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all">
+              <Button asChild size="lg" variant="secondary" className="border border-foreground shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all">
                 <Link href="/sign-up">Start Recording Free</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-2 border-foreground text-accent-foreground shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all">
+              <Button asChild size="lg" variant="outline" className="border border-foreground text-accent-foreground shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all">
                 <Link href="/sign-in">My Library</Link>
               </Button>
             </motion.div>
@@ -119,11 +119,11 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="border-4 border-foreground shadow-xl bg-background rounded-xl overflow-hidden aspect-video relative flex items-center justify-center p-6">
+            <div className="border-2 border-foreground shadow-xl bg-background rounded-xl overflow-hidden aspect-video relative flex items-center justify-center p-6">
               <img src={videoPlayerNacho} alt="Nacho mascot presenting in a video player" className="w-full h-full object-contain" />
             </div>
             {/* Decoration */}
-            <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground font-display font-extrabold text-2xl py-3 px-6 border-4 border-foreground shadow-lg -rotate-6">
+            <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground font-display font-extrabold text-2xl py-3 px-6 border-2 border-foreground shadow-lg -rotate-6">
               Skip the meeting!
             </div>
           </motion.div>
@@ -131,7 +131,7 @@ export default function Home() {
       </section>
 
       {/* 2. Value Prop */}
-      <section data-pico-section="value-prop" className="py-24 px-6 md:px-12 border-b-4 border-foreground bg-foreground text-background">
+      <section data-pico-section="value-prop" className="py-24 px-6 md:px-12 border-b-2 border-foreground bg-foreground text-background">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9, rotate: 2 }}
@@ -166,10 +166,10 @@ export default function Home() {
       </section>
 
       {/* 3. Features Grid */}
-      <section data-pico-section="features" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-background">
+      <section data-pico-section="features" className="py-32 px-6 md:px-12 border-b-2 border-foreground bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16 flex items-center gap-4">
-            <div className="w-12 h-12 bg-accent border-4 border-foreground rounded-sm shadow-xs flex items-center justify-center">
+            <div className="w-12 h-12 bg-accent border-2 border-foreground rounded-sm shadow-xs flex items-center justify-center">
               <Zap className="w-6 h-6 text-accent-foreground" />
             </div>
             <h2 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight text-foreground">Power Moves</h2>
@@ -186,8 +186,8 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
                 >
-                  <Card className="h-full border-4 border-foreground shadow-xl overflow-hidden hover:-translate-y-2 transition-transform duration-300 group flex flex-col">
-                    <div className={`aspect-[16/9] w-full border-b-4 border-foreground relative overflow-hidden flex items-center justify-center ${feature.media}`}>
+                  <Card className="h-full border-2 border-foreground shadow-xl overflow-hidden hover:-translate-y-2 transition-transform duration-300 group flex flex-col">
+                    <div className={`aspect-[16/9] w-full border-b-2 border-foreground relative overflow-hidden flex items-center justify-center ${feature.media}`}>
                       <Icon className={`w-24 h-24 transition-transform duration-500 group-hover:scale-110 ${feature.iconColor}`} strokeWidth={1.5} />
                     </div>
                     <div className="p-8 flex-1 flex flex-col justify-between">
@@ -206,7 +206,7 @@ export default function Home() {
       </section>
 
       {/* 4. How it Works (Steps) */}
-      <section data-pico-section="how-it-works" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-primary text-primary-foreground relative overflow-hidden">
+      <section data-pico-section="how-it-works" className="py-32 px-6 md:px-12 border-b-2 border-foreground bg-primary text-primary-foreground relative overflow-hidden">
         <div className="max-w-5xl mx-auto relative z-10">
           <h2 className="text-5xl md:text-7xl font-display font-extrabold tracking-tight text-center mb-6 text-primary-foreground">Record once, share with everyone.</h2>
           <motion.img
@@ -243,7 +243,7 @@ export default function Home() {
       </section>
 
       {/* 5. Big Testimonial */}
-      <section data-pico-section="testimonial" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-accent">
+      <section data-pico-section="testimonial" className="py-32 px-6 md:px-12 border-b-2 border-foreground bg-accent">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -255,7 +255,7 @@ export default function Home() {
               "We swapped our standup for snackable Nachos. I record once and the whole team watches whenever — it's like being in ten places at once without repeating myself."
             </h2>
             <div className="flex items-center justify-center gap-4">
-              <div className="w-16 h-16 rounded-full border-4 border-foreground bg-background overflow-hidden">
+              <div className="w-16 h-16 rounded-full border-2 border-foreground bg-background overflow-hidden">
                 <div className="w-full h-full bg-primary"></div>
               </div>
               <div className="text-left">
@@ -268,7 +268,7 @@ export default function Home() {
       </section>
 
       {/* 6. Integrations */}
-      <section data-pico-section="integrations" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-background overflow-hidden">
+      <section data-pico-section="integrations" className="py-32 px-6 md:px-12 border-b-2 border-foreground bg-background overflow-hidden">
         <div className="max-w-7xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-6xl font-display font-extrabold tracking-tight mb-6 text-foreground">Plays nice with others</h2>
           <p className="text-xl font-medium leading-relaxed text-foreground/80 max-w-2xl mx-auto">Drop a Nacho link wherever your team already works and it unfurls into a beautiful, playable clip — no app to install, no meeting to schedule.</p>
@@ -282,7 +282,7 @@ export default function Home() {
             transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
           >
             {integrations.map((tool) => (
-              <div key={tool} className="px-8 py-4 border-4 border-foreground bg-card text-card-foreground shadow-lg font-display font-extrabold text-2xl inline-flex items-center gap-2">
+              <div key={tool} className="px-8 py-4 border-2 border-foreground bg-card text-card-foreground shadow-lg font-display font-extrabold text-2xl inline-flex items-center gap-2">
                 <CheckCircle2 className="w-6 h-6 text-foreground" />
                 {tool}
               </div>
@@ -309,7 +309,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer data-pico-section="footer" className="py-12 px-6 md:px-12 border-t-4 border-foreground bg-background text-foreground">
+      <footer data-pico-section="footer" className="py-12 px-6 md:px-12 border-t-2 border-foreground bg-background text-foreground">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <Link href="/" className="flex items-center" aria-label="Nacho home">
             <Logo className="h-10" />

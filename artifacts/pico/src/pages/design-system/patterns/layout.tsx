@@ -26,10 +26,10 @@ export default function LayoutPattern() {
           until hovered.
         </Note>
         <Preview className="!p-0 overflow-hidden">
-          <div className="border-b-4 border-foreground bg-background">
+          <div className="border-b-2 border-foreground bg-background">
             <div className="flex items-center justify-between gap-4 px-5 py-3">
               <div className="flex items-center gap-2">
-                <div className="flex h-9 w-9 items-center justify-center rounded-sm border-2 border-foreground bg-accent shadow-sm">
+                <div className="flex h-9 w-9 items-center justify-center rounded-sm border border-foreground bg-accent shadow-sm">
                   <Video className="h-5 w-5 text-accent-foreground" />
                 </div>
  <span className="font-display text-xl font-extrabold tracking-tight">
@@ -37,13 +37,13 @@ export default function LayoutPattern() {
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="flex items-center gap-2 border-2 border-foreground bg-accent px-3 py-1.5 font-bold uppercase text-xs tracking-wide text-accent-foreground shadow-sm">
+                <span className="flex items-center gap-2 border border-foreground bg-accent px-3 py-1.5 font-bold uppercase text-xs tracking-wide text-accent-foreground shadow-sm">
                   <CircleDot className="h-4 w-4" /> Record
                 </span>
-                <span className="flex items-center gap-2 border-2 border-transparent px-3 py-1.5 font-bold uppercase text-xs tracking-wide">
+                <span className="flex items-center gap-2 border border-transparent px-3 py-1.5 font-bold uppercase text-xs tracking-wide">
                   <Library className="h-4 w-4" /> Library
                 </span>
-                <span className="flex items-center gap-2 border-2 border-transparent px-3 py-1.5 font-bold uppercase text-xs tracking-wide">
+                <span className="flex items-center gap-2 border border-transparent px-3 py-1.5 font-bold uppercase text-xs tracking-wide">
                   <Settings className="h-4 w-4" /> Settings
                 </span>
               </div>
@@ -88,7 +88,7 @@ export default function LayoutPattern() {
           through the nav.
         </Note>
         <Preview>
-          <button className="inline-flex items-center gap-1 border-2 border-foreground bg-card px-3 py-1.5 font-bold uppercase text-xs tracking-wide shadow-sm">
+          <button className="inline-flex items-center gap-1 border border-foreground bg-card px-3 py-1.5 font-bold uppercase text-xs tracking-wide shadow-sm">
             <ChevronLeft className="h-4 w-4" /> Back to library
           </button>
         </Preview>

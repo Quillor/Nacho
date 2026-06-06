@@ -55,8 +55,8 @@ function needsLightText(step: number) {
 function Ramp({ hue, label, blurb }: { hue: string; label: string; blurb: string }) {
   const shades = primitives[hue] ?? [];
   return (
-    <div className="border-4 border-foreground rounded-sm overflow-hidden shadow-md">
-      <div className="flex items-baseline justify-between gap-4 p-5 bg-background border-b-4 border-foreground">
+    <div className="border-2 border-foreground rounded-sm overflow-hidden shadow-md">
+      <div className="flex items-baseline justify-between gap-4 p-5 bg-background border-b-2 border-foreground">
         <h3 className="text-2xl font-display font-extrabold">{label}</h3>
         <p className="text-foreground/70 font-medium text-sm max-w-md text-right hidden sm:block">{blurb}</p>
       </div>
@@ -84,7 +84,7 @@ function Swatch({ color }: { color: ColorToken }) {
   return (
     <div className="flex items-center gap-3">
       <span
-        className="inline-block h-7 w-7 rounded-sm border-2 border-foreground shrink-0"
+        className="inline-block h-7 w-7 rounded-sm border border-foreground shrink-0"
         style={{ backgroundColor: color.hex }}
       />
       <span className="font-mono text-xs">{color.hex}</span>
@@ -94,10 +94,10 @@ function Swatch({ color }: { color: ColorToken }) {
 
 function TokenTable({ group }: { group: SemanticGroup }) {
   return (
-    <div className="overflow-x-auto border-t-4 border-foreground">
+    <div className="overflow-x-auto border-t-2 border-foreground">
       <table className="w-full border-collapse text-left min-w-[560px]">
         <thead>
-          <tr className="bg-background text-foreground border-b-2 border-foreground/20 font-display">
+          <tr className="bg-background text-foreground border-b border-foreground/20 font-display">
             <th className="px-5 py-3 text-xs uppercase tracking-wide">Figma variable</th>
             <th className="px-5 py-3 text-xs uppercase tracking-wide">Tailwind</th>
             <th className="px-5 py-3 text-xs uppercase tracking-wide">Light</th>
@@ -132,7 +132,7 @@ function TokenTable({ group }: { group: SemanticGroup }) {
 
 function GroupShell({ group, children }: { group: SemanticGroup; children: React.ReactNode }) {
   return (
-    <div className="border-4 border-foreground rounded-sm overflow-hidden shadow-md">
+    <div className="border-2 border-foreground rounded-sm overflow-hidden shadow-md">
       {children}
       <TokenTable group={group} />
     </div>
@@ -143,7 +143,7 @@ function PrimaryCombo({ group }: { group: SemanticGroup }) {
   return (
     <GroupShell group={group}>
       <div className="grid md:grid-cols-[1fr_2fr]">
-        <div className="bg-foreground text-background p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
+        <div className="bg-foreground text-background p-8 border-b-2 md:border-b-0 md:border-r-2 border-foreground flex flex-col justify-center">
           <h3 className="text-2xl font-bold mb-2">Primary</h3>
           <p className="opacity-80 mb-4">Brown on warm background. The standard reading experience — warm, legible, and grounded.</p>
           <Badge variant="outline" className="w-fit border-background text-background">Accessible AAA</Badge>
@@ -152,7 +152,7 @@ function PrimaryCombo({ group }: { group: SemanticGroup }) {
           <h4 className="text-3xl md:text-4xl mb-4 font-display font-extrabold">Daily bread</h4>
           <p className="text-lg font-medium mb-8 max-w-md">This is where actual reading happens. Softer than pure white on black, and friendlier on the eyes.</p>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
+            <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
               Solid Action
             </Button>
             <Button size="lg" variant="outline" className="border-foreground text-foreground bg-transparent hover:bg-accent hover:text-accent-foreground shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
@@ -169,7 +169,7 @@ function AccentCombo({ group }: { group: SemanticGroup }) {
   return (
     <GroupShell group={group}>
       <div className="grid md:grid-cols-[1fr_2fr]">
-        <div className="bg-foreground text-background p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
+        <div className="bg-foreground text-background p-8 border-b-2 md:border-b-0 md:border-r-2 border-foreground flex flex-col justify-center">
           <h3 className="text-2xl font-bold mb-2">Accent</h3>
           <p className="opacity-80 mb-4">Yellow on Brown. Extremely high contrast, impossible to ignore. Banners, CTAs, emphasis.</p>
           <Badge variant="outline" className="w-fit border-background text-background">Accessible AAA</Badge>
@@ -178,7 +178,7 @@ function AccentCombo({ group }: { group: SemanticGroup }) {
           <h4 className="text-3xl md:text-4xl mb-4 font-display font-extrabold">Loud & clear</h4>
           <p className="text-lg font-medium mb-8 max-w-md">Our bread and butter. Perfectly captures the snack-brand energy — you cannot miss it.</p>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.3)] transition-all font-bold">
+            <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.3)] transition-all font-bold">
               Solid Action
             </Button>
             <Button size="lg" variant="outline" className="border-accent-foreground text-accent-foreground hover:bg-foreground hover:text-background shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
@@ -195,7 +195,7 @@ function InverseCombo({ group }: { group: SemanticGroup }) {
   return (
     <GroupShell group={group}>
       <div className="grid md:grid-cols-[1fr_2fr]">
-        <div className="bg-accent text-accent-foreground p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
+        <div className="bg-accent text-accent-foreground p-8 border-b-2 md:border-b-0 md:border-r-2 border-foreground flex flex-col justify-center">
           <h3 className="text-2xl font-bold mb-2">Inverse</h3>
           <p className="opacity-80 mb-4">Light on deep brown. Flips the canvas for footers, hero breaks, and dramatic moments.</p>
           <Badge variant="outline" className="w-fit border-accent-foreground text-accent-foreground">Accessible AAA</Badge>
@@ -204,7 +204,7 @@ function InverseCombo({ group }: { group: SemanticGroup }) {
           <h4 className="text-3xl md:text-4xl mb-4 font-display font-extrabold">The midnight snack</h4>
           <p className="text-lg font-medium mb-8 max-w-md text-primary-foreground/90">Use for footers, dramatic section breaks, or when you need the reader to stop and pay attention.</p>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.2)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.2)] transition-all font-bold">
+            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 border border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.2)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.2)] transition-all font-bold">
               Solid Action
             </Button>
             <Button size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary shadow-[4px_4px_0px_0px_hsl(var(--primary-foreground)/0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--primary-foreground)/0.3)] transition-all font-bold">
@@ -221,7 +221,7 @@ function SecondaryCombo({ group }: { group: SemanticGroup }) {
   return (
     <GroupShell group={group}>
       <div className="grid md:grid-cols-[1fr_2fr]">
-        <div className="bg-foreground text-background p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
+        <div className="bg-foreground text-background p-8 border-b-2 md:border-b-0 md:border-r-2 border-foreground flex flex-col justify-center">
           <h3 className="text-2xl font-bold mb-2">Secondary</h3>
           <p className="opacity-80 mb-4">Brown on warm tan. A calmer surface for notes, metadata, and supporting panels.</p>
           <Badge variant="outline" className="w-fit border-background text-background">Supporting</Badge>
@@ -230,7 +230,7 @@ function SecondaryCombo({ group }: { group: SemanticGroup }) {
           <h4 className="text-3xl md:text-4xl mb-4 font-display font-extrabold">Quiet aside</h4>
           <p className="text-lg font-medium mb-8 max-w-md">Steps back from the loud yellow so it can carry secondary content without competing for attention.</p>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
+            <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
               Solid Action
             </Button>
             <Button size="lg" variant="outline" className="border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-secondary shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
@@ -247,7 +247,7 @@ function MutedCombo({ group }: { group: SemanticGroup }) {
   return (
     <GroupShell group={group}>
       <div className="grid md:grid-cols-[1fr_2fr]">
-        <div className="bg-foreground text-background p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
+        <div className="bg-foreground text-background p-8 border-b-2 md:border-b-0 md:border-r-2 border-foreground flex flex-col justify-center">
           <h3 className="text-2xl font-bold mb-2">Muted</h3>
           <p className="opacity-80 mb-4">Low-emphasis brown text on a muted mid-tone surface. Captions, placeholders, and disabled states.</p>
           <Badge variant="outline" className="w-fit border-background text-background">Low emphasis</Badge>
@@ -256,7 +256,7 @@ function MutedCombo({ group }: { group: SemanticGroup }) {
           <h4 className="text-3xl md:text-4xl mb-4 font-display font-extrabold">Background noise</h4>
           <p className="text-lg font-medium mb-8 max-w-md">Recedes deliberately. Timestamps, helper text, disabled controls — things that should be readable but not demand attention.</p>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" disabled className="bg-foreground text-background border-2 border-transparent shadow-sm font-bold opacity-50 cursor-not-allowed">
+            <Button size="lg" disabled className="bg-foreground text-background border border-transparent shadow-sm font-bold opacity-50 cursor-not-allowed">
               Disabled
             </Button>
             <span className="self-center font-mono text-sm font-bold">placeholder text</span>
@@ -271,13 +271,13 @@ function DangerCombo({ group }: { group: SemanticGroup }) {
   return (
     <GroupShell group={group}>
       <div className="grid md:grid-cols-[1fr_2fr]">
-        <div className="bg-foreground text-background p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
+        <div className="bg-foreground text-background p-8 border-b-2 md:border-b-0 md:border-r-2 border-foreground flex flex-col justify-center">
           <h3 className="text-2xl font-bold mb-2">Danger</h3>
           <p className="opacity-80 mb-4">Muted red for destructive, irreversible actions. Red fill, maroon borders, and offset shadow on a calm surface.</p>
           <Badge variant="outline" className="w-fit border-background text-background">Destructive</Badge>
         </div>
         <div className="bg-secondary p-8 md:p-12 flex items-center justify-center">
-          <div className="w-full max-w-md bg-background border-4 border-foreground rounded-sm p-6 md:p-8 shadow-[10px_10px_0px_0px_hsl(var(--destructive-border))]">
+          <div className="w-full max-w-md bg-background border-2 border-foreground rounded-sm p-6 md:p-8 shadow-[10px_10px_0px_0px_hsl(var(--destructive-border))]">
             <h4 className="text-2xl md:text-3xl mb-3 font-display font-extrabold text-destructive">
               Are you absolutely sure?
             </h4>
@@ -287,13 +287,13 @@ function DangerCombo({ group }: { group: SemanticGroup }) {
             <div className="flex flex-wrap gap-4">
               <button
                 type="button"
-                className="font-bold rounded-sm px-5 py-2.5 bg-background border-2 border-foreground text-foreground shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+                className="font-bold rounded-sm px-5 py-2.5 bg-background border border-foreground text-foreground shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
               >
                 Cancel
               </button>
               <button
                 type="button"
-                className="font-bold rounded-sm px-5 py-2.5 bg-destructive text-destructive-foreground border-2 border-destructive-border shadow-[4px_4px_0px_0px_hsl(var(--destructive-border))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+                className="font-bold rounded-sm px-5 py-2.5 bg-destructive text-destructive-foreground border border-destructive-border shadow-[4px_4px_0px_0px_hsl(var(--destructive-border))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
               >
                 Continue
               </button>
@@ -325,9 +325,9 @@ function PrimaryAccentCombo() {
   };
 
   return (
-    <div className="border-4 border-foreground rounded-sm overflow-hidden shadow-md">
+    <div className="border-2 border-foreground rounded-sm overflow-hidden shadow-md">
       <div className="grid md:grid-cols-[1fr_2fr]">
-        <div className="bg-foreground text-background p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center gap-4">
+        <div className="bg-foreground text-background p-8 border-b-2 md:border-b-0 md:border-r-2 border-foreground flex flex-col justify-center gap-4">
           <div>
             <h3 className="text-2xl font-bold mb-2">Primary + Accent</h3>
             <p className="opacity-80">
@@ -356,10 +356,10 @@ function PrimaryAccentCombo() {
               <span className="bg-accent text-accent-foreground text-xs font-bold px-2.5 py-1 rounded-sm uppercase tracking-wide">
                 New
               </span>
-              <span className="bg-accent text-accent-foreground text-sm font-bold px-3 py-1.5 rounded-sm border-2 border-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))]">
+              <span className="bg-accent text-accent-foreground text-sm font-bold px-3 py-1.5 rounded-sm border border-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))]">
                 Featured
               </span>
-              <span className="border-2 border-accent text-foreground text-sm font-bold px-3 py-1.5 rounded-sm">
+              <span className="border border-accent text-foreground text-sm font-bold px-3 py-1.5 rounded-sm">
                 Outlined
               </span>
             </div>
@@ -373,7 +373,7 @@ function PrimaryAccentCombo() {
             <p className="text-xs font-mono uppercase tracking-widest text-foreground/50 font-bold">
               Accent text — darker yellow
             </p>
-            <div className="border-l-4 border-accent-on-primary pl-4">
+            <div className="border-l-2 border-accent-on-primary pl-4">
               <h4 className="text-4xl font-display font-extrabold text-accent-on-primary leading-none mb-1">
                 Big headline
               </h4>
@@ -466,8 +466,8 @@ export default function Colors() {
           These pairings are strictly off-limits. They fail contrast checks and break the brand's promise of readability.
         </p>
 
-        <div className="grid md:grid-cols-[1fr_2fr] border-4 border-foreground rounded-sm overflow-hidden shadow-md">
-          <div className="bg-background text-foreground p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
+        <div className="grid md:grid-cols-[1fr_2fr] border-2 border-foreground rounded-sm overflow-hidden shadow-md">
+          <div className="bg-background text-foreground p-8 border-b-2 md:border-b-0 md:border-r-2 border-foreground flex flex-col justify-center">
             <h3 className="text-2xl font-bold mb-2">Never Do</h3>
             <p className="opacity-80 mb-4">Yellow text on a cream or light background. Completely unreadable.</p>
             <Badge variant="outline" className="w-fit border-foreground text-foreground">Fails Contrast</Badge>
@@ -480,7 +480,7 @@ export default function Colors() {
                 Golden yellow on a cream wash is almost invisible. This is why we never allow <code className="font-mono bg-foreground/10 px-1">text-primary</code> on light surfaces.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" disabled className="bg-background text-primary border-2 border-foreground opacity-50 cursor-not-allowed font-bold">
+                <Button size="lg" disabled className="bg-background text-primary border border-foreground opacity-50 cursor-not-allowed font-bold">
                   Unreadable Action
                 </Button>
               </div>

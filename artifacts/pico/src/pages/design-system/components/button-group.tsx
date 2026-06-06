@@ -20,8 +20,8 @@ export default function ButtonGroupDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <ButtonGroup>
             <Button variant="outline">
               <SkipBack />
@@ -54,11 +54,11 @@ import { SkipBack, Play, SkipForward } from "lucide-react"
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">With label and separator</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">With label and separator</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Drop in <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">ButtonGroupText</code> for a static label and <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">ButtonGroupSeparator</code> to divide intent.
         </p>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <ButtonGroup>
             <ButtonGroupText>Speed</ButtonGroupText>
             <Button variant="outline">1x</Button>

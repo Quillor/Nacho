@@ -43,7 +43,7 @@ export default function OverlaysPattern() {
       />
 
       <Section title="Choosing the right overlay">
-        <div className="overflow-x-auto border-4 border-foreground rounded-sm">
+        <div className="overflow-x-auto border-2 border-foreground rounded-sm">
           <table className="w-full text-left">
             <thead className="bg-foreground text-background font-display uppercase text-sm">
               <tr>
@@ -52,14 +52,14 @@ export default function OverlaysPattern() {
               </tr>
             </thead>
             <tbody className="font-medium text-foreground/80">
-              <tr className="border-b-2 border-foreground/20">
+              <tr className="border-b border-foreground/20">
  <td className="px-4 py-3 font-bold">Dialog</td>
                 <td className="px-4 py-3">
                   A short, focused task or decision — edit a title, confirm an
                   action. Blocks the page until resolved.
                 </td>
               </tr>
-              <tr className="border-b-2 border-foreground/20">
+              <tr className="border-b border-foreground/20">
  <td className="px-4 py-3 font-bold">Sheet</td>
                 <td className="px-4 py-3">
                   Secondary detail or settings alongside the main view — filters,
@@ -89,7 +89,7 @@ export default function OverlaysPattern() {
             <DialogTrigger asChild>
  <Button className="font-bold">Open dialog</Button>
             </DialogTrigger>
-            <DialogContent className="border-4 border-foreground">
+            <DialogContent className="border-2 border-foreground">
               <DialogHeader>
  <DialogTitle className="font-display">
                   Rename recording
@@ -110,7 +110,7 @@ export default function OverlaysPattern() {
                 Open sheet
               </Button>
             </SheetTrigger>
-            <SheetContent className="border-l-4 border-foreground">
+            <SheetContent className="border-l-2 border-foreground">
               <SheetHeader>
  <SheetTitle className="font-display">
                   Transcript
@@ -128,7 +128,7 @@ export default function OverlaysPattern() {
                 Open drawer
               </Button>
             </DrawerTrigger>
-            <DrawerContent className="border-t-4 border-foreground">
+            <DrawerContent className="border-t-2 border-foreground">
               <DrawerHeader>
  <DrawerTitle className="font-display">
                   Recording actions

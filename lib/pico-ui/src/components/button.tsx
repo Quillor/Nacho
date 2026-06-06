@@ -18,9 +18,10 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground shadow-sm border-destructive-border",
         outline:
           // @replit Shows the background color of whatever card / sidebar / accent background it is inside of.
-          // Inherits the current text color. Uses shadow-xs. no shadow on active
-          // No hover state
-          " border [border-color:var(--button-outline)] shadow-xs active:shadow-none ",
+          // Inherits the current text color. Uses shadow-xs. no shadow on active.
+          // Lighter hover: halve the shared hover-elevate overlay tint (--elevate-1)
+          // for the outline variant only, so its hover highlight is subtler.
+          " border [border-color:var(--button-outline)] shadow-xs active:shadow-none [--elevate-1:rgba(0,0,0,0.015)] dark:[--elevate-1:rgba(255,255,255,0.02)] ",
         secondary:
           // @replit border, no hover, no shadow, secondary border.
           "border bg-primary text-primary-foreground border border-secondary-border ",
@@ -31,7 +32,7 @@ const buttonVariants = cva(
         // chunky offset shadow (--shadow-sm token) that presses down on hover.
         // Use for primary marketing/landing CTAs on light surfaces.
         brand:
-          "bg-accent text-accent-foreground border-2 border-foreground font-bold shadow-sm transition-all hover:bg-accent/90 hover:translate-y-[2px] hover:shadow-xs active:translate-y-[2px] active:shadow-none",
+          "bg-accent text-accent-foreground border border-foreground font-bold shadow-sm transition-all hover:bg-accent/90 hover:translate-y-[2px] hover:shadow-xs active:translate-y-[2px] active:shadow-none",
       },
       size: {
         // @replit changed sizes

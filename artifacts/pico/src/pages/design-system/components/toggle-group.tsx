@@ -15,8 +15,8 @@ export default function ToggleGroupDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <ToggleGroup type="single" defaultValue="left" variant="outline">
             <ToggleGroupItem value="left" aria-label="Align left">
               <AlignLeft />
@@ -46,11 +46,11 @@ import { AlignLeft, AlignCenter, AlignRight } from "lucide-react"
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Multiple</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Multiple</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Use type="multiple" when more than one option can be active at once.
         </p>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <ToggleGroup type="multiple" defaultValue={["center"]} variant="outline">
             <ToggleGroupItem value="left" aria-label="Align left">
               <AlignLeft />

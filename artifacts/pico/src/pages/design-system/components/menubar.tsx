@@ -22,9 +22,9 @@ export default function MenubarDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
-          <Menubar className="border-2 border-foreground shadow-sm">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+          <Menubar className="border border-foreground shadow-sm">
             <MenubarMenu>
               <MenubarTrigger className="font-bold">Recording</MenubarTrigger>
               <MenubarContent>
@@ -61,7 +61,7 @@ export default function MenubarDocs() {
   MenubarShortcut,
 } from "@workspace/pico-ui/menubar"
 
-<Menubar className="border-2 border-foreground shadow-sm">
+<Menubar className="border border-foreground shadow-sm">
   <MenubarMenu>
     <MenubarTrigger className="font-bold">Recording</MenubarTrigger>
     <MenubarContent>

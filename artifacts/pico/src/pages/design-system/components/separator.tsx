@@ -14,9 +14,9 @@ export default function SeparatorDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
-          <div className="w-full max-w-xs bg-background p-6 border-2 border-foreground shadow-sm rounded-sm">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+          <div className="w-full max-w-xs bg-background p-6 border border-foreground shadow-sm rounded-sm">
             <div className="space-y-1">
               <h4 className="text-sm font-bold leading-none uppercase tracking-wide">Recording</h4>
               <p className="text-sm text-foreground/70">Manage your latest capture.</p>

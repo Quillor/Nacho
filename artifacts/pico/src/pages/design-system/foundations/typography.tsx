@@ -11,7 +11,7 @@ export default function Typography() {
       </div>
 
       <div className="space-y-12">
-        <div className="border-b-4 border-foreground/20 pb-8">
+        <div className="border-b-2 border-foreground/20 pb-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
             <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Display 1 / 8rem / 800 / 0.9</span>
  <span className="text-foreground/70 font-bold">Platypi</span>
@@ -19,7 +19,7 @@ export default function Typography() {
  <div className="text-[5rem] md:text-[8rem] font-display font-extrabold leading-[0.9] tracking-tight">Giant.</div>
         </div>
 
-        <div className="border-b-4 border-foreground/20 pb-8">
+        <div className="border-b-2 border-foreground/20 pb-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
             <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Heading 1 / 4.5rem / 800 / 1.0</span>
  <span className="text-foreground/70 font-bold">Platypi</span>
@@ -27,7 +27,7 @@ export default function Typography() {
  <div className="text-5xl md:text-7xl font-display font-extrabold leading-[1] tracking-tight">Punchy Title.</div>
         </div>
 
-        <div className="border-b-4 border-foreground/20 pb-8">
+        <div className="border-b-2 border-foreground/20 pb-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
             <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Heading 2 / 3rem / 800 / 1.05</span>
  <span className="text-foreground/70 font-bold">Platypi</span>
@@ -35,7 +35,7 @@ export default function Typography() {
  <div className="text-4xl md:text-5xl font-display font-extrabold leading-[1.05] tracking-tight">Bold Statement.</div>
         </div>
 
-        <div className="border-b-4 border-foreground/20 pb-8">
+        <div className="border-b-2 border-foreground/20 pb-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
             <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Heading 3 / 2.25rem / 800 / 1.1</span>
  <span className="text-foreground/70 font-bold">Platypi</span>
@@ -43,7 +43,7 @@ export default function Typography() {
  <div className="text-3xl md:text-4xl font-display font-extrabold leading-[1.1]">Section Header.</div>
         </div>
 
-        <div className="border-b-4 border-foreground/20 pb-8">
+        <div className="border-b-2 border-foreground/20 pb-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
             <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Heading 4 / 1.5rem / 800 / 1.2</span>
  <span className="text-foreground/70 font-bold">Platypi</span>
@@ -51,7 +51,7 @@ export default function Typography() {
  <div className="text-2xl font-display font-extrabold leading-[1.2]">Subsection Title.</div>
         </div>
 
-        <div className="border-b-4 border-foreground/20 pb-8">
+        <div className="border-b-2 border-foreground/20 pb-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
             <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Body Large / 1.25rem / 500 / 1.6</span>
  <span className="text-foreground/70 font-bold">DM Sans</span>

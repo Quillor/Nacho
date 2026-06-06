@@ -56,7 +56,7 @@ export default function FigmaPlugin() {
         <section className="space-y-4">
           <h2 className="text-3xl font-display font-extrabold uppercase">What It Does</h2>
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
+            <div className="border-2 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
               <h3 className="text-xl font-display font-extrabold uppercase">Sync Tokens</h3>
               <p className="font-medium text-foreground/80">
                 Reads <code className="bg-foreground/10 px-1 rounded-sm">tokens.json</code> and
@@ -65,7 +65,7 @@ export default function FigmaPlugin() {
                 styles for shadows, and text styles for the type scale.
               </p>
             </div>
-            <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
+            <div className="border-2 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
               <h3 className="text-xl font-display font-extrabold uppercase">Generate Components</h3>
               <p className="font-medium text-foreground/80">
                 Builds the Pico components — Button, Badge, Card, Input, Alert,
@@ -75,7 +75,7 @@ export default function FigmaPlugin() {
                 and effect styles.
               </p>
             </div>
-            <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
+            <div className="border-2 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
               <h3 className="text-xl font-display font-extrabold uppercase">Page From URL</h3>
               <p className="font-medium text-foreground/80">
                 Paste a URL and pick a device size. The plugin reads the rendered
@@ -84,7 +84,7 @@ export default function FigmaPlugin() {
                 chosen frame size with token-bound styling.
               </p>
             </div>
-            <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
+            <div className="border-2 border-foreground rounded-sm p-6 bg-card shadow-md space-y-2">
               <h3 className="text-xl font-display font-extrabold uppercase">Placeholder Pages</h3>
               <p className="font-medium text-foreground/80">
                 Generates a ready-made sample layout from real instances and
@@ -107,7 +107,7 @@ export default function FigmaPlugin() {
           <a
             href={downloadHref}
             download={downloadName}
-            className="inline-flex items-center gap-3 border-4 border-foreground rounded-sm bg-accent px-6 py-4 font-display font-extrabold uppercase tracking-wide text-accent-foreground shadow-md transition-transform hover:-translate-y-0.5 active:translate-y-0"
+            className="inline-flex items-center gap-3 border-2 border-foreground rounded-sm bg-accent px-6 py-4 font-display font-extrabold uppercase tracking-wide text-accent-foreground shadow-md transition-transform hover:-translate-y-0.5 active:translate-y-0"
           >
             <Download className="h-5 w-5" strokeWidth={2.5} />
             Download plugin
@@ -132,7 +132,7 @@ export default function FigmaPlugin() {
             panel, so you can confirm you have the latest.
           </p>
 
-          <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-3">
+          <div className="border-2 border-foreground rounded-sm p-6 bg-card shadow-md space-y-3">
             <h3 className="text-xl font-display font-extrabold uppercase">Install in Figma</h3>
             <ol className="list-decimal list-inside space-y-2 font-medium text-foreground/80">
               <li>Download the zip above and <strong>unzip</strong> it.</li>
@@ -166,7 +166,7 @@ export default function FigmaPlugin() {
             configure on disk. For most designers the defaults just work, so you
             can skip straight to running an action.
           </p>
-          <div className="border-4 border-foreground rounded-sm p-6 bg-card shadow-md space-y-3">
+          <div className="border-2 border-foreground rounded-sm p-6 bg-card shadow-md space-y-3">
             <div>
               <h3 className="text-lg font-display font-extrabold uppercase">Tokens URL <span className="text-foreground/50 normal-case font-medium">(optional)</span></h3>
               <p className="font-medium text-foreground/80">
@@ -201,13 +201,13 @@ export default function FigmaPlugin() {
             styles, and components in place rather than duplicating them. For a
             fresh file, run them top to bottom:
           </p>
-          <div className="border-4 border-foreground rounded-sm overflow-hidden bg-background">
+          <div className="border-2 border-foreground rounded-sm overflow-hidden bg-background">
             <table className="w-full text-left text-sm">
               <thead className="bg-foreground text-background uppercase font-bold text-xs tracking-wider">
                 <tr>
-                  <th className="p-4 border-b-4 border-foreground">Step</th>
-                  <th className="p-4 border-b-4 border-foreground">Action</th>
-                  <th className="p-4 border-b-4 border-foreground">Why first</th>
+                  <th className="p-4 border-b-2 border-foreground">Step</th>
+                  <th className="p-4 border-b-2 border-foreground">Action</th>
+                  <th className="p-4 border-b-2 border-foreground">Why first</th>
                 </tr>
               </thead>
               <tbody className="divide-y-4 divide-foreground">

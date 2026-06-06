@@ -41,12 +41,12 @@ export default function ConfirmationPattern() {
             <AlertDialogTrigger asChild>
               <Button
                 variant="outline"
- className="border-2 border-foreground font-bold text-destructive hover:bg-destructive hover:text-destructive-foreground"
+ className="border border-foreground font-bold text-destructive hover:bg-destructive hover:text-destructive-foreground"
               >
                 <Trash2 className="mr-2 h-4 w-4" /> Delete recording
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent className="border-4 border-foreground">
+            <AlertDialogContent className="border-2 border-foreground">
               <AlertDialogHeader>
  <AlertDialogTitle className="font-display">
                   Delete this recording?
@@ -57,10 +57,10 @@ export default function ConfirmationPattern() {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel className="border-2 border-foreground font-bold">
+                <AlertDialogCancel className="border border-foreground font-bold">
                   Cancel
                 </AlertDialogCancel>
-                <AlertDialogAction className="border-2 border-foreground bg-destructive font-bold text-destructive-foreground">
+                <AlertDialogAction className="border border-foreground bg-destructive font-bold text-destructive-foreground">
                   Delete
                 </AlertDialogAction>
               </AlertDialogFooter>

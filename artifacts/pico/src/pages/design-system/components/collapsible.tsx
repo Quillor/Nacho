@@ -20,9 +20,9 @@ export default function CollapsibleDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
-          <Collapsible className="w-full max-w-sm space-y-2 bg-background p-4 border-2 border-foreground shadow-sm rounded-sm">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+          <Collapsible className="w-full max-w-sm space-y-2 bg-background p-4 border border-foreground shadow-sm rounded-sm">
             <div className="flex items-center justify-between">
               <h4 className="text-sm font-bold uppercase tracking-wide">Recording details</h4>
               <CollapsibleTrigger asChild>

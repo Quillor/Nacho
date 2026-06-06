@@ -63,7 +63,7 @@ export default function PublicView() {
 
   return (
     <div className="min-h-[100dvh] bg-background font-sans text-foreground">
-      <header data-pico-section="header" className="border-b-4 border-foreground bg-background">
+      <header data-pico-section="header" className="border-b-2 border-foreground bg-background">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center" aria-label="Nacho home">
             <Logo className="h-8" />
@@ -71,7 +71,7 @@ export default function PublicView() {
           {rec && (
             <Button
               onClick={copyLink}
- className="border-2 border-foreground bg-accent font-bold text-accent-foreground"
+ className="border border-foreground bg-accent font-bold text-accent-foreground"
             >
               {copied ? (
                 <Check className="mr-2 h-4 w-4" />
@@ -95,7 +95,7 @@ export default function PublicView() {
             </p>
           </div>
         ) : !rec || isLoading ? (
-          <div className="aspect-video w-full animate-pulse border-4 border-foreground bg-muted" />
+          <div className="aspect-video w-full animate-pulse border-2 border-foreground bg-muted" />
         ) : (
           <>
             <div className="flex flex-col gap-8 lg:flex-row">
@@ -131,7 +131,7 @@ export default function PublicView() {
                     <Button
                       onClick={() => setTranscriptOpen((o) => !o)}
                       aria-pressed={transcriptOpen}
- className="border-2 border-foreground bg-card font-bold text-foreground hover:bg-muted"
+ className="border border-foreground bg-card font-bold text-foreground hover:bg-muted"
                     >
                       <FileText className="mr-2 h-4 w-4" />
                       {transcriptOpen ? "Hide transcript" : "Transcript"}
@@ -153,15 +153,15 @@ export default function PublicView() {
  <h2 className="mb-3 flex items-center gap-2 font-display text-xl font-extrabold">
                       <List className="h-5 w-5" /> Chapters
                     </h2>
-                    <div className="space-y-1 border-4 border-foreground bg-card p-4">
+                    <div className="space-y-1 border-2 border-foreground bg-card p-4">
                       {rec.chapters.map((c, i) => (
                         <button
                           key={i}
                           type="button"
                           onClick={() => seek(c.time)}
-                          className="flex w-full items-center gap-3 border-2 border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
+                          className="flex w-full items-center gap-3 border border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
                         >
-                          <span className="shrink-0 border-2 border-foreground bg-accent px-2 py-0.5 font-mono text-xs font-bold text-accent-foreground">
+                          <span className="shrink-0 border border-foreground bg-accent px-2 py-0.5 font-mono text-xs font-bold text-accent-foreground">
                             {formatTimestamp(c.time)}
                           </span>
                           <span className="font-medium">{c.label}</span>
@@ -174,8 +174,8 @@ export default function PublicView() {
 
               {hasTranscript && transcriptOpen && (
                 <aside className="shrink-0 lg:w-80">
-                  <div className="border-4 border-foreground bg-card lg:sticky lg:top-6">
-                    <div className="flex items-center justify-between border-b-4 border-foreground px-4 py-3">
+                  <div className="border-2 border-foreground bg-card lg:sticky lg:top-6">
+                    <div className="flex items-center justify-between border-b-2 border-foreground px-4 py-3">
  <h2 className="flex items-center gap-2 font-display text-lg font-extrabold">
                         <FileText className="h-5 w-5" /> Transcript
                       </h2>
@@ -183,7 +183,7 @@ export default function PublicView() {
                         type="button"
                         onClick={() => setTranscriptOpen(false)}
                         aria-label="Close transcript"
-                        className="flex h-8 w-8 items-center justify-center border-2 border-foreground bg-background transition-colors hover:bg-muted"
+                        className="flex h-8 w-8 items-center justify-center border border-foreground bg-background transition-colors hover:bg-muted"
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -194,7 +194,7 @@ export default function PublicView() {
                           key={i}
                           type="button"
                           onClick={() => seek(seg.start)}
-                          className="flex w-full gap-3 border-2 border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
+                          className="flex w-full gap-3 border border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
                         >
                           <span className="shrink-0 font-mono text-xs font-bold text-foreground">
                             {formatTimestamp(seg.start)}
@@ -208,14 +208,14 @@ export default function PublicView() {
               )}
             </div>
 
-            <div data-pico-section="cta" className="mt-16 flex flex-col items-center gap-4 border-t-4 border-foreground py-10 text-center">
+            <div data-pico-section="cta" className="mt-16 flex flex-col items-center gap-4 border-t-2 border-foreground py-10 text-center">
  <p className="font-display text-2xl font-extrabold">
                 Made with Nacho
               </p>
               <Button
                 asChild
                 size="lg"
- className="h-14 border-4 border-foreground bg-accent px-8 text-lg font-bold text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+ className="h-14 border-2 border-foreground bg-accent px-8 text-lg font-bold text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
               >
                 <Link href="/studio">Record your own</Link>
               </Button>

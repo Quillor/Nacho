@@ -23,9 +23,9 @@ export default function EmptyDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
-          <Empty className="bg-background border-2 border-foreground shadow-sm rounded-sm max-w-sm">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+          <Empty className="bg-background border border-foreground shadow-sm rounded-sm max-w-sm">
             <EmptyHeader>
               <EmptyMedia variant="icon">
                 <Video />

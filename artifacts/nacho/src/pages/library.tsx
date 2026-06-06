@@ -66,7 +66,7 @@ function Thumb({ rec }: { rec: LocalRecordingMeta }) {
   }, [url]);
 
   return (
-    <div className="relative aspect-video w-full overflow-hidden border-b-4 border-foreground bg-muted">
+    <div className="relative aspect-video w-full overflow-hidden border-b-2 border-foreground bg-muted">
       {url ? (
         <img
           src={url}
@@ -78,7 +78,7 @@ function Thumb({ rec }: { rec: LocalRecordingMeta }) {
           <Play className="h-10 w-10 text-muted-foreground" />
         </div>
       )}
-      <span className="absolute bottom-2 right-2 rounded-sm border-2 border-foreground bg-background px-2 py-0.5 font-mono text-xs font-bold">
+      <span className="absolute bottom-2 right-2 rounded-sm border border-foreground bg-background px-2 py-0.5 font-mono text-xs font-bold">
         {formatDuration(rec.trimEnd - rec.trimStart)}
       </span>
     </div>
@@ -290,7 +290,7 @@ export default function LibraryPage() {
               variant="outline"
               disabled={seeding}
               onClick={handleSeed}
-              className="h-14 border-4 border-foreground px-6 text-lg font-bold"
+              className="h-14 border-2 border-foreground px-6 text-lg font-bold"
             >
               {seeding ? (
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -303,7 +303,7 @@ export default function LibraryPage() {
           <Button
             asChild
             size="lg"
-            className="h-14 border-4 border-foreground bg-accent px-6 text-lg font-bold text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+            className="h-14 border-2 border-foreground bg-accent px-6 text-lg font-bold text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
           >
             <Link href="/studio">
               <CircleDot className="mr-2 h-5 w-5" />
@@ -318,13 +318,13 @@ export default function LibraryPage() {
           {[0, 1, 2].map((i) => (
             <div
               key={i}
-              className="aspect-video animate-pulse border-4 border-foreground bg-muted"
+              className="aspect-video animate-pulse border-2 border-foreground bg-muted"
             />
           ))}
         </div>
       ) : recordings.length === 0 ? (
-        <div className="flex flex-col items-center justify-center border-4 border-dashed border-foreground bg-card py-24 text-center">
-          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-accent shadow-md">
+        <div className="flex flex-col items-center justify-center border-2 border-dashed border-foreground bg-card py-24 text-center">
+          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-foreground bg-accent shadow-md">
             <CircleDot className="h-10 w-10 text-accent-foreground" />
           </div>
  <h2 className="font-display text-3xl font-extrabold">
@@ -336,7 +336,7 @@ export default function LibraryPage() {
           <Button
             asChild
             size="lg"
- className="mt-8 h-14 border-4 border-foreground bg-accent px-8 text-lg font-bold text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+ className="mt-8 h-14 border-2 border-foreground bg-accent px-8 text-lg font-bold text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
           >
             <Link href="/studio">Start Recording</Link>
           </Button>
@@ -346,14 +346,14 @@ export default function LibraryPage() {
           {recordings.map((rec) => (
             <div
               key={rec.id}
-              className="group relative flex flex-col border-4 border-foreground bg-card shadow-md transition-transform hover:-translate-y-1"
+              className="group relative flex flex-col border-2 border-foreground bg-card shadow-md transition-transform hover:-translate-y-1"
             >
               <button
                 type="button"
                 onClick={() => handleTogglePin(rec)}
                 aria-pressed={rec.pinned}
                 title={rec.pinned ? "Unpin recording" : "Pin recording"}
-                className={`absolute left-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-sm border-2 border-foreground shadow-sm transition-colors ${
+                className={`absolute left-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-sm border border-foreground shadow-sm transition-colors ${
                   rec.pinned
                     ? "bg-accent text-accent-foreground"
                     : "bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
@@ -378,13 +378,13 @@ export default function LibraryPage() {
               <div className="flex flex-1 flex-col p-5">
                 <div className="mb-2 flex items-center justify-between gap-2">
                   {rec.visibility === "public" ? (
-                    <Badge className="border-2 border-foreground bg-primary text-primary-foreground">
+                    <Badge className="border border-foreground bg-primary text-primary-foreground">
                       <Globe className="mr-1 h-3 w-3" /> Public
                     </Badge>
                   ) : (
                     <Badge
                       variant="outline"
-                      className="border-2 border-foreground"
+                      className="border border-foreground"
                     >
                       <Lock className="mr-1 h-3 w-3" /> Private
                     </Badge>
@@ -407,7 +407,7 @@ export default function LibraryPage() {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="border-2 border-foreground font-bold"
+                    className="border border-foreground font-bold"
                     onClick={() => navigate(`/editor/${rec.id}`)}
                   >
                     <Pencil className="mr-1 h-4 w-4" /> Edit
@@ -417,14 +417,14 @@ export default function LibraryPage() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-2 border-foreground font-bold"
+                        className="border border-foreground font-bold"
                         onClick={() => navigate(`/v/${rec.shareId}`)}
                       >
                         <Eye className="mr-1 h-4 w-4" /> View
                       </Button>
                       <Button
                         size="sm"
-                        className="border-2 border-foreground bg-accent font-bold text-accent-foreground"
+                        className="border border-foreground bg-accent font-bold text-accent-foreground"
                         onClick={() => handleCopy(rec.shareId!)}
                       >
                         <Share2 className="mr-1 h-4 w-4" /> Copy link
@@ -432,7 +432,7 @@ export default function LibraryPage() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-2 border-foreground font-bold"
+                        className="border border-foreground font-bold"
                         disabled={busyId === rec.id}
                         onClick={() => handleUnpublish(rec)}
                       >
@@ -447,7 +447,7 @@ export default function LibraryPage() {
                   ) : (
                     <Button
                       size="sm"
-                      className="border-2 border-foreground bg-accent font-bold text-accent-foreground"
+                      className="border border-foreground bg-accent font-bold text-accent-foreground"
                       disabled={busyId === rec.id}
                       onClick={() => handleGetLink(rec)}
                     >
@@ -478,7 +478,7 @@ export default function LibraryPage() {
         open={pendingDelete !== null}
         onOpenChange={(open) => !open && setPendingDelete(null)}
       >
-        <AlertDialogContent className="border-4 border-foreground">
+        <AlertDialogContent className="border-2 border-foreground">
           <AlertDialogHeader>
  <AlertDialogTitle className="font-display">
               Delete this recording?
@@ -489,12 +489,12 @@ export default function LibraryPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="border-2 border-foreground font-bold">
+            <AlertDialogCancel className="border border-foreground font-bold">
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="border-2 border-foreground bg-destructive font-bold text-destructive-foreground"
+              className="border border-foreground bg-destructive font-bold text-destructive-foreground"
             >
               Delete
             </AlertDialogAction>

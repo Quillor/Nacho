@@ -290,7 +290,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
       <div className={cn("flex flex-col", className)}>
         <div
           ref={stageRef}
-          className="relative overflow-hidden border-4 border-foreground bg-foreground shadow-md"
+          className="relative overflow-hidden border-2 border-foreground bg-foreground shadow-md"
         >
           <video
             ref={videoRef}
@@ -364,7 +364,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
               aria-hidden={!chapterVisible}
             >
               <span
-                className="inline-block whitespace-nowrap border-2 border-foreground bg-primary px-[0.5em] py-[0.2em] font-display font-extrabold leading-tight text-primary-foreground shadow-sm"
+                className="inline-block whitespace-nowrap border border-foreground bg-primary px-[0.5em] py-[0.2em] font-display font-extrabold leading-tight text-primary-foreground shadow-sm"
                 style={{ fontSize: `${chapterFontSize}px` }}
               >
                 {chapterTitle}
@@ -374,7 +374,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
 
           {activeCaption ? (
             <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-4">
-              <span className="max-w-[90%] border-2 border-foreground bg-background/90 px-3 py-1.5 text-center text-sm font-bold text-foreground shadow-sm">
+              <span className="max-w-[90%] border border-foreground bg-background/90 px-3 py-1.5 text-center text-sm font-bold text-foreground shadow-sm">
                 {activeCaption}
               </span>
             </div>
@@ -386,7 +386,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
             type="button"
             onClick={togglePlay}
             aria-label={playing ? "Pause" : "Play"}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-4 border-foreground bg-accent text-accent-foreground shadow-sm transition-transform hover:translate-y-0.5"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-foreground bg-accent text-accent-foreground shadow-sm transition-transform hover:translate-y-0.5"
           >
             {playing ? (
               <Pause className="h-5 w-5" />
@@ -397,7 +397,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
 
           <div
             ref={trackRef}
-            className="relative h-4 flex-1 cursor-pointer border-2 border-foreground bg-muted"
+            className="relative h-4 flex-1 cursor-pointer border border-foreground bg-muted"
             onPointerDown={(e) => {
               dragging.current = true;
               seek(posToTime(e.clientX));
@@ -429,7 +429,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
 
             {/* playhead */}
             <div
-              className="pointer-events-none absolute top-1/2 z-20 h-5 w-3 -translate-x-1/2 -translate-y-1/2 border-2 border-foreground bg-background"
+              className="pointer-events-none absolute top-1/2 z-20 h-5 w-3 -translate-x-1/2 -translate-y-1/2 border border-foreground bg-background"
               style={{ left: `${playedPct}%` }}
             />
           </div>
@@ -446,7 +446,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
               aria-pressed={captionsOn}
               aria-label={captionsOn ? "Hide captions" : "Show captions"}
               className={cn(
-                "flex h-9 w-9 shrink-0 items-center justify-center rounded-md border-2 border-foreground shadow-sm transition-colors",
+                "flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-foreground shadow-sm transition-colors",
                 captionsOn
                   ? "bg-accent text-accent-foreground"
                   : "bg-card text-foreground",

@@ -19,9 +19,9 @@ import {
 function DoDont({ do: doText, dont }: { do: string; dont: string }) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <div className="border-4 border-foreground bg-card p-5 shadow-sm">
+      <div className="border-2 border-foreground bg-card p-5 shadow-sm">
         <div className="mb-3 flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center border-2 border-foreground bg-accent text-accent-foreground">
+          <span className="flex h-7 w-7 items-center justify-center border border-foreground bg-accent text-accent-foreground">
             <Check className="h-4 w-4" strokeWidth={3} />
           </span>
           <span className="font-display text-sm font-extrabold uppercase tracking-widest">
@@ -32,9 +32,9 @@ function DoDont({ do: doText, dont }: { do: string; dont: string }) {
           “{doText}”
         </p>
       </div>
-      <div className="border-4 border-dashed border-foreground/50 bg-background p-5">
+      <div className="border-2 border-dashed border-foreground/50 bg-background p-5">
         <div className="mb-3 flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center border-2 border-foreground bg-destructive text-destructive-foreground">
+          <span className="flex h-7 w-7 items-center justify-center border border-foreground bg-destructive text-destructive-foreground">
             <X className="h-4 w-4" strokeWidth={3} />
           </span>
           <span className="font-display text-sm font-extrabold uppercase tracking-widest text-foreground/60">
@@ -63,9 +63,9 @@ function Scenario({
   children: ReactNode;
 }) {
   return (
-    <section className="border-4 border-foreground bg-background shadow-md">
-      <header className="flex flex-col gap-4 border-b-4 border-foreground bg-accent p-6 md:flex-row md:items-center">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center border-4 border-foreground bg-background shadow-sm">
+    <section className="border-2 border-foreground bg-background shadow-md">
+      <header className="flex flex-col gap-4 border-b-2 border-foreground bg-accent p-6 md:flex-row md:items-center">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-foreground bg-background shadow-sm">
           {icon}
         </div>
         <div>
@@ -78,7 +78,7 @@ function Scenario({
         </div>
       </header>
       <div className="space-y-5 p-6">
-        <div className="border-l-4 border-foreground bg-card px-4 py-3">
+        <div className="border-l-2 border-foreground bg-card px-4 py-3">
           <span className="font-display text-xs font-extrabold uppercase tracking-widest text-foreground/60">
             Pattern
           </span>
@@ -148,7 +148,7 @@ export default function ContentGuidelines() {
     <div className="space-y-16">
       {/* Hero */}
       <div className="space-y-4">
-        <div className="inline-block border-2 border-foreground bg-accent px-4 py-2 text-sm font-bold uppercase tracking-widest shadow-sm text-accent-foreground">
+        <div className="inline-block border border-foreground bg-accent px-4 py-2 text-sm font-bold uppercase tracking-widest shadow-sm text-accent-foreground">
           GUIDELINES
         </div>
  <h1 className="font-display text-5xl font-extrabold leading-[0.9] tracking-tight text-foreground md:text-6xl">
@@ -164,7 +164,7 @@ export default function ContentGuidelines() {
 
       {/* Voice vs Tone */}
       <div className="grid gap-6 md:grid-cols-2">
-        <div className="border-4 border-foreground bg-foreground p-6 text-background shadow-md">
+        <div className="border-2 border-foreground bg-foreground p-6 text-background shadow-md">
  <h2 className="mb-2 font-display text-2xl font-extrabold text-background">
             Voice
           </h2>
@@ -174,7 +174,7 @@ export default function ContentGuidelines() {
             explaining a denied permission.
           </p>
         </div>
-        <div className="border-4 border-foreground bg-background p-6 shadow-md">
+        <div className="border-2 border-foreground bg-background p-6 shadow-md">
  <h2 className="mb-2 font-display text-2xl font-extrabold">
             Tone
           </h2>
@@ -187,14 +187,14 @@ export default function ContentGuidelines() {
 
       {/* Principles */}
       <section className="space-y-8">
- <h2 className="border-b-4 border-foreground pb-2 font-display text-3xl font-extrabold">
+ <h2 className="border-b-2 border-foreground pb-2 font-display text-3xl font-extrabold">
           Voice Principles
         </h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {PRINCIPLES.map((p, i) => (
             <div
               key={p.name}
-              className="flex flex-col border-4 border-foreground bg-background p-6 shadow-md transition-transform duration-300 hover:-translate-y-1"
+              className="flex flex-col border-2 border-foreground bg-background p-6 shadow-md transition-transform duration-300 hover:-translate-y-1"
             >
               <div className="mb-3 flex items-center gap-3">
                 <span className="font-display text-3xl font-extrabold text-foreground">
@@ -214,22 +214,22 @@ export default function ContentGuidelines() {
 
       {/* Tone by context */}
       <section className="space-y-8">
- <h2 className="border-b-4 border-foreground pb-2 font-display text-3xl font-extrabold">
+ <h2 className="border-b-2 border-foreground pb-2 font-display text-3xl font-extrabold">
           Tone by Context
         </h2>
-        <div className="overflow-hidden border-4 border-foreground shadow-md">
+        <div className="overflow-hidden border-2 border-foreground shadow-md">
           {TONES.map((t, i) => (
             <div
               key={t.when}
               className={`grid gap-2 p-5 md:grid-cols-[1fr_1fr_2fr] md:items-center md:gap-6 ${
-                i !== 0 ? "border-t-4 border-foreground" : ""
+                i !== 0 ? "border-t-2 border-foreground" : ""
               } ${i % 2 === 1 ? "bg-card" : "bg-background"}`}
             >
  <div className="font-display text-lg font-extrabold leading-tight">
                 {t.when}
               </div>
               <div>
-                <span className="inline-block border-2 border-foreground bg-accent px-3 py-1 text-sm font-bold uppercase text-accent-foreground shadow-sm">
+                <span className="inline-block border border-foreground bg-accent px-3 py-1 text-sm font-bold uppercase text-accent-foreground shadow-sm">
                   {t.tone}
                 </span>
               </div>
@@ -244,7 +244,7 @@ export default function ContentGuidelines() {
       {/* Scenarios */}
       <section className="space-y-8">
         <div className="space-y-3">
- <h2 className="border-b-4 border-foreground pb-2 font-display text-3xl font-extrabold">
+ <h2 className="border-b-2 border-foreground pb-2 font-display text-3xl font-extrabold">
             Writing by Scenario
           </h2>
           <p className="max-w-2xl text-lg font-medium leading-relaxed text-foreground/80">
@@ -472,7 +472,7 @@ export default function ContentGuidelines() {
       </section>
 
       {/* Closing rule of thumb */}
-      <section className="border-4 border-foreground bg-accent p-8 shadow-md md:p-12">
+      <section className="border-2 border-foreground bg-accent p-8 shadow-md md:p-12">
  <h2 className="font-display text-3xl font-extrabold leading-tight text-accent-foreground md:text-4xl">
           The 5-second test
         </h2>

@@ -48,8 +48,8 @@ function UserControl() {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="hidden items-center gap-2 border-2 border-foreground bg-card px-3 py-1.5 sm:flex">
-        <div className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-foreground bg-accent text-sm font-black text-accent-foreground">
+      <div className="hidden items-center gap-2 border border-foreground bg-card px-3 py-1.5 sm:flex">
+        <div className="flex h-7 w-7 items-center justify-center rounded-full border border-foreground bg-accent text-sm font-black text-accent-foreground">
           {initial}
         </div>
         <span
@@ -62,7 +62,7 @@ function UserControl() {
       <button
         type="button"
         onClick={handleSignOut}
-        className="flex items-center gap-2 border-2 border-foreground px-3 py-2 font-bold uppercase tracking-wide text-foreground transition-all hover:bg-muted"
+        className="flex items-center gap-2 border border-foreground px-3 py-2 font-bold uppercase tracking-wide text-foreground transition-all hover:bg-muted"
         aria-label="Sign out"
       >
         <LogOut className="h-4 w-4" />
@@ -77,7 +77,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground font-sans">
-      <nav data-pico-section="navbar" className="sticky top-0 z-50 border-b-4 border-foreground bg-background">
+      <nav data-pico-section="navbar" className="sticky top-0 z-50 border-b-2 border-foreground bg-background">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
           <Link
             href="/library"
@@ -98,7 +98,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-2 border-2 px-4 py-2 font-bold uppercase tracking-wide transition-all",
+                    "flex items-center gap-2 border px-4 py-2 font-bold uppercase tracking-wide transition-all",
                     active
                       ? "border-foreground bg-accent text-accent-foreground shadow-sm"
                       : "border-transparent text-foreground hover:bg-muted",

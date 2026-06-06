@@ -15,8 +15,8 @@ export default function AlertDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Default</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Default</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Alert>
             <Terminal className="h-4 w-4" />
             <AlertTitle>Heads up!</AlertTitle>
@@ -38,8 +38,8 @@ import { Terminal } from "lucide-react"
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Destructive</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Destructive</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>

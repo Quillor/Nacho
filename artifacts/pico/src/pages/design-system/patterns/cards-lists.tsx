@@ -13,21 +13,21 @@ import {
 
 function DemoCard({ published }: { published: boolean }) {
   return (
-    <div className="flex flex-col border-4 border-foreground bg-card shadow-md">
-      <div className="relative flex aspect-video w-full items-center justify-center border-b-4 border-foreground bg-muted">
+    <div className="flex flex-col border-2 border-foreground bg-card shadow-md">
+      <div className="relative flex aspect-video w-full items-center justify-center border-b-2 border-foreground bg-muted">
         <Play className="h-9 w-9 text-muted-foreground" />
-        <span className="absolute bottom-2 right-2 rounded-sm border-2 border-foreground bg-background px-2 py-0.5 font-mono text-xs font-bold">
+        <span className="absolute bottom-2 right-2 rounded-sm border border-foreground bg-background px-2 py-0.5 font-mono text-xs font-bold">
           2:14
         </span>
       </div>
       <div className="flex flex-1 flex-col p-4">
         <div className="mb-2 flex items-center justify-between gap-2">
           {published ? (
-            <Badge className="border-2 border-foreground bg-primary text-primary-foreground">
+            <Badge className="border border-foreground bg-primary text-primary-foreground">
               <Globe className="mr-1 h-3 w-3" /> Published
             </Badge>
           ) : (
-            <Badge variant="outline" className="border-2 border-foreground">
+            <Badge variant="outline" className="border border-foreground">
               <Lock className="mr-1 h-3 w-3" /> Local
             </Badge>
           )}
@@ -42,14 +42,14 @@ function DemoCard({ published }: { published: boolean }) {
           <Button
             size="sm"
             variant="outline"
-            className="border-2 border-foreground font-bold"
+            className="border border-foreground font-bold"
           >
             <Pencil className="mr-1 h-4 w-4" /> Edit
           </Button>
           {published && (
             <Button
               size="sm"
-              className="border-2 border-foreground bg-accent font-bold text-accent-foreground"
+              className="border border-foreground bg-accent font-bold text-accent-foreground"
             >
               <Share2 className="mr-1 h-4 w-4" /> Copy
             </Button>
@@ -92,11 +92,11 @@ export default function CardsListsPattern() {
           <span className="mt-3 block space-y-1 font-mono text-sm">
             <span className="block">
               Level 1 (outer):{" "}
-              <code className="bg-foreground/10 px-1">border-4 border-foreground</code>
+              <code className="bg-foreground/10 px-1">border-2 border-foreground</code>
             </span>
             <span className="block">
               Level 2 (nested):{" "}
-              <code className="bg-foreground/10 px-1">border-2 border-foreground/60</code>
+              <code className="bg-foreground/10 px-1">border border-foreground/60</code>
             </span>
             <span className="block">
               Level 3 (inner):{" "}
@@ -105,11 +105,11 @@ export default function CardsListsPattern() {
           </span>
         </Note>
         <Preview>
-          <div className="border-4 border-foreground bg-card p-6 shadow-md">
+          <div className="border-2 border-foreground bg-card p-6 shadow-md">
             <span className="mb-4 block font-mono text-xs font-bold uppercase tracking-wide text-muted-foreground">
               Level 1 — container
             </span>
-            <div className="border-2 border-foreground/60 bg-background p-5">
+            <div className="border border-foreground/60 bg-background p-5">
               <span className="mb-3 block font-mono text-xs font-bold uppercase tracking-wide text-muted-foreground">
                 Level 2 — section
               </span>

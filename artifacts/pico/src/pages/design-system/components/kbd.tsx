@@ -14,9 +14,9 @@ export default function KbdDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
-          <div className="bg-background p-4 border-2 border-foreground shadow-sm rounded-sm">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+          <div className="bg-background p-4 border border-foreground shadow-sm rounded-sm">
             <Kbd>⌘</Kbd>
           </div>
         </div>
@@ -26,12 +26,12 @@ export default function KbdDocs() {
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Shortcuts</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Shortcuts</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Combine keys with <code>KbdGroup</code> to show a full shortcut for an action.
         </p>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
-          <div className="flex flex-col gap-3 bg-background p-4 border-2 border-foreground shadow-sm rounded-sm">
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+          <div className="flex flex-col gap-3 bg-background p-4 border border-foreground shadow-sm rounded-sm">
             <div className="flex items-center justify-between gap-6">
               <span className="text-sm font-bold uppercase tracking-wide">Start recording</span>
               <KbdGroup>

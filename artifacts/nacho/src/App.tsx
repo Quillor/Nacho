@@ -86,7 +86,7 @@ const clerkAppearance = {
   elements: {
     rootBox: "w-full flex justify-center",
     cardBox:
-      "bg-background border-4 border-foreground shadow-md rounded-md w-[440px] max-w-full overflow-hidden",
+      "bg-background border-2 border-foreground shadow-md rounded-md w-[440px] max-w-full overflow-hidden",
     card: "!shadow-none !border-0 !bg-transparent !rounded-none",
     footer: "!shadow-none !border-0 !bg-transparent !rounded-none",
     headerTitle:
@@ -105,13 +105,13 @@ const clerkAppearance = {
     logoBox: "h-10",
     logoImage: "h-10",
     socialButtonsBlockButton:
-      "border-2 border-foreground hover:bg-muted",
+      "border border-foreground hover:bg-muted",
     formButtonPrimary:
-      "bg-accent text-accent-foreground border-2 border-foreground font-bold uppercase tracking-wide shadow-sm transition-all hover:bg-accent/90 hover:translate-y-[2px] hover:shadow-xs active:translate-y-[2px] active:shadow-none",
-    formFieldInput: "border-2 border-foreground",
+      "bg-accent text-accent-foreground border border-foreground font-bold uppercase tracking-wide shadow-sm transition-all hover:bg-accent/90 hover:translate-y-[2px] hover:shadow-xs active:translate-y-[2px] active:shadow-none",
+    formFieldInput: "border border-foreground",
     footerAction: "",
     dividerLine: "bg-foreground",
-    otpCodeFieldInput: "border-2 border-foreground",
+    otpCodeFieldInput: "border border-foreground",
   },
 };
 

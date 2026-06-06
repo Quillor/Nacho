@@ -27,8 +27,8 @@ export default function EmptyStatesPattern() {
           empty, and the button does the obvious thing about it.
         </Note>
         <Preview>
-          <div className="flex flex-col items-center justify-center border-4 border-dashed border-foreground bg-card py-16 text-center">
-            <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-accent shadow-md">
+          <div className="flex flex-col items-center justify-center border-2 border-dashed border-foreground bg-card py-16 text-center">
+            <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-foreground bg-accent shadow-md">
               <CircleDot className="h-10 w-10 text-accent-foreground" />
             </div>
  <h3 className="font-display text-3xl font-extrabold">
@@ -43,8 +43,8 @@ export default function EmptyStatesPattern() {
           </div>
         </Preview>
         <CodeBlock
-          code={`<div className="flex flex-col items-center justify-center border-4 border-dashed border-foreground bg-card py-16 text-center">
-  <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-accent shadow-md">
+          code={`<div className="flex flex-col items-center justify-center border-2 border-dashed border-foreground bg-card py-16 text-center">
+  <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-foreground bg-accent shadow-md">
     <CircleDot className="h-10 w-10 text-accent-foreground" />
   </div>
  <h3 className="font-display text-3xl font-extrabold">No recordings yet</h3>

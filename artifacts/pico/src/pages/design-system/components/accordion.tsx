@@ -19,9 +19,9 @@ export default function AccordionDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
-          <Accordion type="single" collapsible className="w-full max-w-md bg-background px-4 border-2 border-foreground shadow-sm rounded-sm">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+          <Accordion type="single" collapsible className="w-full max-w-md bg-background px-4 border border-foreground shadow-sm rounded-sm">
             <AccordionItem value="formats">
               <AccordionTrigger>What formats can I export?</AccordionTrigger>
               <AccordionContent>

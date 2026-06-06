@@ -15,9 +15,9 @@ export default function ToggleDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
-          <Toggle aria-label="Toggle microphone" className="border-2 border-foreground">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+          <Toggle aria-label="Toggle microphone" className="border border-foreground">
             <Mic />
             Microphone
           </Toggle>
@@ -25,18 +25,18 @@ export default function ToggleDocs() {
         <CodeBlock code={`import { Toggle } from "@workspace/pico-ui/toggle"
 import { Mic } from "lucide-react"
 
-<Toggle aria-label="Toggle microphone" className="border-2 border-foreground">
+<Toggle aria-label="Toggle microphone" className="border border-foreground">
   <Mic />
   Microphone
 </Toggle>`} />
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Variants</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Variants</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Use the outline variant for standalone controls and show the pressed state with defaultPressed.
         </p>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center gap-4">
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center gap-4">
           <Toggle variant="outline" aria-label="Toggle microphone">
             <Mic />
             Mic

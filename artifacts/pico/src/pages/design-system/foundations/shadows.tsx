@@ -25,7 +25,7 @@ export default function Shadows() {
             <div className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">
               {shadow.token}
             </div>
-            <div className={`h-40 bg-accent border-4 border-foreground rounded-sm ${shadow.class} flex items-center justify-center`}>
+            <div className={`h-40 bg-accent border-2 border-foreground rounded-sm ${shadow.class} flex items-center justify-center`}>
  <span className="font-display font-extrabold text-2xl text-accent-foreground">Hover Me</span>
             </div>
             <p className="text-sm font-medium text-foreground/80">{shadow.desc}</p>

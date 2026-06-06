@@ -40,7 +40,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     if (!isLoaded) {
       return (
         <div className="flex min-h-screen items-center justify-center bg-background">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-foreground border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-foreground border-t-transparent" />
         </div>
       );
     }

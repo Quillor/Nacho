@@ -96,7 +96,7 @@ export default function SettingsPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <div className="border-4 border-foreground bg-card p-6">
+        <div className="border-2 border-foreground bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <HardDrive className="h-5 w-5" />
  <h2 className="font-display text-xl font-extrabold">
@@ -104,11 +104,11 @@ export default function SettingsPage() {
             </h2>
           </div>
           <dl className="space-y-3">
-            <div className="flex justify-between border-b-2 border-dashed border-foreground pb-2">
+            <div className="flex justify-between border-b border-dashed border-foreground pb-2">
               <dt className="font-medium text-muted-foreground">Recordings</dt>
               <dd className="font-bold">{recordings.length}</dd>
             </div>
-            <div className="flex justify-between border-b-2 border-dashed border-foreground pb-2">
+            <div className="flex justify-between border-b border-dashed border-foreground pb-2">
               <dt className="font-medium text-muted-foreground">Published</dt>
               <dd className="font-bold">{publishedCount}</dd>
             </div>
@@ -125,19 +125,19 @@ export default function SettingsPage() {
             variant="outline"
             disabled={recordings.length === 0}
             onClick={() => setConfirmClear(true)}
- className="mt-6 w-full border-4 border-foreground font-bold text-destructive hover:bg-destructive hover:text-destructive-foreground"
+ className="mt-6 w-full border-2 border-foreground font-bold text-destructive hover:bg-destructive hover:text-destructive-foreground"
           >
             <Trash2 className="mr-2 h-4 w-4" /> Clear local recordings
           </Button>
         </div>
 
-        <div className="border-4 border-foreground bg-card p-6">
+        <div className="border-2 border-foreground bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <Info className="h-5 w-5" />
  <h2 className="font-display text-xl font-extrabold">About</h2>
           </div>
           <dl className="space-y-3">
-            <div className="flex justify-between border-b-2 border-dashed border-foreground pb-2">
+            <div className="flex justify-between border-b border-dashed border-foreground pb-2">
               <dt className="flex items-center gap-1 font-medium text-muted-foreground">
                 <Tag className="h-4 w-4" /> Version
               </dt>
@@ -160,7 +160,7 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      <div className="mt-6 border-4 border-destructive bg-card p-6">
+      <div className="mt-6 border-2 border-destructive bg-card p-6">
         <div className="mb-4 flex items-center gap-2">
           <UserX className="h-5 w-5 text-destructive" />
  <h2 className="font-display text-xl font-extrabold text-destructive">
@@ -168,7 +168,7 @@ export default function SettingsPage() {
           </h2>
         </div>
         <dl className="space-y-3">
-          <div className="flex items-center justify-between gap-4 border-b-2 border-dashed border-foreground pb-2">
+          <div className="flex items-center justify-between gap-4 border-b border-dashed border-foreground pb-2">
             <dt className="flex items-center gap-1 font-medium text-muted-foreground">
               <Mail className="h-4 w-4" /> Signed in as
             </dt>
@@ -186,14 +186,14 @@ export default function SettingsPage() {
           variant="outline"
           disabled={!user || deleting}
           onClick={() => setConfirmDelete(true)}
- className="mt-6 w-full border-4 border-destructive font-bold text-destructive hover:bg-destructive hover:text-destructive-foreground"
+ className="mt-6 w-full border-2 border-destructive font-bold text-destructive hover:bg-destructive hover:text-destructive-foreground"
         >
           <UserX className="mr-2 h-4 w-4" /> Delete my account
         </Button>
       </div>
 
       <AlertDialog open={confirmClear} onOpenChange={setConfirmClear}>
-        <AlertDialogContent className="border-4 border-foreground">
+        <AlertDialogContent className="border-2 border-foreground">
           <AlertDialogHeader>
  <AlertDialogTitle className="font-display">
               Clear all local recordings?
@@ -204,12 +204,12 @@ export default function SettingsPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="border-2 border-foreground font-bold">
+            <AlertDialogCancel className="border border-foreground font-bold">
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={clearAll}
-              className="border-2 border-foreground bg-destructive font-bold text-destructive-foreground"
+              className="border border-foreground bg-destructive font-bold text-destructive-foreground"
             >
               Clear everything
             </AlertDialogAction>
@@ -218,7 +218,7 @@ export default function SettingsPage() {
       </AlertDialog>
 
       <AlertDialog open={confirmDelete} onOpenChange={setConfirmDelete}>
-        <AlertDialogContent className="border-4 border-destructive">
+        <AlertDialogContent className="border-2 border-destructive">
           <AlertDialogHeader>
  <AlertDialogTitle className="font-display">
               Delete your account?
@@ -232,7 +232,7 @@ export default function SettingsPage() {
           <AlertDialogFooter>
             <AlertDialogCancel
               disabled={deleting}
-              className="border-2 border-foreground font-bold"
+              className="border border-foreground font-bold"
             >
               Cancel
             </AlertDialogCancel>
@@ -242,7 +242,7 @@ export default function SettingsPage() {
                 void deleteAccount();
               }}
               disabled={deleting}
-              className="border-2 border-foreground bg-destructive font-bold text-destructive-foreground"
+              className="border border-foreground bg-destructive font-bold text-destructive-foreground"
             >
               {deleting ? "Deleting…" : "Delete account"}
             </AlertDialogAction>

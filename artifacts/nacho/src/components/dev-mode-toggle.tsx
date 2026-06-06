@@ -19,7 +19,7 @@ export function DevModeToggle({ onEnabledPath }: { onEnabledPath: string }) {
   };
 
   return (
-    <div className="w-[440px] max-w-full border-4 border-dashed border-foreground bg-card p-4">
+    <div className="w-[440px] max-w-full border-2 border-dashed border-foreground bg-card p-4">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-start gap-2">
           <FlaskConical className="mt-0.5 h-5 w-5 shrink-0 text-foreground" />

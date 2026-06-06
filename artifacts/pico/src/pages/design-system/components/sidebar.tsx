@@ -27,9 +27,9 @@ export default function SidebarDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
-          <div className="w-72 h-80 overflow-hidden border-2 border-foreground rounded-sm shadow-sm">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
+          <div className="w-72 h-80 overflow-hidden border border-foreground rounded-sm shadow-sm">
             <SidebarProvider className="min-h-full">
               <Sidebar collapsible="none" className="h-80">
  <SidebarHeader className="px-3 py-2 font-display font-extrabold tracking-tight">

@@ -14,8 +14,8 @@ export default function BadgeDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Variants</h2>
-        <div className="flex flex-wrap gap-4 items-center p-8 border-4 border-foreground rounded-sm bg-background/50">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Variants</h2>
+        <div className="flex flex-wrap gap-4 items-center p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Badge>Default</Badge>
           <Badge variant="secondary">Secondary</Badge>
           <Badge variant="outline">Outline</Badge>

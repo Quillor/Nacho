@@ -11,7 +11,7 @@ export function TestingModeBanner() {
   return (
     <div
       role="status"
-      className="flex items-center justify-center gap-2 border-b-4 border-foreground bg-accent px-4 py-2 text-center text-sm font-bold uppercase tracking-wide text-accent-foreground"
+      className="flex items-center justify-center gap-2 border-b-2 border-foreground bg-accent px-4 py-2 text-center text-sm font-bold uppercase tracking-wide text-accent-foreground"
     >
       <TriangleAlert className="h-4 w-4 shrink-0" />
       <span>

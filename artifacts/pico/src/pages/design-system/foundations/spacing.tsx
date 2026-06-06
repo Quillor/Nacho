@@ -49,12 +49,12 @@ export default function Spacing() {
                 {space.px}px / {space.rem}
               </div>
             </div>
-            <div className="flex-1 max-w-md h-12 bg-accent/10 border-2 border-foreground/20 rounded-sm flex items-center px-1 overflow-hidden">
+            <div className="flex-1 max-w-md h-12 bg-accent/10 border border-foreground/20 rounded-sm flex items-center px-1 overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${space.px}px` }}
                 transition={{ duration: 0.5, delay: i * 0.06 }}
-                className="h-10 bg-accent border-2 border-foreground shrink-0"
+                className="h-10 bg-accent border border-foreground shrink-0"
               />
             </div>
             <div className="text-sm font-medium hidden md:block text-foreground/80">

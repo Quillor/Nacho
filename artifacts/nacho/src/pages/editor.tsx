@@ -357,7 +357,7 @@ export default function Editor() {
           </h1>
           <Button
             asChild
-            className="mt-6 border-2 border-foreground bg-accent font-bold text-accent-foreground"
+            className="mt-6 border border-foreground bg-accent font-bold text-accent-foreground"
           >
             <Link href="/library">Back to Library</Link>
           </Button>
@@ -369,7 +369,7 @@ export default function Editor() {
   if (!rec || !objectUrl) {
     return (
       <AppShell>
-        <div className="aspect-video w-full animate-pulse border-4 border-foreground bg-muted" />
+        <div className="aspect-video w-full animate-pulse border-2 border-foreground bg-muted" />
       </AppShell>
     );
   }
@@ -403,7 +403,7 @@ export default function Editor() {
             }}
           />
 
-          <div className="mt-6 border-4 border-foreground bg-card p-5">
+          <div className="mt-6 border-2 border-foreground bg-card p-5">
             <div className="mb-3 flex items-center gap-2">
               <Scissors className="h-5 w-5" />
  <h3 className="font-display text-lg font-bold">
@@ -441,7 +441,7 @@ export default function Editor() {
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="border-4 border-foreground font-bold"
+              className="border-2 border-foreground font-bold"
             />
           </div>
 
@@ -462,7 +462,7 @@ export default function Editor() {
             </TabsContent>
 
             <TabsContent value="chapters" className="mt-4 space-y-3">
-              <label className="flex items-center justify-between gap-3 border-2 border-foreground bg-muted p-3">
+              <label className="flex items-center justify-between gap-3 border border-foreground bg-muted p-3">
                 <span className="text-sm font-bold">
                   Display chapter on video
                 </span>
@@ -475,7 +475,7 @@ export default function Editor() {
               <Button
                 onClick={addChapter}
                 variant="outline"
- className="w-full border-4 border-foreground font-bold"
+ className="w-full border-2 border-foreground font-bold"
               >
                 <Plus className="mr-2 h-4 w-4" /> Add chapter at{" "}
                 {formatTimestamp(current)}
@@ -488,12 +488,12 @@ export default function Editor() {
                 chapters.map((c, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-2 border-2 border-foreground bg-card p-2"
+                    className="flex items-center gap-2 border border-foreground bg-card p-2"
                   >
                     <button
                       type="button"
                       onClick={() => seek(c.time)}
-                      className="shrink-0 border-2 border-foreground bg-accent px-2 py-1 font-mono text-xs font-bold text-accent-foreground"
+                      className="shrink-0 border border-foreground bg-accent px-2 py-1 font-mono text-xs font-bold text-accent-foreground"
                     >
                       {formatTimestamp(c.time)}
                     </button>
@@ -501,7 +501,7 @@ export default function Editor() {
                       value={c.label}
                       onChange={(e) => updateChapter(i, e.target.value)}
                       maxLength={CHAPTER_LABEL_MAX_CHARS}
-                      className="h-9 border-2 border-foreground font-medium"
+                      className="h-9 border border-foreground font-medium"
                     />
                     <Button
                       size="sm"
@@ -531,7 +531,7 @@ export default function Editor() {
                       key={i}
                       type="button"
                       onClick={() => seek(seg.start)}
-                      className="flex w-full gap-3 border-2 border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
+                      className="flex w-full gap-3 border border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
                     >
                       <span className="shrink-0 font-mono text-xs font-bold text-foreground">
                         {formatTimestamp(seg.start)}
@@ -544,7 +544,7 @@ export default function Editor() {
             </TabsContent>
 
             <TabsContent value="settings" className="mt-4 space-y-3">
-              <label className="flex items-start justify-between gap-3 border-2 border-foreground bg-muted p-3">
+              <label className="flex items-start justify-between gap-3 border border-foreground bg-muted p-3">
                 <span className="space-y-1">
                   <span className="flex items-center gap-2 text-sm font-bold">
                     <Bell className="h-4 w-4" /> Notify me when viewed
@@ -563,9 +563,9 @@ export default function Editor() {
             </TabsContent>
           </Tabs>
 
-          <div className="space-y-3 border-t-4 border-foreground pt-6">
+          <div className="space-y-3 border-t-2 border-foreground pt-6">
             {isPublic ? (
-              <div className="space-y-3 border-4 border-foreground bg-primary p-4 text-primary-foreground">
+              <div className="space-y-3 border-2 border-foreground bg-primary p-4 text-primary-foreground">
  <div className="flex items-center gap-2 font-display font-bold">
                   <Globe className="h-5 w-5" /> Public
                 </div>
@@ -576,11 +576,11 @@ export default function Editor() {
                   <Input
                     readOnly
                     value={shareUrl(shareId!)}
-                    className="h-10 border-2 border-foreground bg-background font-mono text-xs"
+                    className="h-10 border border-foreground bg-background font-mono text-xs"
                   />
                   <Button
                     onClick={copyLink}
-                    className="h-10 shrink-0 border-2 border-foreground bg-accent font-bold text-accent-foreground"
+                    className="h-10 shrink-0 border border-foreground bg-accent font-bold text-accent-foreground"
                   >
                     {copied ? (
                       <Check className="h-4 w-4" />
@@ -592,7 +592,7 @@ export default function Editor() {
                 <Button
                   onClick={() => navigate(`/v/${shareId}`)}
                   variant="outline"
- className="w-full border-2 border-foreground bg-background font-bold"
+ className="w-full border border-foreground bg-background font-bold"
                 >
                   Open public page
                 </Button>
@@ -615,7 +615,7 @@ export default function Editor() {
                 </Button>
               </div>
             ) : (
-              <div className="space-y-3 border-4 border-foreground bg-card p-4">
+              <div className="space-y-3 border-2 border-foreground bg-card p-4">
  <div className="flex items-center gap-2 font-display font-bold">
                   <Lock className="h-5 w-5" /> Private
                 </div>
@@ -628,7 +628,7 @@ export default function Editor() {
                       <UploadCloud className="h-4 w-4 animate-pulse" />
                       Saving to cloud… {Math.round(upload.progress * 100)}%
                     </div>
-                    <div className="h-3 w-full border-2 border-foreground bg-background">
+                    <div className="h-3 w-full border border-foreground bg-background">
                       <div
                         className="h-full bg-primary transition-all"
                         style={{
@@ -645,7 +645,7 @@ export default function Editor() {
                   </div>
                 )}
                 {upload.phase === "failed" && (
-                  <div className="space-y-2 border-2 border-foreground bg-background p-2">
+                  <div className="space-y-2 border border-foreground bg-background p-2">
                     <div className="flex items-center gap-2 text-sm font-bold">
                       <AlertTriangle className="h-4 w-4" />
                       Upload failed.
@@ -654,7 +654,7 @@ export default function Editor() {
                       onClick={() => id && retryUpload(id)}
                       variant="outline"
                       size="sm"
-                      className="border-2 border-foreground font-bold"
+                      className="border border-foreground font-bold"
                     >
                       <RotateCcw className="mr-2 h-4 w-4" /> Retry upload
                     </Button>
@@ -664,7 +664,7 @@ export default function Editor() {
                   onClick={handleGetLink}
                   disabled={busy}
                   size="lg"
- className="h-14 w-full border-4 border-foreground bg-accent text-lg font-black text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+ className="h-14 w-full border-2 border-foreground bg-accent text-lg font-black text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
                 >
                   {busy ? (
                     <>
@@ -682,7 +682,7 @@ export default function Editor() {
             <Button
               onClick={handleSave}
               variant="outline"
- className="w-full border-4 border-foreground font-bold"
+ className="w-full border-2 border-foreground font-bold"
             >
               Save changes
             </Button>
@@ -748,7 +748,7 @@ function TrimBar({
   return (
     <div
       ref={trackRef}
-      className="relative h-12 w-full cursor-pointer overflow-hidden border-2 border-foreground bg-muted"
+      className="relative h-12 w-full cursor-pointer overflow-hidden border border-foreground bg-muted"
       onPointerDown={(e) => {
         dragging.current = "scrub";
         onScrub(posToTime(e.clientX));
@@ -784,7 +784,7 @@ function TrimBar({
         style={{ left: `${pct(start)}%`, width: `${pct(end - start)}%` }}
       />
       <div
-        className="pointer-events-none absolute inset-y-0 z-30 w-3 -translate-x-1/2 border-2 border-foreground bg-background"
+        className="pointer-events-none absolute inset-y-0 z-30 w-3 -translate-x-1/2 border border-foreground bg-background"
         style={{ left: `${pct(current)}%` }}
       />
       <Handle position={pct(start)} onDown={() => (dragging.current = "start")} />
@@ -806,7 +806,7 @@ function Handle({
       aria-valuenow={position}
       tabIndex={0}
       className={cn(
-        "absolute inset-y-0 z-20 flex w-3 -translate-x-1/2 cursor-ew-resize items-center justify-center border-x-2 border-foreground bg-primary",
+        "absolute inset-y-0 z-20 flex w-3 -translate-x-1/2 cursor-ew-resize items-center justify-center border-x border-foreground bg-primary",
       )}
       style={{ left: `${position}%` }}
       onPointerDown={(e) => {

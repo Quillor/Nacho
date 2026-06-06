@@ -20,21 +20,21 @@ export default function InputOTPDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <div className="space-y-2 text-center">
             <Label className="uppercase tracking-wide">Verification code</Label>
             <InputOTP maxLength={6}>
               <InputOTPGroup>
-                <InputOTPSlot index={0} className="border-2 border-foreground" />
-                <InputOTPSlot index={1} className="border-2 border-foreground" />
-                <InputOTPSlot index={2} className="border-2 border-foreground" />
+                <InputOTPSlot index={0} className="border border-foreground" />
+                <InputOTPSlot index={1} className="border border-foreground" />
+                <InputOTPSlot index={2} className="border border-foreground" />
               </InputOTPGroup>
               <InputOTPSeparator />
               <InputOTPGroup>
-                <InputOTPSlot index={3} className="border-2 border-foreground" />
-                <InputOTPSlot index={4} className="border-2 border-foreground" />
-                <InputOTPSlot index={5} className="border-2 border-foreground" />
+                <InputOTPSlot index={3} className="border border-foreground" />
+                <InputOTPSlot index={4} className="border border-foreground" />
+                <InputOTPSlot index={5} className="border border-foreground" />
               </InputOTPGroup>
             </InputOTP>
           </div>

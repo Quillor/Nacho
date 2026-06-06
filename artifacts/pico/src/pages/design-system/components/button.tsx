@@ -15,8 +15,8 @@ export default function ButtonDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Variants</h2>
-        <div className="flex flex-wrap gap-4 items-center p-8 border-4 border-foreground rounded-sm bg-background/50">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Variants</h2>
+        <div className="flex flex-wrap gap-4 items-center p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Button>Default</Button>
           <Button variant="brand">Brand</Button>
           <Button variant="secondary">Secondary</Button>
@@ -37,11 +37,11 @@ export default function ButtonDocs() {
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Brand</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Brand</h2>
         <p className="text-lg max-w-2xl font-medium leading-relaxed text-foreground/80">
           The chunky marketing CTA: solid yellow fill, heavy brown border, and the chunky offset shadow that presses down on hover. Use it for the loudest primary action on a light surface — landing-page sign-up, hero calls to action.
         </p>
-        <div className="flex flex-wrap gap-4 items-center p-8 border-4 border-foreground rounded-sm bg-background/50">
+        <div className="flex flex-wrap gap-4 items-center p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Button variant="brand">Start Recording Free</Button>
           <Button variant="brand" size="lg">Get Started</Button>
         </div>
@@ -50,8 +50,8 @@ export default function ButtonDocs() {
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Sizes</h2>
-        <div className="flex flex-wrap gap-4 items-center p-8 border-4 border-foreground rounded-sm bg-background/50">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Sizes</h2>
+        <div className="flex flex-wrap gap-4 items-center p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Button size="sm">Small</Button>
           <Button size="default">Default</Button>
           <Button size="lg">Large</Button>
@@ -64,8 +64,8 @@ export default function ButtonDocs() {
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">With Icon</h2>
-        <div className="flex flex-wrap gap-4 items-center p-8 border-4 border-foreground rounded-sm bg-background/50">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">With Icon</h2>
+        <div className="flex flex-wrap gap-4 items-center p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Button>
             <Mail className="w-4 h-4 mr-2" /> Login with Email
           </Button>

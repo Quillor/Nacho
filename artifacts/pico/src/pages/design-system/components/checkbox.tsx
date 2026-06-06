@@ -15,14 +15,14 @@ export default function CheckboxDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex flex-col items-center justify-center gap-6">
-          <div className="flex items-center space-x-2 bg-background p-4 border-2 border-foreground shadow-sm rounded-sm min-w-[200px]">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex flex-col items-center justify-center gap-6">
+          <div className="flex items-center space-x-2 bg-background p-4 border border-foreground shadow-sm rounded-sm min-w-[200px]">
             <Checkbox id="terms" />
             <Label htmlFor="terms">Accept terms and conditions</Label>
           </div>
           
-          <div className="items-top flex space-x-2 bg-background p-4 border-2 border-foreground shadow-sm rounded-sm max-w-sm">
+          <div className="items-top flex space-x-2 bg-background p-4 border border-foreground shadow-sm rounded-sm max-w-sm">
             <Checkbox id="terms1" />
             <div className="grid gap-1.5 leading-none">
               <Label htmlFor="terms1">

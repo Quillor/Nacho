@@ -53,7 +53,7 @@ export default function Terms() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
-      <header className="py-6 px-6 md:px-12 border-b-4 border-foreground">
+      <header className="py-6 px-6 md:px-12 border-b-2 border-foreground">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center" aria-label="Nacho home">
             <Logo className="h-9" />

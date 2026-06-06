@@ -25,8 +25,8 @@ export default function AlertDialogDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive">Delete recording</Button>
@@ -79,16 +79,16 @@ export default function AlertDialogDocs() {
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Dialog vs. Alert Dialog</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Dialog vs. Alert Dialog</h2>
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
+          <div className="border-2 border-foreground rounded-sm bg-background p-6 shadow-sm">
  <h3 className="font-display text-xl font-extrabold mb-2">Dialog</h3>
             <p className="font-medium leading-relaxed text-foreground/80">
               For routine, reversible tasks — editing a title, filling a short
               form. Dismissable by clicking outside or pressing escape.
             </p>
           </div>
-          <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
+          <div className="border-2 border-foreground rounded-sm bg-background p-6 shadow-sm">
  <h3 className="font-display text-xl font-extrabold mb-2">Alert Dialog</h3>
             <p className="font-medium leading-relaxed text-foreground/80">
               For destructive or irreversible choices — deleting data, removing

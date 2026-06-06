@@ -19,13 +19,13 @@ export default function Installation() {
             Pico uses standard Tailwind CSS classes mapped to our custom design tokens. Here's a quick cheat sheet:
           </p>
           
-          <div className="border-4 border-foreground rounded-sm overflow-hidden bg-background">
+          <div className="border-2 border-foreground rounded-sm overflow-hidden bg-background">
             <table className="w-full text-left text-sm">
               <thead className="bg-foreground text-background uppercase font-bold text-xs tracking-wider">
                 <tr>
-                  <th className="p-4 border-b-4 border-foreground">Tailwind Class</th>
-                  <th className="p-4 border-b-4 border-foreground">CSS Variable</th>
-                  <th className="p-4 border-b-4 border-foreground">Usage</th>
+                  <th className="p-4 border-b-2 border-foreground">Tailwind Class</th>
+                  <th className="p-4 border-b-2 border-foreground">CSS Variable</th>
+                  <th className="p-4 border-b-2 border-foreground">Usage</th>
                 </tr>
               </thead>
               <tbody className="divide-y-4 divide-foreground font-mono">

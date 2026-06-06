@@ -15,13 +15,13 @@ export default function TextareaDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <div className="w-full max-w-md space-y-2">
             <Label htmlFor="description" className="uppercase tracking-wide">Description</Label>
             <Textarea
               id="description"
-              className="border-2 border-foreground"
+              className="border border-foreground"
               placeholder="Tell viewers what this recording covers…"
             />
           </div>
@@ -33,27 +33,27 @@ import { Label } from "@workspace/pico-ui/label"
   <Label htmlFor="description">Description</Label>
   <Textarea
     id="description"
-    className="border-2 border-foreground"
+    className="border border-foreground"
     placeholder="Tell viewers what this recording covers…"
   />
 </div>`} />
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Disabled</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Disabled</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <div className="w-full max-w-md space-y-2">
             <Label htmlFor="transcript" className="uppercase tracking-wide">Transcript</Label>
             <Textarea
               id="transcript"
-              className="border-2 border-foreground"
+              className="border border-foreground"
               defaultValue="Transcript is still processing…"
               disabled
             />
           </div>
         </div>
         <CodeBlock code={`<Textarea
-  className="border-2 border-foreground"
+  className="border border-foreground"
   defaultValue="Transcript is still processing…"
   disabled
 />`} />

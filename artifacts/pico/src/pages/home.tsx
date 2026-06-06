@@ -27,7 +27,7 @@ export default function Home() {
     <div className="min-h-[100dvh] bg-background text-foreground overflow-hidden selection:bg-accent selection:text-accent-foreground">
       
       {/* 1. Intro / Hero */}
-      <section className="relative pt-32 pb-24 px-6 md:px-12 border-b-4 border-foreground overflow-hidden bg-accent">
+      <section className="relative pt-32 pb-24 px-6 md:px-12 border-b-2 border-foreground overflow-hidden bg-accent">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none"></div>
         <motion.div 
           className="max-w-5xl mx-auto relative z-10"
@@ -35,7 +35,7 @@ export default function Home() {
           animate="visible"
           variants={stagger}
         >
-          <motion.div variants={fadeIn} className="inline-block mb-6 px-4 py-2 bg-background border-2 border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-sm">
+          <motion.div variants={fadeIn} className="inline-block mb-6 px-4 py-2 bg-background border border-foreground shadow-sm rounded-sm font-bold tracking-widest uppercase text-sm">
             DESIGN SYSTEM v1.0
           </motion.div>
  <motion.h1 variants={fadeIn} className="text-7xl md:text-9xl tracking-tight leading-[0.9] mb-8 text-accent-foreground">
@@ -48,7 +48,7 @@ export default function Home() {
       </section>
 
       {/* 2. Color Palette */}
-      <section className="py-24 px-6 md:px-12 border-b-4 border-foreground bg-background">
+      <section className="py-24 px-6 md:px-12 border-b-2 border-foreground bg-background">
         <div className="max-w-5xl mx-auto">
           <motion.div 
             initial="hidden"
@@ -57,7 +57,7 @@ export default function Home() {
             variants={fadeIn}
             className="mb-16 flex items-center gap-4"
           >
-            <div className="w-12 h-12 bg-accent border-2 border-foreground rounded-sm shadow-sm flex items-center justify-center">
+            <div className="w-12 h-12 bg-accent border border-foreground rounded-sm shadow-sm flex items-center justify-center">
               <PaintBucket className="w-6 h-6 text-accent-foreground" />
             </div>
  <h2 className="text-4xl md:text-5xl">Core Palette</h2>
@@ -66,12 +66,12 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Primary */}
             <motion.div 
-              className="group border-4 border-foreground rounded-sm overflow-hidden shadow-md hover:-translate-y-2 transition-transform duration-300"
+              className="group border-2 border-foreground rounded-sm overflow-hidden shadow-md hover:-translate-y-2 transition-transform duration-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="h-48 bg-accent w-full border-b-4 border-foreground p-4 flex items-end">
+              <div className="h-48 bg-accent w-full border-b-2 border-foreground p-4 flex items-end">
                 <span className="font-display text-4xl font-extrabold text-accent-foreground">Aa</span>
               </div>
               <div className="p-6 bg-background">
@@ -85,13 +85,13 @@ export default function Home() {
 
             {/* Dark */}
             <motion.div 
-              className="group border-4 border-foreground rounded-sm overflow-hidden shadow-md hover:-translate-y-2 transition-transform duration-300"
+              className="group border-2 border-foreground rounded-sm overflow-hidden shadow-md hover:-translate-y-2 transition-transform duration-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
             >
-              <div className="h-48 bg-foreground w-full border-b-4 border-foreground p-4 flex items-end">
+              <div className="h-48 bg-foreground w-full border-b-2 border-foreground p-4 flex items-end">
                 <span className="font-display text-4xl font-extrabold text-background">Aa</span>
               </div>
               <div className="p-6 bg-background">
@@ -105,13 +105,13 @@ export default function Home() {
 
             {/* Light */}
             <motion.div 
-              className="group border-4 border-foreground rounded-sm overflow-hidden shadow-md hover:-translate-y-2 transition-transform duration-300"
+              className="group border-2 border-foreground rounded-sm overflow-hidden shadow-md hover:-translate-y-2 transition-transform duration-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              <div className="h-48 bg-background w-full border-b-4 border-foreground p-4 flex items-end relative overflow-hidden">
+              <div className="h-48 bg-background w-full border-b-2 border-foreground p-4 flex items-end relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay"></div>
                 <span className="font-display text-4xl font-extrabold text-foreground relative z-10">Aa</span>
               </div>
@@ -126,19 +126,19 @@ export default function Home() {
           </div>
 
           <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="border-2 border-foreground p-4 rounded-sm flex items-center justify-between bg-[#5E4230]">
+            <div className="border border-foreground p-4 rounded-sm flex items-center justify-between bg-[#5E4230]">
               <span className="text-background font-bold">Soft Brown</span>
               <span className="font-mono text-background/80 text-xs">#5E4230</span>
             </div>
-            <div className="border-2 border-foreground p-4 rounded-sm flex items-center justify-between bg-[#FFFDF5]">
+            <div className="border border-foreground p-4 rounded-sm flex items-center justify-between bg-[#FFFDF5]">
               <span className="text-foreground font-bold">Off White</span>
               <span className="font-mono text-foreground/80 text-xs">#FFFDF5</span>
             </div>
-            <div className="border-2 border-foreground p-4 rounded-sm flex items-center justify-between bg-[#1A1008]">
+            <div className="border border-foreground p-4 rounded-sm flex items-center justify-between bg-[#1A1008]">
               <span className="text-background font-bold">Near Black</span>
               <span className="font-mono text-background/80 text-xs">#1A1008</span>
             </div>
-            <div className="border-2 border-foreground p-4 rounded-sm flex items-center justify-between bg-[#FCE883]">
+            <div className="border border-foreground p-4 rounded-sm flex items-center justify-between bg-[#FCE883]">
               <span className="text-foreground font-bold">Pale Yellow</span>
               <span className="font-mono text-foreground/80 text-xs">#FCE883</span>
             </div>
@@ -147,7 +147,7 @@ export default function Home() {
       </section>
 
       {/* 3. Color Combinations */}
-      <section className="py-24 px-6 md:px-12 border-b-4 border-foreground bg-background">
+      <section className="py-24 px-6 md:px-12 border-b-2 border-foreground bg-background">
         <div className="max-w-5xl mx-auto">
            <motion.div 
             initial="hidden"
@@ -156,7 +156,7 @@ export default function Home() {
             variants={fadeIn}
             className="mb-16 flex items-center gap-4"
           >
-            <div className="w-12 h-12 bg-accent border-2 border-foreground rounded-sm shadow-sm flex items-center justify-center">
+            <div className="w-12 h-12 bg-accent border border-foreground rounded-sm shadow-sm flex items-center justify-center">
               <LayoutGrid className="w-6 h-6 text-accent-foreground" />
             </div>
  <h2 className="text-4xl md:text-5xl">Combinations</h2>
@@ -164,8 +164,8 @@ export default function Home() {
 
           <div className="space-y-12">
             {/* Combo A */}
-            <div className="grid md:grid-cols-[1fr_2fr] border-4 border-foreground rounded-sm overflow-hidden shadow-md">
-              <div className="bg-foreground text-background p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
+            <div className="grid md:grid-cols-[1fr_2fr] border-2 border-foreground rounded-sm overflow-hidden shadow-md">
+              <div className="bg-foreground text-background p-8 border-b-2 md:border-b-0 md:border-r-2 border-foreground flex flex-col justify-center">
  <h3 className="text-2xl font-bold mb-2">Combo A</h3>
                 <p className="opacity-80 mb-4">Yellow on Brown. Extremely high contrast, excellent for banners and emphasis.</p>
                 <Badge variant="outline" className="w-fit border-background text-background">Accessible AAA</Badge>
@@ -174,7 +174,7 @@ export default function Home() {
  <h4 className="text-3xl md:text-4xl mb-4">Loud & Clear</h4>
                 <p className="text-lg font-medium mb-8 max-w-md">This combination is our bread and butter. It's impossible to ignore and perfectly captures the snack-brand energy.</p>
                 <div className="flex flex-wrap gap-4">
-                  <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.3)] transition-all font-bold">
+                  <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.3)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.3)] transition-all font-bold">
                     Solid Action
                   </Button>
                   <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-foreground hover:text-background shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
@@ -185,8 +185,8 @@ export default function Home() {
             </div>
 
             {/* Combo B */}
-            <div className="grid md:grid-cols-[1fr_2fr] border-4 border-foreground rounded-sm overflow-hidden shadow-md">
-              <div className="bg-accent text-accent-foreground p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
+            <div className="grid md:grid-cols-[1fr_2fr] border-2 border-foreground rounded-sm overflow-hidden shadow-md">
+              <div className="bg-accent text-accent-foreground p-8 border-b-2 md:border-b-0 md:border-r-2 border-foreground flex flex-col justify-center">
  <h3 className="text-2xl font-bold mb-2">Combo B</h3>
                 <p className="opacity-80 mb-4">Cream/Yellow on Brown. Deep, rich, and grounds the layout.</p>
                 <Badge variant="outline" className="w-fit border-foreground text-foreground">Accessible AAA</Badge>
@@ -195,7 +195,7 @@ export default function Home() {
  <h4 className="text-3xl md:text-4xl mb-4 text-background">The Midnight Snack</h4>
                 <p className="text-lg font-medium mb-8 max-w-md text-background/90">Use this for footers, dramatic section breaks, or when you need the reader to stop scrolling and pay attention.</p>
                 <div className="flex flex-wrap gap-4">
-                  <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 border-2 border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.2)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.2)] transition-all font-bold">
+                  <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 border border-transparent shadow-[4px_4px_0px_0px_hsl(var(--background)/0.2)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background)/0.2)] transition-all font-bold">
                     Solid Action
                   </Button>
                   <Button size="lg" variant="outline" className="border-background text-background hover:bg-background hover:text-foreground shadow-[4px_4px_0px_0px_hsl(var(--background))] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_hsl(var(--background))] transition-all font-bold">
@@ -206,8 +206,8 @@ export default function Home() {
             </div>
 
             {/* Combo C */}
-             <div className="grid md:grid-cols-[1fr_2fr] border-4 border-foreground rounded-sm overflow-hidden shadow-md">
-              <div className="bg-background text-foreground p-8 border-b-4 md:border-b-0 md:border-r-4 border-foreground flex flex-col justify-center">
+             <div className="grid md:grid-cols-[1fr_2fr] border-2 border-foreground rounded-sm overflow-hidden shadow-md">
+              <div className="bg-background text-foreground p-8 border-b-2 md:border-b-0 md:border-r-2 border-foreground flex flex-col justify-center">
  <h3 className="text-2xl font-bold mb-2">Combo C</h3>
                 <p className="opacity-80 mb-4">Brown on Cream. The standard reading experience, warm and legible.</p>
                 <Badge variant="outline" className="w-fit border-foreground text-foreground">Accessible AAA</Badge>
@@ -216,7 +216,7 @@ export default function Home() {
  <h4 className="text-3xl md:text-4xl mb-4">Daily Bread</h4>
                 <p className="text-lg font-medium mb-8 max-w-md">This is where the actual reading happens. It's softer than pure white on black, making it friendlier on the eyes.</p>
                 <div className="flex flex-wrap gap-4">
-                  <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
+                  <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 border border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
                     Solid Action
                   </Button>
                   <Button size="lg" variant="outline" className="border-foreground text-foreground bg-transparent hover:bg-accent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all font-bold">
@@ -231,7 +231,7 @@ export default function Home() {
       </section>
 
       {/* 4. Typography */}
-      <section className="py-24 px-6 md:px-12 border-b-4 border-foreground bg-accent text-accent-foreground relative overflow-hidden">
+      <section className="py-24 px-6 md:px-12 border-b-2 border-foreground bg-accent text-accent-foreground relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none"></div>
         <div className="max-w-5xl mx-auto relative z-10">
           <motion.div 
@@ -241,14 +241,14 @@ export default function Home() {
             variants={fadeIn}
             className="mb-16 flex items-center gap-4"
           >
-            <div className="w-12 h-12 bg-background border-2 border-foreground rounded-sm shadow-sm flex items-center justify-center">
+            <div className="w-12 h-12 bg-background border border-foreground rounded-sm shadow-sm flex items-center justify-center">
               <Type className="w-6 h-6 text-foreground" />
             </div>
  <h2 className="text-4xl md:text-5xl">Typography</h2>
           </motion.div>
 
           <div className="space-y-12">
-            <div className="border-b-4 border-foreground/20 pb-8">
+            <div className="border-b-2 border-foreground/20 pb-8">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
                 <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Display 1 / 8rem / 800 / 0.9</span>
  <span className="text-accent-foreground/70 font-bold">Platypi</span>
@@ -256,7 +256,7 @@ export default function Home() {
  <div className="text-[5rem] md:text-[8rem] font-display font-extrabold leading-[0.9] tracking-tight">Giant.</div>
             </div>
 
-            <div className="border-b-4 border-foreground/20 pb-8">
+            <div className="border-b-2 border-foreground/20 pb-8">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
                 <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Heading 1 / 4.5rem / 800 / 1.0</span>
  <span className="text-accent-foreground/70 font-bold">Platypi</span>
@@ -264,7 +264,7 @@ export default function Home() {
  <div className="text-5xl md:text-7xl font-display font-extrabold leading-[1] tracking-tight">Punchy Title.</div>
             </div>
 
-            <div className="border-b-4 border-foreground/20 pb-8">
+            <div className="border-b-2 border-foreground/20 pb-8">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
                 <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Heading 3 / 2.25rem / 800 / 1.1</span>
  <span className="text-accent-foreground/70 font-bold">Platypi</span>
@@ -272,7 +272,7 @@ export default function Home() {
  <div className="text-3xl md:text-4xl font-display font-extrabold leading-[1.1]">Section Header.</div>
             </div>
 
-            <div className="border-b-4 border-foreground/20 pb-8">
+            <div className="border-b-2 border-foreground/20 pb-8">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
                 <span className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit">Body Large / 1.25rem / 500 / 1.6</span>
  <span className="text-accent-foreground/70 font-bold">DM Sans</span>
@@ -292,7 +292,7 @@ export default function Home() {
       </section>
 
       {/* 5. Spacing */}
-      <section className="py-24 px-6 md:px-12 border-b-4 border-foreground bg-background">
+      <section className="py-24 px-6 md:px-12 border-b-2 border-foreground bg-background">
         <div className="max-w-5xl mx-auto">
           <motion.div 
             initial="hidden"
@@ -301,7 +301,7 @@ export default function Home() {
             variants={fadeIn}
             className="mb-16 flex items-center gap-4"
           >
-            <div className="w-12 h-12 bg-accent border-2 border-foreground rounded-sm shadow-sm flex items-center justify-center">
+            <div className="w-12 h-12 bg-accent border border-foreground rounded-sm shadow-sm flex items-center justify-center">
               <Frame className="w-6 h-6 text-accent-foreground" />
             </div>
  <h2 className="text-4xl md:text-5xl">Spacing</h2>
@@ -322,13 +322,13 @@ export default function Home() {
                   <div className="font-mono font-bold text-sm bg-foreground text-background px-2 py-1 rounded-sm w-fit mb-1">{space.token}</div>
                   <div className="text-xs font-bold text-foreground/60">{space.size} / {space.rem}</div>
                 </div>
-                <div className="flex-1 max-w-md h-12 bg-background border-2 border-foreground/20 rounded-sm flex items-center px-1">
+                <div className="flex-1 max-w-md h-12 bg-background border border-foreground/20 rounded-sm flex items-center px-1">
                   <motion.div 
                     initial={{ width: 0 }}
                     whileInView={{ width: 'auto' }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className={`h-10 bg-accent border-2 border-foreground ${space.width}`} 
+                    className={`h-10 bg-accent border border-foreground ${space.width}`} 
                   />
                 </div>
                 <div className="text-sm font-medium hidden md:block text-foreground/80">{space.desc}</div>
@@ -348,7 +348,7 @@ export default function Home() {
             variants={fadeIn}
             className="mb-16 flex items-center gap-4"
           >
-            <div className="w-12 h-12 bg-accent border-2 border-foreground rounded-sm shadow-sm flex items-center justify-center">
+            <div className="w-12 h-12 bg-accent border border-foreground rounded-sm shadow-sm flex items-center justify-center">
               <PaintBucket className="w-6 h-6 text-accent-foreground" />
             </div>
  <h2 className="text-4xl md:text-5xl">Components</h2>
@@ -359,41 +359,41 @@ export default function Home() {
             {/* Buttons & Badges */}
             <div className="space-y-12">
               <div>
- <h3 className="text-2xl font-bold mb-6 border-b-4 border-foreground/10 pb-2">Buttons</h3>
+ <h3 className="text-2xl font-bold mb-6 border-b-2 border-foreground/10 pb-2">Buttons</h3>
                 <div className="flex flex-wrap gap-6 items-center">
-                  <Button size="lg" className="font-bold border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all bg-accent text-accent-foreground hover:bg-accent/90">
+                  <Button size="lg" className="font-bold border border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all bg-accent text-accent-foreground hover:bg-accent/90">
                     Primary Action
                   </Button>
-                  <Button size="lg" className="font-bold border-2 border-foreground shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all bg-background text-foreground hover:bg-accent/80">
+                  <Button size="lg" className="font-bold border border-foreground shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all bg-background text-foreground hover:bg-accent/80">
                     Secondary Outline
                   </Button>
-                  <Button size="icon" className="font-bold border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all bg-foreground text-background hover:bg-foreground/90 rounded-full w-12 h-12">
+                  <Button size="icon" className="font-bold border border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs transition-all bg-foreground text-background hover:bg-foreground/90 rounded-full w-12 h-12">
                     <ArrowRight className="w-5 h-5" />
                   </Button>
                 </div>
               </div>
 
               <div>
- <h3 className="text-2xl font-bold mb-6 border-b-4 border-foreground/10 pb-2">Badges</h3>
+ <h3 className="text-2xl font-bold mb-6 border-b-2 border-foreground/10 pb-2">Badges</h3>
                 <div className="flex flex-wrap gap-4">
-                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-accent text-accent-foreground border-2 border-foreground rounded-sm shadow-xs">New Feature</Badge>
-                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-foreground text-background border-2 border-foreground rounded-sm shadow-xs">Sold Out</Badge>
-                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-background text-foreground border-2 border-foreground rounded-sm shadow-xs">Limited Edition</Badge>
+                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-accent text-accent-foreground border border-foreground rounded-sm shadow-xs">New Feature</Badge>
+                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-foreground text-background border border-foreground rounded-sm shadow-xs">Sold Out</Badge>
+                  <Badge className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-background text-foreground border border-foreground rounded-sm shadow-xs">Limited Edition</Badge>
                 </div>
               </div>
             </div>
 
             {/* Forms & Inputs */}
             <div>
- <h3 className="text-2xl font-bold mb-6 border-b-4 border-foreground/10 pb-2">Forms</h3>
-              <Card className="border-4 border-foreground shadow-md rounded-sm bg-background">
+ <h3 className="text-2xl font-bold mb-6 border-b-2 border-foreground/10 pb-2">Forms</h3>
+              <Card className="border-2 border-foreground shadow-md rounded-sm bg-background">
                 <CardContent className="p-8 space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="email" className="font-bold uppercase text-sm">Email Address</Label>
                     <Input 
                       id="email" 
                       placeholder="hello@snack.com" 
-                      className="border-2 border-foreground shadow-[inset_2px_2px_0px_0px_hsl(var(--foreground)/0.1)] focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:border-foreground bg-background text-lg py-6"
+                      className="border border-foreground shadow-[inset_2px_2px_0px_0px_hsl(var(--foreground)/0.1)] focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:border-foreground bg-background text-lg py-6"
                     />
                   </div>
                   <div className="space-y-2">
@@ -402,9 +402,9 @@ export default function Home() {
                       <Input 
                         id="promo" 
                         defaultValue="CRUNCHY20" 
-                        className="border-2 border-foreground shadow-[inset_2px_2px_0px_0px_hsl(var(--foreground)/0.1)] focus-visible:ring-primary focus-visible:ring-offset-0 bg-background text-lg py-6 font-mono font-bold"
+                        className="border border-foreground shadow-[inset_2px_2px_0px_0px_hsl(var(--foreground)/0.1)] focus-visible:ring-primary focus-visible:ring-offset-0 bg-background text-lg py-6 font-mono font-bold"
                       />
-                      <Button size="lg" className="h-auto font-bold border-2 border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs bg-foreground text-background transition-all">
+                      <Button size="lg" className="h-auto font-bold border border-transparent shadow-sm hover:translate-y-[2px] hover:shadow-xs bg-foreground text-background transition-all">
                         Apply
                       </Button>
                     </div>
@@ -415,8 +415,8 @@ export default function Home() {
 
             {/* Alerts */}
             <div className="md:col-span-2 mt-8">
- <h3 className="text-2xl font-bold mb-6 border-b-4 border-foreground/10 pb-2">Alerts</h3>
-              <Alert className="border-4 border-foreground shadow-md bg-accent text-accent-foreground rounded-sm flex items-start gap-4 p-6">
+ <h3 className="text-2xl font-bold mb-6 border-b-2 border-foreground/10 pb-2">Alerts</h3>
+              <Alert className="border-2 border-foreground shadow-md bg-accent text-accent-foreground rounded-sm flex items-start gap-4 p-6">
                 <InfoIcon className="h-6 w-6 mt-1 flex-shrink-0" />
                 <div>
  <AlertTitle className="text-xl font-bold mb-2">Attention Shoppers!</AlertTitle>

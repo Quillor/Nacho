@@ -324,7 +324,7 @@ export default function Studio() {
                       disabled={locked}
                       onClick={() => setSource(s.id)}
                       className={cn(
-"flex flex-col items-center gap-2 border-4 px-3 py-5 font-bold transition-all",
+"flex flex-col items-center gap-2 border-2 px-3 py-5 font-bold transition-all",
                         active
                           ? "border-foreground bg-accent text-accent-foreground shadow-sm"
                           : "border-foreground bg-card hover:bg-muted",
@@ -339,7 +339,7 @@ export default function Studio() {
               </div>
             </div>
 
-            <div className="space-y-3 border-4 border-foreground bg-card p-5">
+            <div className="space-y-3 border-2 border-foreground bg-card p-5">
               <ToggleRow
                 icon={withMic ? Mic : MicOff}
                 label="Microphone"
@@ -369,13 +369,13 @@ export default function Studio() {
                 }
               />
               {withCaptions && captionsAvailable && (
-                <div className="flex items-center justify-between gap-4 border-t-2 border-dashed border-foreground/20 pt-3">
+                <div className="flex items-center justify-between gap-4 border-t border-dashed border-foreground/20 pt-3">
                   <div className="flex items-center gap-3">
                     <Languages className="h-5 w-5" />
                     <span className="font-bold">Caption language</span>
                   </div>
                   <Select value={captionLang} onValueChange={setCaptionLang}>
-                    <SelectTrigger className="w-44 border-2 border-foreground font-bold">
+                    <SelectTrigger className="w-44 border border-foreground font-bold">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -391,7 +391,7 @@ export default function Studio() {
             </div>
 
             {permissionError && (
-              <div className="flex items-start gap-3 border-4 border-destructive bg-destructive/10 p-4">
+              <div className="flex items-start gap-3 border-2 border-destructive bg-destructive/10 p-4">
                 <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
                 <p className="text-sm font-bold text-destructive">
                   {permissionError}
@@ -404,7 +404,7 @@ export default function Studio() {
                 <Button
                   size="lg"
                   onClick={startCountdown}
-                  className="h-16 w-full border-4 border-foreground bg-accent text-xl font-black uppercase tracking-wide text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+                  className="h-16 w-full border-2 border-foreground bg-accent text-xl font-black uppercase tracking-wide text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
                 >
                   <CircleDot className="mr-2 h-6 w-6" />
                   Start Recording
@@ -412,7 +412,7 @@ export default function Studio() {
                 <Button
                   variant="outline"
                   onClick={reconfigure}
- className="h-12 w-full border-4 border-foreground font-bold"
+ className="h-12 w-full border-2 border-foreground font-bold"
                 >
                   <RotateCcw className="mr-2 h-5 w-5" />
                   Reconfigure
@@ -426,7 +426,7 @@ export default function Studio() {
                   size="lg"
                   variant="outline"
                   onClick={togglePause}
- className="h-14 border-4 border-foreground px-6 font-bold"
+ className="h-14 border-2 border-foreground px-6 font-bold"
                 >
                   {paused ? (
                     <>
@@ -442,7 +442,7 @@ export default function Studio() {
                   size="lg"
                   onClick={() => void finishRecording()}
                   disabled={saving}
- className="h-14 border-4 border-foreground bg-accent px-8 font-black text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
+ className="h-14 border-2 border-foreground bg-accent px-8 font-black text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
                 >
                   <Square className="mr-2 h-5 w-5" />
                   {saving ? "Saving…" : "Stop & Save"}
@@ -462,7 +462,7 @@ export default function Studio() {
 
           {/* ---- Right column: live preview ---- */}
           <div className="lg:sticky lg:top-8 lg:self-start">
-            <div className="relative overflow-hidden border-4 border-foreground bg-foreground shadow-md">
+            <div className="relative overflow-hidden border-2 border-foreground bg-foreground shadow-md">
               <video
                 ref={videoRef}
                 muted
@@ -495,7 +495,7 @@ export default function Studio() {
               )}
 
               {phase === "recording" && (
-                <div className="absolute left-4 top-4 flex items-center gap-2 border-2 border-foreground bg-background px-3 py-1.5">
+                <div className="absolute left-4 top-4 flex items-center gap-2 border border-foreground bg-background px-3 py-1.5">
                   <span
                     className={cn(
                       "h-3 w-3 rounded-full bg-destructive",
@@ -526,7 +526,7 @@ export default function Studio() {
                           aria-pressed={selected}
                           onClick={() => changeCorner(c.id)}
                           className={cn(
-                            "pointer-events-auto absolute flex items-center justify-center rounded-full border-4 border-foreground transition-all",
+                            "pointer-events-auto absolute flex items-center justify-center rounded-full border-2 border-foreground transition-all",
                             c.pos,
                             selected
                               ? "h-14 w-14 bg-primary text-primary-foreground shadow-md"
@@ -546,7 +546,7 @@ export default function Studio() {
                 size="lg"
                 onClick={() => void enablePreview()}
                 disabled={preparing}
-                className="mt-3 h-16 w-full border-4 border-foreground bg-primary text-xl font-black uppercase tracking-wide text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
+                className="mt-3 h-16 w-full border-2 border-foreground bg-accent text-xl font-black uppercase tracking-wide text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
               >
                 <Eye className="mr-2 h-6 w-6" />
                 {preparing ? "Requesting access…" : "Enable Preview"}

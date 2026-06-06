@@ -21,12 +21,12 @@ export default function SelectDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <div className="w-full max-w-xs space-y-2">
             <Label className="uppercase tracking-wide">Caption language</Label>
             <Select defaultValue="en">
-              <SelectTrigger className="border-2 border-foreground font-bold">
+              <SelectTrigger className="border border-foreground font-bold">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -47,7 +47,7 @@ export default function SelectDocs() {
 } from "@workspace/pico-ui/select"
 
 <Select defaultValue="en">
-  <SelectTrigger className="border-2 border-foreground font-bold">
+  <SelectTrigger className="border border-foreground font-bold">
     <SelectValue />
   </SelectTrigger>
   <SelectContent>
@@ -59,13 +59,13 @@ export default function SelectDocs() {
       </section>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Placeholder</h2>
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Placeholder</h2>
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           When there's no default, show a placeholder that names the choice — never repeat the label.
         </p>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex justify-center">
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <Select>
-            <SelectTrigger className="w-56 border-2 border-foreground font-bold">
+            <SelectTrigger className="w-56 border border-foreground font-bold">
               <SelectValue placeholder="Pick a language" />
             </SelectTrigger>
             <SelectContent>
@@ -75,7 +75,7 @@ export default function SelectDocs() {
             </SelectContent>
           </Select>
         </div>
-        <CodeBlock code={`<SelectTrigger className="w-56 border-2 border-foreground font-bold">
+        <CodeBlock code={`<SelectTrigger className="w-56 border border-foreground font-bold">
   <SelectValue placeholder="Pick a language" />
 </SelectTrigger>`} />
       </section>

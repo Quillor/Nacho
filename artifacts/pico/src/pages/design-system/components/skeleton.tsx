@@ -14,9 +14,9 @@ export default function SkeletonDocs() {
       </div>
 
       <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-4 border-foreground pb-2">Usage</h2>
-        <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
-          <div className="w-full max-w-sm flex items-center space-x-4 bg-background p-4 border-2 border-foreground shadow-sm rounded-sm">
+ <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+        <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
+          <div className="w-full max-w-sm flex items-center space-x-4 bg-background p-4 border border-foreground shadow-sm rounded-sm">
             <Skeleton className="h-16 w-24 rounded-sm" />
             <div className="space-y-2 flex-1">
               <Skeleton className="h-4 w-3/4" />

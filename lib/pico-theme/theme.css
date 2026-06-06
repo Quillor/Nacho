@@ -110,7 +110,8 @@
   --input: 25 60% 12%;
   --ring: 25 60% 12%;
 
-  --card: 25 22% 90%;
+  /* Lighter card surface (above brown-100) — still distinct from the brown-50 page bg */
+  --card: 25 20% 93%;
   --card-foreground: 25 60% 12%;
   --card-border: 25 60% 12%;
 
@@ -128,8 +129,8 @@
   --primary: 25 60% 12%;
   --primary-foreground: 25 18% 96%;
 
-  /* Tan Secondary */
-  --secondary: 25 26% 82%;
+  /* Tan Secondary — brown-100 */
+  --secondary: 25 22% 90%;
   --secondary-foreground: 25 60% 12%;
 
   --muted: 25 30% 74%;
@@ -244,7 +245,8 @@
   --input: 25 22% 90%;
   --ring: 25 22% 90%;
 
-  --card: 25 60% 12%;
+  /* Lighter card surface — clearly raised above the brown-900 dark page bg */
+  --card: 25 54% 18%;
   --card-foreground: 25 22% 90%;
   --card-border: 25 22% 90%;
 

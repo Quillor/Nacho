@@ -24,8 +24,8 @@ export default function Logo() {
         </Note>
 
         <div className="grid gap-8 md:grid-cols-[2fr_1fr]">
-          <div className="border-4 border-foreground rounded-sm overflow-hidden shadow-md">
-            <div className="bg-accent p-12 flex items-center justify-center border-b-4 border-foreground min-h-[220px]">
+          <div className="border-2 border-foreground rounded-sm overflow-hidden shadow-md">
+            <div className="bg-accent p-12 flex items-center justify-center border-b-2 border-foreground min-h-[220px]">
               <img
                 src={wordmark}
                 alt="Nacho horizontal wordmark"
@@ -42,8 +42,8 @@ export default function Logo() {
             </div>
           </div>
 
-          <div className="border-4 border-foreground rounded-sm overflow-hidden shadow-md">
-            <div className="bg-foreground p-12 flex items-center justify-center border-b-4 border-foreground min-h-[220px]">
+          <div className="border-2 border-foreground rounded-sm overflow-hidden shadow-md">
+            <div className="bg-foreground p-12 flex items-center justify-center border-b-2 border-foreground min-h-[220px]">
               <img
                 src={mark}
                 alt="Nacho circular play-button mark"
@@ -75,16 +75,16 @@ export default function Logo() {
           they come straight from the palette.
         </Note>
         <div className="grid gap-6 md:grid-cols-3">
-          <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
-            <div className="h-16 w-16 rounded-full bg-accent border-4 border-foreground mb-4" />
+          <div className="border-2 border-foreground rounded-sm bg-background p-6 shadow-sm">
+            <div className="h-16 w-16 rounded-full bg-accent border-2 border-foreground mb-4" />
  <h3 className="text-xl font-bold mb-1">Yellow circle</h3>
             <p className="text-foreground/70 font-medium text-sm">
               The container is a full circle in Golden Yellow{" "}
               <code className="font-mono bg-foreground/10 px-1">#F5C518</code>.
             </p>
           </div>
-          <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
-            <div className="h-16 w-16 rounded-sm bg-[#FFE896] border-4 border-[#4F2D16] mb-4 flex items-center justify-center">
+          <div className="border-2 border-foreground rounded-sm bg-background p-6 shadow-sm">
+            <div className="h-16 w-16 rounded-sm bg-[#FFE896] border-2 border-[#4F2D16] mb-4 flex items-center justify-center">
               <span className="ml-1 inline-block border-y-[10px] border-l-[16px] border-y-transparent border-l-[#4F2D16]" />
             </div>
  <h3 className="text-xl font-bold mb-1">Play triangle</h3>
@@ -94,8 +94,8 @@ export default function Logo() {
               outline.
             </p>
           </div>
-          <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
-            <div className="h-16 w-16 rounded-sm bg-[#FFE896] border-4 border-foreground mb-4" />
+          <div className="border-2 border-foreground rounded-sm bg-background p-6 shadow-sm">
+            <div className="h-16 w-16 rounded-sm bg-[#FFE896] border-2 border-foreground mb-4" />
  <h3 className="text-xl font-bold mb-1">Light fill</h3>
             <p className="text-foreground/70 font-medium text-sm">
               The triangle is filled with a soft light brown{" "}
@@ -113,7 +113,7 @@ export default function Logo() {
           texture — should intrude into that zone.
         </Note>
         <Preview className="flex items-center justify-center">
-          <div className="relative inline-flex items-center justify-center p-12 border-2 border-dashed border-foreground/40 rounded-sm bg-background">
+          <div className="relative inline-flex items-center justify-center p-12 border border-dashed border-foreground/40 rounded-sm bg-background">
             <img src={mark} alt="Nacho mark with clear space" className="w-28 h-28" />
             <span className="absolute top-2 left-2 font-mono text-xs font-bold uppercase text-foreground/50">
               ½ × mark
@@ -128,7 +128,7 @@ export default function Logo() {
           switch to the mark or drop the logo entirely.
         </Note>
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm flex items-center gap-6">
+          <div className="border-2 border-foreground rounded-sm bg-background p-6 shadow-sm flex items-center gap-6">
             <img src={wordmark} alt="Wordmark at minimum size" className="w-32" />
             <div>
  <h3 className="text-lg font-bold">Wordmark</h3>
@@ -137,7 +137,7 @@ export default function Logo() {
               </p>
             </div>
           </div>
-          <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm flex items-center gap-6">
+          <div className="border-2 border-foreground rounded-sm bg-background p-6 shadow-sm flex items-center gap-6">
             <img src={mark} alt="Mark at minimum size" className="w-8 h-8" />
             <div>
  <h3 className="text-lg font-bold">Mark</h3>
@@ -150,7 +150,7 @@ export default function Logo() {
       </Section>
 
       <Section title="Which variant, where">
-        <div className="border-4 border-foreground rounded-sm overflow-hidden shadow-md">
+        <div className="border-2 border-foreground rounded-sm overflow-hidden shadow-md">
           <table className="w-full text-left">
             <thead>
               <tr className="bg-foreground text-background font-display uppercase text-sm">
@@ -172,8 +172,8 @@ export default function Logo() {
                   key={ctx}
                   className={i % 2 === 0 ? "bg-background" : "bg-background/50"}
                 >
-                  <td className="p-4 border-t-2 border-foreground/10">{ctx}</td>
- <td className="p-4 border-t-2 border-foreground/10 font-bold text-foreground">
+                  <td className="p-4 border-t border-foreground/10">{ctx}</td>
+ <td className="p-4 border-t border-foreground/10 font-bold text-foreground">
                     {use}
                   </td>
                 </tr>
