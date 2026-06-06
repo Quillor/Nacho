@@ -34,6 +34,7 @@ import Editor from "@/pages/editor";
 import PublicView from "@/pages/public-view";
 import SettingsPage from "@/pages/settings";
 import Terms from "@/pages/terms";
+import Shop from "@/pages/shop";
 import Onboarding from "@/pages/onboarding";
 import { isProfileComplete } from "@/lib/profile";
 
@@ -219,6 +220,7 @@ function Router() {
       <Route path="/sign-up/*?" component={SignUpPage} />
       <Route path="/v/:shareId" component={PublicView} />
       <Route path="/terms" component={Terms} />
+      <Route path="/shop" component={Shop} />
       <Route path="/onboarding" component={Onboarding} />
       <Route path="/studio">
         <Protected>

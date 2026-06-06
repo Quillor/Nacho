@@ -73,6 +73,9 @@ export default function Home() {
         </Link>
         <div className="flex items-center gap-4">
           <Button asChild variant="ghost" className="hidden md:flex">
+            <Link href="/shop">Shop</Link>
+          </Button>
+          <Button asChild variant="ghost" className="hidden md:flex">
             <Link href="/sign-in">Sign In</Link>
           </Button>
           <Button asChild variant="brand">
@@ -318,6 +321,7 @@ export default function Home() {
             <a href="#" className="hover:text-foreground hover:underline transition-colors">Twitter</a>
             <a href="#" className="hover:text-foreground hover:underline transition-colors">LinkedIn</a>
             <a href="#" className="hover:text-foreground hover:underline transition-colors">Privacy</a>
+            <Link href="/shop" className="hover:text-foreground hover:underline transition-colors">Shop</Link>
             <Link href="/terms" className="hover:text-foreground hover:underline transition-colors">Terms</Link>
             <a href="/design-system/" className="hover:text-foreground hover:underline transition-colors">Design System</a>
           </div>
