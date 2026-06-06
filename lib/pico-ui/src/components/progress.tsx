@@ -6,6 +6,10 @@ import * as ProgressPrimitive from "@radix-ui/react-progress"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A horizontal bar showing completion of a task. Pass `value` (0–100); omit it
+ * to indicate an unknown/loading amount.
+ */
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>

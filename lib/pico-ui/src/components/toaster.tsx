@@ -8,6 +8,10 @@ import {
   ToastViewport,
 } from "./toast"
 
+/**
+ * Toaster renders the active toasts from the useToast hook into the toast viewport.
+ * Mount it once near the app root; trigger notifications with the `toast()` helper.
+ */
 export function Toaster() {
   const { toasts } = useToast()
 

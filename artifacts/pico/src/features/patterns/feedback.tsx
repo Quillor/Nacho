@@ -10,7 +10,7 @@ import {
   Note,
   DoDont,
   BuiltWith,
-} from "./_shared";
+} from "@/components/docs/shared";
 
 export default function FeedbackPattern() {
   const { toast } = useToast();

@@ -32,7 +32,7 @@ import {
   Note,
   DoDont,
   BuiltWith,
-} from "./_shared";
+} from "@/components/docs/shared";
 
 export default function OverlaysPattern() {
   return (

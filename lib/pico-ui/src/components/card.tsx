@@ -3,6 +3,12 @@ import * as React from "react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Bordered, elevated container for grouping related content and actions.
+ * Compose with CardHeader, CardTitle, CardDescription, CardContent, and
+ * CardFooter to structure the surface. Use for dashboards, list items, forms,
+ * and any self-contained block of UI.
+ */
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>

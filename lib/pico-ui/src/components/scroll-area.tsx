@@ -4,6 +4,10 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A scrollable region with styled, custom scrollbars. Wrap overflowing content in
+ * `ScrollArea`; use `ScrollBar` directly only when you need a horizontal bar.
+ */
 const ScrollArea = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>

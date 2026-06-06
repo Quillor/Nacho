@@ -5,6 +5,13 @@ import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 import { buttonVariants } from "./button"
 
+/**
+ * Modal dialog that interrupts the user to confirm a consequential action.
+ * Unlike Dialog, it requires an explicit choice and cannot be dismissed by
+ * clicking outside. Compose with AlertDialogTrigger, AlertDialogContent,
+ * AlertDialogAction (confirm), and AlertDialogCancel. Reach for it on
+ * destructive or irreversible actions like deleting data.
+ */
 const AlertDialog = AlertDialogPrimitive.Root
 
 const AlertDialogTrigger = React.forwardRef<

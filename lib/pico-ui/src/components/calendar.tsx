@@ -12,6 +12,12 @@ import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 import { Button, buttonVariants } from "./button"
 
+/**
+ * Date picker grid built on react-day-picker. Supports single, multiple, and
+ * range selection (set via `mode`), a `captionLayout` for label or dropdown
+ * navigation, and `buttonVariant` to style the nav arrows. Use standalone or
+ * inside a Popover for a date input.
+ */
 function Calendar({
   className,
   classNames,

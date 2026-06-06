@@ -5,6 +5,10 @@ import { Circle } from "lucide-react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A set of mutually exclusive options where exactly one can be selected. Compose
+ * `RadioGroup` with `RadioGroupItem`s (each paired with a `Label`).
+ */
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>

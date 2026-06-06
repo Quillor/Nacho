@@ -5,6 +5,12 @@ import { ChevronDown } from "lucide-react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Vertically stacked, collapsible sections for progressively disclosing content.
+ * Compose with AccordionItem, AccordionTrigger, and AccordionContent. Use to
+ * tidy up long pages, FAQs, or grouped settings. Set `type` to "single" or
+ * "multiple" to control how many panels stay open.
+ */
 const Accordion = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>

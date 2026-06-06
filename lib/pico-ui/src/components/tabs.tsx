@@ -4,6 +4,10 @@ import * as TabsPrimitive from "@radix-ui/react-tabs"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Tabs is the tabbed-navigation set: wrap a TabsList of TabsTrigger buttons with one
+ * TabsContent panel per tab. Use it to switch between sibling views in the same space.
+ */
 const Tabs = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>

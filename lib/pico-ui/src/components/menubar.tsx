@@ -37,6 +37,11 @@ function MenubarSub({
   return <MenubarPrimitive.Sub data-slot="menubar-sub" {...props} />
 }
 
+/**
+ * A horizontal application menu bar, like the File/Edit/View menus of a desktop
+ * app. Compose `MenubarMenu`, `MenubarTrigger`, and `MenubarContent` with items,
+ * checkbox/radio items, submenus, labels, separators, and shortcuts.
+ */
 const Menubar = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Root>

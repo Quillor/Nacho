@@ -7,6 +7,13 @@ import { Button } from "./button"
 import { Input } from "./input"
 import { Textarea } from "./textarea"
 
+/**
+ * Wraps an input or textarea with attached addons. Compose `InputGroup` with
+ * `InputGroupInput`/`InputGroupTextarea` and place `InputGroupAddon` (aligned
+ * inline-start/end or block-start/end) holding `InputGroupText`,
+ * `InputGroupButton`, icons, or kbd hints — ideal for search fields, prefixes,
+ * and inline actions.
+ */
 function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

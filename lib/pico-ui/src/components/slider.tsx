@@ -4,6 +4,10 @@ import * as SliderPrimitive from "@radix-ui/react-slider"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Slider lets people pick a numeric value (or range) by dragging a thumb along a track.
+ * Use it for continuous settings like volume, opacity, or playback position.
+ */
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>

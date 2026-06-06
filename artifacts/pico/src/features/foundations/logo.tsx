@@ -1,4 +1,4 @@
-import { Section, Preview, Note, DoDont } from "../patterns/_shared";
+import { Section, Preview, Note, DoDont } from "@/components/docs/shared";
 
 const wordmark = `${import.meta.env.BASE_URL}logo-wordmark.svg`;
 const mark = `${import.meta.env.BASE_URL}logo-mark.svg`;

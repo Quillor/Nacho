@@ -20,6 +20,12 @@ const alertVariants = cva(
   }
 )
 
+/**
+ * Inline callout that draws attention to important, contextual information.
+ * Compose with AlertTitle and AlertDescription, and drop in an icon for emphasis.
+ * Use `variant="default"` for neutral notices and `variant="destructive"` for
+ * errors or warnings. For transient feedback prefer a toast instead.
+ */
 const Alert = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>

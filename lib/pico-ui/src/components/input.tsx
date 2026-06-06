@@ -3,6 +3,11 @@ import * as React from "react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * The standard single-line text field. Use it for any short text entry — pass
+ * a `type` (text, email, password, file, etc.) and the usual native input
+ * props. For prefixes, buttons, or icons, reach for `InputGroup`.
+ */
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
     return (

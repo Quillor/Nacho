@@ -6,6 +6,12 @@ import { ChevronDown } from "lucide-react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A site/app navigation menu with optional dropdown panels. Compose
+ * `NavigationMenuList`, `NavigationMenuItem`, `NavigationMenuTrigger`, and
+ * `NavigationMenuContent`; use `navigationMenuTriggerStyle()` to style plain
+ * links so they match triggers.
+ */
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root>

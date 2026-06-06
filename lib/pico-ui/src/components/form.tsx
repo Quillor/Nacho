@@ -14,6 +14,12 @@ import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 import { Label } from "./label"
 
+/**
+ * React Hook Form bindings for Pico fields. Wrap inputs in `Form` (the form
+ * provider), then use `FormField` to connect a control and compose `FormItem`,
+ * `FormLabel`, `FormControl`, `FormDescription`, and `FormMessage` for wired-up
+ * labels, validation, and accessible error messaging.
+ */
 const Form = FormProvider
 
 type FormFieldContextValue<

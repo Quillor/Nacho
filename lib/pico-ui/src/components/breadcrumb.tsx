@@ -5,6 +5,12 @@ import { ChevronRight, MoreHorizontal } from "lucide-react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Navigation trail showing the user's location in a hierarchy. Compose with
+ * BreadcrumbList, BreadcrumbItem, BreadcrumbLink (parent pages),
+ * BreadcrumbPage (the current page), BreadcrumbSeparator, and BreadcrumbEllipsis
+ * to collapse long trails. Use on deep pages so users can step back up.
+ */
 const Breadcrumb = React.forwardRef<
   HTMLElement,
   React.ComponentPropsWithoutRef<"nav"> & {

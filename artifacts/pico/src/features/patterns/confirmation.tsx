@@ -19,7 +19,7 @@ import {
   Note,
   DoDont,
   BuiltWith,
-} from "./_shared";
+} from "@/components/docs/shared";
 
 export default function ConfirmationPattern() {
   return (

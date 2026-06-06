@@ -3,6 +3,12 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A centered empty state for when there's no data yet. Compose `Empty` with
+ * `EmptyHeader`, `EmptyMedia` (default or `icon` variant), `EmptyTitle`,
+ * `EmptyDescription`, and `EmptyContent` to explain the gap and offer a next
+ * action.
+ */
 function Empty({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

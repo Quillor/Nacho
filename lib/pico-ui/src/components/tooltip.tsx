@@ -8,6 +8,11 @@ import { picoMeta } from "../lib/pico-meta"
 
 const TooltipProvider = TooltipPrimitive.Provider
 
+/**
+ * Tooltip shows a brief label on hover or focus, paired with TooltipTrigger and
+ * TooltipContent inside a TooltipProvider. Use it for supplementary hints on icons
+ * or controls — never for essential information.
+ */
 const Tooltip = TooltipPrimitive.Root
 
 const TooltipTrigger = React.forwardRef<

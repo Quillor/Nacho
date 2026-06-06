@@ -14,9 +14,10 @@ import { globSync } from "glob";
  *   - `LEGACY_ALLOWLIST` — temporary; a reorganization task will split it and
  *     then delete the entry. The list only ever shrinks.
  *
- * Status: ADVISORY for now — run via `pnpm run check-file-size`. The final
- * reorganization step empties `LEGACY_ALLOWLIST` and wires this into the build
- * so it becomes blocking. See ARCHITECTURE.md ("File-size budget").
+ * Status: BLOCKING — wired into `pnpm run build` and runnable directly via
+ * `pnpm run check-file-size`. `LEGACY_ALLOWLIST` is now empty; new offenders
+ * must be split (or, if inherently large, added to `PERMANENT_EXEMPTIONS`).
+ * See ARCHITECTURE.md ("File-size budget").
  *
  * Usage: tsx ./src/check-file-size.ts   (exit 0 = ok, 1 = violations)
  */
@@ -60,13 +61,10 @@ const PERMANENT_EXEMPTIONS: Record<string, string> = {
     "Vendored shadcn/ui sidebar primitive; kept aligned with upstream.",
 };
 
-// Temporarily allowed — a reorganization task will split these and remove the
-// entry. The value names the owning task for traceability.
-const LEGACY_ALLOWLIST: Record<string, string> = {
-  "artifacts/pico/src/pages/design-system/foundations/colors.tsx": "Reorganize Pico docs & enforce strictly",
-  "artifacts/pico/src/pages/design-system/content-guidelines.tsx": "Reorganize Pico docs & enforce strictly",
-  "artifacts/pico/src/pages/home.tsx": "Reorganize Pico docs & enforce strictly",
-};
+// Temporarily allowed — a reorganization task splits these, then removes the
+// entry. Now empty: the budget is fully enforced. Keep it that way; prefer
+// splitting a file over adding it back here.
+const LEGACY_ALLOWLIST: Record<string, string> = {};
 
 function normalize(p: string): string {
   return p.replace(/^\.\//, "").split("\\").join("/");

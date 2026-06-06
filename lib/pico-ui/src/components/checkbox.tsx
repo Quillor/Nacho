@@ -5,6 +5,11 @@ import { Check } from "lucide-react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Toggles a single on/off choice. Works controlled or uncontrolled and supports
+ * a checked, unchecked, or "indeterminate" state. Pair with a Label for forms,
+ * settings, and terms-acceptance; use a Switch instead for instant-apply toggles.
+ */
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>

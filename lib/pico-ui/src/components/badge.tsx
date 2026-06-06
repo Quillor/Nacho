@@ -31,10 +31,17 @@ const badgeVariants = cva(
   }
 )
 
+/** Props for {@link Badge}; extends div attributes with the `variant` option. */
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
+/**
+ * Small label for statuses, counts, or categories. Use `variant` to set the
+ * tone: "default" and "secondary" for neutral tags, "destructive" for errors,
+ * and "outline" for a quieter, bordered style. Keep the text short — badges
+ * never wrap.
+ */
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (
     <div

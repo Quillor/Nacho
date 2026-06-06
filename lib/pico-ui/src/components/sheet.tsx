@@ -8,6 +8,12 @@ import { X } from "lucide-react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A panel that slides in from an edge of the screen for secondary tasks and
+ * details. Compose `Sheet` with `SheetTrigger` and `SheetContent` (choose the
+ * edge via `side`), plus `SheetHeader`, `SheetTitle`, `SheetDescription`, and
+ * `SheetFooter`.
+ */
 const Sheet = SheetPrimitive.Root
 
 function SheetTrigger(
@@ -59,6 +65,7 @@ const sheetVariants = cva(
   }
 )
 
+/** Props for `SheetContent`: adds a `side` (top/bottom/left/right) to the dialog content props. */
 interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {}

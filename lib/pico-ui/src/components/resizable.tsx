@@ -7,6 +7,11 @@ import * as ResizablePrimitive from "react-resizable-panels"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A container for resizable, draggable panes. Wrap `ResizablePanel`s in a
+ * `ResizablePanelGroup` (horizontal or vertical) and divide them with
+ * `ResizableHandle`; pass `withHandle` to show a visible grip.
+ */
 const ResizablePanelGroup = ({
   className,
   ...props

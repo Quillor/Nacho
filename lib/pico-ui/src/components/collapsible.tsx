@@ -5,6 +5,11 @@ import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
 
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Show and hide a single section of content. Wrap a `CollapsibleTrigger` and
+ * `CollapsibleContent` inside `Collapsible` for simple expand/collapse toggles
+ * like "show more" rows or optional detail panels.
+ */
 function Collapsible(
   props: React.ComponentProps<typeof CollapsiblePrimitive.Root>
 ) {

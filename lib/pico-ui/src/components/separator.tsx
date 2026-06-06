@@ -4,6 +4,10 @@ import * as SeparatorPrimitive from "@radix-ui/react-separator"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A thin divider between content or groups. Defaults to `horizontal`; set
+ * `orientation="vertical"` for inline dividers. Decorative by default.
+ */
 const Separator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root>

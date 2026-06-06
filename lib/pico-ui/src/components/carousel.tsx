@@ -41,6 +41,12 @@ function useCarousel() {
   return context
 }
 
+/**
+ * Swipeable, keyboard-navigable slider built on Embla. Compose with
+ * CarouselContent, CarouselItem, and the CarouselPrevious/CarouselNext controls.
+ * Set `orientation` to "horizontal" (default) or "vertical", and pass `opts`
+ * or `plugins` to tune Embla. Use for galleries, onboarding, or featured content.
+ */
 const Carousel = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & CarouselProps

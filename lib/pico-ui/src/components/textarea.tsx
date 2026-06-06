@@ -3,6 +3,10 @@ import * as React from "react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Textarea is the styled multi-line text input for longer free-form entry.
+ * Use it for comments, descriptions, or notes where a single-line Input is too small.
+ */
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.ComponentProps<"textarea">

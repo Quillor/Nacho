@@ -49,12 +49,23 @@ const buttonVariants = cva(
   }
 )
 
+/**
+ * Props for {@link Button}. Adds `variant`, `size`, and `asChild` to standard
+ * button attributes; set `asChild` to render a custom element (e.g. a link)
+ * while keeping the button styling.
+ */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
 }
 
+/**
+ * The primary clickable action across Pico. Choose a `variant` — "default" for
+ * the main action, "outline"/"secondary"/"ghost" for lower emphasis, "link" for
+ * inline text actions, "destructive" for dangerous actions, and "brand" for
+ * marketing CTAs — and a `size` ("sm", "default", "lg", or "icon").
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"

@@ -6,6 +6,7 @@ import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 import { Separator } from "./separator"
 
+/** Wraps a list of `Item`s, optionally separated by `ItemSeparator`. */
 function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -54,6 +55,12 @@ const itemVariants = cva(
   }
 )
 
+/**
+ * A flexible list/row primitive for settings rows, list entries, and selectable
+ * cards. Compose with `ItemMedia`, `ItemContent`, `ItemTitle`,
+ * `ItemDescription`, and `ItemActions`. Supports `default`/`outline`/`muted`
+ * variants and `default`/`sm` sizes; set `asChild` to render as a link or button.
+ */
 function Item({
   className,
   variant = "default",

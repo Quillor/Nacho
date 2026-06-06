@@ -4,6 +4,12 @@ import { Drawer as DrawerPrimitive } from "vaul"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A bottom sheet that slides up from the edge of the screen, scaling the page
+ * behind it. Compose `Drawer` with `DrawerTrigger`, `DrawerContent`, and the
+ * `DrawerHeader`/`DrawerTitle`/`DrawerFooter` helpers — great for mobile-first
+ * actions and pickers.
+ */
 const Drawer = ({
   shouldScaleBackground = true,
   ...props

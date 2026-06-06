@@ -33,6 +33,12 @@ function useChart() {
   return context
 }
 
+/**
+ * Wrapper that powers Pico's Recharts-based charts. Pass a `config` mapping data
+ * keys to labels, colors, and icons; it injects theme-aware CSS variables and a
+ * responsive container. Pair with ChartTooltip/ChartTooltipContent and
+ * ChartLegend/ChartLegendContent for consistent tooltips and legends.
+ */
 const ChartContainer = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {

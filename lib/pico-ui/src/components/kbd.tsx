@@ -1,6 +1,10 @@
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Renders a single keyboard key or shortcut token. Wrap multiple `Kbd`s in a
+ * `KbdGroup` to show combinations like ⌘ K.
+ */
 function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {
   return (
     <kbd

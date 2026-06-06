@@ -4,6 +4,11 @@ import * as PopoverPrimitive from "@radix-ui/react-popover"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Floating content anchored to a trigger, for rich pickers and small forms.
+ * Compose `PopoverTrigger` with `PopoverContent`; use `PopoverAnchor` to anchor
+ * to a different element than the trigger.
+ */
 function Popover(props: React.ComponentProps<typeof PopoverPrimitive.Root>) {
   return <PopoverPrimitive.Root {...picoMeta("Popover")} {...props} />
 }

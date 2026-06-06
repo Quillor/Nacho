@@ -27,6 +27,11 @@ const toggleVariants = cva(
   }
 )
 
+/**
+ * Toggle is a two-state button that stays pressed when active, for a standalone on/off
+ * control like bold or mute. Choose `default` or `outline` variants and `sm`/`default`/`lg`
+ * sizes; group several with ToggleGroup.
+ */
 const Toggle = React.forwardRef<
   React.ElementRef<typeof TogglePrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &

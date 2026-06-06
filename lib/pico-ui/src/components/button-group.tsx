@@ -22,6 +22,12 @@ const buttonGroupVariants = cva(
   }
 )
 
+/**
+ * Joins related buttons (or inputs) into a single segmented control with shared
+ * borders and rounded ends. Set `orientation` to "horizontal" (default) or
+ * "vertical". Mix in ButtonGroupText for inline labels and ButtonGroupSeparator
+ * to divide segments. Use for split actions, toolbars, or toggle clusters.
+ */
 function ButtonGroup({
   className,
   orientation,

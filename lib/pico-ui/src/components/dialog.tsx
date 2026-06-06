@@ -5,6 +5,11 @@ import { X } from "lucide-react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A modal dialog that fades in centered over a dimmed overlay. Compose `Dialog`
+ * with `DialogTrigger`, `DialogContent`, and the `DialogHeader`/`DialogTitle`/
+ * `DialogDescription`/`DialogFooter` helpers for focused, interruptive flows.
+ */
 const Dialog = DialogPrimitive.Root
 
 const DialogTrigger = React.forwardRef<

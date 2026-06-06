@@ -40,6 +40,11 @@ const toastVariants = cva(
   }
 )
 
+/**
+ * Toast is a single transient notification, paired with ToastTitle, ToastDescription,
+ * ToastAction, and ToastClose inside a ToastProvider/ToastViewport. Use the `default`
+ * variant for neutral messages and `destructive` for errors. Usually rendered by Toaster.
+ */
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
@@ -117,6 +122,7 @@ const ToastDescription = React.forwardRef<
 ))
 ToastDescription.displayName = ToastPrimitives.Description.displayName
 
+/** Props accepted by Toast, including the `variant` option. */
 type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
 
 type ToastActionElement = React.ReactElement<typeof ToastAction>

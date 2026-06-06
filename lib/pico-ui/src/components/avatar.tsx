@@ -6,6 +6,11 @@ import * as AvatarPrimitive from "@radix-ui/react-avatar"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Circular representation of a user or entity. Compose with AvatarImage for the
+ * photo and AvatarFallback for initials or an icon that shows while the image
+ * loads or when it's missing. Use in nav bars, comment threads, and member lists.
+ */
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>

@@ -82,6 +82,12 @@ const fieldVariants = cva(
   }
 )
 
+/**
+ * The building block for form rows. `Field` lays out a label, control, and
+ * help/error text with `vertical`, `horizontal`, or `responsive` orientation.
+ * Combine with `FieldLabel`, `FieldDescription`, `FieldError`, `FieldGroup`,
+ * `FieldSet`, `FieldLegend`, and `FieldSeparator` to assemble whole forms.
+ */
 function Field({
   className,
   orientation = "vertical",

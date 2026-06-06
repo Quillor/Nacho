@@ -3,6 +3,11 @@ import * as React from "react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Table is the styled data-table set: pair the root Table with TableHeader, TableBody,
+ * TableFooter, TableRow, TableHead, TableCell, and an optional TableCaption.
+ * Use it for tabular data; the root wraps the table in a horizontally scrollable container.
+ */
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>

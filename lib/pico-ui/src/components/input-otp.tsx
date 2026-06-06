@@ -5,6 +5,11 @@ import { Minus } from "lucide-react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A segmented one-time-password input. Compose `InputOTP` with `InputOTPGroup`,
+ * one `InputOTPSlot` per digit, and optional `InputOTPSeparator` for entering
+ * verification or 2FA codes.
+ */
 const InputOTP = React.forwardRef<
   React.ElementRef<typeof OTPInput>,
   React.ComponentPropsWithoutRef<typeof OTPInput>

@@ -6,83 +6,85 @@ import { TooltipProvider } from "@workspace/pico-ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { DocsLayout } from "@/components/layout/DocsLayout";
 
-// Docs Pages
-import Introduction from "@/pages/design-system/introduction";
-import Installation from "@/pages/design-system/installation";
-import FigmaPlugin from "@/pages/design-system/figma-plugin";
-import ContentGuidelines from "@/pages/design-system/content-guidelines";
-import Colors from "@/pages/design-system/foundations/colors";
-import Logo from "@/pages/design-system/foundations/logo";
-import Typography from "@/pages/design-system/foundations/typography";
-import Spacing from "@/pages/design-system/foundations/spacing";
-import Shadows from "@/pages/design-system/foundations/shadows";
-import Radius from "@/pages/design-system/foundations/radius";
-import Imagery from "@/pages/design-system/foundations/imagery";
-
-import ButtonDocs from "@/pages/design-system/components/button";
-import BadgeDocs from "@/pages/design-system/components/badge";
-import CardDocs from "@/pages/design-system/components/card";
-import InputDocs from "@/pages/design-system/components/input";
-import AlertDocs from "@/pages/design-system/components/alert";
-import TabsDocs from "@/pages/design-system/components/tabs";
-import SwitchDocs from "@/pages/design-system/components/switch";
-import CheckboxDocs from "@/pages/design-system/components/checkbox";
-import AvatarDocs from "@/pages/design-system/components/avatar";
-import DialogDocs from "@/pages/design-system/components/dialog";
-import LabelDocs from "@/pages/design-system/components/label";
-import SelectDocs from "@/pages/design-system/components/select";
-import AlertDialogDocs from "@/pages/design-system/components/alert-dialog";
-import ToastDocs from "@/pages/design-system/components/toast";
-import AccordionDocs from "@/pages/design-system/components/accordion";
-import AspectRatioDocs from "@/pages/design-system/components/aspect-ratio";
-import BreadcrumbDocs from "@/pages/design-system/components/breadcrumb";
-import CollapsibleDocs from "@/pages/design-system/components/collapsible";
-import CommandDocs from "@/pages/design-system/components/command";
-import ContextMenuDocs from "@/pages/design-system/components/context-menu";
-import DrawerDocs from "@/pages/design-system/components/drawer";
-import DropdownMenuDocs from "@/pages/design-system/components/dropdown-menu";
-import EmptyDocs from "@/pages/design-system/components/empty";
-import HoverCardDocs from "@/pages/design-system/components/hover-card";
-import InputOTPDocs from "@/pages/design-system/components/input-otp";
-import KbdDocs from "@/pages/design-system/components/kbd";
-import PaginationDocs from "@/pages/design-system/components/pagination";
-import PopoverDocs from "@/pages/design-system/components/popover";
-import ProgressDocs from "@/pages/design-system/components/progress";
-import RadioGroupDocs from "@/pages/design-system/components/radio-group";
-import ScrollAreaDocs from "@/pages/design-system/components/scroll-area";
-import SeparatorDocs from "@/pages/design-system/components/separator";
-import SheetDocs from "@/pages/design-system/components/sheet";
-import SkeletonDocs from "@/pages/design-system/components/skeleton";
-import SliderDocs from "@/pages/design-system/components/slider";
-import SpinnerDocs from "@/pages/design-system/components/spinner";
-import TableDocs from "@/pages/design-system/components/table";
-import TextareaDocs from "@/pages/design-system/components/textarea";
-import ToggleDocs from "@/pages/design-system/components/toggle";
-import ToggleGroupDocs from "@/pages/design-system/components/toggle-group";
-import TooltipDocs from "@/pages/design-system/components/tooltip";
-import ButtonGroupDocs from "@/pages/design-system/components/button-group";
-import CalendarDocs from "@/pages/design-system/components/calendar";
-import CarouselDocs from "@/pages/design-system/components/carousel";
-import ChartDocs from "@/pages/design-system/components/chart";
-import FieldDocs from "@/pages/design-system/components/field";
-import FormDocs from "@/pages/design-system/components/form";
-import InputGroupDocs from "@/pages/design-system/components/input-group";
-import ItemDocs from "@/pages/design-system/components/item";
-import MenubarDocs from "@/pages/design-system/components/menubar";
-import NavigationMenuDocs from "@/pages/design-system/components/navigation-menu";
-import ResizableDocs from "@/pages/design-system/components/resizable";
-import SidebarDocs from "@/pages/design-system/components/sidebar";
-import SonnerDocs from "@/pages/design-system/components/sonner";
-
-import PatternsOverview from "@/pages/design-system/patterns/overview";
-import FormsPattern from "@/pages/design-system/patterns/forms";
-import LayoutPattern from "@/pages/design-system/patterns/layout";
-import EmptyStatesPattern from "@/pages/design-system/patterns/empty-states";
-import LoadingPattern from "@/pages/design-system/patterns/loading";
-import FeedbackPattern from "@/pages/design-system/patterns/feedback";
-import ConfirmationPattern from "@/pages/design-system/patterns/confirmation";
-import CardsListsPattern from "@/pages/design-system/patterns/cards-lists";
-import OverlaysPattern from "@/pages/design-system/patterns/overlays";
+// Docs pages, imported via each feature's public barrel.
+import { Introduction, Installation, FigmaPlugin } from "@/features/getting-started";
+import { ContentGuidelines } from "@/features/guidelines";
+import {
+  Colors,
+  Logo,
+  Typography,
+  Spacing,
+  Shadows,
+  Radius,
+  Imagery,
+} from "@/features/foundations";
+import {
+  ButtonDocs,
+  BadgeDocs,
+  CardDocs,
+  InputDocs,
+  AlertDocs,
+  TabsDocs,
+  SwitchDocs,
+  CheckboxDocs,
+  AvatarDocs,
+  DialogDocs,
+  LabelDocs,
+  SelectDocs,
+  AlertDialogDocs,
+  ToastDocs,
+  AccordionDocs,
+  AspectRatioDocs,
+  BreadcrumbDocs,
+  CollapsibleDocs,
+  CommandDocs,
+  ContextMenuDocs,
+  DrawerDocs,
+  DropdownMenuDocs,
+  EmptyDocs,
+  HoverCardDocs,
+  InputOTPDocs,
+  KbdDocs,
+  PaginationDocs,
+  PopoverDocs,
+  ProgressDocs,
+  RadioGroupDocs,
+  ScrollAreaDocs,
+  SeparatorDocs,
+  SheetDocs,
+  SkeletonDocs,
+  SliderDocs,
+  SpinnerDocs,
+  TableDocs,
+  TextareaDocs,
+  ToggleDocs,
+  ToggleGroupDocs,
+  TooltipDocs,
+  ButtonGroupDocs,
+  CalendarDocs,
+  CarouselDocs,
+  ChartDocs,
+  FieldDocs,
+  FormDocs,
+  InputGroupDocs,
+  ItemDocs,
+  MenubarDocs,
+  NavigationMenuDocs,
+  ResizableDocs,
+  SidebarDocs,
+  SonnerDocs,
+} from "@/features/components";
+import {
+  PatternsOverview,
+  FormsPattern,
+  LayoutPattern,
+  EmptyStatesPattern,
+  LoadingPattern,
+  FeedbackPattern,
+  ConfirmationPattern,
+  CardsListsPattern,
+  OverlaysPattern,
+} from "@/features/patterns";
 
 const queryClient = new QueryClient();
 

@@ -7,6 +7,12 @@ import { Check, ChevronRight, Circle } from "lucide-react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A menu of actions triggered by a button. Compose `DropdownMenu` with
+ * `DropdownMenuTrigger` and `DropdownMenuContent`, filling it with
+ * `DropdownMenuItem`, checkbox/radio items, labels, separators, and sub-menus
+ * for overflow actions and account menus.
+ */
 const DropdownMenu = DropdownMenuPrimitive.Root
 
 function DropdownMenuTrigger(

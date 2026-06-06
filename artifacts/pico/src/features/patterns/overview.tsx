@@ -1,4 +1,4 @@
-import { PatternPage, PageHeader, Section, PatternIndexCard, Note } from "./_shared";
+import { PatternPage, PageHeader, Section, PatternIndexCard, Note } from "@/components/docs/shared";
 
 const PATTERNS = [
   {

@@ -5,6 +5,12 @@ import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 import { ButtonProps, buttonVariants } from "./button"
 
+/**
+ * Page navigation for splitting long result sets across pages. Compose
+ * `PaginationContent` with `PaginationItem`, `PaginationLink`,
+ * `PaginationPrevious`/`PaginationNext`, and `PaginationEllipsis`; mark the
+ * current page with `isActive`.
+ */
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
     role="navigation"
@@ -37,6 +43,7 @@ const PaginationItem = React.forwardRef<
 ))
 PaginationItem.displayName = "PaginationItem"
 
+/** Props for `PaginationLink`: `isActive` flags the current page and `size` mirrors the button sizes. */
 type PaginationLinkProps = {
   isActive?: boolean
 } & Pick<ButtonProps, "size"> &

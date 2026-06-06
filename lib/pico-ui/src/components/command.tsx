@@ -9,6 +9,11 @@ import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 import { Dialog, DialogContent } from "./dialog"
 
+/**
+ * A fast, filterable command palette / list built on cmdk. Compose `Command`
+ * with `CommandInput`, `CommandList`, `CommandGroup`, and `CommandItem` for
+ * searchable menus; use `CommandDialog` to float the same set in a modal.
+ */
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive>

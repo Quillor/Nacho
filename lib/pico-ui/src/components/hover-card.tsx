@@ -4,6 +4,11 @@ import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Reveals rich preview content when a user hovers a link or element. Compose
+ * `HoverCard` with `HoverCardTrigger` and `HoverCardContent` for things like
+ * profile cards or footnote previews — use for sighted, non-essential context.
+ */
 function HoverCard(
   props: React.ComponentProps<typeof HoverCardPrimitive.Root>
 ) {

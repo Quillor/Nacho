@@ -15,6 +15,11 @@ const ToggleGroupContext = React.createContext<
   variant: "default",
 })
 
+/**
+ * ToggleGroup is a set of related Toggle buttons (paired with ToggleGroupItem) for
+ * single- or multi-select choices like text alignment or view modes. Shared `variant`
+ * and `size` props cascade to every item via context.
+ */
 const ToggleGroup = React.forwardRef<
   React.ElementRef<typeof ToggleGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Root> &

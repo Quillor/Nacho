@@ -7,6 +7,12 @@ import { Check, ChevronDown, ChevronUp } from "lucide-react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A dropdown for choosing a single option from a list. Compose `Select` with
+ * `SelectTrigger` (holding a `SelectValue`) and `SelectContent` containing
+ * `SelectItem`s, optionally grouped with `SelectGroup`/`SelectLabel` and divided
+ * by `SelectSeparator`.
+ */
 const Select = SelectPrimitive.Root
 
 const SelectGroup = React.forwardRef<

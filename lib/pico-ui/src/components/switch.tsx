@@ -4,6 +4,10 @@ import * as SwitchPrimitives from "@radix-ui/react-switch"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * Switch is a toggle for a single on/off setting that takes effect immediately.
+ * Reach for it instead of a checkbox when there's no separate save step.
+ */
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>

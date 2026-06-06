@@ -7,6 +7,10 @@ import { picoMeta } from "../lib/pico-meta"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
+/**
+ * Toaster is the Sonner-backed toast host that follows the app theme.
+ * Mount it once near the root, then trigger notifications with sonner's `toast()`.
+ */
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
 

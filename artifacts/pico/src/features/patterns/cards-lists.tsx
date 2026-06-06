@@ -9,7 +9,7 @@ import {
   Note,
   DoDont,
   BuiltWith,
-} from "./_shared";
+} from "@/components/docs/shared";
 
 function DemoCard({ published }: { published: boolean }) {
   return (

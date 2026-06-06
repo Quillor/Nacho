@@ -5,6 +5,11 @@ import { Check, ChevronRight, Circle } from "lucide-react"
 import { cn } from "../lib/utils"
 import { picoMeta } from "../lib/pico-meta"
 
+/**
+ * A right-click (or long-press) menu. Wrap the target in `ContextMenuTrigger`
+ * and list actions inside `ContextMenuContent` using `ContextMenuItem`,
+ * `ContextMenuCheckboxItem`, `ContextMenuRadioItem`, sub-menus, and separators.
+ */
 const ContextMenu = ContextMenuPrimitive.Root
 
 function ContextMenuTrigger(
