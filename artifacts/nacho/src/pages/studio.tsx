@@ -19,6 +19,7 @@ import {
   Eye,
   RotateCcw,
   AlertTriangle,
+  User,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@workspace/pico-ui/button";
@@ -245,6 +246,7 @@ export default function Studio() {
         trimEnd: duration,
         hasAudio: c.hasAudio,
         source,
+        selfieCorner: source === "screen-camera" ? corner : null,
         captionLang: withCaptions ? captionLang : null,
         chapters: [],
         displayChaptersOnVideo: false,
@@ -381,18 +383,6 @@ export default function Studio() {
               )}
             </div>
 
-            {source === "screen-camera" && (
-              <div className="space-y-3 border-4 border-foreground bg-card p-5">
-                <Label className="block font-display text-sm font-bold uppercase tracking-wide">
-                  Selfie corner
-                </Label>
-                <CornerPicker value={corner} onChange={changeCorner} />
-                <p className="text-xs font-medium text-muted-foreground">
-                  Pick where the camera bubble sits in the recording.
-                </p>
-              </div>
-            )}
-
             {permissionError && (
               <div className="flex items-start gap-3 border-4 border-destructive bg-destructive/10 p-4">
                 <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
@@ -400,18 +390,6 @@ export default function Studio() {
                   {permissionError}
                 </p>
               </div>
-            )}
-
-            {phase === "setup" && (
-              <Button
-                size="lg"
-                onClick={() => void enablePreview()}
-                disabled={preparing}
-                className="h-16 w-full border-4 border-foreground bg-primary text-xl font-black uppercase tracking-wide text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
-              >
-                <Eye className="mr-2 h-6 w-6" />
-                {preparing ? "Requesting access…" : "Enable Preview"}
-              </Button>
             )}
 
             {phase === "ready" && (
@@ -491,8 +469,7 @@ export default function Studio() {
               {!showPreview && (
                 <div className="flex aspect-video w-full items-center justify-center bg-foreground">
                   <div className="text-center text-background/70">
-                    <CircleDot className="mx-auto mb-4 h-16 w-16" />
- <p className="font-display text-2xl font-bold">
+                    <p className="font-display text-2xl font-bold">
                       Live preview appears here
                     </p>
                     <p className="mt-2 text-sm font-medium">
@@ -528,9 +505,55 @@ export default function Studio() {
                   )}
                 </div>
               )}
+
+              {source === "screen-camera" &&
+                (phase === "setup" || phase === "ready") && (
+                  <div className="pointer-events-none absolute inset-0">
+                    {CORNERS.map((c) => {
+                      const selected = corner === c.id;
+                      return (
+                        <button
+                          key={c.id}
+                          type="button"
+                          aria-label={`Selfie ${c.id.replace("-", " ")}`}
+                          aria-pressed={selected}
+                          onClick={() => changeCorner(c.id)}
+                          className={cn(
+                            "pointer-events-auto absolute flex items-center justify-center rounded-full border-4 border-foreground transition-all",
+                            c.pos,
+                            selected
+                              ? "h-14 w-14 bg-primary text-primary-foreground shadow-md"
+                              : "h-10 w-10 bg-background/70 text-foreground hover:bg-background hover:scale-105",
+                          )}
+                        >
+                          {selected && <User className="h-7 w-7" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
             </div>
 
-            {phase === "ready" && (
+            {phase === "setup" && (
+              <Button
+                size="lg"
+                onClick={() => void enablePreview()}
+                disabled={preparing}
+                className="mt-3 h-16 w-full border-4 border-foreground bg-primary text-xl font-black uppercase tracking-wide text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
+              >
+                <Eye className="mr-2 h-6 w-6" />
+                {preparing ? "Requesting access…" : "Enable Preview"}
+              </Button>
+            )}
+
+            {source === "screen-camera" &&
+              (phase === "setup" || phase === "ready") && (
+                <p className="mt-3 text-center text-sm font-bold uppercase tracking-wide text-muted-foreground">
+                  Tap a corner to place your selfie.
+                </p>
+              )}
+
+            {phase === "ready" && source !== "screen-camera" && (
               <p className="mt-3 text-center text-sm font-bold uppercase tracking-wide text-muted-foreground">
                 Preview live — press start when you're ready.
               </p>
@@ -543,40 +566,11 @@ export default function Studio() {
 }
 
 const CORNERS: { id: SelfieCorner; pos: string }[] = [
-  { id: "top-left", pos: "left-2 top-2" },
-  { id: "top-right", pos: "right-2 top-2" },
-  { id: "bottom-left", pos: "left-2 bottom-2" },
-  { id: "bottom-right", pos: "right-2 bottom-2" },
+  { id: "top-left", pos: "left-4 top-4" },
+  { id: "top-right", pos: "right-4 top-4" },
+  { id: "bottom-left", pos: "left-4 bottom-4" },
+  { id: "bottom-right", pos: "right-4 bottom-4" },
 ];
-
-function CornerPicker({
-  value,
-  onChange,
-}: {
-  value: SelfieCorner;
-  onChange: (c: SelfieCorner) => void;
-}) {
-  return (
-    <div className="relative aspect-video w-full border-4 border-foreground bg-muted">
-      {CORNERS.map((c) => (
-        <button
-          key={c.id}
-          type="button"
-          aria-label={c.id}
-          aria-pressed={value === c.id}
-          onClick={() => onChange(c.id)}
-          className={cn(
-            "absolute h-8 w-8 rounded-full border-2 border-foreground transition-all",
-            c.pos,
-            value === c.id
-              ? "scale-110 bg-primary"
-              : "bg-card hover:bg-background",
-          )}
-        />
-      ))}
-    </div>
-  );
-}
 
 function ToggleRow({
   icon: Icon,

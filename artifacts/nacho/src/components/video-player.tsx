@@ -10,7 +10,7 @@ import {
 import { Play, Pause, Captions, CaptionsOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatTimestamp } from "@/lib/format";
-import type { Chapter, TranscriptSegment } from "@/lib/types";
+import type { Chapter, TranscriptSegment, SelfieCorner } from "@/lib/types";
 
 /**
  * Chapter overlay sizing. The font size is `CHAPTER_OVERLAY_FONT_RATIO` of the
@@ -52,6 +52,12 @@ export interface VideoPlayerProps {
    * of the video each time playback crosses into a new chapter.
    */
   showChapterTitles?: boolean;
+  /**
+   * Corner the selfie bubble sits in for this recording. When the selfie is in
+   * the top-left, the chapter title is moved to the top-right so the two never
+   * overlap. `null`/undefined falls back to the default top-left title.
+   */
+  selfieCorner?: SelfieCorner | null;
   /** Optional transcript segments used to drive the captions overlay. */
   transcript?: TranscriptSegment[];
   /** Clamp playback to a start offset (e.g. trim preview). */
@@ -84,6 +90,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
       poster,
       chapters = [],
       showChapterTitles = false,
+      selfieCorner = null,
       transcript = [],
       startTime = 0,
       endTime,
@@ -339,7 +346,12 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
           {showChapterTitles && chapterTitle ? (
             <div
               className={cn(
-                "pointer-events-none absolute left-0 top-0 max-w-[90%] p-[3%] transition-opacity duration-500",
+                "pointer-events-none absolute top-0 max-w-[90%] p-[3%] transition-opacity duration-500",
+                // When the selfie sits in the top-left, move the chapter title to
+                // the top-right (right-aligned) so they never collide.
+                selfieCorner === "top-left"
+                  ? "right-0 text-right"
+                  : "left-0",
                 chapterVisible ? "opacity-100" : "opacity-0",
               )}
               aria-hidden={!chapterVisible}

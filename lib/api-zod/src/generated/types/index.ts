@@ -23,6 +23,7 @@ export * from './publishedRecording';
 export * from './recordingInput';
 export * from './recordingUpdateInput';
 export * from './roleInput';
+export * from './selfieCorner';
 export * from './tosDocument';
 export * from './tosInput';
 export * from './transcriptSegment';

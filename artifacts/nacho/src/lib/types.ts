@@ -11,6 +11,13 @@ export interface TranscriptSegment {
 
 export type RecordingSource = "screen" | "camera" | "screen-camera";
 
+/** Which corner the camera bubble (selfie) sits in for a screen+cam recording. */
+export type SelfieCorner =
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right";
+
 export type RecordingStatus = "local" | "published";
 
 /** Whether a recording has a resolvable public share link. Saved videos are
@@ -26,6 +33,8 @@ export interface LocalRecording {
   trimEnd: number;
   hasAudio: boolean;
   source: RecordingSource;
+  /** Corner the selfie bubble sits in (screen+cam only); null = legacy/default. */
+  selfieCorner: SelfieCorner | null;
   captionLang: string | null;
   chapters: Chapter[];
   /** When true, the current chapter's title is briefly shown over the video. */

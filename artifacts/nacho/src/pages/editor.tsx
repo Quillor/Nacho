@@ -354,6 +354,7 @@ export default function Editor() {
             src={objectUrl}
             chapters={chapters}
             showChapterTitles={displayChaptersOnVideo}
+            selfieCorner={rec.selfieCorner}
             transcript={rec.transcript}
             startTime={trimStart}
             endTime={trimEnd || undefined}

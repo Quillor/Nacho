@@ -43,6 +43,16 @@ export const Visibility = {
   public: 'public',
 } as const;
 
+export type SelfieCorner = typeof SelfieCorner[keyof typeof SelfieCorner];
+
+
+export const SelfieCorner = {
+  'top-left': 'top-left',
+  'top-right': 'top-right',
+  'bottom-left': 'bottom-left',
+  'bottom-right': 'bottom-right',
+} as const;
+
 export interface VisibilityInput {
   visibility: Visibility;
 }
@@ -61,6 +71,7 @@ export interface RecordingInput {
   thumbnailPath?: string | null;
   /** @nullable */
   gifPath?: string | null;
+  selfieCorner?: SelfieCorner | null;
   chapters?: Chapter[];
   displayChaptersOnVideo?: boolean;
   notifyOnView?: boolean;
@@ -77,6 +88,7 @@ export interface RecordingUpdateInput {
   hasAudio?: boolean;
   /** @nullable */
   gifPath?: string | null;
+  selfieCorner?: SelfieCorner | null;
   chapters?: Chapter[];
   displayChaptersOnVideo?: boolean;
   notifyOnView?: boolean;
@@ -97,6 +109,7 @@ export interface PublishedRecording {
   thumbnailPath?: string | null;
   /** @nullable */
   gifPath?: string | null;
+  selfieCorner?: SelfieCorner | null;
   chapters: Chapter[];
   displayChaptersOnVideo?: boolean;
   notifyOnView?: boolean;

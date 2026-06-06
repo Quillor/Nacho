@@ -148,6 +148,7 @@ async function buildRecording(spec: ClipSpec): Promise<LocalRecording> {
     trimEnd: duration,
     hasAudio: false,
     source: "screen",
+    selfieCorner: null,
     captionLang: null,
     chapters: spec.chapters,
     displayChaptersOnVideo: false,

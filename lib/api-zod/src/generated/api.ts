@@ -49,6 +49,7 @@ export const PublishRecordingBody = zod.object({
   "videoPath": zod.string(),
   "thumbnailPath": zod.string().nullish(),
   "gifPath": zod.string().nullish(),
+  "selfieCorner": zod.union([zod.enum(['top-left', 'top-right', 'bottom-left', 'bottom-right']),zod.null()]).optional(),
   "chapters": zod.array(zod.object({
   "time": zod.number(),
   "label": zod.string()
@@ -82,6 +83,7 @@ export const GetRecordingResponse = zod.object({
   "videoPath": zod.string(),
   "thumbnailPath": zod.string().nullish(),
   "gifPath": zod.string().nullish(),
+  "selfieCorner": zod.union([zod.enum(['top-left', 'top-right', 'bottom-left', 'bottom-right']),zod.null()]).optional(),
   "chapters": zod.array(zod.object({
   "time": zod.number(),
   "label": zod.string()
@@ -116,6 +118,7 @@ export const UpdateRecordingBody = zod.object({
   "trimEnd": zod.number(),
   "hasAudio": zod.boolean().optional(),
   "gifPath": zod.string().nullish(),
+  "selfieCorner": zod.union([zod.enum(['top-left', 'top-right', 'bottom-left', 'bottom-right']),zod.null()]).optional(),
   "chapters": zod.array(zod.object({
   "time": zod.number(),
   "label": zod.string()
@@ -141,6 +144,7 @@ export const UpdateRecordingResponse = zod.object({
   "videoPath": zod.string(),
   "thumbnailPath": zod.string().nullish(),
   "gifPath": zod.string().nullish(),
+  "selfieCorner": zod.union([zod.enum(['top-left', 'top-right', 'bottom-left', 'bottom-right']),zod.null()]).optional(),
   "chapters": zod.array(zod.object({
   "time": zod.number(),
   "label": zod.string()
@@ -180,6 +184,7 @@ export const SetRecordingVisibilityResponse = zod.object({
   "videoPath": zod.string(),
   "thumbnailPath": zod.string().nullish(),
   "gifPath": zod.string().nullish(),
+  "selfieCorner": zod.union([zod.enum(['top-left', 'top-right', 'bottom-left', 'bottom-right']),zod.null()]).optional(),
   "chapters": zod.array(zod.object({
   "time": zod.number(),
   "label": zod.string()

@@ -1,11 +1,7 @@
-import type { RecordingSource } from "./types";
+import type { RecordingSource, SelfieCorner } from "./types";
 import { pickRecorderMimeType } from "./media";
 
-export type SelfieCorner =
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right";
+export type { SelfieCorner } from "./types";
 
 export interface RecorderOptions {
   source: RecordingSource;

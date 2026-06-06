@@ -110,6 +110,7 @@ export default function PublicView() {
                   }
                   chapters={rec.chapters}
                   showChapterTitles={rec.displayChaptersOnVideo}
+                  selfieCorner={rec.selfieCorner}
                   transcript={rec.transcript}
                   startTime={rec.trimStart}
                   endTime={rec.trimEnd || undefined}

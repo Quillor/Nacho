@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { Chapter } from './chapter';
+import type { SelfieCorner } from './selfieCorner';
 import type { TranscriptSegment } from './transcriptSegment';
 import type { Visibility } from './visibility';
 
@@ -23,6 +24,7 @@ export interface PublishedRecording {
   thumbnailPath?: string | null;
   /** @nullable */
   gifPath?: string | null;
+  selfieCorner?: SelfieCorner | null;
   chapters: Chapter[];
   displayChaptersOnVideo?: boolean;
   notifyOnView?: boolean;

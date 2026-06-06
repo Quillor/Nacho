@@ -14,6 +14,11 @@ import { z } from "zod/v4";
 export type Chapter = { time: number; label: string };
 export type TranscriptSegment = { start: number; end: number; text: string };
 export type Visibility = "private" | "public";
+export type SelfieCorner =
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right";
 
 export const publishedRecordingsTable = pgTable("published_recordings", {
   id: serial("id").primaryKey(),
@@ -32,6 +37,7 @@ export const publishedRecordingsTable = pgTable("published_recordings", {
   videoPath: text("video_path").notNull(),
   thumbnailPath: text("thumbnail_path"),
   gifPath: text("gif_path"),
+  selfieCorner: text("selfie_corner").$type<SelfieCorner>(),
   chapters: jsonb("chapters").$type<Chapter[]>().notNull().default([]),
   displayChaptersOnVideo: boolean("display_chapters_on_video")
     .notNull()
