@@ -409,19 +409,11 @@ export default function Editor() {
           </div>
 
           <Tabs defaultValue="description">
-            <TabsList className="grid w-full grid-cols-4 border-4 border-foreground bg-muted p-1">
- <TabsTrigger value="description" className="font-bold">
-                Description
-              </TabsTrigger>
- <TabsTrigger value="chapters" className="font-bold">
-                Chapters
-              </TabsTrigger>
- <TabsTrigger value="transcript" className="font-bold">
-                Transcript
-              </TabsTrigger>
- <TabsTrigger value="settings" className="font-bold">
-                Settings
-              </TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="description">Description</TabsTrigger>
+              <TabsTrigger value="chapters">Chapters</TabsTrigger>
+              <TabsTrigger value="transcript">Transcript</TabsTrigger>
+              <TabsTrigger value="settings">Settings</TabsTrigger>
             </TabsList>
 
             <TabsContent value="description" className="mt-4">
