@@ -11,7 +11,7 @@
 - [Figma export coverage](figma-export-coverage.md) — components/icons/spacing/type kept one-to-one with the site; edit tokens at theme source, icons are scanned from lucide-react imports.
 - [Figma plugin tsconfig split](figma-plugin-tsconfig.md) — `lib/pico-figma-plugin` typechecks code+UI separately (figma `fetch` vs DOM `fetch` clash); no `URL`/DOM on code side; parsed tree is `ParsedNode` (not `PageNode`).
 - [Figma plugin page reader](figma-plugin-page-reader.md) — no headless browser (delivered HTML only); SSRF-guarded `/api/render` companion fetch; components/vars resolve local-then-linked-library; idempotency via full page clear.
-- [Page-from-URL never dead-ends](figma-plugin-page-from-url.md) — render SSRF guard blocks Replit-internal IPs + SPAs return shells; typing a URL always composes a page from components.
+- [Page-from-URL render in prod, fail loud](figma-plugin-page-from-url.md) — `/api/render` uses Nix `pkgs.chromium` (replit.nix) in deployment; unreadable/empty/auth-walled URLs now error instead of composing a blank frame.
 - [Pico headline casing](pico-casing.md) — headlines are sentence case; uppercase only for small labels, nav, badges, CTA buttons, and the Pico. wordmark.
 - [Clerk legal consent](clerk-legal-consent.md) — signup ToS consent is Auth-pane managed, NOT Backend-API settable; build /terms, surface the Auth-pane toggle to the user.
 - [Clerk impersonation](clerk-impersonation.md) — "log in as user" via `actorTokens.create` → `/sign-in?__clerk_ticket=<token>`; works because the app shares Clerk session at root.

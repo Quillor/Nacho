@@ -1,30 +1,47 @@
 ---
-name: Figma plugin "Page from URL" — headless render + never dead-end
-description: The render service now headless-renders SPAs and allows Replit hosts; the compose fallback stays as a safety net.
+name: Figma plugin "Page from URL" — headless render in prod + fail loud, never blank
+description: How render works in deployment (Nix system Chromium), and why unreadable URLs now error instead of composing a blank/fallback page.
 ---
 
-# "Page from URL" recreates the real page, and never dead-ends
+# "Page from URL" recreates the real page, or fails with a clear reason
 
-**What changed:** The two old blockers are gone.
-1. `/api/render` now drives a headless Chromium (`REPLIT_PLAYWRIGHT_CHROMIUM_EXECUTABLE`
-   + `playwright-core`) so client-rendered SPAs (Nacho, the Pico docs site) come back
-   with their hydrated `data-pico-*` instrumentation — not an empty shell. It inlines
-   computed styles so the importer sees real colors/type/spacing. See
-   `figma-plugin-page-reader.md` for the mechanism.
-2. The SSRF guard now allows public Replit hosts (`*.replit.app`/`*.replit.dev`/
-   `*.repl.co`) by hostname, so fetching your own deployed app works even though it
-   resolves to a private cluster IP in dev. The private-IP block still applies to all
-   other hosts.
+## Rendering works in deployment, not just dev
+`/api/render` drives a headless Chromium via `playwright-core` so client-rendered
+SPAs come back hydrated with their `data-pico-*` instrumentation (real
+colors/type/spacing), not an empty shell.
 
-**Rule (still in force):** "Page from URL" must never surface a hard error. If render
-fails (no browser binary in some env, non-Replit private host, genuinely empty page),
-the UI posts `reconstruct-page` with an empty tree and the code side self-heals by
-composing a page from real Pico component instances + tokens (`composeSamplePage` /
-non-substantive check in `reconstructPage`). Keep the fallback in the UI `btn-page`
-catch block AND the code-side substantive check — don't rely on just one.
+**Browser resolution order (`resolveChromiumExecutable` in
+`artifacts/api-server/src/routes/render.ts`):** env var
+`REPLIT_PLAYWRIGHT_CHROMIUM_EXECUTABLE` → PATH search for chromium/chrome
+binaries → `chromium.executablePath()`. The env var only exists in dev; in
+deployment the browser is the **Nix system package `pkgs.chromium`** declared in
+`replit.nix` (added via `installSystemDependencies`). System deps persist into
+the deployment image, so the same code path that worked only in dev now works in
+prod.
 
-**How to apply:** Faithful recreation now works for any page carrying `data-pico-*`
-instrumentation (SSR *or* client-rendered, since we render it). The composed fallback
-is for the rare case the page can't be read at all. Don't "fix" the feature by
-loosening the SSRF guard further — headless render + the Replit-host allowance already
-cover the common case.
+**Why not download Chromium at build time:** vanilla/downloaded Chromium does
+NOT run on this NixOS env (`libglib-2.0.so.0: cannot open shared object file`;
+missing ELF interpreter). Only Nix-patched Chromium launches. Do not reintroduce
+a `playwright install` / download-binary step in `build.mjs` — declare the Nix
+package instead.
+
+The SSRF guard allows public Replit hosts (`*.replit.app`/`*.replit.dev`/
+`*.repl.co`) by hostname; the private-IP block still applies to other hosts.
+
+## Fail loud — never produce a blank frame (this REPLACED the old "always compose fallback" rule)
+The UI now THROWS (and `btn-page` shows `Couldn't read that URL — <reason>` and
+returns WITHOUT posting `reconstruct-page`) when the page is unreadable:
+- auth wall detected, or
+- non-substantive shell — heuristic in `readPage`: substantive if
+  componentCount>0 OR has `[data-pico-w]` geometry OR bodyText≥40 chars OR ≥10
+  body elements. The error message distinguishes browser-rendered-empty
+  ("rendered no visible content") from no-browser shell ("only an empty shell
+  came back").
+
+`RenderResult`/`FetchedPage` carry a `rendered: "browser" | "fetch"` flag so the
+UI can word the error correctly.
+
+**Why the change:** the prod bug was blank white frames — the old fallback
+reconstructed the empty SPA shell into nothing. A clear, actionable error beats a
+silent blank page. If you ever reintroduce a compose-fallback, gate it so it can
+never run on an empty/auth-walled shell.

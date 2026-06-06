@@ -347,6 +347,10 @@ interface FetchedPage {
   html: string;
   finalUrl: string;
   status: number;
+  /** Which strategy the render service used: a real headless browser, or a
+   *  plain fetch (which returns only the delivered shell for SPAs). Undefined
+   *  when the page was fetched directly by the plugin (no render service). */
+  rendered?: "browser" | "fetch";
 }
 
 /**
@@ -387,6 +391,7 @@ async function fetchPage(
       html: data.html || "",
       finalUrl: data.finalUrl || url,
       status: data.status ?? 200,
+      rendered: data.rendered,
     };
   }
 
@@ -467,7 +472,11 @@ async function readPage(
   renderBase: string,
   device: DeviceSize,
 ): Promise<ParsedPage> {
-  const { html, finalUrl, status } = await fetchPage(url, renderBase, device.width);
+  const { html, finalUrl, status, rendered } = await fetchPage(
+    url,
+    renderBase,
+    device.width,
+  );
   const doc = new DOMParser().parseFromString(html, "text/html");
   const title = doc.title || url;
 
@@ -477,19 +486,42 @@ async function readPage(
     looksAuthWalled(doc, finalUrl, html);
 
   if (authWalled) {
-    return {
-      url,
-      title,
-      root: { children: [] },
-      authWalled: true,
-      note: "Behind an auth/login wall — the page markup can't be read.",
-    };
+    throw new Error(
+      "the page is behind an auth/login wall, so its content can't be read.",
+    );
   }
 
   const body = doc.body;
   const root = body ? walk(body, 0) : null;
   const resolvedRoot = root || { children: [] };
   const componentCount = doc.querySelectorAll("[data-pico-component]").length;
+
+  // Guard against reconstructing an empty SPA shell into a blank frame. A real
+  // headless render stamps geometry (data-pico-w) on laid-out elements and the
+  // page carries meaningful text/markup; a plain fetch of a client-rendered app
+  // returns only the empty app shell (a near-empty <body> with a mount node).
+  const hasGeometry = !!doc.querySelector("[data-pico-w]");
+  const bodyText = (doc.body?.textContent || "").replace(/\s+/g, " ").trim();
+  const elementCount = doc.body
+    ? doc.body.querySelectorAll("*").length
+    : 0;
+  const substantive =
+    componentCount > 0 ||
+    hasGeometry ||
+    bodyText.length >= 40 ||
+    elementCount >= 10;
+  if (!substantive) {
+    if (rendered === "browser") {
+      throw new Error(
+        "the page rendered no visible content (it may be empty or blocked).",
+      );
+    }
+    throw new Error(
+      "the page renders its content with JavaScript and no headless browser " +
+        "was available to load it, so only an empty shell came back. " +
+        "Reconstruction needs the live, rendered DOM.",
+    );
+  }
 
   const docEl = doc.documentElement;
   const contentWidth =
@@ -579,17 +611,13 @@ $("btn-page").addEventListener("click", async () => {
   let page: ParsedPage;
   try {
     page = await readPage(url, renderBase, device);
-    setStatus("info", `${page.note ?? "Page read."} Building in Figma…`);
   } catch (e) {
-    page = {
-      url,
-      title: url,
-      root: { children: [] },
-      authWalled: false,
-      note: `Couldn't read the page (${(e as Error).message}).`,
-    };
-    setStatus("error", `Couldn't read that URL (${(e as Error).message}).`);
+    // Never reconstruct a blank frame — surface a clear, actionable reason and
+    // stop. The page is unreadable (auth wall, empty SPA shell, network error).
+    setStatus("error", `Couldn't read that URL — ${(e as Error).message}`);
+    return;
   }
+  setStatus("info", `${page.note ?? "Page read."} Building in Figma…`);
   post({ type: "reconstruct-page", page, device });
 });
 
