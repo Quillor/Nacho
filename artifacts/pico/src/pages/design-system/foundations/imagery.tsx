@@ -8,6 +8,7 @@ import nachoCheeseJump from "@workspace/nacho-illustrations/assets/nacho-cheese-
 import nachoVideoLesson from "@workspace/nacho-illustrations/assets/nacho-video-lesson.png";
 import nachoHammock from "@workspace/nacho-illustrations/assets/nacho-hammock.png";
 import nachoDipSalesPlayer from "@workspace/nacho-illustrations/assets/nacho-dip-sales-player.png";
+import nachoWalking from "@workspace/nacho-illustrations/assets/nacho-walking.png";
 
 interface Illustration {
   src: string;
@@ -19,11 +20,25 @@ interface Illustration {
 
 const ILLUSTRATIONS: Illustration[] = [
   {
+    src: nachoDipSalesPlayer,
+    name: "Dip Sales Player",
+    file: "nacho-dip-sales-player",
+    caption: "Nacho presenting a \u201CDip Sales\u201D dashboard inside a video player.",
+    usage: "Hero shots, tutorials, and product or feature demos.",
+  },
+  {
     src: nachoCheeseJump,
     name: "Cheese Jump",
     file: "nacho-cheese-jump",
-    caption: "Nacho leaping out of a bubbling cheese bowl.",
-    usage: "Hero moments, success states, and big celebratory call-to-actions.",
+    caption: "Nacho joyfully leaping into a bubbling bowl of cheese dip.",
+    usage: "Value props and enthusiastic \u201Cwhy book a meeting?\u201D moments.",
+  },
+  {
+    src: nachoWalking,
+    name: "Walking Nacho",
+    file: "nacho-walking",
+    caption: "Nacho striding along with a confident, friendly spring in its step.",
+    usage: "\u201CPlays nice with others\u201D, integrations, and on-the-go messaging.",
   },
   {
     src: nachoPresentingLaptop,
@@ -43,8 +58,8 @@ const ILLUSTRATIONS: Illustration[] = [
     src: nachoHammock,
     name: "Hammock",
     file: "nacho-hammock",
-    caption: "Nacho relaxing in a hammock with a margarita between palms.",
-    usage: "Empty states for \u201Call done\u201D, downtime, and laid-back messaging.",
+    caption: "Nacho relaxing in a hammock with a margarita between two palms.",
+    usage: "Success and \u201Call done\u201D moments, downtime, and laid-back messaging.",
   },
   {
     src: sadNachoEmptyBowl,
@@ -59,13 +74,6 @@ const ILLUSTRATIONS: Illustration[] = [
     file: "jalapeno-character",
     caption: "A seated jalape\u00F1o character, the friendly sidekick.",
     usage: "Secondary characters, testimonials, and supporting illustrations.",
-  },
-  {
-    src: nachoDipSalesPlayer,
-    name: "Dip Sales Player",
-    file: "nacho-dip-sales-player",
-    caption: "Nacho presenting a \u201CNacho Dip Sales\u201D dashboard inside a video player.",
-    usage: "Product shots, hero mockups, and demo or feature showcases.",
   },
 ];
 
@@ -152,7 +160,7 @@ export default function Imagery() {
             "One illustration per view. These characters are loud; let a single one own the moment.",
             "Keep the transparent background. Drop them onto light, yellow, or dark brown surfaces \u2014 never re-add a white box.",
             "Don't recolor, skew, or add filters. The palette and outlines are the brand.",
-            "Match the character to the moment: hammock for empty/done states, cheese-jump for celebrations, empty-bowl for zero-results.",
+            "Match the character to the moment: hammock for success/all-done, cheese-jump for value props, walking nacho for integrations, empty-bowl for zero-results.",
           ].map((tip, i) => (
             <li key={i} className="flex gap-3 font-medium text-foreground/80">
               <span className="font-display font-extrabold text-accent-foreground bg-foreground rounded-sm w-6 h-6 shrink-0 flex items-center justify-center text-sm">{i + 1}</span>

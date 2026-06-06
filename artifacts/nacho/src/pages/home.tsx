@@ -7,7 +7,8 @@ import { Video, Share2, Scissors, Zap, MessageSquare, CheckCircle2 } from "lucid
 import { Logo } from "@/components/logo";
 import videoPlayerNacho from "@workspace/nacho-illustrations/assets/nacho-dip-sales-player.png";
 import hammockNacho from "@workspace/nacho-illustrations/assets/nacho-hammock.png";
-import emptyBowlNacho from "@workspace/nacho-illustrations/assets/sad-nacho-empty-bowl.png";
+import cheeseJumpNacho from "@workspace/nacho-illustrations/assets/nacho-cheese-jump.png";
+import walkingNacho from "@workspace/nacho-illustrations/assets/nacho-walking.png";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -122,7 +123,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="border-2 border-foreground shadow-xl bg-background rounded-xl overflow-hidden aspect-video relative flex items-center justify-center p-6">
+            <div className="overflow-hidden aspect-video relative flex items-center justify-center p-6">
               <img src={videoPlayerNacho} alt="Nacho mascot presenting in a video player" className="w-full h-full object-contain" />
             </div>
             {/* Decoration */}
@@ -143,7 +144,7 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="order-2 md:order-1"
           >
-            <img src={emptyBowlNacho} alt="A sad nacho mascot leaning on an empty bowl" className="w-full max-w-md mx-auto object-contain" />
+            <img src={cheeseJumpNacho} alt="A nacho mascot joyfully leaping into a bowl of cheese dip" className="w-full max-w-md mx-auto object-contain" />
           </motion.div>
           <div className="order-1 md:order-2 text-center md:text-left">
             <motion.h2
@@ -273,6 +274,15 @@ export default function Home() {
       {/* 6. Integrations */}
       <section data-pico-section="integrations" className="py-32 px-6 md:px-12 border-b-2 border-foreground bg-background overflow-hidden">
         <div className="max-w-7xl mx-auto text-center mb-16">
+          <motion.img
+            src={walkingNacho}
+            alt="A friendly nacho mascot walking along with a spring in its step"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="w-full max-w-xs mx-auto object-contain mb-8"
+          />
           <h2 className="text-4xl md:text-6xl font-display font-extrabold tracking-tight mb-6 text-foreground">Plays nice with others</h2>
           <p className="text-xl font-medium leading-relaxed text-foreground/80 max-w-2xl mx-auto">Drop a Nacho link wherever your team already works and it unfurls into a beautiful, playable clip — no app to install, no meeting to schedule.</p>
         </div>

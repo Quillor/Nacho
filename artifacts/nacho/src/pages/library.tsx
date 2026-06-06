@@ -18,6 +18,7 @@ import {
   Pin,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import emptyBowlNacho from "@workspace/nacho-illustrations/assets/sad-nacho-empty-bowl.png";
 import { Button } from "@workspace/pico-ui/button";
 import { Badge } from "@workspace/pico-ui/badge";
 import {
@@ -324,9 +325,11 @@ export default function LibraryPage() {
         </div>
       ) : recordings.length === 0 ? (
         <div className="flex flex-col items-center justify-center border-2 border-dashed border-foreground bg-card py-24 text-center">
-          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-foreground bg-accent shadow-md">
-            <CircleDot className="h-10 w-10 text-accent-foreground" />
-          </div>
+          <img
+            src={emptyBowlNacho}
+            alt="A sad nacho mascot leaning on an empty bowl"
+            className="mb-6 w-full max-w-[14rem] object-contain"
+          />
  <h2 className="font-display text-3xl font-extrabold">
             No recordings yet
           </h2>
