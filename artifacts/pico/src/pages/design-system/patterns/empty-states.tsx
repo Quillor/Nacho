@@ -28,8 +28,8 @@ export default function EmptyStatesPattern() {
         </Note>
         <Preview>
           <div className="flex flex-col items-center justify-center border-4 border-dashed border-foreground bg-card py-16 text-center">
-            <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-primary shadow-md">
-              <CircleDot className="h-10 w-10 text-primary-foreground" />
+            <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-accent shadow-md">
+              <CircleDot className="h-10 w-10 text-accent-foreground" />
             </div>
  <h3 className="font-display text-3xl font-extrabold">
               No recordings yet
@@ -44,8 +44,8 @@ export default function EmptyStatesPattern() {
         </Preview>
         <CodeBlock
           code={`<div className="flex flex-col items-center justify-center border-4 border-dashed border-foreground bg-card py-16 text-center">
-  <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-primary shadow-md">
-    <CircleDot className="h-10 w-10 text-primary-foreground" />
+  <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-accent shadow-md">
+    <CircleDot className="h-10 w-10 text-accent-foreground" />
   </div>
  <h3 className="font-display text-3xl font-extrabold">No recordings yet</h3>
   <p className="mt-2 max-w-md font-medium text-muted-foreground">

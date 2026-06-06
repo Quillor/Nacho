@@ -2,6 +2,8 @@
 // Everything here is idempotent: re-running an action finds the existing node
 // by name and updates it in place instead of creating a duplicate.
 
+import { colorFigmaPath } from "../shared/tokens";
+
 export const COLLECTION_NAME = "Pico";
 export const MODE_LIGHT = "Light";
 export const MODE_DARK = "Dark";
@@ -153,14 +155,15 @@ async function findLibraryColorVariable(name: string): Promise<Variable | null> 
 }
 
 /**
- * Find a color variable by its Pico name (e.g. "primary" → "color/primary").
- * Resolves against the local file first, then any externally published Pico
- * library linked into the file.
+ * Find a color variable by its Pico token name, resolving to the grouped Figma
+ * path (e.g. "primary" → "primary/primary-background", "destructive" →
+ * "danger/danger-background", "card" → "surface/surface-background"). Resolves
+ * against the local file first, then any externally published Pico library.
  */
 export async function findColorVariable(
   tokenName: string,
 ): Promise<Variable | null> {
-  const name = `color/${tokenName}`;
+  const name = colorFigmaPath(tokenName);
   const all = await figma.variables.getLocalVariablesAsync();
   const local = all.find(
     (v) => v.name === name && v.resolvedType === "COLOR",

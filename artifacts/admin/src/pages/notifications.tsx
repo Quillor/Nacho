@@ -55,7 +55,7 @@ export default function Notifications() {
       <h1 className="text-3xl font-bold tracking-tight">System Notifications</h1>
       
       {result && (
-        <div className={`rounded-lg p-6 border ${result.failed > 0 ? "bg-destructive/10 border-destructive/20" : "bg-primary/10 border-primary/20"} flex items-start gap-4`}>
+        <div className={`rounded-lg p-6 border ${result.failed > 0 ? "bg-destructive/10 border-destructive/20" : "bg-accent/10 border-primary/20"} flex items-start gap-4`}>
           {result.failed > 0 ? (
             <AlertCircle className="h-6 w-6 text-destructive mt-0.5" />
           ) : (

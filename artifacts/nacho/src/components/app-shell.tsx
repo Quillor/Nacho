@@ -49,7 +49,7 @@ function UserControl() {
   return (
     <div className="flex items-center gap-2">
       <div className="hidden items-center gap-2 border-2 border-foreground bg-card px-3 py-1.5 sm:flex">
-        <div className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-foreground bg-primary text-sm font-black text-primary-foreground">
+        <div className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-foreground bg-accent text-sm font-black text-accent-foreground">
           {initial}
         </div>
         <span
@@ -100,7 +100,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "flex items-center gap-2 border-2 px-4 py-2 font-bold uppercase tracking-wide transition-all",
                     active
-                      ? "border-foreground bg-primary text-primary-foreground shadow-sm"
+                      ? "border-foreground bg-accent text-accent-foreground shadow-sm"
                       : "border-transparent text-foreground hover:bg-muted",
                   )}
                 >

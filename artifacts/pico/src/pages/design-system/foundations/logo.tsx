@@ -25,7 +25,7 @@ export default function Logo() {
 
         <div className="grid gap-8 md:grid-cols-[2fr_1fr]">
           <div className="border-4 border-foreground rounded-sm overflow-hidden shadow-md">
-            <div className="bg-primary p-12 flex items-center justify-center border-b-4 border-foreground min-h-[220px]">
+            <div className="bg-accent p-12 flex items-center justify-center border-b-4 border-foreground min-h-[220px]">
               <img
                 src={wordmark}
                 alt="Nacho horizontal wordmark"
@@ -76,7 +76,7 @@ export default function Logo() {
         </Note>
         <div className="grid gap-6 md:grid-cols-3">
           <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
-            <div className="h-16 w-16 rounded-full bg-primary border-4 border-foreground mb-4" />
+            <div className="h-16 w-16 rounded-full bg-accent border-4 border-foreground mb-4" />
  <h3 className="text-xl font-bold mb-1">Yellow circle</h3>
             <p className="text-foreground/70 font-medium text-sm">
               The container is a full circle in Golden Yellow{" "}
@@ -96,9 +96,9 @@ export default function Logo() {
           </div>
           <div className="border-4 border-foreground rounded-sm bg-background p-6 shadow-sm">
             <div className="h-16 w-16 rounded-sm bg-[#FFE896] border-4 border-foreground mb-4" />
- <h3 className="text-xl font-bold mb-1">Cream fill</h3>
+ <h3 className="text-xl font-bold mb-1">Light fill</h3>
             <p className="text-foreground/70 font-medium text-sm">
-              The triangle is filled with a soft cream{" "}
+              The triangle is filled with a soft light brown{" "}
               <code className="font-mono bg-foreground/10 px-1">#FFE896</code>,
               with a subtle center seam for depth.
             </p>
@@ -191,11 +191,11 @@ export default function Logo() {
         </Note>
         <div className="space-y-6">
           <DoDont
-            doText="Place the logo on the brand yellow, cream, or deep brown — backgrounds where the mark stays high-contrast and legible."
+            doText="Place the logo on the brand yellow, light, or deep brown — backgrounds where the mark stays high-contrast and legible."
             dontText="Drop it on a busy photo, gradient, or low-contrast color where the play button disappears."
           />
           <DoDont
-            doText="Keep the official colors: yellow circle, brown-outlined triangle, cream fill. Use the supplied SVG."
+            doText="Keep the official colors: yellow circle, brown-outlined triangle, light fill. Use the supplied SVG."
             dontText="Recolor, tint, or restyle the logo to match a section — the colors are fixed."
           />
           <DoDont

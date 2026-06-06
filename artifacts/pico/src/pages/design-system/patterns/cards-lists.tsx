@@ -23,7 +23,7 @@ function DemoCard({ published }: { published: boolean }) {
       <div className="flex flex-1 flex-col p-4">
         <div className="mb-2 flex items-center justify-between gap-2">
           {published ? (
-            <Badge className="border-2 border-foreground bg-secondary text-secondary-foreground">
+            <Badge className="border-2 border-foreground bg-primary text-primary-foreground">
               <Globe className="mr-1 h-3 w-3" /> Published
             </Badge>
           ) : (
@@ -49,7 +49,7 @@ function DemoCard({ published }: { published: boolean }) {
           {published && (
             <Button
               size="sm"
-              className="border-2 border-foreground bg-primary font-bold text-primary-foreground"
+              className="border-2 border-foreground bg-accent font-bold text-accent-foreground"
             >
               <Share2 className="mr-1 h-4 w-4" /> Copy
             </Button>
@@ -80,6 +80,45 @@ export default function CardsListsPattern() {
             <DemoCard published={false} />
             <DemoCard published />
             <DemoCard published={false} />
+          </div>
+        </Preview>
+      </Section>
+
+      <Section title="Nested border hierarchy">
+        <Note>
+          Borders carry depth. The outermost container gets the boldest border;
+          each level you nest inward gets a thinner, softer one so the eye reads
+          the structure without counting boxes. Pico uses three levels:
+          <span className="mt-3 block space-y-1 font-mono text-sm">
+            <span className="block">
+              Level 1 (outer):{" "}
+              <code className="bg-foreground/10 px-1">border-4 border-foreground</code>
+            </span>
+            <span className="block">
+              Level 2 (nested):{" "}
+              <code className="bg-foreground/10 px-1">border-2 border-foreground/60</code>
+            </span>
+            <span className="block">
+              Level 3 (inner):{" "}
+              <code className="bg-foreground/10 px-1">border border-foreground/30</code>
+            </span>
+          </span>
+        </Note>
+        <Preview>
+          <div className="border-4 border-foreground bg-card p-6 shadow-md">
+            <span className="mb-4 block font-mono text-xs font-bold uppercase tracking-wide text-muted-foreground">
+              Level 1 — container
+            </span>
+            <div className="border-2 border-foreground/60 bg-background p-5">
+              <span className="mb-3 block font-mono text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                Level 2 — section
+              </span>
+              <div className="border border-foreground/30 bg-background p-4">
+                <span className="font-mono text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                  Level 3 — field
+                </span>
+              </div>
+            </div>
           </div>
         </Preview>
       </Section>

@@ -107,7 +107,7 @@ export default function FigmaPlugin() {
           <a
             href={downloadHref}
             download={downloadName}
-            className="inline-flex items-center gap-3 border-4 border-foreground rounded-sm bg-primary px-6 py-4 font-display font-extrabold uppercase tracking-wide text-foreground shadow-md transition-transform hover:-translate-y-0.5 active:translate-y-0"
+            className="inline-flex items-center gap-3 border-4 border-foreground rounded-sm bg-accent px-6 py-4 font-display font-extrabold uppercase tracking-wide text-accent-foreground shadow-md transition-transform hover:-translate-y-0.5 active:translate-y-0"
           >
             <Download className="h-5 w-5" strokeWidth={2.5} />
             Download plugin
@@ -212,7 +212,7 @@ export default function FigmaPlugin() {
               </thead>
               <tbody className="divide-y-4 divide-foreground">
                 <tr>
-                  <td className="p-4 font-mono bg-primary/10">1</td>
+                  <td className="p-4 font-mono bg-accent/10">1</td>
                   <td className="p-4 font-bold uppercase">Sync Tokens</td>
                   <td className="p-4 font-medium">Variables &amp; styles must exist before components can bind to them.</td>
                 </tr>
@@ -222,7 +222,7 @@ export default function FigmaPlugin() {
                   <td className="p-4 font-medium">Page reconstruction maps elements to these component instances.</td>
                 </tr>
                 <tr>
-                  <td className="p-4 font-mono bg-primary/10">3</td>
+                  <td className="p-4 font-mono bg-accent/10">3</td>
                   <td className="p-4 font-bold uppercase">Page From URL</td>
                   <td className="p-4 font-medium">Rebuilds a real layout using the synced tokens and components.</td>
                 </tr>

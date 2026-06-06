@@ -28,6 +28,26 @@ export interface TypeRole {
   letterSpacing: string;
 }
 
+export interface PrimitiveShade extends ColorToken {
+  step: number;
+}
+
+/** One slot within a semantic family (e.g. danger → background/foreground/border). */
+export interface SemanticGroupToken {
+  role: string;
+  token: string;
+  tailwind: string;
+  figmaName: string;
+  light: ColorToken;
+  dark: ColorToken;
+}
+export interface SemanticGroup {
+  group: string;
+  label: string;
+  blurb: string;
+  tokens: SemanticGroupToken[];
+}
+
 export interface PicoTokens {
   name: string;
   source: string;
@@ -35,6 +55,9 @@ export interface PicoTokens {
     light: Record<string, ColorToken>;
     dark: Record<string, ColorToken>;
   };
+  semanticGroups?: SemanticGroup[];
+  colorAliases?: Record<string, string>;
+  primitives?: Record<string, PrimitiveShade[]>;
   fonts: { sans: string; serif: string; mono: string; display: string };
   typography: {
     headingFontFamily: string;
@@ -58,6 +81,26 @@ export const COLOR_TOKEN_NAMES = Object.keys(tokens.colors.light);
 /** Color token names for an arbitrary token set (light mode is authoritative). */
 export function colorTokenNames(set: PicoTokens): string[] {
   return Object.keys(set.colors.light);
+}
+
+/**
+ * Map a Pico color token name to its grouped Figma variable path
+ * (e.g. "destructive" → "danger/danger-background", "card" → "surface/surface-background").
+ * Falls back to the legacy flat `color/<name>` namespace when the manifest has
+ * no `semanticGroups` (older fetched manifests) or the token is unknown.
+ */
+export function colorFigmaPath(name: string, set: PicoTokens = tokens): string {
+  const groups = set.semanticGroups;
+  if (groups) {
+    for (const g of groups) {
+      for (const t of g.tokens) {
+        if (t.token === name) return t.figmaName;
+      }
+    }
+  }
+  const alias = set.colorAliases?.[name];
+  if (alias) return alias;
+  return `color/${name}`;
 }
 
 /**

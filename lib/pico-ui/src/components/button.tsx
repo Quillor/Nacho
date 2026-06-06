@@ -13,7 +13,7 @@ const buttonVariants = cva(
       variant: {
         default:
            // @replit: no hover, and add primary border
-           "bg-primary text-primary-foreground border border-primary-border",
+           "bg-accent text-accent-foreground border border-primary-border",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm border-destructive-border",
         outline:
@@ -23,7 +23,7 @@ const buttonVariants = cva(
           " border [border-color:var(--button-outline)] shadow-xs active:shadow-none ",
         secondary:
           // @replit border, no hover, no shadow, secondary border.
-          "border bg-secondary text-secondary-foreground border border-secondary-border ",
+          "border bg-primary text-primary-foreground border border-secondary-border ",
         // @replit no hover, transparent border
         ghost: "border border-transparent",
         link: "text-primary underline-offset-4 hover:underline",
@@ -31,7 +31,7 @@ const buttonVariants = cva(
         // chunky offset shadow (--shadow-sm token) that presses down on hover.
         // Use for primary marketing/landing CTAs on light surfaces.
         brand:
-          "bg-primary text-primary-foreground border-2 border-foreground font-bold shadow-sm transition-all hover:bg-primary/90 hover:translate-y-[2px] hover:shadow-xs active:translate-y-[2px] active:shadow-none",
+          "bg-accent text-accent-foreground border-2 border-foreground font-bold shadow-sm transition-all hover:bg-accent/90 hover:translate-y-[2px] hover:shadow-xs active:translate-y-[2px] active:shadow-none",
       },
       size: {
         // @replit changed sizes

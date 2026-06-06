@@ -357,7 +357,7 @@ export default function Editor() {
           </h1>
           <Button
             asChild
-            className="mt-6 border-2 border-foreground bg-primary font-bold text-primary-foreground"
+            className="mt-6 border-2 border-foreground bg-accent font-bold text-accent-foreground"
           >
             <Link href="/library">Back to Library</Link>
           </Button>
@@ -493,7 +493,7 @@ export default function Editor() {
                     <button
                       type="button"
                       onClick={() => seek(c.time)}
-                      className="shrink-0 border-2 border-foreground bg-primary px-2 py-1 font-mono text-xs font-bold text-primary-foreground"
+                      className="shrink-0 border-2 border-foreground bg-accent px-2 py-1 font-mono text-xs font-bold text-accent-foreground"
                     >
                       {formatTimestamp(c.time)}
                     </button>
@@ -565,7 +565,7 @@ export default function Editor() {
 
           <div className="space-y-3 border-t-4 border-foreground pt-6">
             {isPublic ? (
-              <div className="space-y-3 border-4 border-foreground bg-secondary p-4 text-secondary-foreground">
+              <div className="space-y-3 border-4 border-foreground bg-primary p-4 text-primary-foreground">
  <div className="flex items-center gap-2 font-display font-bold">
                   <Globe className="h-5 w-5" /> Public
                 </div>
@@ -580,7 +580,7 @@ export default function Editor() {
                   />
                   <Button
                     onClick={copyLink}
-                    className="h-10 shrink-0 border-2 border-foreground bg-primary font-bold text-primary-foreground"
+                    className="h-10 shrink-0 border-2 border-foreground bg-accent font-bold text-accent-foreground"
                   >
                     {copied ? (
                       <Check className="h-4 w-4" />
@@ -664,7 +664,7 @@ export default function Editor() {
                   onClick={handleGetLink}
                   disabled={busy}
                   size="lg"
- className="h-14 w-full border-4 border-foreground bg-primary text-lg font-black text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+ className="h-14 w-full border-4 border-foreground bg-accent text-lg font-black text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
                 >
                   {busy ? (
                     <>
@@ -780,7 +780,7 @@ function TrimBar({
       />
 
       <div
-        className="pointer-events-none absolute inset-y-0 bg-primary/30"
+        className="pointer-events-none absolute inset-y-0 bg-accent/30"
         style={{ left: `${pct(start)}%`, width: `${pct(end - start)}%` }}
       />
       <div
@@ -806,7 +806,7 @@ function Handle({
       aria-valuenow={position}
       tabIndex={0}
       className={cn(
-        "absolute inset-y-0 z-20 flex w-3 -translate-x-1/2 cursor-ew-resize items-center justify-center border-x-2 border-foreground bg-secondary",
+        "absolute inset-y-0 z-20 flex w-3 -translate-x-1/2 cursor-ew-resize items-center justify-center border-x-2 border-foreground bg-primary",
       )}
       style={{ left: `${position}%` }}
       onPointerDown={(e) => {

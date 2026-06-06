@@ -285,7 +285,7 @@ export default function LibraryPage() {
           <Button
             asChild
             size="lg"
-            className="h-14 border-4 border-foreground bg-primary px-6 text-lg font-bold text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+            className="h-14 border-4 border-foreground bg-accent px-6 text-lg font-bold text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
           >
             <Link href="/studio">
               <CircleDot className="mr-2 h-5 w-5" />
@@ -306,8 +306,8 @@ export default function LibraryPage() {
         </div>
       ) : recordings.length === 0 ? (
         <div className="flex flex-col items-center justify-center border-4 border-dashed border-foreground bg-card py-24 text-center">
-          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-primary shadow-md">
-            <CircleDot className="h-10 w-10 text-primary-foreground" />
+          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-foreground bg-accent shadow-md">
+            <CircleDot className="h-10 w-10 text-accent-foreground" />
           </div>
  <h2 className="font-display text-3xl font-extrabold">
             No recordings yet
@@ -318,7 +318,7 @@ export default function LibraryPage() {
           <Button
             asChild
             size="lg"
- className="mt-8 h-14 border-4 border-foreground bg-primary px-8 text-lg font-bold text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+ className="mt-8 h-14 border-4 border-foreground bg-accent px-8 text-lg font-bold text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
           >
             <Link href="/studio">Start Recording</Link>
           </Button>
@@ -340,7 +340,7 @@ export default function LibraryPage() {
               <div className="flex flex-1 flex-col p-5">
                 <div className="mb-2 flex items-center justify-between gap-2">
                   {rec.visibility === "public" ? (
-                    <Badge className="border-2 border-foreground bg-secondary text-secondary-foreground">
+                    <Badge className="border-2 border-foreground bg-primary text-primary-foreground">
                       <Globe className="mr-1 h-3 w-3" /> Public
                     </Badge>
                   ) : (
@@ -386,7 +386,7 @@ export default function LibraryPage() {
                       </Button>
                       <Button
                         size="sm"
-                        className="border-2 border-foreground bg-primary font-bold text-primary-foreground"
+                        className="border-2 border-foreground bg-accent font-bold text-accent-foreground"
                         onClick={() => handleCopy(rec.shareId!)}
                       >
                         <Share2 className="mr-1 h-4 w-4" /> Copy link
@@ -409,7 +409,7 @@ export default function LibraryPage() {
                   ) : (
                     <Button
                       size="sm"
-                      className="border-2 border-foreground bg-primary font-bold text-primary-foreground"
+                      className="border-2 border-foreground bg-accent font-bold text-accent-foreground"
                       disabled={busyId === rec.id}
                       onClick={() => handleGetLink(rec)}
                     >

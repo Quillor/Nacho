@@ -30,14 +30,14 @@ export default function Installation() {
               </thead>
               <tbody className="divide-y-4 divide-foreground font-mono">
                 <tr>
-                  <td className="p-4 bg-primary/10">bg-primary</td>
+                  <td className="p-4 bg-accent/10">bg-accent</td>
                   <td className="p-4">--primary</td>
                   <td className="p-4 font-sans font-medium">Major highlights, primary buttons</td>
                 </tr>
                 <tr>
                   <td className="p-4">bg-background</td>
                   <td className="p-4">--background</td>
-                  <td className="p-4 font-sans font-medium">Main app canvas (Cream)</td>
+                  <td className="p-4 font-sans font-medium">Main app canvas (warm background)</td>
                 </tr>
                 <tr>
                   <td className="p-4 bg-foreground/10">text-foreground</td>
@@ -87,7 +87,7 @@ export default function MyView() {
             Make sure your root HTML or body tag has the correct base classes to set the stage:
           </p>
           
-          <CodeBlock code={`<body className="min-h-[100dvh] bg-background text-foreground selection:bg-primary selection:text-foreground antialiased font-sans">
+          <CodeBlock code={`<body className="min-h-[100dvh] bg-background text-foreground selection:bg-accent selection:text-accent-foreground antialiased font-sans">
   <div id="root"></div>
 </body>`} />
         </section>

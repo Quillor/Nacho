@@ -325,7 +325,7 @@ export default function Studio() {
                       className={cn(
 "flex flex-col items-center gap-2 border-4 px-3 py-5 font-bold transition-all",
                         active
-                          ? "border-foreground bg-primary text-primary-foreground shadow-sm"
+                          ? "border-foreground bg-accent text-accent-foreground shadow-sm"
                           : "border-foreground bg-card hover:bg-muted",
                         locked && "cursor-not-allowed opacity-60",
                       )}
@@ -403,7 +403,7 @@ export default function Studio() {
                 <Button
                   size="lg"
                   onClick={startCountdown}
-                  className="h-16 w-full border-4 border-foreground bg-primary text-xl font-black uppercase tracking-wide text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+                  className="h-16 w-full border-4 border-foreground bg-accent text-xl font-black uppercase tracking-wide text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
                 >
                   <CircleDot className="mr-2 h-6 w-6" />
                   Start Recording
@@ -441,7 +441,7 @@ export default function Studio() {
                   size="lg"
                   onClick={() => void finishRecording()}
                   disabled={saving}
- className="h-14 border-4 border-foreground bg-primary px-8 font-black text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
+ className="h-14 border-4 border-foreground bg-accent px-8 font-black text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
                 >
                   <Square className="mr-2 h-5 w-5" />
                   {saving ? "Saving…" : "Stop & Save"}

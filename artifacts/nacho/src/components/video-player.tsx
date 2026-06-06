@@ -364,7 +364,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
               aria-hidden={!chapterVisible}
             >
               <span
-                className="inline-block whitespace-nowrap border-2 border-foreground bg-secondary px-[0.5em] py-[0.2em] font-display font-extrabold leading-tight text-secondary-foreground shadow-sm"
+                className="inline-block whitespace-nowrap border-2 border-foreground bg-primary px-[0.5em] py-[0.2em] font-display font-extrabold leading-tight text-primary-foreground shadow-sm"
                 style={{ fontSize: `${chapterFontSize}px` }}
               >
                 {chapterTitle}
@@ -386,7 +386,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
             type="button"
             onClick={togglePlay}
             aria-label={playing ? "Pause" : "Play"}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-4 border-foreground bg-primary text-primary-foreground shadow-sm transition-transform hover:translate-y-0.5"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-4 border-foreground bg-accent text-accent-foreground shadow-sm transition-transform hover:translate-y-0.5"
           >
             {playing ? (
               <Pause className="h-5 w-5" />
@@ -405,7 +405,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
           >
             {/* played progress */}
             <div
-              className="absolute inset-y-0 left-0 bg-primary"
+              className="absolute inset-y-0 left-0 bg-accent"
               style={{ width: `${playedPct}%` }}
             />
 
@@ -422,7 +422,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
                   seek(c.time);
                   onChapterClick?.(c, i);
                 }}
-                className="absolute top-1/2 z-10 h-5 w-1.5 -translate-x-1/2 -translate-y-1/2 border-x border-foreground bg-secondary"
+                className="absolute top-1/2 z-10 h-5 w-1.5 -translate-x-1/2 -translate-y-1/2 border-x border-foreground bg-primary"
                 style={{ left: `${pct(c.time)}%` }}
               />
             ))}
@@ -448,7 +448,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
               className={cn(
                 "flex h-9 w-9 shrink-0 items-center justify-center rounded-md border-2 border-foreground shadow-sm transition-colors",
                 captionsOn
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-accent text-accent-foreground"
                   : "bg-card text-foreground",
               )}
             >

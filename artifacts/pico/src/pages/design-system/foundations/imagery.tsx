@@ -74,7 +74,7 @@ Style: vintage mascot character art with thick, confident black outlines, bold
 flat color fills, subtle cel-shading, and slightly grainy vintage texture.
 Rubber-hose limbs, oversized white gloves and shoes, big expressive pie-cut eyes,
 and a cheerful exaggerated face.
-Palette: golden yellow (#F5C518), deep brown (#2E1C0F), and warm cream (#F8F4E6),
+Palette: golden yellow (#F5C518), deep brown (#2E1C0F), and warm brown (#F8F4E6),
 with small accents only where the scene needs them.
 Composition: single character (or small group) centered, full body, dynamic but
 readable pose, soft ground shadow.
@@ -121,7 +121,7 @@ export default function Imagery() {
               key={ill.file}
               className="group border-4 border-foreground rounded-sm overflow-hidden shadow-md bg-background flex flex-col hover:-translate-y-2 transition-transform duration-300"
             >
-              <div className="aspect-square w-full bg-primary/10 border-b-4 border-foreground p-6 flex items-center justify-center overflow-hidden">
+              <div className="aspect-square w-full bg-accent/10 border-b-4 border-foreground p-6 flex items-center justify-center overflow-hidden">
                 <img
                   src={ill.src}
                   alt={ill.caption}
@@ -150,12 +150,12 @@ export default function Imagery() {
         <ul className="space-y-3 max-w-2xl">
           {[
             "One illustration per view. These characters are loud; let a single one own the moment.",
-            "Keep the transparent background. Drop them onto cream, yellow, or brown surfaces \u2014 never re-add a white box.",
+            "Keep the transparent background. Drop them onto light, yellow, or dark brown surfaces \u2014 never re-add a white box.",
             "Don't recolor, skew, or add filters. The palette and outlines are the brand.",
             "Match the character to the moment: hammock for empty/done states, cheese-jump for celebrations, empty-bowl for zero-results.",
           ].map((tip, i) => (
             <li key={i} className="flex gap-3 font-medium text-foreground/80">
-              <span className="font-display font-extrabold text-primary-foreground bg-foreground rounded-sm w-6 h-6 shrink-0 flex items-center justify-center text-sm">{i + 1}</span>
+              <span className="font-display font-extrabold text-accent-foreground bg-foreground rounded-sm w-6 h-6 shrink-0 flex items-center justify-center text-sm">{i + 1}</span>
               <span>{tip}</span>
             </li>
           ))}
@@ -172,7 +172,7 @@ export default function Imagery() {
           <button
             onClick={copyPrompt}
             aria-label="Copy prompt template"
-            className="absolute top-3 right-3 z-10 flex items-center gap-1.5 bg-primary text-foreground border-2 border-foreground rounded-sm px-3 py-1.5 text-xs font-bold uppercase tracking-wide shadow-xs hover:translate-y-[2px] hover:shadow-none transition-all"
+            className="absolute top-3 right-3 z-10 flex items-center gap-1.5 bg-accent text-accent-foreground border-2 border-foreground rounded-sm px-3 py-1.5 text-xs font-bold uppercase tracking-wide shadow-xs hover:translate-y-[2px] hover:shadow-none transition-all"
           >
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             {copied ? "Copied" : "Copy"}
@@ -186,7 +186,7 @@ export default function Imagery() {
           <h3 className="text-sm font-bold uppercase tracking-wider text-foreground/50">Example fills for {"{SUBJECT/SCENE}"}</h3>
           <ul className="space-y-2 max-w-2xl">
             {EXAMPLE_FILLS.map((ex, i) => (
-              <li key={i} className="font-mono text-sm bg-primary/10 border-2 border-foreground/20 rounded-sm px-3 py-2 text-foreground/80">
+              <li key={i} className="font-mono text-sm bg-accent/10 border-2 border-foreground/20 rounded-sm px-3 py-2 text-foreground/80">
                 {ex}
               </li>
             ))}

@@ -6,6 +6,7 @@
 - [Nacho illustrations lib](nacho-illustrations-lib.md) — `@workspace/nacho-illustrations` is assets-only (no TS); import PNGs via `/assets/<name>.png`, shared across artifacts.
 - [Published recording sync](recording-publish-sync.md) — editing a published recording must PATCH the server copy; trim is metadata-only, only the GIF preview is re-uploaded on trim change.
 - [Pico contrast rules](pico-contrast-rules.md) — never use `text-primary` (yellow) on cream/light surfaces; yellow is a fill (`bg-primary` + brown text), readable text on light is `text-foreground`.
+- [Pico semantic token groups](pico-semantic-token-groups.md) — tokens grouped into usage-families with paired Figma names (`danger/danger-background`); card* kept as CSS vars but dropped from manifest/Figma; dark-mode yellow needs `*-foreground`.
 - [Figma-readable instrumentation](figma-readable-instrumentation.md) — `picoMeta()` stamps `data-pico-component`/`data-pico-<axis>`; tokens.json from theme.css; `data-pico-section` landmarks. Names are the plugin contract.
 - [Landing page → Figma fidelity](landing-page-figma-fidelity.md) — export renders canonical variants from data-pico attrs, not override classes; drive color/identity from variants+tokens, keep only layout + token utilities.
 - [Figma export coverage](figma-export-coverage.md) — components/icons/spacing/type kept one-to-one with the site; edit tokens at theme source, icons are scanned from lucide-react imports.

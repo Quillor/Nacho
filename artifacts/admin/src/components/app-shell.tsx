@@ -82,7 +82,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <aside className="fixed inset-y-0 left-0 z-20 flex w-64 flex-col border-r border-border bg-background">
         <div className="flex h-14 items-center border-b border-border px-6">
           <Link href="/" className="flex items-center gap-2 font-display text-lg font-bold tracking-tight text-foreground">
-            <div className="flex h-6 w-6 items-center justify-center rounded bg-primary text-primary-foreground">
+            <div className="flex h-6 w-6 items-center justify-center rounded bg-accent text-accent-foreground">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
             </div>
             Nacho Admin
@@ -101,7 +101,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 href={item.href}
                 className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-secondary text-secondary-foreground"
+                    ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >

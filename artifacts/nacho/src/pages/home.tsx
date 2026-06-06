@@ -27,7 +27,7 @@ const stagger = {
 const features = [
   {
     icon: Video,
-    media: "bg-primary",
+    media: "bg-accent",
     iconColor: "text-foreground",
     title: "Record in a snap",
     desc: "Capture your screen, your face, or both in a quick clip. Nacho lives in your menu bar, ready to roll in seconds.",
@@ -36,8 +36,8 @@ const features = [
   },
   {
     icon: Share2,
-    media: "bg-secondary",
-    iconColor: "text-secondary-foreground",
+    media: "bg-primary",
+    iconColor: "text-primary-foreground",
     title: "Share with everyone",
     desc: "The moment you hit stop, a link lands on your clipboard. Record once and send it to one teammate or the whole company.",
     badge: "Record once, reach many",
@@ -64,7 +64,7 @@ const integrations = ['Slack', 'Notion', 'Linear', 'Jira', 'GitHub', 'Figma', 'D
 
 export default function Home() {
   return (
-    <div className="min-h-[100dvh] bg-background text-foreground overflow-hidden selection:bg-primary selection:text-primary-foreground font-sans">
+    <div className="min-h-[100dvh] bg-background text-foreground overflow-hidden selection:bg-accent selection:text-accent-foreground font-sans">
 
       {/* Navigation */}
       <nav data-pico-section="navbar" className="fixed top-0 left-0 right-0 z-50 border-b-4 border-foreground bg-background py-4 px-6 md:px-12 flex items-center justify-between">
@@ -84,7 +84,7 @@ export default function Home() {
       <main>
 
       {/* 1. Hero Section */}
-      <section data-pico-section="hero" className="relative pt-40 pb-24 px-6 md:px-12 border-b-4 border-foreground overflow-hidden bg-primary">
+      <section data-pico-section="hero" className="relative pt-40 pb-24 px-6 md:px-12 border-b-4 border-foreground overflow-hidden bg-accent">
         <div className="max-w-7xl mx-auto relative z-10 grid md:grid-cols-2 gap-12 items-center">
           <motion.div
             initial="hidden"
@@ -123,7 +123,7 @@ export default function Home() {
               <img src={videoPlayerNacho} alt="Nacho mascot presenting in a video player" className="w-full h-full object-contain" />
             </div>
             {/* Decoration */}
-            <div className="absolute -bottom-6 -left-6 bg-secondary text-secondary-foreground font-display font-extrabold text-2xl py-3 px-6 border-4 border-foreground shadow-lg -rotate-6">
+            <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground font-display font-extrabold text-2xl py-3 px-6 border-4 border-foreground shadow-lg -rotate-6">
               Skip the meeting!
             </div>
           </motion.div>
@@ -169,7 +169,7 @@ export default function Home() {
       <section data-pico-section="features" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16 flex items-center gap-4">
-            <div className="w-12 h-12 bg-primary border-4 border-foreground rounded-sm shadow-xs flex items-center justify-center">
+            <div className="w-12 h-12 bg-accent border-4 border-foreground rounded-sm shadow-xs flex items-center justify-center">
               <Zap className="w-6 h-6 text-foreground" />
             </div>
             <h2 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight text-foreground">Power Moves</h2>
@@ -206,9 +206,9 @@ export default function Home() {
       </section>
 
       {/* 4. How it Works (Steps) */}
-      <section data-pico-section="how-it-works" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-secondary text-secondary-foreground relative overflow-hidden">
+      <section data-pico-section="how-it-works" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-primary text-primary-foreground relative overflow-hidden">
         <div className="max-w-5xl mx-auto relative z-10">
-          <h2 className="text-5xl md:text-7xl font-display font-extrabold tracking-tight text-center mb-6 text-secondary-foreground">Record once, share with everyone.</h2>
+          <h2 className="text-5xl md:text-7xl font-display font-extrabold tracking-tight text-center mb-6 text-primary-foreground">Record once, share with everyone.</h2>
           <motion.img
             src={hammockNacho}
             alt="A relaxed nacho mascot lounging in a hammock with a drink"
@@ -233,8 +233,8 @@ export default function Home() {
                   {step.num}
                 </div>
                 <div>
-                  <h3 className="text-4xl md:text-5xl font-display font-extrabold tracking-tight mb-4 text-secondary-foreground">{step.title}</h3>
-                  <p className="text-xl md:text-2xl font-medium leading-relaxed text-secondary-foreground/80 max-w-xl">{step.desc}</p>
+                  <h3 className="text-4xl md:text-5xl font-display font-extrabold tracking-tight mb-4 text-primary-foreground">{step.title}</h3>
+                  <p className="text-xl md:text-2xl font-medium leading-relaxed text-primary-foreground/80 max-w-xl">{step.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -243,7 +243,7 @@ export default function Home() {
       </section>
 
       {/* 5. Big Testimonial */}
-      <section data-pico-section="testimonial" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-primary">
+      <section data-pico-section="testimonial" className="py-32 px-6 md:px-12 border-b-4 border-foreground bg-accent">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -256,7 +256,7 @@ export default function Home() {
             </h2>
             <div className="flex items-center justify-center gap-4">
               <div className="w-16 h-16 rounded-full border-4 border-foreground bg-background overflow-hidden">
-                <div className="w-full h-full bg-secondary"></div>
+                <div className="w-full h-full bg-primary"></div>
               </div>
               <div className="text-left">
                 <div className="font-display font-extrabold text-2xl text-foreground">Sarah Jenkins</div>

@@ -106,7 +106,7 @@ const clerkAppearance = {
     socialButtonsBlockButton:
       "border-2 border-foreground hover:bg-muted",
     formButtonPrimary:
-      "bg-primary text-primary-foreground border-2 border-foreground font-bold uppercase tracking-wide shadow-sm transition-all hover:bg-primary/90 hover:translate-y-[2px] hover:shadow-xs active:translate-y-[2px] active:shadow-none",
+      "bg-accent text-accent-foreground border-2 border-foreground font-bold uppercase tracking-wide shadow-sm transition-all hover:bg-accent/90 hover:translate-y-[2px] hover:shadow-xs active:translate-y-[2px] active:shadow-none",
     formFieldInput: "border-2 border-foreground",
     footerAction: "",
     dividerLine: "bg-foreground",

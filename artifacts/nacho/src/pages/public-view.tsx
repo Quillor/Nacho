@@ -71,7 +71,7 @@ export default function PublicView() {
           {rec && (
             <Button
               onClick={copyLink}
- className="border-2 border-foreground bg-primary font-bold text-primary-foreground"
+ className="border-2 border-foreground bg-accent font-bold text-accent-foreground"
             >
               {copied ? (
                 <Check className="mr-2 h-4 w-4" />
@@ -161,7 +161,7 @@ export default function PublicView() {
                           onClick={() => seek(c.time)}
                           className="flex w-full items-center gap-3 border-2 border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
                         >
-                          <span className="shrink-0 border-2 border-foreground bg-primary px-2 py-0.5 font-mono text-xs font-bold text-primary-foreground">
+                          <span className="shrink-0 border-2 border-foreground bg-accent px-2 py-0.5 font-mono text-xs font-bold text-accent-foreground">
                             {formatTimestamp(c.time)}
                           </span>
                           <span className="font-medium">{c.label}</span>
@@ -215,7 +215,7 @@ export default function PublicView() {
               <Button
                 asChild
                 size="lg"
- className="h-14 border-4 border-foreground bg-primary px-8 text-lg font-bold text-primary-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+ className="h-14 border-4 border-foreground bg-accent px-8 text-lg font-bold text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
               >
                 <Link href="/studio">Record your own</Link>
               </Button>

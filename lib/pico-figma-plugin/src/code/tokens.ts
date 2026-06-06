@@ -66,21 +66,65 @@ export async function syncTokens(
   const darkId = getModeId(collection, MODE_DARK);
 
   // --- Colors (Light + Dark modes) ---
+  // Semantic tokens are emitted under grouped, paired names so they read as
+  // families in Figma: `danger/danger-background`, `danger/danger-foreground`,
+  // `danger/danger-border`, etc. Older manifests without `semanticGroups` fall
+  // back to the legacy flat `color/<name>` namespace.
   let colorCount = 0;
-  for (const name of colorTokenNames(tokens)) {
-    const variable = await getOrCreateVariable(
-      `color/${name}`,
-      collection,
-      "COLOR",
-    );
-    const light = tokens.colors.light[name];
-    const dark = tokens.colors.dark[name] ?? light;
-    variable.setValueForMode(lightId, hslToRgb01(light.hsl));
-    variable.setValueForMode(darkId, hslToRgb01(dark.hsl));
-    variable.scopes = ["ALL_SCOPES"];
-    colorCount++;
+  if (tokens.semanticGroups) {
+    for (const g of tokens.semanticGroups) {
+      for (const t of g.tokens) {
+        const variable = await getOrCreateVariable(
+          t.figmaName,
+          collection,
+          "COLOR",
+        );
+        variable.setValueForMode(lightId, hslToRgb01(t.light.hsl));
+        variable.setValueForMode(darkId, hslToRgb01((t.dark ?? t.light).hsl));
+        variable.scopes = ["ALL_SCOPES"];
+        colorCount++;
+      }
+    }
+  } else {
+    for (const name of colorTokenNames(tokens)) {
+      const variable = await getOrCreateVariable(
+        `color/${name}`,
+        collection,
+        "COLOR",
+      );
+      const light = tokens.colors.light[name];
+      const dark = tokens.colors.dark[name] ?? light;
+      variable.setValueForMode(lightId, hslToRgb01(light.hsl));
+      variable.setValueForMode(darkId, hslToRgb01(dark.hsl));
+      variable.scopes = ["ALL_SCOPES"];
+      colorCount++;
+    }
   }
-  log(`Colors: ${colorCount} variables (Light + Dark)`);
+
+  // --- Primitive color ramps (mode-independent) ---
+  // Ordered hue ramps (e.g. red/500) are the brand primitives the semantic
+  // tokens are anchored on. They have a single value (no Light/Dark variance),
+  // so we write the same value to both modes under a `primitive/<hue>/<step>`
+  // namespace, keeping them visually grouped and distinct from semantic colors.
+  let primitiveCount = 0;
+  for (const [hue, shades] of Object.entries(tokens.primitives ?? {})) {
+    for (const shade of shades) {
+      const variable = await getOrCreateVariable(
+        `primitive/${hue}/${shade.step}`,
+        collection,
+        "COLOR",
+      );
+      const rgb = hslToRgb01(shade.hsl);
+      variable.setValueForMode(lightId, rgb);
+      variable.setValueForMode(darkId, rgb);
+      variable.scopes = ["ALL_SCOPES"];
+      primitiveCount++;
+    }
+  }
+  colorCount += primitiveCount;
+  log(
+    `Colors: ${colorCount} variables (Light + Dark, incl. ${primitiveCount} primitives)`,
+  );
 
   // --- Radius scale (number variables) ---
   const basePx = toPx(tokens.radius.base);

@@ -14,10 +14,10 @@ const badgeVariants = cva(
       variant: {
         default:
           // @replit shadow-xs instead of shadow, no hover because we use hover-elevate
-          "border-transparent bg-primary text-primary-foreground shadow-xs",
+          "border-transparent bg-accent text-accent-foreground shadow-xs",
         secondary:
           // @replit no hover because we use hover-elevate
-          "border-transparent bg-secondary text-secondary-foreground",
+          "border-transparent bg-primary text-primary-foreground",
         destructive:
           // @replit shadow-xs instead of shadow, no hover because we use hover-elevate
           "border-transparent bg-destructive text-destructive-foreground shadow-xs",

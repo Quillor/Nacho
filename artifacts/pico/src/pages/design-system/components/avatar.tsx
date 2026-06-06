@@ -22,7 +22,7 @@ export default function AvatarDocs() {
           </Avatar>
           
           <Avatar>
-            <AvatarFallback className="bg-primary text-foreground font-bold">PI</AvatarFallback>
+            <AvatarFallback className="bg-accent text-accent-foreground font-bold">PI</AvatarFallback>
           </Avatar>
         </div>
         <CodeBlock code={`import { Avatar, AvatarFallback, AvatarImage } from "@workspace/pico-ui/avatar"

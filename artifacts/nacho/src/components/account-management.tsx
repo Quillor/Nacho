@@ -98,7 +98,7 @@ function ProfileNameCard() {
       <Button
         disabled={!dirty || saving}
         onClick={() => void save()}
- className="mt-6 border-2 border-foreground bg-primary font-bold text-primary-foreground hover:bg-primary/90"
+ className="mt-6 border-2 border-foreground bg-accent font-bold text-accent-foreground hover:bg-accent/90"
       >
         <Check className="mr-2 h-4 w-4" /> {saving ? "Saving…" : "Save name"}
       </Button>
@@ -212,7 +212,7 @@ function EmailCard() {
             <Button
               disabled={busy || !newEmail.trim()}
               onClick={() => void sendCode()}
- className="border-2 border-foreground bg-primary font-bold text-primary-foreground hover:bg-primary/90"
+ className="border-2 border-foreground bg-accent font-bold text-accent-foreground hover:bg-accent/90"
             >
               {busy ? "Sending…" : "Send code"}
             </Button>
@@ -248,7 +248,7 @@ function EmailCard() {
             <Button
               disabled={busy || !code.trim()}
               onClick={() => void confirmCode()}
- className="border-2 border-foreground bg-primary font-bold text-primary-foreground hover:bg-primary/90"
+ className="border-2 border-foreground bg-accent font-bold text-accent-foreground hover:bg-accent/90"
             >
               {busy ? "Verifying…" : "Verify & save"}
             </Button>
@@ -373,7 +373,7 @@ function PasswordCard() {
           (hasPassword && !currentPassword)
         }
         onClick={() => void save()}
- className="mt-6 border-2 border-foreground bg-primary font-bold text-primary-foreground hover:bg-primary/90"
+ className="mt-6 border-2 border-foreground bg-accent font-bold text-accent-foreground hover:bg-accent/90"
       >
         <Check className="mr-2 h-4 w-4" />{" "}
         {busy

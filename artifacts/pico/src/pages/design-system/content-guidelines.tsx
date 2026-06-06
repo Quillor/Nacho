@@ -21,7 +21,7 @@ function DoDont({ do: doText, dont }: { do: string; dont: string }) {
     <div className="grid gap-4 md:grid-cols-2">
       <div className="border-4 border-foreground bg-card p-5 shadow-sm">
         <div className="mb-3 flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center border-2 border-foreground bg-primary text-primary-foreground">
+          <span className="flex h-7 w-7 items-center justify-center border-2 border-foreground bg-accent text-accent-foreground">
             <Check className="h-4 w-4" strokeWidth={3} />
           </span>
           <span className="font-display text-sm font-extrabold uppercase tracking-widest">
@@ -64,7 +64,7 @@ function Scenario({
 }) {
   return (
     <section className="border-4 border-foreground bg-background shadow-md">
-      <header className="flex flex-col gap-4 border-b-4 border-foreground bg-primary p-6 md:flex-row md:items-center">
+      <header className="flex flex-col gap-4 border-b-4 border-foreground bg-accent p-6 md:flex-row md:items-center">
         <div className="flex h-14 w-14 shrink-0 items-center justify-center border-4 border-foreground bg-background shadow-sm">
           {icon}
         </div>
@@ -148,7 +148,7 @@ export default function ContentGuidelines() {
     <div className="space-y-16">
       {/* Hero */}
       <div className="space-y-4">
-        <div className="inline-block border-2 border-foreground bg-primary px-4 py-2 text-sm font-bold uppercase tracking-widest shadow-sm">
+        <div className="inline-block border-2 border-foreground bg-accent px-4 py-2 text-sm font-bold uppercase tracking-widest shadow-sm">
           GUIDELINES
         </div>
  <h1 className="font-display text-5xl font-extrabold leading-[0.9] tracking-tight text-foreground md:text-6xl">
@@ -229,7 +229,7 @@ export default function ContentGuidelines() {
                 {t.when}
               </div>
               <div>
-                <span className="inline-block border-2 border-foreground bg-primary px-3 py-1 text-sm font-bold uppercase text-primary-foreground shadow-sm">
+                <span className="inline-block border-2 border-foreground bg-accent px-3 py-1 text-sm font-bold uppercase text-accent-foreground shadow-sm">
                   {t.tone}
                 </span>
               </div>
@@ -472,7 +472,7 @@ export default function ContentGuidelines() {
       </section>
 
       {/* Closing rule of thumb */}
-      <section className="border-4 border-foreground bg-primary p-8 shadow-md md:p-12">
+      <section className="border-4 border-foreground bg-accent p-8 shadow-md md:p-12">
  <h2 className="font-display text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
           The 5-second test
         </h2>

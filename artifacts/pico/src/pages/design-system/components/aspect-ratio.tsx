@@ -19,8 +19,8 @@ export default function AspectRatioDocs() {
         <div className="p-8 border-4 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="w-full max-w-md">
             <AspectRatio ratio={16 / 9}>
-              <div className="h-full w-full flex items-center justify-center bg-primary border-2 border-foreground shadow-sm rounded-sm">
-                <Play className="h-10 w-10 text-primary-foreground" />
+              <div className="h-full w-full flex items-center justify-center bg-accent border-2 border-foreground shadow-sm rounded-sm">
+                <Play className="h-10 w-10 text-accent-foreground" />
               </div>
             </AspectRatio>
           </div>
@@ -29,8 +29,8 @@ export default function AspectRatioDocs() {
 import { Play } from "lucide-react"
 
 <AspectRatio ratio={16 / 9}>
-  <div className="h-full w-full flex items-center justify-center bg-primary rounded-sm">
-    <Play className="h-10 w-10 text-primary-foreground" />
+  <div className="h-full w-full flex items-center justify-center bg-accent rounded-sm">
+    <Play className="h-10 w-10 text-accent-foreground" />
   </div>
 </AspectRatio>`} />
       </section>
