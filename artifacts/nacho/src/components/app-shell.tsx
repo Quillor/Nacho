@@ -21,7 +21,7 @@ interface NavItem {
 }
 
 const NAV: NavItem[] = [
-  { href: "/studio", label: "Record", icon: CircleDot },
+  { href: "/studio", label: "Studio", icon: CircleDot },
   { href: "/library", label: "Library", icon: Library },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
@@ -72,6 +72,7 @@ function UserControl() {
         onClick={handleSignOut}
         className="flex items-center gap-2 border border-foreground px-3 py-2 font-bold uppercase tracking-wide text-foreground transition-all hover:bg-muted"
         aria-label="Sign out"
+        title="Sign out"
       >
         <LogOut className="h-4 w-4" />
         <span className="hidden sm:inline">Sign out</span>
@@ -105,6 +106,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <Link
                   key={item.href}
                   href={item.href}
+                  title={item.label}
+                  aria-label={item.label}
                   className={cn(
                     "flex items-center gap-2 border px-4 py-2 font-bold uppercase tracking-wide transition-all",
                     active
