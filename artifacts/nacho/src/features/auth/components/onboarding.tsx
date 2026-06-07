@@ -141,7 +141,6 @@ export function Onboarding() {
                 id="firstName"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Jane"
                 autoComplete="given-name"
                 className={inputClass}
               />
@@ -154,7 +153,6 @@ export function Onboarding() {
                 id="lastName"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                placeholder="Doe"
                 autoComplete="family-name"
                 className={inputClass}
               />
@@ -171,7 +169,7 @@ export function Onboarding() {
               onChange={setJobTitle}
             />
             <p className="mt-2 text-xs font-medium text-muted-foreground">
-              Pick from the list or type your own.
+              This helps optimize your experience of Nacho.
             </p>
           </div>
 
