@@ -18,6 +18,12 @@ interface RichTextEditorProps {
   value: string;
   onChange: (html: string) => void;
   placeholder?: string;
+  /**
+   * "full" (default) enables headings, bold/italic, and lists. "notes"
+   * constrains the editor to headings + body paragraphs only — used by the
+   * desktop speaker-notes authoring surface.
+   */
+  variant?: "full" | "notes";
 }
 
 /** TipTap (ProseMirror) emits "<p></p>" for an empty doc; treat that as empty
@@ -88,7 +94,9 @@ export function RichTextEditor({
   value,
   onChange,
   placeholder,
+  variant = "full",
 }: RichTextEditorProps) {
+  const isNotes = variant === "notes";
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -98,6 +106,15 @@ export function RichTextEditor({
         code: false,
         strike: false,
         horizontalRule: false,
+        // Notes are headings + body only.
+        ...(isNotes
+          ? {
+              bold: false,
+              italic: false,
+              bulletList: false,
+              orderedList: false,
+            }
+          : {}),
       }),
       ParagraphAfterHeading,
       Placeholder.configure({
@@ -169,34 +186,38 @@ export function RichTextEditor({
         >
           <Heading3 className="h-4 w-4" />
         </ToolbarButton>
-        <ToolbarButton
-          label="Bold"
-          active={editor.isActive("bold")}
-          onClick={() => editor.chain().focus().toggleBold().run()}
-        >
-          <Bold className="h-4 w-4" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Italic"
-          active={editor.isActive("italic")}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-        >
-          <Italic className="h-4 w-4" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Bullet list"
-          active={editor.isActive("bulletList")}
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-        >
-          <List className="h-4 w-4" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Numbered list"
-          active={editor.isActive("orderedList")}
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        >
-          <ListOrdered className="h-4 w-4" />
-        </ToolbarButton>
+        {!isNotes && (
+          <>
+            <ToolbarButton
+              label="Bold"
+              active={editor.isActive("bold")}
+              onClick={() => editor.chain().focus().toggleBold().run()}
+            >
+              <Bold className="h-4 w-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              label="Italic"
+              active={editor.isActive("italic")}
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+            >
+              <Italic className="h-4 w-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              label="Bullet list"
+              active={editor.isActive("bulletList")}
+              onClick={() => editor.chain().focus().toggleBulletList().run()}
+            >
+              <List className="h-4 w-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              label="Numbered list"
+              active={editor.isActive("orderedList")}
+              onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            >
+              <ListOrdered className="h-4 w-4" />
+            </ToolbarButton>
+          </>
+        )}
       </div>
       <EditorContent editor={editor} />
     </div>

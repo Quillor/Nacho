@@ -4,6 +4,8 @@ import { useClerk, useUser } from "@clerk/react";
 import { cn } from "@/lib/utils";
 import { getDisplayName } from "@/features/account";
 import { isDevAuthBypassEnabled } from "@workspace/shared";
+import { isDesktop } from "@/lib/desktop";
+import { DesktopUserControl } from "@/features/desktop-auth/components/desktop-user-control";
 import { Logo } from "@/components/logo";
 
 // Display-only stand-in shown while the bypass is on and there is no real Clerk
@@ -31,6 +33,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 function UserControl() {
   const { user } = useUser();
   const { signOut } = useClerk();
+  const [, setLocation] = useLocation();
 
   const bypass = isDevAuthBypassEnabled();
   const email =
@@ -45,13 +48,19 @@ function UserControl() {
     "Account";
   const initial = (label.charAt(0) || "?").toUpperCase();
 
-  // With the bypass on there is no Clerk session to end; just return home.
+  // With the bypass on there is no Clerk session to end; just go to sign-in.
+  // On desktop (hash routing under app://) navigate via the router instead of a
+  // hard redirect, which would land on a non-existent path.
   const handleSignOut = () => {
     if (bypass && !user) {
-      window.location.href = basePath || "/";
+      setLocation("/sign-in");
       return;
     }
-    signOut({ redirectUrl: basePath || "/" });
+    if (isDesktop) {
+      void signOut().then(() => setLocation("/sign-in"));
+    } else {
+      void signOut({ redirectUrl: basePath || "/" });
+    }
   };
 
   return (
@@ -121,7 +130,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               );
             })}
             <div className="mx-1 hidden h-8 w-0.5 bg-foreground/20 sm:block" />
-            <UserControl />
+            {isDesktop ? <DesktopUserControl /> : <UserControl />}
           </div>
         </div>
       </nav>

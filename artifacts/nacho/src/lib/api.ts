@@ -1,17 +1,22 @@
+import { apiOrigin } from "./desktop-api";
+
 /**
  * Absolute URL to a stored object served by the API server.
- * `objectPath` looks like "/objects/uploads/<id>".
+ * `objectPath` looks like "/objects/uploads/<id>". On desktop this points at the
+ * configured backend; on the web it stays same-origin.
  */
 export function storageUrl(objectPath: string): string {
-  return `/api/storage${objectPath}`;
+  return `${apiOrigin}/api/storage${objectPath}`;
 }
 
 /**
  * Public share link that unfurls with Open Graph metadata.
- * Served by the API server at /s/:shareId.
+ * Served by the API server at /s/:shareId. On desktop this uses the backend
+ * origin so the link is publicly shareable, not the local app origin.
  */
 export function shareUrl(shareId: string): string {
-  return `${window.location.origin}/s/${shareId}`;
+  const origin = apiOrigin || window.location.origin;
+  return `${origin}/s/${shareId}`;
 }
 
 /**

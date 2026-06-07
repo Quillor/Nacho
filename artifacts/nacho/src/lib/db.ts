@@ -1,25 +1,43 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
 import type { LocalRecording, LocalRecordingMeta } from "./types";
 
+interface NotesDoc {
+  id: string;
+  html: string;
+  updatedAt: number;
+}
+
 interface NachoDB extends DBSchema {
   recordings: {
     key: string;
     value: LocalRecording;
     indexes: { "by-createdAt": number };
   };
+  notes: {
+    key: string;
+    value: NotesDoc;
+  };
 }
 
 const DB_NAME = "nacho";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
+
+/** Single speaker-notes document (desktop-only authoring). */
+const NOTES_KEY = "default";
 
 let dbPromise: Promise<IDBPDatabase<NachoDB>> | null = null;
 
 function getDB(): Promise<IDBPDatabase<NachoDB>> {
   if (!dbPromise) {
     dbPromise = openDB<NachoDB>(DB_NAME, DB_VERSION, {
-      upgrade(db) {
-        const store = db.createObjectStore("recordings", { keyPath: "id" });
-        store.createIndex("by-createdAt", "createdAt");
+      upgrade(db, oldVersion) {
+        if (oldVersion < 1) {
+          const store = db.createObjectStore("recordings", { keyPath: "id" });
+          store.createIndex("by-createdAt", "createdAt");
+        }
+        if (oldVersion < 2) {
+          db.createObjectStore("notes", { keyPath: "id" });
+        }
       },
     });
   }
@@ -84,4 +102,17 @@ export async function updateRecording(
   const updated = { ...existing, ...patch };
   await db.put("recordings", updated);
   return updated;
+}
+
+/** Load the speaker-notes HTML (empty string if none saved yet). */
+export async function getNotes(): Promise<string> {
+  const db = await getDB();
+  const doc = await db.get("notes", NOTES_KEY);
+  return doc?.html ?? "";
+}
+
+/** Persist the speaker-notes HTML (single document, desktop-authored). */
+export async function saveNotes(html: string): Promise<void> {
+  const db = await getDB();
+  await db.put("notes", { id: NOTES_KEY, html, updatedAt: Date.now() });
 }

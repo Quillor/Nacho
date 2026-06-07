@@ -31,6 +31,7 @@ import {
 } from "@workspace/pico-ui/tooltip";
 import { useUploadState, retryUpload } from "@/features/publishing";
 import { formatDuration, formatRelativeDate } from "@workspace/shared";
+import { cloudEnabled } from "@/lib/desktop-api";
 import type { LocalRecordingMeta } from "@/lib/types";
 
 /** Poster thumbnail for a recording; falls back to a play glyph when absent. */
@@ -169,14 +170,23 @@ export function RecordingCard({
           {rec.title}
         </h3>
 
-        {rec.visibility !== "public" && (
+        {rec.visibility !== "public" && cloudEnabled && (
           <div className="mt-2">
             <UploadStatus id={rec.id} />
           </div>
         )}
 
         <div className="mt-4 flex items-center gap-2">
-          {rec.visibility === "public" && rec.shareId ? (
+          {!cloudEnabled ? (
+            // Cloud unavailable (desktop without a backend): edit locally only.
+            <Button
+              size="sm"
+              className="flex-1 border border-foreground bg-accent font-bold text-accent-foreground"
+              onClick={() => onOpenEditor(rec.id)}
+            >
+              <Pencil className="mr-1 h-4 w-4" /> Edit
+            </Button>
+          ) : rec.visibility === "public" && rec.shareId ? (
             <Button
               size="sm"
               className="flex-1 border border-foreground bg-accent font-bold text-accent-foreground"

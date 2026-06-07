@@ -13,6 +13,7 @@ import {
 import { Button } from "@workspace/pico-ui/button";
 import { Input } from "@workspace/pico-ui/input";
 import { shareUrl } from "@/lib/api";
+import { cloudEnabled } from "@/lib/desktop-api";
 import type { UploadState } from "@/features/publishing";
 
 // The share/visibility panel at the bottom of the editor: shows the public link
@@ -50,7 +51,10 @@ export function PublishPanel({
   const uploadFailed = upload.phase === "failed";
   return (
     <div className="space-y-3 border-t-2 border-foreground pt-6">
-      {isPublic ? (
+      {/* Cloud share/visibility controls. Hidden only when cloud is unavailable
+          (desktop without a configured backend) — then just local "Save". */}
+      {cloudEnabled &&
+        (isPublic ? (
         <div className="space-y-3 border-2 border-foreground bg-primary p-4 text-primary-foreground">
           <div className="flex items-center gap-2 font-display font-bold">
             <Globe className="h-5 w-5" /> Public
@@ -185,7 +189,7 @@ export function PublishPanel({
             </Button>
           )}
         </div>
-      )}
+        ))}
       {dirty ? (
         <Button
           onClick={onSave}

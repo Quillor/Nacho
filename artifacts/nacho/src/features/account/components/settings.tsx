@@ -27,6 +27,7 @@ import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import { AccountManagement } from "./account-management";
 import { cardClass, getDisplayName, headingClass } from "../account";
 import { useGetVersion } from "@workspace/api-client-react";
+import { isDesktop } from "@/lib/desktop";
 import { listRecordings, deleteRecording } from "@/lib/db";
 import { formatBytes } from "@workspace/shared";
 import type { LocalRecordingMeta } from "@/lib/types";
@@ -177,6 +178,8 @@ export function SettingsPage() {
               <dd className="font-mono font-bold">
                 {version ? (
                   version.version
+                ) : isDesktop ? (
+                  "Desktop"
                 ) : (
                   <ValueSkeleton className="w-16" />
                 )}
@@ -187,6 +190,8 @@ export function SettingsPage() {
               <dd className="font-mono font-bold">
                 {version ? (
                   version.releaseDate
+                ) : isDesktop ? (
+                  "local build"
                 ) : (
                   <ValueSkeleton className="w-24" />
                 )}
