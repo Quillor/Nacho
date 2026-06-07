@@ -65,6 +65,7 @@ export function EditorTabs({
         <label className="flex items-center justify-between gap-3 border border-foreground bg-muted p-3">
           <span className="text-sm font-bold">Display chapter on video</span>
           <Switch
+            variant="borderless"
             checked={displayChaptersOnVideo}
             onCheckedChange={onDisplayChaptersOnVideoChange}
             aria-label="Display chapter on video"
@@ -83,34 +84,36 @@ export function EditorTabs({
             No chapters yet.
           </p>
         ) : (
-          chapters.map((c, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-2 border border-foreground bg-card p-2"
-            >
-              <button
-                type="button"
-                onClick={() => onSeek(c.time)}
-                className="shrink-0 border border-foreground bg-accent px-2 py-1 font-mono text-xs font-bold text-accent-foreground"
+          <div className="divide-y divide-foreground border border-foreground">
+            {chapters.map((c, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-2 bg-card p-2"
               >
-                {formatTimestamp(c.time)}
-              </button>
-              <Input
-                value={c.label}
-                onChange={(e) => onUpdateChapter(i, e.target.value)}
-                maxLength={CHAPTER_LABEL_MAX_CHARS}
-                className="h-9 border border-foreground font-medium"
-              />
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => onRemoveChapter(i)}
-                className="shrink-0 text-destructive"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-          ))
+                <button
+                  type="button"
+                  onClick={() => onSeek(c.time)}
+                  className="shrink-0 border border-foreground bg-accent px-2 py-1 font-mono text-xs font-bold text-accent-foreground"
+                >
+                  {formatTimestamp(c.time)}
+                </button>
+                <Input
+                  value={c.label}
+                  onChange={(e) => onUpdateChapter(i, e.target.value)}
+                  maxLength={CHAPTER_LABEL_MAX_CHARS}
+                  className="h-9 border border-foreground font-medium"
+                />
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => onRemoveChapter(i)}
+                  className="shrink-0 text-destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
         )}
       </TabsContent>
 
@@ -153,6 +156,7 @@ export function EditorTabs({
             </span>
           </span>
           <Switch
+            variant="borderless"
             checked={notifyOnView}
             onCheckedChange={onNotifyOnViewChange}
             aria-label="Notify me when viewed"
