@@ -7,17 +7,24 @@ import { picoMeta } from "../lib/pico-meta"
 /**
  * Switch is a toggle for a single on/off setting that takes effect immediately.
  * Reach for it instead of a checkbox when there's no separate save step.
+ *
+ * `variant` controls the outline: "default" draws the chunky Pico border (use
+ * when switches are stacked together so each reads as a distinct control);
+ * "borderless" drops the border for solo switches that sit alone in their row.
  */
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> & {
+    variant?: "default" | "borderless"
+  }
+>(({ className, variant = "default", ...props }, ref) => (
   <SwitchPrimitives.Root
     className={cn(
-      "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border border-transparent shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-accent data-[state=unchecked]:bg-input",
+      "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-accent data-[state=unchecked]:bg-input",
+      variant === "borderless" ? "border-transparent" : "border-foreground",
       className
     )}
-    {...picoMeta("Switch")}
+    {...picoMeta("Switch", { variant })}
     {...props}
     ref={ref}
   >

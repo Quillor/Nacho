@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useEditor, EditorContent, Extension } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
+import { TextSelection } from "@tiptap/pm/state";
 import {
   Bold,
   Italic,
@@ -40,12 +41,29 @@ const ParagraphAfterHeading = Extension.create({
   addKeyboardShortcuts() {
     return {
       Enter: () => {
-        const { selection } = this.editor.state;
+        const { state } = this.editor;
+        const { selection } = state;
         const { $head, empty } = selection;
         if (!empty) return false;
         if ($head.parent.type.name !== "heading") return false;
         if ($head.parentOffset !== $head.parent.content.size) return false;
-        return this.editor.chain().splitBlock().setNode("paragraph").run();
+        const paragraphType = state.schema.nodes.paragraph;
+        if (!paragraphType) return false;
+        // Insert a fresh paragraph immediately after the heading and place the
+        // cursor inside it. Done as one explicit transaction (instead of
+        // chaining splitBlock + setNode, which could leave a stale selection
+        // and throw "Position N out of range").
+        return this.editor.commands.command(({ tr, dispatch }) => {
+          const insertPos = $head.after();
+          const paragraph = paragraphType.createAndFill();
+          if (!paragraph) return false;
+          if (dispatch) {
+            tr.insert(insertPos, paragraph);
+            tr.setSelection(TextSelection.create(tr.doc, insertPos + 1));
+            tr.scrollIntoView();
+          }
+          return true;
+        });
       },
     };
   },

@@ -6,44 +6,60 @@ import { Card } from "@workspace/pico-ui/card";
 import { Input } from "@workspace/pico-ui/input";
 import { Label } from "@workspace/pico-ui/label";
 import { useToast } from "@workspace/pico-ui/hooks/use-toast";
+import { getProfile } from "@/features/auth";
 import {
   cardClass,
   errMessage,
-  getDisplayName,
   headingClass,
   inputClass,
   labelClass,
 } from "../account";
 
-/** Edit the Clerk `displayName` stored in `unsafeMetadata`. */
+/** Edit the first name, last name, and job title stored in Clerk `unsafeMetadata`. */
 export function ProfileNameCard() {
   const { user } = useUser();
   const { toast } = useToast();
-  const [displayName, setDisplayName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const savedName = getDisplayName(user?.unsafeMetadata);
+  const saved = getProfile(user?.unsafeMetadata);
 
   useEffect(() => {
-    if (user) setDisplayName(savedName);
-  }, [user, savedName]);
+    if (!user) return;
+    setFirstName(saved.firstName);
+    setLastName(saved.lastName);
+    setJobTitle(saved.jobTitle);
+  }, [user, saved.firstName, saved.lastName, saved.jobTitle]);
 
-  const dirty = !!user && displayName.trim() !== savedName;
+  const dirty =
+    !!user &&
+    (firstName.trim() !== saved.firstName ||
+      lastName.trim() !== saved.lastName ||
+      jobTitle.trim() !== saved.jobTitle);
 
   const save = async () => {
     if (!user) return;
     setSaving(true);
     try {
+      const first = firstName.trim();
+      const last = lastName.trim();
       await user.update({
         unsafeMetadata: {
           ...(user.unsafeMetadata ?? {}),
-          displayName: displayName.trim(),
+          firstName: first,
+          lastName: last,
+          jobTitle: jobTitle.trim(),
+          // Keep the display-name field in sync so the app shell shows the full
+          // name immediately.
+          displayName: `${first} ${last}`.trim(),
         },
       });
-      toast({ title: "Name updated" });
+      toast({ title: "Profile updated" });
     } catch (err) {
       toast({
-        title: "Couldn't update name",
+        title: "Couldn't update profile",
         description: errMessage(err, "Please try again."),
         variant: "destructive",
       });
@@ -58,19 +74,45 @@ export function ProfileNameCard() {
         <User className="h-5 w-5" />
         <h2 className={headingClass}>Profile</h2>
       </div>
-      <div>
-        <Label htmlFor="displayName" className={labelClass}>
-          Display name
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <Label htmlFor="firstName" className={labelClass}>
+            First name
+          </Label>
+          <Input
+            id="firstName"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            autoComplete="given-name"
+            className={inputClass}
+          />
+        </div>
+        <div>
+          <Label htmlFor="lastName" className={labelClass}>
+            Last name
+          </Label>
+          <Input
+            id="lastName"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            autoComplete="family-name"
+            className={inputClass}
+          />
+        </div>
+      </div>
+      <div className="mt-4">
+        <Label htmlFor="jobTitle" className={labelClass}>
+          Job title
         </Label>
         <Input
-          id="displayName"
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
-          placeholder="Jane Doe"
+          id="jobTitle"
+          value={jobTitle}
+          onChange={(e) => setJobTitle(e.target.value)}
+          autoComplete="organization-title"
           className={inputClass}
         />
         <p className="mt-2 text-sm text-muted-foreground">
-          Shown in the app instead of your email.
+          Your name is shown in the app instead of your email.
         </p>
       </div>
       <Button
@@ -78,7 +120,7 @@ export function ProfileNameCard() {
         onClick={() => void save()}
         className="mt-6 border border-foreground bg-accent font-bold text-accent-foreground hover:bg-accent/90"
       >
-        <Check className="mr-2 h-4 w-4" /> {saving ? "Saving…" : "Save name"}
+        <Check className="mr-2 h-4 w-4" /> {saving ? "Saving…" : "Save profile"}
       </Button>
     </Card>
   );

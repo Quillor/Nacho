@@ -76,6 +76,17 @@ export function Editor() {
 
       <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr]">
         <div>
+          <div className="mb-6">
+            <Label className="mb-2 block font-display text-sm font-bold uppercase">
+              Title
+            </Label>
+            <Input
+              value={e.title}
+              onChange={(ev) => e.setTitle(ev.target.value)}
+              className="border-2 border-foreground font-bold"
+            />
+          </div>
+
           <VideoPlayer
             ref={e.playerRef}
             src={e.objectUrl}
@@ -124,16 +135,21 @@ export function Editor() {
         </div>
 
         <div className="space-y-6">
-          <div>
-            <Label className="mb-2 block font-display text-sm font-bold uppercase">
-              Title
-            </Label>
-            <Input
-              value={e.title}
-              onChange={(ev) => e.setTitle(ev.target.value)}
-              className="border-2 border-foreground font-bold"
-            />
-          </div>
+          <PublishPanel
+            isPublic={e.isPublic}
+            shareId={e.shareId}
+            copied={e.copied}
+            busy={e.busy}
+            dirty={e.dirty}
+            publishStep={e.publishStep}
+            upload={e.upload}
+            onCopyLink={e.copyLink}
+            onOpenPublic={() => e.navigate(`/v/${e.shareId}`)}
+            onUnpublish={e.handleUnpublish}
+            onGetLink={e.handleGetLink}
+            onRetryUpload={e.retry}
+            onSave={e.handleSave}
+          />
 
           <EditorTabs
             description={e.description}
@@ -149,22 +165,6 @@ export function Editor() {
             transcript={rec.transcript}
             notifyOnView={e.notifyOnView}
             onNotifyOnViewChange={e.handleNotifyOnViewChange}
-          />
-
-          <PublishPanel
-            isPublic={e.isPublic}
-            shareId={e.shareId}
-            copied={e.copied}
-            busy={e.busy}
-            dirty={e.dirty}
-            publishStep={e.publishStep}
-            upload={e.upload}
-            onCopyLink={e.copyLink}
-            onOpenPublic={() => e.navigate(`/v/${e.shareId}`)}
-            onUnpublish={e.handleUnpublish}
-            onGetLink={e.handleGetLink}
-            onRetryUpload={e.retry}
-            onSave={e.handleSave}
           />
         </div>
       </div>

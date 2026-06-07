@@ -50,7 +50,7 @@ export function PublishPanel({
 }) {
   const uploadFailed = upload.phase === "failed";
   return (
-    <div className="space-y-3 border-t-2 border-foreground pt-6">
+    <div className="space-y-3">
       {/* Cloud share/visibility controls. Hidden only when cloud is unavailable
           (desktop without a configured backend) — then just local "Save". */}
       {cloudEnabled &&
@@ -66,7 +66,7 @@ export function PublishPanel({
             <Input
               readOnly
               value={shareUrl(shareId!)}
-              className="h-10 border border-foreground bg-background font-mono text-xs"
+              className="h-10 border border-foreground bg-background font-mono text-xs text-foreground"
             />
             <Button
               onClick={onCopyLink}
@@ -95,7 +95,7 @@ export function PublishPanel({
           <Button
             onClick={onOpenPublic}
             variant="outline"
-            className="w-full border border-foreground bg-background font-bold"
+            className="w-full border border-foreground bg-background font-bold text-foreground"
           >
             Open public page
           </Button>

@@ -278,7 +278,7 @@ function Router() {
           <Editor />
         </Protected>
       </Route>
-      <Route path="/settings">
+      <Route path="/settings/:section?">
         <Protected>
           <SettingsPage />
         </Protected>
