@@ -1,0 +1,31 @@
+What I'm building: a macOS desktop app (Electron) that wraps the existing Nacho web renderer and adds native features (full-screen + camera recording, on-screen overlays excluded from the recording, enlarged cursor, speaker notes). It runs the web UI on a local loopback origin: http://localhost:17653.
+
+Goal: record on the desktop → upload to my account on nacho-app.replit.app → get a shareable /s/<id> link — exactly like the web app.
+
+The blocker is authentication. The desktop can't authenticate to the production backend:
+
+Production Clerk (pk_live_…, clerk.nacho-app.replit.app, via the /api/__clerk proxy) is origin-locked to the production domain. It won't initialize from http://localhost, so the app hangs on clerkLoaded and shows a blank screen.
+Development Clerk (pk_test_…moving-wren-90) does work from localhost, but the production backend validates tokens against the production instance, so it rejects dev tokens with 401 "Sign in to save a recording". (Dev and prod are also separate user databases, so a dev login isn't the same account as the web.)
+Everything else already works — I verified this live, so it's specifically the Clerk instance/origin mismatch, not the upload pipeline:
+
+POST /api/storage/uploads/request-url → 200
+Direct PUT to the returned Google Cloud Storage presigned URL → 200 (bucket CORS already allows the desktop origin)
+The backend already returns CORS for http://localhost:17653 (origin + credentials + Authorization + all methods)
+The backend already accepts Authorization: Bearer on /api/recordings
+The only failure is POST /api/recordings → 401, purely because the Bearer token came from the dev Clerk instance instead of prod.
+The fix I'm implementing (browser-handoff sign-in, like a CLI's "sign in with browser"): the desktop opens the system browser to a page on nacho-app.replit.app where production Clerk works normally; after sign-in, the page mints a one-time PKCE-bound code and redirects back to the app via a nacho:// deep link; the app exchanges that code for a backend-issued token it then sends as Authorization: Bearer.
+
+What this needs on the api-server (new code, already written — needs deploying):
+
+GET /desktop/login — a browser page that runs production Clerk sign-in (loads clerk-js with the prod publishable key + the existing same-origin /api/__clerk proxy), then calls authorize and redirects to nacho://auth
+POST /api/desktop/authorize — (uses the Clerk web session) → returns a one-time, PKCE-bound code
+POST /api/desktop/token — code + PKCE verifier → access + refresh tokens (HMAC-signed by the server, no DB)
+POST /api/desktop/token/refresh — refresh → new access token
+GET /api/desktop/me — returns the signed-in user's profile
+authUserId() updated to also accept the desktop access token (Bearer), falling back to Clerk
+What I need from Replit:
+
+Deploy the updated api-server to nacho-app.replit.app with these endpoints.
+Confirm the deployment's CLERK_PUBLISHABLE_KEY env is the production pk_live_… key (used to render the /desktop/login page).
+Optionally set a DESKTOP_AUTH_SECRET env var for signing the desktop tokens (it falls back to CLERK_SECRET_KEY if unset).
+No third-party/Clerk dashboard changes and no database migrations are required — it reuses the existing Clerk session on the web origin and the existing GCS upload flow.
