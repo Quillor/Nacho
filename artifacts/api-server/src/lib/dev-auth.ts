@@ -1,6 +1,7 @@
 import type { Request } from "express";
 import { getAuth } from "@clerk/express";
 import { COOKIE_NAME, DEV_USER_ID } from "@workspace/shared/dev-auth-constants";
+import { userIdFromAccessToken } from "../features/desktop-auth/desktop-auth.service";
 
 // Dev-only auth bypass ("testing mode"). Honored only OUTSIDE production. The
 // production gate below makes every code path here inert when NODE_ENV is
@@ -52,5 +53,17 @@ export function isDevAuthBypass(req: Request): boolean {
 // session. Returns null when there is no authenticated user.
 export function authUserId(req: Request): string | null {
   if (isDevAuthBypass(req)) return DEV_USER_ID;
+  // Desktop app: a Bearer access token minted by the browser-handoff flow.
+  const desktop = desktopUserId(req);
+  if (desktop) return desktop;
   return getAuth(req).userId ?? null;
+}
+
+// Resolve a user id from a desktop access token (Authorization: Bearer ...).
+// Returns null for Clerk tokens or absent/invalid tokens, so Clerk auth still
+// runs as the fallback.
+function desktopUserId(req: Request): string | null {
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith("Bearer ")) return null;
+  return userIdFromAccessToken(header.slice("Bearer ".length).trim());
 }

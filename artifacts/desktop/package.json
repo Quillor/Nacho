@@ -1,0 +1,26 @@
+{
+  "name": "@workspace/desktop",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Nacho macOS desktop shell (Electron). Local-only build — not part of the Replit web deploy.",
+  "main": "dist/main.cjs",
+  "scripts": {
+    "build:renderer": "BASE_PATH=/ PORT=5173 pnpm --filter @workspace/nacho run build && node ./scripts/copy-renderer.mjs",
+    "build:main": "node ./build.mjs",
+    "build": "pnpm run build:renderer && pnpm run build:main",
+    "start": "electron .",
+    "dev": "NODE_ENV=development node ./build.mjs && NACHO_DEV_URL=${NACHO_DEV_URL:-http://localhost:5173} electron .",
+    "dist": "pnpm run build && electron-builder --mac",
+    "pack:local": "pnpm run build && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac dir --config.mac.hardenedRuntime=false --config.mac.identity=null && node ./scripts/sign-local.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "uiohook-napi": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "esbuild": "0.27.3"
+  }
+}

@@ -10,6 +10,7 @@ import {
 } from "./middlewares/clerk-proxy-middleware";
 import router from "./router";
 import shareRouter from "./features/sharing/sharing.routes";
+import { desktopLoginRouter } from "./features/desktop-auth/desktop-auth.routes";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
@@ -58,5 +59,6 @@ app.use(
 
 app.use("/api", router);
 app.use(shareRouter);
+app.use(desktopLoginRouter);
 
 export default app;
