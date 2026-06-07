@@ -168,39 +168,6 @@ export function Studio() {
               </div>
             )}
 
-            {s.phase === "setup" && (
-              <Button
-                size="lg"
-                onClick={() => void s.enablePreview()}
-                disabled={s.preparing}
-                className="h-16 w-full border-2 border-foreground bg-accent text-xl font-black uppercase tracking-wide text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
-              >
-                <Eye className="mr-2 h-6 w-6" />
-                {s.preparing ? "Requesting access…" : "Enable Preview"}
-              </Button>
-            )}
-
-            {s.phase === "ready" && (
-              <div className="flex flex-col gap-3">
-                <Button
-                  size="lg"
-                  onClick={s.startCountdown}
-                  className="h-16 w-full border-2 border-foreground bg-accent text-xl font-black uppercase tracking-wide text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
-                >
-                  <CircleDot className="mr-2 h-6 w-6" />
-                  Start Recording
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={s.reconfigure}
-                  className="h-12 w-full border-2 border-foreground font-bold"
-                >
-                  <RotateCcw className="mr-2 h-5 w-5" />
-                  Reconfigure
-                </Button>
-              </div>
-            )}
-
             {s.phase === "recording" && (
               <div className="flex flex-wrap items-center gap-4">
                 <Button
@@ -298,20 +265,42 @@ export function Studio() {
                 <SelfieCornerOverlay
                   corner={s.corner}
                   onChange={s.changeCorner}
+                  cameraLive={s.phase === "ready"}
                 />
               )}
             </div>
 
             {s.phase === "setup" && (
-              <p className="mt-3 text-center text-sm font-bold uppercase tracking-wide text-muted-foreground">
-                Use “Enable Preview” to grant access and see your feed.
-              </p>
+              <Button
+                size="lg"
+                onClick={() => void s.enablePreview()}
+                disabled={s.preparing}
+                className="mt-3 h-16 w-full border-2 border-foreground bg-accent text-xl font-black uppercase tracking-wide text-accent-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm disabled:opacity-70"
+              >
+                <Eye className="mr-2 h-6 w-6" />
+                {s.preparing ? "Requesting access…" : "Enable Preview"}
+              </Button>
             )}
 
-            {s.phase === "ready" && s.source !== "screen-camera" && (
-              <p className="mt-3 text-center text-sm font-bold uppercase tracking-wide text-muted-foreground">
-                Preview live — press start when you're ready.
-              </p>
+            {s.phase === "ready" && (
+              <div className="mt-3 flex flex-col gap-3">
+                <Button
+                  size="lg"
+                  onClick={s.startCountdown}
+                  className="h-16 w-full border-2 border-foreground bg-destructive text-xl font-black uppercase tracking-wide text-destructive-foreground shadow-md transition-all hover:translate-y-0.5 hover:shadow-sm"
+                >
+                  <CircleDot className="mr-2 h-6 w-6" />
+                  Start Recording
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={s.reconfigure}
+                  className="h-12 w-full border-2 border-foreground font-bold"
+                >
+                  <RotateCcw className="mr-2 h-5 w-5" />
+                  Reconfigure
+                </Button>
+              </div>
             )}
           </div>
         </div>
