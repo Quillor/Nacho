@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "cZhlvtqPDB6o0LvGHaXK1"
@@ -24,3 +23,9 @@ id = "dTpzEZ8W4x4nNDeNtUzxY"
 uri = "file://artifacts/nacho/public/feature-trim.png"
 type = "image"
 title = "video trimming illustration"
+
+[[outputs]]
+id = "rwb6wZM7hJOd_MmwEbWnf"
+uri = "file://screenshots/trim-handles.jpg"
+type = "image"
+title = "Trim handles with grip marks"

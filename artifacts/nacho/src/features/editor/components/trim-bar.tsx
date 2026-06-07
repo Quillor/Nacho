@@ -59,7 +59,7 @@ export function TrimBar({
   return (
     <div
       ref={trackRef}
-      className="relative h-12 w-full cursor-pointer overflow-hidden border border-foreground bg-muted"
+      className="relative h-12 w-full cursor-pointer overflow-visible border border-foreground bg-muted"
       onPointerDown={(e) => {
         dragging.current = "scrub";
         onScrub(posToTime(e.clientX));
@@ -67,7 +67,7 @@ export function TrimBar({
     >
       {/* QuickTime-style filmstrip of sampled frames */}
       {filmstrip.length > 0 ? (
-        <div className="pointer-events-none absolute inset-0 flex">
+        <div className="pointer-events-none absolute inset-0 flex overflow-hidden">
           {filmstrip.map((src, i) => (
             <img
               key={i}
@@ -117,13 +117,16 @@ function Handle({
       aria-valuenow={position}
       tabIndex={0}
       className={cn(
-        "absolute inset-y-0 z-20 flex w-3 -translate-x-1/2 cursor-ew-resize items-center justify-center border-x border-foreground bg-primary",
+        "absolute -inset-y-1.5 z-20 flex w-3 -translate-x-1/2 cursor-ew-resize items-center justify-center gap-0.5 border border-foreground bg-primary",
       )}
       style={{ left: `${position}%` }}
       onPointerDown={(e) => {
         e.stopPropagation();
         onDown();
       }}
-    />
+    >
+      <span className="h-4 w-px bg-primary-foreground" />
+      <span className="h-4 w-px bg-primary-foreground" />
+    </div>
   );
 }
