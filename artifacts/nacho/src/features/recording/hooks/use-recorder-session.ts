@@ -17,6 +17,10 @@ import { DEFAULT_CAPTION_LANG } from "../languages";
 import { captureThumbnail, getBlobDuration } from "@/lib/media";
 import { saveRecording } from "@/lib/db";
 import { startBackgroundUpload } from "@/features/publishing";
+import { type RecorderCommand } from "@/lib/desktop";
+import { cloudEnabled } from "@/lib/desktop-api";
+import { useDesktopPresenter } from "./use-desktop-presenter";
+import { useCursorControls } from "./use-cursor-controls";
 import type {
   RecordingSource,
   TranscriptSegment,
@@ -44,6 +48,7 @@ export type StudioPhase = "setup" | "ready" | "countdown" | "recording";
 export function useRecorderSession() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
+  const cursor = useCursorControls();
 
   const [phase, setPhase] = useState<StudioPhase>("setup");
   const [source, setSource] = useState<RecordingSource>("screen-camera");
@@ -96,6 +101,11 @@ export function useRecorderSession() {
         withMic,
         withSystemAudio,
         corner,
+        cursorOverlay: cursor.cursorOverlay,
+        cursorSize: cursor.cursorSize,
+        clickSound: cursor.clickSound,
+        clickRipple: cursor.clickSound,
+        cursorInput: cursor.cursorInput,
       });
     } catch (err) {
       const denied =
@@ -112,6 +122,9 @@ export function useRecorderSession() {
     }
     preparedRef.current = prepared;
     attachPreview(prepared);
+    // Begin streaming global cursor position + clicks into the recorder so the
+    // enlarged cursor and click sound work in both preview and recording.
+    void cursor.startTracking(() => preparedRef.current?.triggerClick());
     setPreparing(false);
     setPhase("ready");
   };
@@ -119,6 +132,7 @@ export function useRecorderSession() {
   const reconfigure = () => {
     preparedRef.current?.dispose();
     preparedRef.current = null;
+    cursor.stopTracking();
     if (videoRef.current) videoRef.current.srcObject = null;
     setPermissionError(null);
     setPermissionDenied(false);
@@ -203,6 +217,7 @@ export function useRecorderSession() {
     preparedRef.current = null;
     if (tickRef.current) window.clearInterval(tickRef.current);
     transcriberRef.current?.stop();
+    cursor.stopTracking();
     setSaving(true);
 
     try {
@@ -251,10 +266,9 @@ export function useRecorderSession() {
       };
       await saveRecording(recording);
       // Start uploading the video to storage in the background as a private
-      // recording. Runs on the module-level upload manager so it keeps going
-      // after we navigate away from the studio — by the time the user wants a
-      // public link the heavy transfer is already done.
-      startBackgroundUpload(recording);
+      // recording so sharing is instant later. Skipped only when cloud is
+      // unavailable (desktop without a configured backend).
+      if (cloudEnabled) startBackgroundUpload(recording);
       navigate(`/editor/${id}`);
     } catch {
       setSaving(false);
@@ -273,9 +287,39 @@ export function useRecorderSession() {
     controllerRef.current = null;
     preparedRef.current = null;
     transcriberRef.current?.stop();
+    cursor.stopTracking();
     if (tickRef.current) window.clearInterval(tickRef.current);
     setPhase("setup");
   };
+
+  // Apply a transport command from the desktop controls overlay. Reads the live
+  // controller (not React state) so pause/resume can't double-toggle.
+  const runCommand = (cmd: RecorderCommand) => {
+    const c = controllerRef.current;
+    if (cmd === "pause") {
+      if (c && !c.isPaused()) togglePause();
+    } else if (cmd === "resume") {
+      if (c && c.isPaused()) togglePause();
+    } else if (cmd === "stop") {
+      void finishRecording();
+    } else if (cmd === "cancel") {
+      cancelRecording();
+    }
+  };
+
+  // Drive the Electron presenter overlays (no-op on the web).
+  useDesktopPresenter({
+    phase,
+    getElapsed: () => controllerRef.current?.getElapsed() ?? 0,
+    isPaused: () => controllerRef.current?.isPaused() ?? false,
+    runCommand,
+    // Presenter camera overlay only when the camera isn't already composited
+    // into the recording (screen-only); otherwise it would double-open the cam.
+    overlays:
+      source === "screen"
+        ? ["controls", "notes", "camera"]
+        : ["controls", "notes"],
+  });
 
   const showPreview = phase !== "setup";
   const captionsAvailable = isTranscriptionSupported();
@@ -306,6 +350,7 @@ export function useRecorderSession() {
     showPreview,
     captionsAvailable,
     locked,
+    cursor,
     enablePreview,
     reconfigure,
     changeCorner,

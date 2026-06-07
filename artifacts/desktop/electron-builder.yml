@@ -1,0 +1,42 @@
+appId: com.nacho.desktop
+productName: Nacho
+copyright: Copyright © Nacho
+
+directories:
+  output: dist-app
+  buildResources: build
+
+# Only the bundled main/preload and the copied renderer ship in the app.
+files:
+  - dist/**/*
+
+# The native global-input addon must be unpacked from the asar so its .node
+# binary is loadable, and signed as part of the bundle.
+asarUnpack:
+  - "**/*.node"
+  - "node_modules/uiohook-napi/**"
+
+# Custom URL scheme for the browser sign-in handoff (nacho://auth?...).
+protocols:
+  - name: Nacho
+    schemes:
+      - nacho
+
+mac:
+  category: public.app-category.productivity
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  target:
+    - dmg
+    - zip
+  extendInfo:
+    NSCameraUsageDescription: Nacho records your camera for picture-in-picture video.
+    NSMicrophoneUsageDescription: Nacho records your microphone for narration.
+    # Screen Recording and Accessibility are TCC permissions granted at runtime;
+    # they have no Info.plist usage-string keys.
+
+# Notarization: set via env (APPLE_ID, APPLE_APP_SPECIFIC_PASSWORD, APPLE_TEAM_ID)
+# or a notarytool keychain profile. Left unconfigured here so unsigned local dev
+# builds still work; fill in for distribution.

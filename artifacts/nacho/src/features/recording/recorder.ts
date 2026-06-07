@@ -1,13 +1,37 @@
 import type { RecordingSource, SelfieCorner } from "@/lib/types";
 import { pickRecorderMimeType } from "@/lib/media";
+import { drawCameraBubble } from "./composite";
+import {
+  type CursorInput,
+  type Ripple,
+  type Point,
+  mapToCanvas,
+  drawCursor,
+  drawRipples,
+  createClickBuffer,
+  playClick,
+} from "./cursor-overlay";
 
 export type { SelfieCorner } from "@/lib/types";
+export type { CursorInput } from "./cursor-overlay";
 
 export interface RecorderOptions {
   source: RecordingSource;
   withMic: boolean;
   withSystemAudio: boolean;
   corner?: SelfieCorner;
+  /**
+   * Cursor controls (desktop only). When `cursorOverlay` is on, the native OS
+   * cursor is hidden from capture and an enlarged synthetic cursor is drawn onto
+   * the recorded canvas. `clickSound`/`clickRipple` add an embedded click sound
+   * and an on-canvas ripple. `cursorInput` is the host-supplied live cursor
+   * position + captured-display bounds. All optional → web behavior unchanged.
+   */
+  cursorOverlay?: boolean;
+  cursorSize?: number;
+  clickSound?: boolean;
+  clickRipple?: boolean;
+  cursorInput?: CursorInput;
 }
 
 export interface RecorderController {
@@ -21,6 +45,8 @@ export interface RecorderController {
   stop(): Promise<Blob>;
   cancel(): void;
   onEnded(cb: () => void): void;
+  /** Register a global click: plays the click sound and spawns a ripple. */
+  triggerClick(): void;
 }
 
 export interface PreparedRecorder {
@@ -31,18 +57,28 @@ export interface PreparedRecorder {
   hasSelfie: boolean;
   /** Move the camera bubble live (affects both preview and the recording). */
   setCorner(corner: SelfieCorner): void;
+  /** Register a global click during preview (ripple only; no recording yet). */
+  triggerClick(): void;
   /** Begin capturing. Returns the active recorder controller. */
   start(): RecorderController;
   /** Release all streams without recording (used when the user backs out). */
   dispose(): void;
 }
 
-function mixAudio(streams: MediaStream[]): {
+function mixAudio(
+  streams: MediaStream[],
+  force: boolean,
+): {
   track: MediaStreamTrack | null;
   ctx: AudioContext | null;
+  dest: MediaStreamAudioDestinationNode | null;
 } {
   const withAudio = streams.filter((s) => s.getAudioTracks().length > 0);
-  if (withAudio.length === 0) return { track: null, ctx: null };
+  // Without inputs and without a forced destination, behave exactly as before:
+  // no AudioContext is created.
+  if (withAudio.length === 0 && !force) {
+    return { track: null, ctx: null, dest: null };
+  }
   const ctx = new AudioContext();
   const dest = ctx.createMediaStreamDestination();
   for (const s of withAudio) {
@@ -51,7 +87,7 @@ function mixAudio(streams: MediaStream[]): {
     );
     src.connect(dest);
   }
-  return { track: dest.stream.getAudioTracks()[0] ?? null, ctx };
+  return { track: dest.stream.getAudioTracks()[0] ?? null, ctx, dest };
 }
 
 function cssToken(name: string, fallback: string): string {
@@ -74,24 +110,6 @@ function attachVideo(stream: MediaStream): HTMLVideoElement {
   return v;
 }
 
-function drawCover(
-  ctx: CanvasRenderingContext2D,
-  video: HTMLVideoElement,
-  dx: number,
-  dy: number,
-  dw: number,
-  dh: number,
-) {
-  const vw = video.videoWidth || dw;
-  const vh = video.videoHeight || dh;
-  const scale = Math.max(dw / vw, dh / vh);
-  const sw = dw / scale;
-  const sh = dh / scale;
-  const sx = (vw - sw) / 2;
-  const sy = (vh - sh) / 2;
-  ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh);
-}
-
 /**
  * Acquire the screen/camera/mic streams and build the live composite preview,
  * but do not start the MediaRecorder yet. This lets Studio show what's being
@@ -100,6 +118,11 @@ function drawCover(
 export async function prepareRecording(
   opts: RecorderOptions,
 ): Promise<PreparedRecorder> {
+  // Cursor overlay only applies when the screen is part of the capture.
+  const cursorActive =
+    Boolean(opts.cursorOverlay) &&
+    (opts.source === "screen" || opts.source === "screen-camera");
+
   const acquired: MediaStream[] = [];
   let screenStream: MediaStream | undefined;
   let cameraStream: MediaStream | undefined;
@@ -107,8 +130,13 @@ export async function prepareRecording(
 
   try {
     if (opts.source === "screen" || opts.source === "screen-camera") {
+      const videoConstraints: MediaTrackConstraints = { frameRate: 30 };
+      // Hide the OS cursor from capture so we can draw our enlarged one.
+      if (cursorActive) {
+        (videoConstraints as { cursor?: string }).cursor = "never";
+      }
       screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: { frameRate: 30 },
+        video: videoConstraints,
         audio: opts.withSystemAudio,
       });
       acquired.push(screenStream);
@@ -132,7 +160,24 @@ export async function prepareRecording(
   const audioSources: MediaStream[] = [];
   if (screenStream && opts.withSystemAudio) audioSources.push(screenStream);
   if (micStream) audioSources.push(micStream);
-  const { track: audioTrack, ctx: audioCtx } = mixAudio(audioSources);
+  // Force an audio destination when click sound is on, so clicks have a track
+  // to ride even if there's no mic/system audio.
+  const {
+    track: audioTrack,
+    ctx: audioCtx,
+    dest: audioDest,
+  } = mixAudio(audioSources, Boolean(opts.clickSound));
+
+  // Click sound buffer (synthesized once).
+  const clickBuffer =
+    opts.clickSound && audioCtx ? createClickBuffer(audioCtx) : null;
+  const ripples: Ripple[] = [];
+  let lastCursorCanvas: Point | null = null;
+
+  // A canvas is needed for the camera bubble composite OR the cursor overlay.
+  const useCanvas =
+    (opts.source === "screen-camera" && Boolean(screenStream && cameraStream)) ||
+    (cursorActive && Boolean(screenStream));
 
   let videoTrack: MediaStreamTrack;
   let rafId = 0;
@@ -141,10 +186,15 @@ export async function prepareRecording(
   const helperVideos: HTMLVideoElement[] = [];
   const hasSelfie = opts.source === "screen-camera";
 
-  if (opts.source === "screen-camera" && screenStream && cameraStream) {
+  if (useCanvas && screenStream) {
     const screenVideo = attachVideo(screenStream);
-    const cameraVideo = attachVideo(cameraStream);
-    helperVideos.push(screenVideo, cameraVideo);
+    helperVideos.push(screenVideo);
+    const cameraVideo =
+      opts.source === "screen-camera" && cameraStream
+        ? attachVideo(cameraStream)
+        : null;
+    if (cameraVideo) helperVideos.push(cameraVideo);
+
     canvas = document.createElement("canvas");
     canvas.width = 1280;
     canvas.height = 720;
@@ -155,31 +205,41 @@ export async function prepareRecording(
     }
     const ctx = canvas.getContext("2d")!;
     const ringColor = cssToken("--color-card", "hsl(47 43% 94%)");
+    const pxScale = canvas.height / 720;
+    const cursorScale = (opts.cursorSize ?? 1.5) * pxScale;
+
     const draw = () => {
       if (!canvas) return;
       ctx.drawImage(screenVideo, 0, 0, canvas.width, canvas.height);
-      const size = Math.round(canvas.height * 0.26);
-      const margin = Math.round(canvas.height * 0.03);
-      const right = canvas.width - size - margin;
-      const bottom = canvas.height - size - margin;
-      const cx = corner === "top-left" || corner === "bottom-left"
-        ? margin
-        : right;
-      const cy = corner === "top-left" || corner === "top-right"
-        ? margin
-        : bottom;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx + size / 2, cy + size / 2, size / 2, 0, Math.PI * 2);
-      ctx.closePath();
-      ctx.clip();
-      drawCover(ctx, cameraVideo, cx, cy, size, size);
-      ctx.restore();
-      ctx.beginPath();
-      ctx.arc(cx + size / 2, cy + size / 2, size / 2, 0, Math.PI * 2);
-      ctx.lineWidth = Math.max(3, size * 0.02);
-      ctx.strokeStyle = ringColor;
-      ctx.stroke();
+
+      if (cameraVideo) {
+        drawCameraBubble(
+          ctx,
+          cameraVideo,
+          canvas.width,
+          canvas.height,
+          corner,
+          ringColor,
+        );
+      }
+
+      if (cursorActive) {
+        if (ripples.length) {
+          ripples.splice(
+            0,
+            ripples.length,
+            ...drawRipples(ctx, ripples, performance.now(), pxScale),
+          );
+        }
+        const point = opts.cursorInput?.getPoint() ?? null;
+        const bounds = opts.cursorInput?.getDisplayBounds() ?? null;
+        const mapped = point
+          ? mapToCanvas(point, bounds, canvas.width, canvas.height)
+          : null;
+        lastCursorCanvas = mapped;
+        if (mapped) drawCursor(ctx, mapped.x, mapped.y, cursorScale);
+      }
+
       rafId = requestAnimationFrame(draw);
     };
     draw();
@@ -193,6 +253,21 @@ export async function prepareRecording(
   if (audioTrack) recordTracks.push(audioTrack);
   const recordStream = new MediaStream(recordTracks);
   const previewStream = new MediaStream([videoTrack]);
+
+  // Plays the click sound (if enabled) and spawns a ripple (if enabled) at the
+  // last known cursor position on the canvas.
+  const triggerClick = () => {
+    if (opts.clickSound && audioCtx && audioDest && clickBuffer) {
+      playClick(audioCtx, audioDest, clickBuffer);
+    }
+    if (opts.clickRipple && cursorActive && lastCursorCanvas) {
+      ripples.push({
+        x: lastCursorCanvas.x,
+        y: lastCursorCanvas.y,
+        start: performance.now(),
+      });
+    }
+  };
 
   const cleanup = () => {
     if (rafId) cancelAnimationFrame(rafId);
@@ -215,12 +290,15 @@ export async function prepareRecording(
     setCorner(next) {
       corner = next;
     },
+    triggerClick,
     dispose() {
       if (started) return;
       cleanup();
     },
     start(): RecorderController {
       started = true;
+      // Resume the audio graph in case the platform suspended it.
+      if (audioCtx) void audioCtx.resume().catch(() => undefined);
       const mimeType = pickRecorderMimeType();
       const recorder = new MediaRecorder(recordStream, {
         mimeType,
@@ -248,6 +326,7 @@ export async function prepareRecording(
         previewStream,
         mimeType,
         hasAudio: Boolean(audioTrack),
+        triggerClick,
         pause() {
           if (paused || recorder.state !== "recording") return;
           recorder.pause();

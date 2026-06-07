@@ -24,6 +24,7 @@ import { shadcn } from "@clerk/themes";
 import { Toaster } from "@workspace/pico-ui/toaster";
 import { TooltipProvider } from "@workspace/pico-ui/tooltip";
 import { isDevAuthBypassEnabled } from "@workspace/shared";
+import { isDesktop } from "@/lib/desktop";
 import {
   TestingModeBanner,
   DevModeToggle,
@@ -40,16 +41,28 @@ import SettingsPage from "@/pages/settings";
 import Terms from "@/pages/terms";
 import Shop from "@/pages/shop";
 import Onboarding from "@/pages/onboarding";
+import {
+  ControlsOverlay,
+  CameraOverlay,
+  NotesOverlay,
+} from "@/features/overlays";
+import {
+  DesktopAuthProvider,
+  useDesktopAuth,
+  DesktopSignIn,
+  DesktopSettings,
+} from "@/features/desktop-auth";
 
 const queryClient = new QueryClient();
 
 // REQUIRED — copy verbatim. Resolves the key from window.location.hostname so the
 // same build serves multiple Clerk custom domains. Do not inline the env var, leave
 // publishableKey undefined, or replace publishableKeyFromHost with anything else.
-const clerkPubKey = publishableKeyFromHost(
-  window.location.hostname,
-  import.meta.env.VITE_CLERK_PUBLISHABLE_KEY,
-);
+const clerkPubKey =
+  publishableKeyFromHost(
+    window.location.hostname,
+    import.meta.env.VITE_CLERK_PUBLISHABLE_KEY,
+  ) || import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 // REQUIRED — copy verbatim. Empty in dev (Clerk hits dev FAPI directly), auto-set
 // in prod. Do NOT gate on import.meta.env.PROD / NODE_ENV.
@@ -57,15 +70,22 @@ const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
+// Desktop builds with BASE_PATH=/ (so basePath is ""), served over the app://
+// scheme with an SPA fallback; web keeps the Replit proxy path. Path-based
+// routing is used in both, so Clerk and wouter never fight over the URL hash.
+const routerBase = basePath;
+
 // Clerk passes full paths to routerPush/routerReplace, but wouter's
 // setLocation prepends the base — strip it to avoid doubling.
 function stripBase(path: string): string {
-  return basePath && path.startsWith(basePath)
-    ? path.slice(basePath.length) || "/"
+  return routerBase && path.startsWith(routerBase)
+    ? path.slice(routerBase.length) || "/"
     : path;
 }
 
-if (!clerkPubKey) {
+// The desktop app uses browser-handoff auth (not in-app Clerk), so it doesn't
+// require a publishable key; the web build still does.
+if (!clerkPubKey && !isDesktop) {
   throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY in .env file");
 }
 
@@ -74,7 +94,7 @@ const clerkAppearance = {
   cssLayerName: "clerk",
   options: {
     logoPlacement: "inside" as const,
-    logoLinkUrl: basePath || "/",
+    logoLinkUrl: routerBase || "/",
     logoImageUrl: `${window.location.origin}${basePath}/logo.svg`,
     socialButtonsPlacement: "bottom" as const,
   },
@@ -126,15 +146,23 @@ const clerkAppearance = {
   },
 };
 
+const signInRouting = {
+  routing: "path" as const,
+  path: `${routerBase}/sign-in`,
+};
+const signUpRouting = {
+  routing: "path" as const,
+  path: `${routerBase}/sign-up`,
+};
+
 function SignInPage() {
   useClerkAutocomplete("sign-in");
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-6 bg-background px-4 py-10">
       <SignIn
-        routing="path"
-        path={`${basePath}/sign-in`}
-        signUpUrl={`${basePath}/sign-up`}
-        forceRedirectUrl={`${basePath}/studio`}
+        {...signInRouting}
+        signUpUrl={`${routerBase}/sign-up`}
+        forceRedirectUrl={`${routerBase}/studio`}
       />
       <DevModeToggle onEnabledPath="/studio" />
     </div>
@@ -146,10 +174,9 @@ function SignUpPage() {
   return (
     <div className="flex min-h-[100dvh] items-center justify-center bg-background px-4">
       <SignUp
-        routing="path"
-        path={`${basePath}/sign-up`}
-        signInUrl={`${basePath}/sign-in`}
-        forceRedirectUrl={`${basePath}/studio`}
+        {...signUpRouting}
+        signInUrl={`${routerBase}/sign-in`}
+        forceRedirectUrl={`${routerBase}/studio`}
       />
     </div>
   );
@@ -228,6 +255,11 @@ function Router() {
       <Route path="/sign-in/*?" component={SignInPage} />
       <Route path="/sign-up/*?" component={SignUpPage} />
       <Route path="/v/:shareId" component={PublicView} />
+      {/* Desktop-only presenter overlays — loaded directly in their own
+          content-protected windows; no auth gate, no AppShell. */}
+      <Route path="/overlay/controls" component={ControlsOverlay} />
+      <Route path="/overlay/camera" component={CameraOverlay} />
+      <Route path="/overlay/notes" component={NotesOverlay} />
       <Route path="/terms" component={Terms} />
       <Route path="/shop" component={Shop} />
       <Route path="/onboarding" component={Onboarding} />
@@ -256,6 +288,64 @@ function Router() {
   );
 }
 
+// Desktop auth gate (browser-handoff, no Clerk).
+function DesktopProtected({ children }: { children: React.ReactNode }) {
+  const { isLoaded, isSignedIn } = useDesktopAuth();
+  if (!isLoaded) return null;
+  if (!isSignedIn) return <Redirect to="/sign-in" />;
+  return <>{children}</>;
+}
+
+// Desktop routes: our own sign-in, the presenter overlays, and the authed app.
+// No marketing/Clerk pages — sign-up/onboarding happen in the browser handoff.
+function DesktopRoutes() {
+  return (
+    <Switch>
+      <Route path="/sign-in" component={DesktopSignIn} />
+      <Route path="/overlay/controls" component={ControlsOverlay} />
+      <Route path="/overlay/camera" component={CameraOverlay} />
+      <Route path="/overlay/notes" component={NotesOverlay} />
+      <Route path="/studio">
+        <DesktopProtected>
+          <Studio />
+        </DesktopProtected>
+      </Route>
+      <Route path="/library">
+        <DesktopProtected>
+          <LibraryPage />
+        </DesktopProtected>
+      </Route>
+      <Route path="/editor/:id">
+        <DesktopProtected>
+          <Editor />
+        </DesktopProtected>
+      </Route>
+      <Route path="/settings">
+        <DesktopProtected>
+          <DesktopSettings />
+        </DesktopProtected>
+      </Route>
+      <Route>
+        <Redirect to="/studio" />
+      </Route>
+    </Switch>
+  );
+}
+
+// Desktop root: no ClerkProvider — uses the browser-handoff auth provider.
+function DesktopApp() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <DesktopAuthProvider>
+          <DesktopRoutes />
+        </DesktopAuthProvider>
+        <Toaster />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
+
 function ClerkProviderWithRoutes() {
   const [, setLocation] = useLocation();
 
@@ -264,8 +354,8 @@ function ClerkProviderWithRoutes() {
       publishableKey={clerkPubKey}
       proxyUrl={clerkProxyUrl}
       appearance={clerkAppearance}
-      signInUrl={`${basePath}/sign-in`}
-      signUpUrl={`${basePath}/sign-up`}
+      signInUrl={`${routerBase}/sign-in`}
+      signUpUrl={`${routerBase}/sign-up`}
       localization={{
         signIn: {
           start: {
@@ -296,9 +386,11 @@ function ClerkProviderWithRoutes() {
 }
 
 function App() {
+  // Desktop: Clerk-free tree with browser-handoff auth. Web: full Clerk.
+  // Both use path routing (desktop basePath is "" with a loopback SPA server).
   return (
     <WouterRouter base={basePath}>
-      <ClerkProviderWithRoutes />
+      {isDesktop ? <DesktopApp /> : <ClerkProviderWithRoutes />}
     </WouterRouter>
   );
 }

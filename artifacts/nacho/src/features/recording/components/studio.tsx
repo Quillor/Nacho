@@ -16,6 +16,7 @@ import {
   Eye,
   RotateCcw,
   AlertTriangle,
+  MousePointer2,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@workspace/pico-ui/button";
@@ -34,6 +35,8 @@ import type { RecordingSource } from "@/lib/types";
 import { useRecorderSession } from "../hooks/use-recorder-session";
 import { ToggleRow } from "./toggle-row";
 import { SelfieCornerOverlay } from "./selfie-corner-overlay";
+import { isDesktop } from "@/lib/desktop";
+import { SpeakerNotesPanel } from "@/features/notes";
 
 const SOURCES: { id: RecordingSource; label: string; icon: typeof Monitor }[] = [
   { id: "screen", label: "Screen", icon: Monitor },
@@ -139,6 +142,51 @@ export function Studio() {
                 </div>
               )}
             </div>
+
+            {s.cursor.available && (
+              <div className="space-y-3 border-2 border-foreground bg-card p-5">
+                <ToggleRow
+                  icon={MousePointer2}
+                  label="Enlarge cursor"
+                  checked={s.cursor.cursorOverlay}
+                  onChange={s.cursor.setCursorOverlay}
+                  disabled={s.locked || s.source === "camera"}
+                  hint={
+                    s.source === "camera" ? "Screen capture only" : undefined
+                  }
+                />
+                {s.cursor.cursorOverlay && s.source !== "camera" && (
+                  <div className="flex items-center justify-between gap-4 border-t border-dashed border-foreground/20 pt-3">
+                    <span className="font-bold">Cursor size</span>
+                    <Select
+                      value={String(s.cursor.cursorSize)}
+                      onValueChange={(v) => s.cursor.setCursorSize(Number(v))}
+                      disabled={s.locked}
+                    >
+                      <SelectTrigger className="w-32 border border-foreground font-bold">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1.5">1.5×</SelectItem>
+                        <SelectItem value="2">2×</SelectItem>
+                        <SelectItem value="2.5">2.5×</SelectItem>
+                        <SelectItem value="3">3×</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                <ToggleRow
+                  icon={Volume2}
+                  label="Click sound"
+                  checked={s.cursor.clickSound}
+                  onChange={s.cursor.setClickSound}
+                  disabled={s.locked}
+                  hint="Plays on click — needs Accessibility permission"
+                />
+              </div>
+            )}
+
+            {isDesktop && <SpeakerNotesPanel />}
 
             {s.permissionError && (
               <div className="space-y-3 border-2 border-destructive bg-destructive/10 p-4">

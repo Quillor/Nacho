@@ -1,5 +1,6 @@
 import DOMPurify from "dompurify";
 import type { LocalRecording, PublishResult, Visibility } from "@/lib/types";
+import { apiPath, authHeaders } from "@/lib/desktop-api";
 
 interface UploadUrlResponse {
   uploadURL: string;
@@ -66,9 +67,10 @@ async function uploadBlob(
   name: string,
   options: BlobUploadOptions = {},
 ): Promise<string> {
-  const res = await fetch("/api/storage/uploads/request-url", {
+  const res = await fetch(apiPath("/api/storage/uploads/request-url"), {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
     body: JSON.stringify({
       name,
       size: blob.size,
@@ -130,11 +132,11 @@ async function uploadRecording(
   }
 
   onProgress?.("Saving…");
-  const res = await fetch("/api/recordings", {
+  const res = await fetch(apiPath("/api/recordings"), {
     method: "POST",
     credentials: "include",
     signal,
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
     body: JSON.stringify({
       title: rec.title,
       description: DOMPurify.sanitize(rec.description),
@@ -195,10 +197,10 @@ export async function syncPublishedRecording(
   }
 
   onProgress?.("Updating…");
-  const res = await fetch(`/api/recordings/${rec.shareId}`, {
+  const res = await fetch(apiPath(`/api/recordings/${rec.shareId}`), {
     method: "PATCH",
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
     body: JSON.stringify({
       title: rec.title,
       description: DOMPurify.sanitize(rec.description),
@@ -230,10 +232,10 @@ async function setVisibility(
   shareId: string,
   visibility: Visibility,
 ): Promise<void> {
-  const res = await fetch(`/api/recordings/${shareId}/visibility`, {
+  const res = await fetch(apiPath(`/api/recordings/${shareId}/visibility`), {
     method: "PATCH",
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
     body: JSON.stringify({ visibility }),
   });
   if (!res.ok) throw new Error("Failed to update visibility");
@@ -268,9 +270,10 @@ export async function unpublishRecording(shareId: string): Promise<void> {
  * 404 is treated as success — there's simply nothing to clean up.
  */
 export async function deleteServerRecording(shareId: string): Promise<void> {
-  const res = await fetch(`/api/recordings/${shareId}`, {
+  const res = await fetch(apiPath(`/api/recordings/${shareId}`), {
     method: "DELETE",
     credentials: "include",
+    headers: { ...(await authHeaders()) },
   });
   if (!res.ok && res.status !== 404) {
     throw new Error("Failed to delete recording");
