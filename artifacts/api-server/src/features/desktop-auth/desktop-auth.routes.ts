@@ -108,44 +108,41 @@ function loginHtml(publishableKey: string): string {
     <div id="signin"></div>
     <div id="status">Loading…</div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
+  <!-- Load clerk-js through the same-origin Clerk proxy with the publishable
+       key attribute — this is what creates window.Clerk (auto-init). Loading it
+       generically and calling new Clerk() does NOT define window.Clerk in v5. -->
+  <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="${publishableKey}"
+    data-clerk-proxy-url="/api/__clerk"
+    src="/api/__clerk/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+  ></script>
   <script>
-    (async () => {
-      const status = (m) => { document.getElementById("status").textContent = m; };
-      const params = new URLSearchParams(location.search);
-      const state = params.get("state") || "";
-      const codeChallenge = params.get("code_challenge") || "";
-      if (!state || !codeChallenge) { status("Invalid sign-in link."); return; }
-
-      const pk = ${JSON.stringify(publishableKey)};
-      if (!pk) { status("Server is missing a Clerk key."); return; }
-
-      const proxyUrl = location.origin + "/api/__clerk";
-      const clerk = new window.Clerk(pk, { proxyUrl });
-      try { await clerk.load(); } catch (e) { status("Couldn't load sign-in."); return; }
-
-      async function authorize() {
-        status("Authorizing…");
-        try {
-          const r = await fetch("/api/desktop/authorize", {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ codeChallenge }),
-          });
-          if (!r.ok) { status("Please sign in to continue."); return false; }
-          const { code } = await r.json();
-          status("Returning to Nacho…");
-          location.href = "nacho://auth?code=" + encodeURIComponent(code) + "&state=" + encodeURIComponent(state);
+    function setStatus(m){ var el=document.getElementById("status"); if(el) el.textContent=m; }
+    async function start(){
+      var params=new URLSearchParams(location.search);
+      var state=params.get("state")||""; var cc=params.get("code_challenge")||"";
+      if(!state||!cc){ setStatus("Invalid sign-in link."); return; }
+      if(!window.Clerk){ setStatus("Sign-in failed to load. Please retry."); return; }
+      try{ await window.Clerk.load(); }catch(e){ setStatus("Couldn't load sign-in."); return; }
+      async function authorize(){
+        setStatus("Authorizing…");
+        try{
+          var r=await fetch("/api/desktop/authorize",{method:"POST",credentials:"include",headers:{"Content-Type":"application/json"},body:JSON.stringify({codeChallenge:cc})});
+          if(!r.ok){ setStatus("Please sign in to continue."); return false; }
+          var data=await r.json();
+          setStatus("Returning to Nacho…");
+          location.href="nacho://auth?code="+encodeURIComponent(data.code)+"&state="+encodeURIComponent(state);
           return true;
-        } catch { status("Something went wrong. Try again."); return false; }
+        }catch(e){ setStatus("Something went wrong. Try again."); return false; }
       }
-
-      if (clerk.user) { authorize(); return; }
-      clerk.addListener((res) => { if (res.user) authorize(); });
-      status("Sign in to connect the desktop app.");
-      clerk.mountSignIn(document.getElementById("signin"));
-    })();
+      if(window.Clerk.user){ authorize(); return; }
+      window.Clerk.addListener(function(res){ if(res&&res.user) authorize(); });
+      setStatus("Sign in to connect the desktop app.");
+      window.Clerk.mountSignIn(document.getElementById("signin"));
+    }
+    if(document.readyState==="complete") start(); else window.addEventListener("load", start);
   </script>
 </body>
 </html>`;
