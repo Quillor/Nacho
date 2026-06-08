@@ -141,10 +141,11 @@ export function Studio() {
                   </Select>
                 </div>
               )}
-            </div>
+
 
             {s.cursor.available && (
-              <div className="space-y-3 border-2 border-foreground bg-card p-5">
+              <>
+                <div className="border-t-2 border-dashed border-foreground/20 pt-2" />
                 <ToggleRow
                   icon={MousePointer2}
                   label="Enlarge cursor"
@@ -183,8 +184,9 @@ export function Studio() {
                   disabled={s.locked}
                   hint="Plays on click — needs Accessibility permission"
                 />
-              </div>
+              </>
             )}
+            </div>
 
             {isDesktop && <SpeakerNotesPanel />}
 

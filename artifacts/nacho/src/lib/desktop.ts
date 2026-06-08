@@ -64,3 +64,16 @@ export const isDesktop: boolean =
 
 /** True when the global cursor/click bridge is available (Electron only). */
 export const hasCursorBridge: boolean = Boolean(desktopBridge?.cursor);
+
+/**
+ * Open a URL in the user's real browser. On desktop this hands off to the OS
+ * (so public links don't try to load inside the app, which has no such route);
+ * on the web it opens a new tab.
+ */
+export function openExternalUrl(url: string): void {
+  if (desktopBridge) {
+    void desktopBridge.openExternal(url);
+  } else if (typeof window !== "undefined") {
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+}

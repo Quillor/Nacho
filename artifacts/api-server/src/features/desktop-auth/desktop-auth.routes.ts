@@ -94,17 +94,27 @@ function loginHtml(publishableKey: string): string {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sign in to Nacho Desktop</title>
+<title>Connect Nacho Desktop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Platypi:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; background:#f7f3e9; color:#1a1a1a; margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; }
-  .wrap { text-align:center; padding:24px; }
-  #status { margin-top:16px; color:#555; font-weight:600; }
-  #signin { margin-top:16px; display:flex; justify-content:center; }
+  :root { --bg:#f7f3e9; --fg:#1c1917; --muted:#6b6359; }
+  * { box-sizing:border-box; }
+  body { font-family:"DM Sans",-apple-system,system-ui,sans-serif; background:var(--bg); color:var(--fg); margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+  .card { width:440px; max-width:100%; text-align:center; background:#fffdf7; border:2px solid var(--fg); box-shadow:6px 6px 0 var(--fg); padding:32px 28px; }
+  .mascot { width:180px; height:auto; margin:0 auto 10px; display:block; }
+  h1 { font-family:"Platypi",Georgia,serif; font-size:28px; font-weight:800; margin:0 0 4px; letter-spacing:-0.01em; }
+  .sub { color:var(--muted); font-weight:500; margin:0 0 20px; font-size:15px; }
+  #status { margin-top:16px; color:var(--muted); font-weight:600; font-size:14px; }
+  #signin { margin-top:8px; display:flex; justify-content:center; }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <h2>Connect Nacho Desktop</h2>
+  <div class="card">
+    <img class="mascot" src="/nacho-connect.png" alt="Nacho" />
+    <h1>Connect Nacho Desktop</h1>
+    <p class="sub">Sign in to link the desktop app to your account.</p>
     <div id="signin"></div>
     <div id="status">Loading…</div>
   </div>
@@ -140,7 +150,15 @@ function loginHtml(publishableKey: string): string {
       if(window.Clerk.user){ authorize(); return; }
       window.Clerk.addListener(function(res){ if(res&&res.user) authorize(); });
       setStatus("Sign in to connect the desktop app.");
-      window.Clerk.mountSignIn(document.getElementById("signin"));
+      window.Clerk.mountSignIn(document.getElementById("signin"), {
+        appearance: {
+          variables: {
+            colorPrimary: "#1c1917",
+            borderRadius: "0px",
+            fontFamily: '"DM Sans", sans-serif',
+          },
+        },
+      });
     }
     if(document.readyState==="complete") start(); else window.addEventListener("load", start);
   </script>

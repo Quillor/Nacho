@@ -1,12 +1,11 @@
 import { NotebookPen } from "lucide-react";
 import { Label } from "@workspace/pico-ui/label";
-import { MarkdownEditor } from "./markdown-editor";
+import { RichTextEditor } from "@/features/editor/components/rich-text-editor";
 import { useSpeakerNotes } from "../hooks/use-speaker-notes";
 
-// Desktop-only speaker-notes authoring surface for the Studio. Markdown source
-// with a live preview; appears in the presenter's content-protected overlay
-// while recording (never in the recording itself), and is editable from there
-// too.
+// Desktop-only speaker-notes authoring for the Studio. Inline WYSIWYG (headings
+// + body) — appears in the presenter's content-protected overlay while recording
+// (never in the recording itself), and is editable from there too.
 export function SpeakerNotesPanel() {
   const { value, update } = useSpeakerNotes();
 
@@ -19,16 +18,14 @@ export function SpeakerNotesPanel() {
         </Label>
       </div>
       <p className="text-sm font-medium text-muted-foreground">
-        Only you see these in an on-screen overlay while recording. Type Markdown
-        — <code>#</code> headings, <code>**bold**</code>, lists — and use the
-        preview to check formatting.
+        Only you see these in an on-screen overlay while recording. Headings and
+        body text.
       </p>
-      <MarkdownEditor
+      <RichTextEditor
+        variant="notes"
         value={value}
         onChange={update}
-        defaultMode="edit"
-        className="border-2 border-foreground"
-        placeholder={"# Intro\nWalk through the dashboard\n\n## Key points\n- ..."}
+        placeholder="Jot down your talking points…"
       />
     </div>
   );
