@@ -35,7 +35,11 @@ router.get("/desktop/download", async (req: Request, res: Response): Promise<voi
     // transfer broke mid-flight; redirecting offloads the bytes entirely.
     const downloadUrl = await objectStorageService.getObjectEntityDownloadURL(
       file,
-      { ttlSec: 900, downloadFilename: `Nacho-${release.version}.dmg` },
+      {
+        ttlSec: 900,
+        downloadFilename: `Nacho-${release.version}.dmg`,
+        logger: req.log,
+      },
     );
 
     res.redirect(302, downloadUrl);

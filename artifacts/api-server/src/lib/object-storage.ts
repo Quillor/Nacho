@@ -109,21 +109,44 @@ export class ObjectStorageService {
   /**
    * Sign a short-lived GET URL for a stored object so the client can download
    * it directly from object storage (instead of proxying the bytes through the
-   * app server). When `downloadFilename` is provided, the object's
-   * content-disposition metadata is set so the browser saves it under a
-   * friendly name; this is idempotent and only written when it changes.
+   * app server).
+   *
+   * When `downloadFilename` is provided, the object's content-disposition
+   * metadata is (re)set so the browser saves it under a friendly name. The
+   * Replit object-storage signer does NOT support a per-request
+   * `response-content-disposition` override (appending one to the signed URL
+   * breaks the GCS V4 signature), so the save name has to be baked into the
+   * stored metadata. We re-sync it on every download — and key it off the
+   * caller-supplied filename (derived from the published version) — so the
+   * saved name can never drift from the current release.
+   *
+   * Syncing is best-effort: a transient metadata read/write hiccup must not
+   * break the user's download, so we log and fall through to whatever
+   * disposition is currently stored on the object.
    */
   async getObjectEntityDownloadURL(
     file: File,
-    opts: { ttlSec?: number; downloadFilename?: string } = {},
+    opts: {
+      ttlSec?: number;
+      downloadFilename?: string;
+      logger?: { warn: (obj: unknown, msg: string) => void };
+    } = {},
   ): Promise<string> {
-    const { ttlSec = 900, downloadFilename } = opts;
+    const { ttlSec = 900, downloadFilename, logger } = opts;
 
     if (downloadFilename) {
-      const contentDisposition = `attachment; filename="${downloadFilename}"`;
-      const [metadata] = await file.getMetadata();
-      if (metadata.contentDisposition !== contentDisposition) {
-        await file.setMetadata({ contentDisposition });
+      const contentDisposition = buildAttachmentDisposition(downloadFilename);
+      try {
+        const [metadata] = await file.getMetadata();
+        if (metadata.contentDisposition !== contentDisposition) {
+          await file.setMetadata({ contentDisposition });
+        }
+      } catch (err) {
+        logger?.warn(
+          { err, downloadFilename },
+          "Failed to sync download content-disposition metadata; " +
+            "serving with the disposition currently stored on the object",
+        );
       }
     }
 
@@ -233,6 +256,24 @@ export class ObjectStorageService {
       requestedPermission: requestedPermission ?? ObjectPermission.READ,
     });
   }
+}
+
+/**
+ * Build a cross-browser `Content-Disposition: attachment` header value.
+ *
+ * Includes both a sanitized ASCII `filename="..."` (for older clients and as a
+ * fallback) and an RFC 5987 `filename*=UTF-8''...` (honored by Chrome, Safari
+ * and Firefox). The ASCII fallback strips control chars plus the quote and
+ * backslash that would otherwise break the quoted-string, so an unexpected
+ * version string can never produce a malformed header.
+ */
+function buildAttachmentDisposition(filename: string): string {
+  const asciiFallback = filename
+    // eslint-disable-next-line no-control-regex
+    .replace(/[\u0000-\u001f\u007f]/g, "_")
+    .replace(/["\\]/g, "_");
+  const encoded = encodeURIComponent(filename);
+  return `attachment; filename="${asciiFallback}"; filename*=UTF-8''${encoded}`;
 }
 
 function parseObjectPath(path: string): {
