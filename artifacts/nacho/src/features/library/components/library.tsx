@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { CircleDot, Loader2, Search, Sparkles, X } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import emptyBowlNacho from "@workspace/nacho-illustrations/assets/sad-nacho-empty-bowl.png";
+import emptyBowlNacho from "@workspace/nacho-illustrations/assets/sad-nacho-empty-bowl.webp";
 import { Button } from "@workspace/pico-ui/button";
 import { Input } from "@workspace/pico-ui/input";
 import {

@@ -144,7 +144,7 @@ The durable "why" behind the system. Each entry points to a deeper note in `.age
 
 ### Platform / build
 - **Nacho base path.** Nacho is served at `/` (not `/nacho/`); share/unfurl URLs use `/v/:shareId`, and `/s/:shareId` unfurl HTML is served by `api-server`. → `nacho-base-path.md`
-- **Shared illustrations.** `@workspace/nacho-illustrations` is assets-only (no TS); import PNGs by path, shared across artifacts. → `nacho-illustrations-lib.md`
+- **Shared illustrations.** `@workspace/nacho-illustrations` is assets-only (no TS); import WebP images by path, shared across artifacts. → `nacho-illustrations-lib.md`
 - **Dev-only large assets.** `?url` asset imports in dynamically-imported dev-only modules still ship to prod; serve them via an `apply: "serve"` Vite plugin middleware + runtime fetch instead. → `vite-dev-only-assets.md`
 
 ## Pointers

@@ -5,10 +5,10 @@ import { Card } from "@workspace/pico-ui/card";
 import { Badge } from "@workspace/pico-ui/badge";
 import { Video, Share2, Scissors, Zap, MessageSquare, CheckCircle2 } from "lucide-react";
 import { Logo } from "@/components/logo";
-import videoPlayerNacho from "@workspace/nacho-illustrations/assets/nacho-dip-sales-player.png";
-import hammockNacho from "@workspace/nacho-illustrations/assets/nacho-hammock.png";
-import cheeseJumpNacho from "@workspace/nacho-illustrations/assets/nacho-cheese-jump.png";
-import walkingNacho from "@workspace/nacho-illustrations/assets/nacho-walking.png";
+import videoPlayerNacho from "@workspace/nacho-illustrations/assets/nacho-dip-sales-player.webp";
+import hammockNacho from "@workspace/nacho-illustrations/assets/nacho-hammock.webp";
+import cheeseJumpNacho from "@workspace/nacho-illustrations/assets/nacho-cheese-jump.webp";
+import walkingNacho from "@workspace/nacho-illustrations/assets/nacho-walking.webp";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
