@@ -16,14 +16,14 @@ export function NotesOverlay() {
         >
           Speaker notes
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto">
-          <RichTextEditor
-            variant="notes"
-            value={value}
-            onChange={update}
-            placeholder="Write your talking points…"
-          />
-        </div>
+        <RichTextEditor
+          variant="notes"
+          fill
+          className="min-h-0 flex-1 border-0"
+          value={value}
+          onChange={update}
+          placeholder="Write your talking points…"
+        />
       </div>
     </OverlayShell>
   );

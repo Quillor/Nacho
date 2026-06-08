@@ -25,6 +25,13 @@ interface RichTextEditorProps {
    * desktop speaker-notes authoring surface.
    */
   variant?: "full" | "notes";
+  /**
+   * Fill the available height (flex column, scrollable body) instead of sizing
+   * to content. Used by the speaker-notes overlay so there's no dead space.
+   */
+  fill?: boolean;
+  /** Extra classes for the editor's outer container. */
+  className?: string;
 }
 
 /** TipTap (ProseMirror) emits "<p></p>" for an empty doc; treat that as empty
@@ -115,6 +122,8 @@ export function RichTextEditor({
   onChange,
   placeholder,
   variant = "full",
+  fill = false,
+  className,
 }: RichTextEditorProps) {
   const isNotes = variant === "notes";
   const editor = useEditor({
@@ -145,7 +154,11 @@ export function RichTextEditor({
     content: value,
     editorProps: {
       attributes: {
-        class: cn(PROSE_CLASSES, "min-h-[140px] p-4 focus:outline-none"),
+        class: cn(
+          PROSE_CLASSES,
+          "p-4 focus:outline-none",
+          fill ? "min-h-full" : "min-h-[140px]",
+        ),
       },
     },
     onUpdate: ({ editor }) => {
@@ -170,7 +183,13 @@ export function RichTextEditor({
   if (!editor) return null;
 
   return (
-    <div className="border-2 border-foreground bg-background">
+    <div
+      className={cn(
+        "border-2 border-foreground bg-background",
+        fill && "flex h-full flex-col",
+        className,
+      )}
+    >
       <div className="flex flex-wrap items-center gap-1 border-b-2 border-foreground bg-muted p-2">
         <ToolbarButton
           label="Paragraph"
@@ -239,7 +258,13 @@ export function RichTextEditor({
           </>
         )}
       </div>
-      <EditorContent editor={editor} />
+      {fill ? (
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <EditorContent editor={editor} className="h-full" />
+        </div>
+      ) : (
+        <EditorContent editor={editor} />
+      )}
     </div>
   );
 }

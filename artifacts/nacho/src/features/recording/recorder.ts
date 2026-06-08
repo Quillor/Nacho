@@ -8,7 +8,7 @@ import {
   mapToCanvas,
   drawCursor,
   drawRipples,
-  createClickBuffer,
+  loadClickBuffer,
   playClick,
 } from "./cursor-overlay";
 
@@ -168,9 +168,9 @@ export async function prepareRecording(
     dest: audioDest,
   } = mixAudio(audioSources, Boolean(opts.clickSound));
 
-  // Click sound buffer (synthesized once).
+  // Click sound buffer (loaded + decoded once from public/click.mp3).
   const clickBuffer =
-    opts.clickSound && audioCtx ? createClickBuffer(audioCtx) : null;
+    opts.clickSound && audioCtx ? await loadClickBuffer(audioCtx) : null;
   const ripples: Ripple[] = [];
   let lastCursorCanvas: Point | null = null;
 

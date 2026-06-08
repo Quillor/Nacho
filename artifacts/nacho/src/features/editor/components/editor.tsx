@@ -17,6 +17,8 @@ import {
 } from "@workspace/pico-ui/alert-dialog";
 import { VideoPlayer } from "@/features/sharing";
 import { formatTimestamp } from "@workspace/shared";
+import { isDesktop, openExternalUrl } from "@/lib/desktop";
+import { apiOrigin } from "@/lib/desktop-api";
 import { useRecordingEditor } from "../hooks/use-recording-editor";
 import { TrimBar } from "./trim-bar";
 import { EditorTabs } from "./editor-tabs";
@@ -144,7 +146,11 @@ export function Editor() {
             publishStep={e.publishStep}
             upload={e.upload}
             onCopyLink={e.copyLink}
-            onOpenPublic={() => e.navigate(`/v/${e.shareId}`)}
+            onOpenPublic={() =>
+              isDesktop
+                ? openExternalUrl(`${apiOrigin}/v/${e.shareId}`)
+                : e.navigate(`/v/${e.shareId}`)
+            }
             onUnpublish={e.handleUnpublish}
             onGetLink={e.handleGetLink}
             onRetryUpload={e.retry}

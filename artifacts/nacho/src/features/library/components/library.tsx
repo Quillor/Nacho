@@ -22,6 +22,8 @@ import {
   AlertDialogTitle,
 } from "@workspace/pico-ui/alert-dialog";
 import { isDevAuthBypassEnabled } from "@workspace/shared";
+import { isDesktop, openExternalUrl } from "@/lib/desktop";
+import { apiOrigin } from "@/lib/desktop-api";
 import { useLibrary, type LibrarySort } from "../hooks/use-library";
 import { RecordingCard } from "./recording-card";
 
@@ -194,7 +196,11 @@ export function LibraryPage() {
               busy={busyId === rec.id}
               onTogglePin={handleTogglePin}
               onOpenEditor={(id) => navigate(`/editor/${id}`)}
-              onView={(shareId) => navigate(`/v/${shareId}`)}
+              onView={(shareId) =>
+                isDesktop
+                  ? openExternalUrl(`${apiOrigin}/v/${shareId}`)
+                  : navigate(`/v/${shareId}`)
+              }
               onCopy={handleCopy}
               onGetLink={handleGetLink}
               onUnpublish={handleUnpublish}
