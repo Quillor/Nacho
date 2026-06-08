@@ -12,6 +12,7 @@ This is a pnpm workspace (Node 24, TypeScript 5.9). Apps run via Replit workflow
 - `pnpm run check-file-size` — 400-line file-size budget (advisory for now).
 - `pnpm run check-contrast` — Pico contrast guardrail.
 - `pnpm --filter @workspace/pico-ui run check-pico-meta` — Figma-metadata coverage.
+- `pnpm --filter @workspace/nacho run test` — Nacho unit tests (Vitest + jsdom), incl. the rich-text editor keyboard regression suite.
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks + Zod from the OpenAPI spec.
 
 See `replit.md` for running individual apps, the dev auth bypass, and DB/seed commands.
@@ -53,6 +54,7 @@ Run before opening a change:
 - [ ] `pnpm run check-file-size` passes (split or document any new large file).
 - [ ] `pnpm run check-contrast` passes (if you touched Pico UI).
 - [ ] `pnpm --filter @workspace/pico-ui run check-pico-meta` passes (if you touched `pico-ui`).
+- [ ] `pnpm --filter @workspace/nacho run test` passes (if you touched Nacho — esp. the description editor).
 - [ ] New code follows the feature-based layout and naming conventions in `ARCHITECTURE.md`.
 - [ ] Exported `lib/*` APIs have JSDoc; non-obvious modules have a header comment.
 - [ ] If you duplicated cross-app glue (because apps can't import each other), the copies are in sync — or you extracted it into a lib.
