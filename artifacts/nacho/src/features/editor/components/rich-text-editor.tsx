@@ -70,7 +70,9 @@ const ParagraphAfterHeading = Extension.create({
 });
 
 const PROSE_CLASSES =
-  "prose prose-sm max-w-none prose-headings:font-display prose-a:font-bold prose-a:text-foreground prose-a:underline prose-a:decoration-2 prose-a:underline-offset-2";
+  "prose prose-sm max-w-none prose-headings:font-display prose-a:font-bold prose-a:text-foreground prose-a:underline prose-a:decoration-2 prose-a:underline-offset-2 " +
+  // Tighter vertical rhythm: lines sit closer with a small proportional gap.
+  "prose-p:my-1.5 prose-p:leading-snug prose-headings:mt-3 prose-headings:mb-1 prose-headings:leading-tight prose-li:my-0.5 prose-ul:my-2 prose-ol:my-2";
 
 function ToolbarButton({
   active,

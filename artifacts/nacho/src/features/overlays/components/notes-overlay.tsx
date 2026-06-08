@@ -1,10 +1,9 @@
-import { MarkdownEditor, useSpeakerNotes } from "@/features/notes";
+import { RichTextEditor } from "@/features/editor/components/rich-text-editor";
+import { useSpeakerNotes } from "@/features/notes";
 import { OverlayShell, DRAG_REGION } from "./overlay-shell";
 
-// Presenter-only speaker notes (content-protected). Shows the formatted notes
-// for presenting, and is fully editable on the overlay — edits sync live back to
-// the Studio panel and persist. Defaults to Preview; switch to Edit/Split in the
-// toolbar to make changes.
+// Presenter-only speaker notes (content-protected). Inline WYSIWYG, editable on
+// the overlay — edits sync live back to the Studio panel and persist.
 export function NotesOverlay() {
   const { value, update } = useSpeakerNotes();
 
@@ -17,13 +16,14 @@ export function NotesOverlay() {
         >
           Speaker notes
         </div>
-        <MarkdownEditor
-          value={value}
-          onChange={update}
-          defaultMode="preview"
-          placeholder="Write your talking points…"
-          className="min-h-0 flex-1 border-0"
-        />
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <RichTextEditor
+            variant="notes"
+            value={value}
+            onChange={update}
+            placeholder="Write your talking points…"
+          />
+        </div>
       </div>
     </OverlayShell>
   );
