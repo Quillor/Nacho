@@ -1,9 +1,53 @@
 import { Link } from "wouter";
 import { useGetDesktopRelease } from "@workspace/api-client-react";
 import { Button } from "@workspace/pico-ui/button";
-import { Apple, Download as DownloadIcon } from "lucide-react";
+import { Apple, Download as DownloadIcon, ShieldCheck } from "lucide-react";
 import { formatBytes } from "@workspace/shared";
 import { Logo } from "@/components/logo";
+
+const INSTALL_STEPS = [
+  "Open the downloaded Nacho-x.x.x.dmg file.",
+  "Drag the Nacho icon into your Applications folder.",
+  "Open Applications, right-click Nacho, and choose Open.",
+  'In the dialog that appears, click Open again to confirm. You only need to do this the first time.',
+];
+
+function InstallGuide() {
+  return (
+    <div className="mt-8 border-2 border-foreground bg-card p-8 rounded-lg">
+      <div className="flex items-center gap-3 mb-2">
+        <ShieldCheck className="h-6 w-6 text-foreground" />
+        <h2 className="text-xl font-black">How to open Nacho on your Mac</h2>
+      </div>
+      <p className="text-foreground/70 mb-6">
+        Nacho isn&apos;t in the App Store yet, so macOS asks you to confirm the
+        first time you open it. Here&apos;s how:
+      </p>
+      <ol className="space-y-4">
+        {INSTALL_STEPS.map((step, i) => (
+          <li key={i} className="flex gap-4 items-start">
+            <span className="flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-full bg-primary text-primary-foreground font-black border-2 border-foreground">
+              {i + 1}
+            </span>
+            <span className="pt-1 text-foreground/80">{step}</span>
+          </li>
+        ))}
+      </ol>
+      <div className="mt-6 pt-6 border-t-2 border-foreground/10 text-sm text-foreground/70">
+        <p className="font-bold text-foreground/80 mb-1">
+          Still says Nacho is &ldquo;damaged&rdquo; or can&apos;t be opened?
+        </p>
+        <p>
+          Open the Terminal app and run this command, then try opening Nacho
+          again:
+        </p>
+        <code className="mt-2 block w-full overflow-x-auto rounded-md border-2 border-foreground/15 bg-background px-3 py-2 font-mono text-foreground">
+          xattr -cr /Applications/Nacho.app
+        </code>
+      </div>
+    </div>
+  );
+}
 
 export function Download() {
   const { data, isLoading } = useGetDesktopRelease();
@@ -82,6 +126,8 @@ export function Download() {
               </p>
             </div>
           )}
+
+          {hasRelease ? <InstallGuide /> : null}
         </div>
       </main>
     </div>
