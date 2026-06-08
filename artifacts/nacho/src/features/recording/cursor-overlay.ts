@@ -110,20 +110,24 @@ export function drawRipples(
   return alive;
 }
 
+let clickBufferCache: AudioBuffer | null = null;
+
 /**
- * Synthesize a short click "tick" so the app ships no audio asset. A 1.6kHz
- * sine with a fast exponential decay reads as a soft mouse click.
+ * Load and decode the click sound (public/click.mp3) for the recording's audio
+ * mix. Cached after first load. Returns null if it can't be loaded.
  */
-export function createClickBuffer(ctx: AudioContext): AudioBuffer {
-  const seconds = 0.04;
-  const n = Math.max(1, Math.floor(ctx.sampleRate * seconds));
-  const buffer = ctx.createBuffer(1, n, ctx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < n; i++) {
-    const t = i / ctx.sampleRate;
-    data[i] = Math.sin(2 * Math.PI * 1600 * t) * Math.exp(-t * 90) * 0.5;
+export async function loadClickBuffer(
+  ctx: AudioContext,
+): Promise<AudioBuffer | null> {
+  if (clickBufferCache) return clickBufferCache;
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}click.mp3`);
+    const data = await res.arrayBuffer();
+    clickBufferCache = await ctx.decodeAudioData(data);
+    return clickBufferCache;
+  } catch {
+    return null;
   }
-  return buffer;
 }
 
 /**

@@ -86,9 +86,10 @@ function broadcast(channel: string, payload?: unknown) {
 }
 
 /**
- * Route getDisplayMedia to the primary screen and record which display was
- * captured. The renderer's existing navigator.mediaDevices.getDisplayMedia call
- * is satisfied by this handler (no renderer change needed for capture itself).
+ * Show the native macOS screen/window picker on every recording so the user
+ * chooses a screen or a specific app window each time (useSystemPicker). The
+ * handler below is the fallback for OSes where the system picker isn't available
+ * — there it auto-captures the primary screen.
  */
 function installDisplayMediaHandler() {
   session.defaultSession.setDisplayMediaRequestHandler(
@@ -118,7 +119,7 @@ function installDisplayMediaHandler() {
           callback({});
         });
     },
-    { useSystemPicker: false },
+    { useSystemPicker: true },
   );
 }
 
@@ -181,6 +182,15 @@ app.whenReady().then(async () => {
     ? devUrl.replace(/\/$/, "")
     : await startRendererServer(RENDERER_DIR);
   setRendererOrigin(origin);
+
+  // Default the cursor-overlay mapping to the primary display. When the native
+  // system picker is used the request handler doesn't run, so seed it here.
+  const primary = screen.getPrimaryDisplay();
+  capturedDisplay = {
+    id: primary.id,
+    bounds: primary.bounds,
+    scaleFactor: primary.scaleFactor,
+  };
 
   installDisplayMediaHandler();
   registerIpc();
