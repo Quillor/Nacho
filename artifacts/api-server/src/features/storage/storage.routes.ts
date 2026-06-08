@@ -14,6 +14,40 @@ const router: IRouter = Router();
 const objectStorageService = new ObjectStorageService();
 
 /**
+ * Safely pipe an object-storage web body to the Express response. Attaches an
+ * `'error'` handler to the read stream and tears it down when the client
+ * disconnects (`close`) so a broken transfer can never leave an unhandled
+ * stream error that crashes the Node process / deployment instance.
+ */
+function pipeObjectBody(
+  body: ReadableStream<Uint8Array> | null,
+  req: Request,
+  res: Response,
+): void {
+  if (!body) {
+    res.end();
+    return;
+  }
+
+  const nodeStream = Readable.fromWeb(body);
+
+  res.on("close", () => {
+    nodeStream.destroy();
+  });
+
+  nodeStream.on("error", (err) => {
+    req.log.error({ err }, "Error streaming object to client");
+    if (!res.headersSent) {
+      res.status(500).end();
+    } else {
+      res.destroy();
+    }
+  });
+
+  nodeStream.pipe(res);
+}
+
+/**
  * POST /storage/uploads/request-url
  *
  * Request a presigned URL for file upload.
@@ -68,12 +102,7 @@ router.get("/storage/public-objects/*filePath", async (req: Request, res: Respon
     res.status(response.status);
     response.headers.forEach((value, key) => res.setHeader(key, value));
 
-    if (response.body) {
-      const nodeStream = Readable.fromWeb(response.body as ReadableStream<Uint8Array>);
-      nodeStream.pipe(res);
-    } else {
-      res.end();
-    }
+    pipeObjectBody(response.body as ReadableStream<Uint8Array> | null, req, res);
   } catch (error) {
     req.log.error({ err: error }, "Error serving public object");
     res.status(500).json({ error: "Failed to serve public object" });
@@ -114,12 +143,7 @@ router.get("/storage/objects/*path", async (req: Request, res: Response) => {
     res.status(response.status);
     response.headers.forEach((value, key) => res.setHeader(key, value));
 
-    if (response.body) {
-      const nodeStream = Readable.fromWeb(response.body as ReadableStream<Uint8Array>);
-      nodeStream.pipe(res);
-    } else {
-      res.end();
-    }
+    pipeObjectBody(response.body as ReadableStream<Uint8Array> | null, req, res);
   } catch (error) {
     if (error instanceof ObjectNotFoundError) {
       req.log.warn({ err: error }, "Object not found");

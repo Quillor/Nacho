@@ -106,6 +106,35 @@ export class ObjectStorageService {
     return new Response(webStream, { headers });
   }
 
+  /**
+   * Sign a short-lived GET URL for a stored object so the client can download
+   * it directly from object storage (instead of proxying the bytes through the
+   * app server). When `downloadFilename` is provided, the object's
+   * content-disposition metadata is set so the browser saves it under a
+   * friendly name; this is idempotent and only written when it changes.
+   */
+  async getObjectEntityDownloadURL(
+    file: File,
+    opts: { ttlSec?: number; downloadFilename?: string } = {},
+  ): Promise<string> {
+    const { ttlSec = 900, downloadFilename } = opts;
+
+    if (downloadFilename) {
+      const contentDisposition = `attachment; filename="${downloadFilename}"`;
+      const [metadata] = await file.getMetadata();
+      if (metadata.contentDisposition !== contentDisposition) {
+        await file.setMetadata({ contentDisposition });
+      }
+    }
+
+    return signObjectURL({
+      bucketName: file.bucket.name,
+      objectName: file.name,
+      method: "GET",
+      ttlSec,
+    });
+  }
+
   async getObjectEntityUploadURL(): Promise<string> {
     const privateObjectDir = this.getPrivateObjectDir();
     if (!privateObjectDir) {

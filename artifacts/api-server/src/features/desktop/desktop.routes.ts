@@ -1,5 +1,4 @@
 import { Router, type IRouter, type Request, type Response } from "express";
-import { Readable } from "stream";
 import { GetDesktopReleaseResponse } from "@workspace/api-zod";
 import {
   ObjectStorageService,
@@ -29,24 +28,17 @@ router.get("/desktop/download", async (req: Request, res: Response): Promise<voi
     const file = await objectStorageService.getObjectEntityFile(
       release.objectPath,
     );
-    const response = await objectStorageService.downloadObject(file);
 
-    res.status(response.status);
-    response.headers.forEach((value, key) => res.setHeader(key, value));
-    res.setHeader("Content-Type", "application/x-apple-diskimage");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="Nacho-${release.version}.dmg"`,
+    // Redirect to a short-lived signed GET URL so the .dmg is downloaded
+    // directly from object storage. Proxying the whole binary through Express
+    // (with `stream.pipe(res)`) crashed the deployment instance whenever the
+    // transfer broke mid-flight; redirecting offloads the bytes entirely.
+    const downloadUrl = await objectStorageService.getObjectEntityDownloadURL(
+      file,
+      { ttlSec: 900, downloadFilename: `Nacho-${release.version}.dmg` },
     );
 
-    if (response.body) {
-      const nodeStream = Readable.fromWeb(
-        response.body as ReadableStream<Uint8Array>,
-      );
-      nodeStream.pipe(res);
-    } else {
-      res.end();
-    }
+    res.redirect(302, downloadUrl);
   } catch (error) {
     if (error instanceof ObjectNotFoundError) {
       req.log.warn({ err: error }, "Desktop release object not found");
