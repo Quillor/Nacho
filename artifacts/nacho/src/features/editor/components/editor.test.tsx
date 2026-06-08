@@ -24,8 +24,15 @@ vi.mock("@/lib/db", () => ({
   }),
 }));
 
+// The background-upload phase the PublishPanel reads. Mutable so individual
+// tests can drive the "uploading/uploaded/failed" branches; reset in beforeEach.
+let uploadState: { phase: string; progress: number } = {
+  phase: "idle",
+  progress: 0,
+};
+
 vi.mock("@/features/publishing", () => ({
-  useUploadState: () => ({ phase: "idle", progress: 0 }),
+  useUploadState: () => uploadState,
   startBackgroundUpload: vi.fn(),
   getPublicLink: vi.fn(),
   unpublishRecording: vi.fn(),
@@ -34,6 +41,13 @@ vi.mock("@/features/publishing", () => ({
   isUploadInFlight: vi.fn(() => false),
   retryUpload: vi.fn(),
   createGifFromBlob: vi.fn(),
+}));
+
+// Capture the success/error toasts the publish flows raise so tests can assert
+// the surfaced outcome without mounting a <Toaster>.
+const toastMock = vi.fn();
+vi.mock("@workspace/pico-ui/hooks/use-toast", () => ({
+  useToast: () => ({ toast: toastMock }),
 }));
 
 vi.mock("@/lib/media", () => ({
@@ -56,6 +70,12 @@ vi.mock("@/components/app-shell", () => ({
 }));
 
 import { Editor } from "./editor";
+import {
+  getPublicLink,
+  syncPublishedRecording,
+  retryUpload,
+} from "@/features/publishing";
+import { shareUrl } from "@/lib/api";
 
 function makeRecording(overrides: Partial<LocalRecording> = {}): LocalRecording {
   return {
@@ -103,6 +123,11 @@ function renderEditor(id = "rec-1") {
 beforeEach(() => {
   recordingStore.clear();
   recordingStore.set("rec-1", makeRecording());
+  uploadState = { phase: "idle", progress: 0 };
+  toastMock.mockClear();
+  vi.mocked(getPublicLink).mockReset();
+  vi.mocked(syncPublishedRecording).mockReset();
+  vi.mocked(retryUpload).mockReset();
 });
 
 describe("Editor unsaved-changes safety net", () => {
@@ -193,5 +218,113 @@ describe("Editor unsaved-changes safety net", () => {
 
     expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
     await waitFor(() => expect(history[history.length - 1]).toBe("/library"));
+  });
+});
+
+describe("Editor publish & share-sync flow", () => {
+  it("gets a public link: flips private → public, sets the shareId, and surfaces the link", async () => {
+    const user = userEvent.setup();
+    vi.mocked(getPublicLink).mockResolvedValue({
+      shareId: "shared-abc",
+      visibility: "public",
+      videoPath: "/objects/uploads/rec-1.webm",
+      thumbnailPath: null,
+      gifPath: "/objects/uploads/rec-1.gif",
+    });
+    renderEditor();
+
+    // Starts private: the "Get public link" CTA is shown, no public link yet.
+    const getLink = await screen.findByRole("button", {
+      name: /get public link/i,
+    });
+    expect(screen.queryByText(/^public$/i)).not.toBeInTheDocument();
+
+    await user.click(getLink);
+
+    // The publish layer was invoked with the recording awaiting a link…
+    await waitFor(() => expect(getPublicLink).toHaveBeenCalledTimes(1));
+
+    // …and the panel transitions to the public state with the share link
+    // surfaced in the read-only field.
+    expect(
+      await screen.findByDisplayValue(shareUrl("shared-abc")),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/^public$/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /open public page/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /get public link/i }),
+    ).not.toBeInTheDocument();
+    expect(toastMock).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Public link ready" }),
+    );
+  });
+
+  it("re-syncs edits on an already-published recording and surfaces the synced success", async () => {
+    const user = userEvent.setup();
+    recordingStore.set(
+      "rec-1",
+      makeRecording({
+        visibility: "public",
+        shareId: "shared-xyz",
+        videoPath: "/objects/uploads/rec-1.webm",
+        gifPath: "/objects/uploads/rec-1.gif",
+      }),
+    );
+    vi.mocked(syncPublishedRecording).mockResolvedValue({
+      shareId: "shared-xyz",
+      visibility: "public",
+      videoPath: "/objects/uploads/rec-1.webm",
+      thumbnailPath: null,
+      gifPath: "/objects/uploads/rec-1.gif",
+    });
+    renderEditor();
+
+    // Loads already-public (clean state, public panel visible).
+    await screen.findByRole("button", { name: /all changes saved/i });
+    expect(
+      screen.getByDisplayValue(shareUrl("shared-xyz")),
+    ).toBeInTheDocument();
+
+    // Edit the title → save flips to the active "Save changes" state.
+    const titleInput = screen.getByDisplayValue("Original title");
+    await user.clear(titleInput);
+    await user.type(titleInput, "Edited title");
+    await user.click(
+      await screen.findByRole("button", { name: /save changes/i }),
+    );
+
+    // Saving a published recording takes the re-sync path with the edited copy…
+    await waitFor(() => expect(syncPublishedRecording).toHaveBeenCalledTimes(1));
+    expect(syncPublishedRecording).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Edited title", shareId: "shared-xyz" }),
+      expect.any(Object),
+    );
+
+    // …and the synced success is surfaced, returning the control to clean.
+    expect(toastMock).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Saved & synced" }),
+    );
+    expect(
+      await screen.findByRole("button", { name: /all changes saved/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("shows the Retry save recovery action when the background upload failed", async () => {
+    const user = userEvent.setup();
+    uploadState = { phase: "failed", progress: 0 };
+    renderEditor();
+
+    // The failed-upload branch replaces "Get public link" with a single,
+    // unambiguous recovery action.
+    const retry = await screen.findByRole("button", { name: /retry save/i });
+    expect(screen.getByText(/couldn't save to the cloud/i)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /get public link/i }),
+    ).not.toBeInTheDocument();
+
+    await user.click(retry);
+    expect(retryUpload).toHaveBeenCalledWith("rec-1");
   });
 });
