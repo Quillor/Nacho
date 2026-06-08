@@ -1,5 +1,12 @@
 import { Link } from "wouter";
-import { CircleDot, Loader2, Search, Sparkles, X } from "lucide-react";
+import {
+  CircleDot,
+  Loader2,
+  Search,
+  Sparkles,
+  Trash2,
+  X,
+} from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import emptyBowlNacho from "@workspace/nacho-illustrations/assets/sad-nacho-empty-bowl.webp";
 import { Button } from "@workspace/pico-ui/button";
@@ -54,6 +61,17 @@ export function LibraryPage() {
     handleGetLink,
     handleUnpublish,
     handleDelete,
+    selectionMode,
+    selectedIds,
+    selectedCount,
+    bulkDeleteOpen,
+    setBulkDeleteOpen,
+    bulkDeleting,
+    toggleSelectionMode,
+    toggleSelected,
+    selectAllVisible,
+    clearSelection,
+    handleBulkDelete,
   } = useLibrary();
 
   const hasRecordings = recordings !== null && recordings.length > 0;
@@ -137,6 +155,16 @@ export function LibraryPage() {
               ))}
             </SelectContent>
           </Select>
+          <Button
+            variant={selectionMode ? "default" : "outline"}
+            onClick={toggleSelectionMode}
+            aria-pressed={selectionMode}
+            className={`h-12 border-2 border-foreground px-5 text-base font-bold ${
+              selectionMode ? "bg-accent text-accent-foreground" : ""
+            }`}
+          >
+            {selectionMode ? "Done" : "Select"}
+          </Button>
         </div>
       )}
 
@@ -194,6 +222,9 @@ export function LibraryPage() {
               key={rec.id}
               rec={rec}
               busy={busyId === rec.id}
+              selectable={selectionMode}
+              selected={selectedIds.has(rec.id)}
+              onToggleSelected={toggleSelected}
               onTogglePin={handleTogglePin}
               onOpenEditor={(id) => navigate(`/editor/${id}`)}
               onView={(shareId) =>
@@ -232,6 +263,79 @@ export function LibraryPage() {
               onClick={handleDelete}
               className="border border-foreground bg-destructive font-bold text-destructive-foreground"
             >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {selectionMode && selectedCount > 0 && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-4">
+          <div className="pointer-events-auto flex flex-wrap items-center gap-3 border-2 border-foreground bg-card px-5 py-3 shadow-lg">
+            <span className="font-bold">
+              {selectedCount} selected
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={selectAllVisible}
+              className="border border-foreground font-bold"
+            >
+              Select all
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={clearSelection}
+              className="border border-foreground font-bold"
+            >
+              Clear
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => setBulkDeleteOpen(true)}
+              className="border border-foreground bg-destructive font-bold text-destructive-foreground"
+            >
+              <Trash2 className="mr-1 h-4 w-4" /> Delete
+            </Button>
+          </div>
+        </div>
+      )}
+
+      <AlertDialog
+        open={bulkDeleteOpen}
+        onOpenChange={(open) => !bulkDeleting && setBulkDeleteOpen(open)}
+      >
+        <AlertDialogContent className="border-2 border-foreground">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-display">
+              {selectedCount === 1
+                ? "Delete this recording?"
+                : `Delete ${selectedCount} recordings?`}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This removes the local copies from this device. Published share
+              links will keep working.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              disabled={bulkDeleting}
+              className="border border-foreground font-bold"
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              disabled={bulkDeleting}
+              onClick={(e) => {
+                e.preventDefault();
+                void handleBulkDelete();
+              }}
+              className="border border-foreground bg-destructive font-bold text-destructive-foreground"
+            >
+              {bulkDeleting ? (
+                <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+              ) : null}
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

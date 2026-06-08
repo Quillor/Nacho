@@ -40,6 +40,10 @@ export function useLibrary() {
   const [seeding, setSeeding] = useState(false);
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<LibrarySort>("pinned");
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkDeleting, setBulkDeleting] = useState(false);
 
   const refresh = () => {
     // listRecordings already returns newest-first; keep the raw order here and
@@ -192,9 +196,10 @@ export function useLibrary() {
     }
   };
 
-  const handleDelete = async () => {
-    if (!pendingDelete) return;
-    const id = pendingDelete;
+  // Shared per-recording cleanup used by both single and bulk delete: stop any
+  // in-flight upload, remove the local IndexedDB copy, then best-effort remove
+  // the dangling server-side record for an already-uploaded recording.
+  const deleteOne = async (id: string) => {
     // Reload the full record so we have the freshest shareId — a background
     // upload may have persisted one after the list snapshot was taken.
     const full = await getRecording(id);
@@ -207,9 +212,65 @@ export function useLibrary() {
     if (full?.shareId) {
       void deleteServerRecording(full.shareId).catch(() => undefined);
     }
+  };
+
+  const handleDelete = async () => {
+    if (!pendingDelete) return;
+    await deleteOne(pendingDelete);
     setPendingDelete(null);
     refresh();
     toast({ title: "Recording deleted" });
+  };
+
+  const toggleSelectionMode = () => {
+    setSelectionMode((on) => {
+      // Leaving selection mode clears any pending selection.
+      if (on) setSelectedIds(new Set());
+      return !on;
+    });
+  };
+
+  const toggleSelected = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const selectAllVisible = () => {
+    setSelectedIds(new Set((visibleRecordings ?? []).map((r) => r.id)));
+  };
+
+  const clearSelection = () => setSelectedIds(new Set());
+
+  const handleBulkDelete = async () => {
+    const ids = [...selectedIds];
+    if (ids.length === 0) return;
+    setBulkDeleting(true);
+    try {
+      await Promise.all(ids.map((id) => deleteOne(id)));
+      setBulkDeleteOpen(false);
+      setSelectedIds(new Set());
+      setSelectionMode(false);
+      refresh();
+      toast({
+        title:
+          ids.length === 1
+            ? "Recording deleted"
+            : `${ids.length} recordings deleted`,
+      });
+    } catch {
+      refresh();
+      toast({
+        title: "Couldn't delete some recordings",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setBulkDeleting(false);
+    }
   };
 
   return {
@@ -230,5 +291,16 @@ export function useLibrary() {
     handleGetLink,
     handleUnpublish,
     handleDelete,
+    selectionMode,
+    selectedIds,
+    selectedCount: selectedIds.size,
+    bulkDeleteOpen,
+    setBulkDeleteOpen,
+    bulkDeleting,
+    toggleSelectionMode,
+    toggleSelected,
+    selectAllVisible,
+    clearSelection,
+    handleBulkDelete,
   };
 }

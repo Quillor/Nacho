@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Button } from "@workspace/pico-ui/button";
 import { Badge } from "@workspace/pico-ui/badge";
+import { Checkbox } from "@workspace/pico-ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -101,6 +102,9 @@ function UploadStatus({ id }: { id: string }) {
 export interface RecordingCardProps {
   rec: LocalRecordingMeta;
   busy: boolean;
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelected?: (id: string) => void;
   onTogglePin: (rec: LocalRecordingMeta) => void;
   onOpenEditor: (id: string) => void;
   onView: (shareId: string) => void;
@@ -114,6 +118,9 @@ export interface RecordingCardProps {
 export function RecordingCard({
   rec,
   busy,
+  selectable = false,
+  selected = false,
+  onToggleSelected,
   onTogglePin,
   onOpenEditor,
   onView,
@@ -123,31 +130,51 @@ export function RecordingCard({
   onRequestDelete,
 }: RecordingCardProps) {
   return (
-    <div className="group relative flex flex-col border-2 border-foreground bg-card shadow-md transition-transform hover:-translate-y-1">
-      <button
-        type="button"
-        onClick={() => onTogglePin(rec)}
-        aria-pressed={rec.pinned}
-        title={rec.pinned ? "Unpin recording" : "Pin recording"}
-        className={`absolute left-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-sm border border-foreground shadow-sm transition-colors ${
-          rec.pinned
-            ? "bg-accent text-accent-foreground"
-            : "bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
-        }`}
-      >
-        {rec.pinned ? (
-          <Pin className="h-4 w-4 fill-current" />
-        ) : (
-          <Pin className="h-4 w-4" />
-        )}
-        <span className="sr-only">
-          {rec.pinned ? "Unpin recording" : "Pin recording"}
-        </span>
-      </button>
+    <div
+      className={`group relative flex flex-col border-2 border-foreground bg-card shadow-md transition-transform hover:-translate-y-1 ${
+        selectable && selected ? "ring-2 ring-accent ring-offset-2" : ""
+      }`}
+    >
+      {selectable ? (
+        <label
+          title={selected ? "Deselect recording" : "Select recording"}
+          className="absolute right-2 top-2 z-10 flex h-9 w-9 cursor-pointer items-center justify-center rounded-sm border border-foreground bg-background shadow-sm transition-colors hover:bg-accent"
+        >
+          <Checkbox
+            checked={selected}
+            onCheckedChange={() => onToggleSelected?.(rec.id)}
+            aria-label={`Select recording “${rec.title}”`}
+            className="h-5 w-5 border-foreground"
+          />
+        </label>
+      ) : (
+        <button
+          type="button"
+          onClick={() => onTogglePin(rec)}
+          aria-pressed={rec.pinned}
+          title={rec.pinned ? "Unpin recording" : "Pin recording"}
+          className={`absolute left-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-sm border border-foreground shadow-sm transition-colors ${
+            rec.pinned
+              ? "bg-accent text-accent-foreground"
+              : "bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+          }`}
+        >
+          {rec.pinned ? (
+            <Pin className="h-4 w-4 fill-current" />
+          ) : (
+            <Pin className="h-4 w-4" />
+          )}
+          <span className="sr-only">
+            {rec.pinned ? "Unpin recording" : "Pin recording"}
+          </span>
+        </button>
+      )}
       <button
         type="button"
         className="block text-left"
-        onClick={() => onOpenEditor(rec.id)}
+        onClick={() =>
+          selectable ? onToggleSelected?.(rec.id) : onOpenEditor(rec.id)
+        }
       >
         <Thumb rec={rec} />
       </button>
