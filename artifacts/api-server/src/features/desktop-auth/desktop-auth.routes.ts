@@ -83,7 +83,7 @@ router.get("/desktop/me", async (req, res): Promise<void> => {
 
 export default router;
 
-// ---- Browser login page (mounted at the root, not under /api) ----------------
+// ---- Browser login page (served under /api/desktop/login) --------------------
 
 function loginHtml(publishableKey: string): string {
   // Self-contained page: loads clerk-js (same prod instance + same-origin
@@ -151,10 +151,9 @@ function loginHtml(publishableKey: string): string {
 </html>`;
 }
 
-const loginRouter: IRouter = Router();
-loginRouter.get("/desktop/login", (req, res): void => {
+// Registered on the /api router (above) so production routes it to this backend;
+// a root /desktop/login would be shadowed by the static SPA and return index.html.
+router.get("/desktop/login", (req, res): void => {
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(loginHtml(process.env.CLERK_PUBLISHABLE_KEY ?? ""));
 });
-
-export { loginRouter as desktopLoginRouter };
