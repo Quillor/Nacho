@@ -197,7 +197,7 @@ export function DesktopAuthProvider({
     stateRef.current = state;
     const challenge = await challengeFromVerifier(verifier);
     const url =
-      `${DESKTOP_API_URL}/desktop/login` +
+      `${DESKTOP_API_URL}/api/desktop/login` +
       `?state=${encodeURIComponent(state)}` +
       `&code_challenge=${encodeURIComponent(challenge)}`;
     await bridge.openExternal(url);
