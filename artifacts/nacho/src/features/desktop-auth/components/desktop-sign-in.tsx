@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Redirect } from "wouter";
 import { LogIn, Loader2 } from "lucide-react";
 import { Button } from "@workspace/pico-ui/button";
 import { Logo } from "@/components/logo";
@@ -8,8 +9,12 @@ import { useDesktopAuth } from "../desktop-auth";
 // then hands back to the app via the nacho:// deep link — so there's no Clerk UI
 // embedded here, just a button that opens the browser and a waiting state.
 export function DesktopSignIn() {
-  const { signIn } = useDesktopAuth();
+  const { isSignedIn, signIn } = useDesktopAuth();
   const [waiting, setWaiting] = useState(false);
+
+  // Once the browser hands the token back and the provider flips to signed-in,
+  // leave the sign-in screen for the studio.
+  if (isSignedIn) return <Redirect to="/studio" />;
 
   const start = async () => {
     setWaiting(true);
