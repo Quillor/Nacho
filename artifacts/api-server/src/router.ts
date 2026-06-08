@@ -11,6 +11,7 @@ import desktopAuthRouter from "./features/desktop-auth/desktop-auth.routes";
 import versionRouter from "./features/version/version.routes";
 import renderRouter from "./features/render/render.routes";
 import contentRouter from "./features/content/content.routes";
+import desktopRouter from "./features/desktop/desktop.routes";
 import adminRouter from "./features/admin/admin.routes";
 import { requireSuperAdmin } from "./middlewares/require-super-admin";
 
@@ -23,6 +24,7 @@ router.use(desktopAuthRouter);
 router.use(versionRouter);
 router.use(renderRouter);
 router.use(contentRouter);
+router.use(desktopRouter);
 router.use("/admin", requireSuperAdmin);
 router.use(adminRouter);
 

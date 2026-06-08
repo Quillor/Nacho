@@ -9,6 +9,7 @@ import usersRoutes from "./users.routes";
 import groupsRoutes from "./groups.routes";
 import notificationsRoutes from "./notifications.routes";
 import tosRoutes from "./tos.routes";
+import desktopReleaseRoutes from "./desktop-release.routes";
 
 const router: IRouter = Router();
 
@@ -17,5 +18,6 @@ router.use(usersRoutes);
 router.use(groupsRoutes);
 router.use(notificationsRoutes);
 router.use(tosRoutes);
+router.use(desktopReleaseRoutes);
 
 export default router;

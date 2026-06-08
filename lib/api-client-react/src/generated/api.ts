@@ -22,6 +22,8 @@ import type {
 import type {
   AdminSummary,
   AdminUser,
+  DesktopRelease,
+  DesktopReleaseInput,
   EmailPreview,
   ErrorResponse,
   GroupInput,
@@ -714,6 +716,154 @@ export function useGetVersion<TData = Awaited<ReturnType<typeof getVersion>>, TE
 
 
 
+
+export const getGetDesktopReleaseUrl = () => {
+
+
+
+
+  return `/api/desktop/release`
+}
+
+/**
+ * @summary Get the latest macOS desktop release metadata
+ */
+export const getDesktopRelease = async ( options?: RequestInit): Promise<DesktopRelease> => {
+
+  return customFetch<DesktopRelease>(getGetDesktopReleaseUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDesktopReleaseQueryKey = () => {
+    return [
+    `/api/desktop/release`
+    ] as const;
+    }
+
+
+export const getGetDesktopReleaseQueryOptions = <TData = Awaited<ReturnType<typeof getDesktopRelease>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDesktopRelease>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDesktopReleaseQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDesktopRelease>>> = ({ signal }) => getDesktopRelease({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDesktopRelease>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDesktopReleaseQueryResult = NonNullable<Awaited<ReturnType<typeof getDesktopRelease>>>
+export type GetDesktopReleaseQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get the latest macOS desktop release metadata
+ */
+
+export function useGetDesktopRelease<TData = Awaited<ReturnType<typeof getDesktopRelease>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDesktopRelease>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDesktopReleaseQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getUpdateDesktopReleaseUrl = () => {
+
+
+
+
+  return `/api/admin/desktop/release`
+}
+
+/**
+ * @summary Set/replace the latest macOS desktop release
+ */
+export const updateDesktopRelease = async (desktopReleaseInput: DesktopReleaseInput, options?: RequestInit): Promise<DesktopRelease> => {
+
+  return customFetch<DesktopRelease>(getUpdateDesktopReleaseUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      desktopReleaseInput,)
+  }
+);}
+
+
+
+
+export const getUpdateDesktopReleaseMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDesktopRelease>>, TError,{data: BodyType<DesktopReleaseInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateDesktopRelease>>, TError,{data: BodyType<DesktopReleaseInput>}, TContext> => {
+
+const mutationKey = ['updateDesktopRelease'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateDesktopRelease>>, {data: BodyType<DesktopReleaseInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateDesktopRelease(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateDesktopReleaseMutationResult = NonNullable<Awaited<ReturnType<typeof updateDesktopRelease>>>
+    export type UpdateDesktopReleaseMutationBody = BodyType<DesktopReleaseInput>
+    export type UpdateDesktopReleaseMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Set/replace the latest macOS desktop release
+ */
+export const useUpdateDesktopRelease = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDesktopRelease>>, TError,{data: BodyType<DesktopReleaseInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateDesktopRelease>>,
+        TError,
+        {data: BodyType<DesktopReleaseInput>},
+        TContext
+      > => {
+      return useMutation(getUpdateDesktopReleaseMutationOptions(options));
+    }
 
 export const getGetAdminSummaryUrl = () => {
 

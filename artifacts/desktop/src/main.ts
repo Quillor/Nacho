@@ -172,6 +172,9 @@ function registerIpc() {
     }
     return undefined;
   });
+
+  // The packaged app version, used by the renderer's update check.
+  ipcMain.handle("app:getVersion", () => app.getVersion());
 }
 
 app.whenReady().then(async () => {

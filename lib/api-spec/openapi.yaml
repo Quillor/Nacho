@@ -208,6 +208,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VersionInfo"
+  /desktop/release:
+    get:
+      operationId: getDesktopRelease
+      tags: [app]
+      summary: Get the latest macOS desktop release metadata
+      responses:
+        "200":
+          description: Latest desktop release (fields are null when none published)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DesktopRelease"
+  /admin/desktop/release:
+    put:
+      operationId: updateDesktopRelease
+      tags: [admin]
+      summary: Set/replace the latest macOS desktop release
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DesktopReleaseInput"
+      responses:
+        "200":
+          description: Updated desktop release
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DesktopRelease"
   /admin/summary:
     get:
       operationId: getAdminSummary
@@ -741,6 +771,34 @@ components:
           type: string
         releaseDate:
           type: ["string", "null"]
+    DesktopRelease:
+      type: object
+      required: [version, fileSize, notes, downloadUrl, updatedAt]
+      properties:
+        version:
+          type: ["string", "null"]
+        fileSize:
+          type: ["integer", "null"]
+        notes:
+          type: string
+        downloadUrl:
+          type: ["string", "null"]
+        updatedAt:
+          type: ["string", "null"]
+    DesktopReleaseInput:
+      type: object
+      required: [version, objectPath, fileSize]
+      properties:
+        version:
+          type: string
+          minLength: 1
+        objectPath:
+          type: string
+          minLength: 1
+        fileSize:
+          type: integer
+        notes:
+          type: string
     AdminRole:
       type: string
       enum: [super_admin, user]

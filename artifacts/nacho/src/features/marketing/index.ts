@@ -2,3 +2,4 @@
 export { Home } from "./components/home";
 export { Shop } from "./components/shop";
 export { Terms } from "./components/terms";
+export { Download } from "./components/download";

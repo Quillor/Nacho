@@ -41,6 +41,9 @@ const api = {
   onAuthCallback: (cb: (url: string) => void) =>
     on("auth:callback", cb),
 
+  // The running app version, for the in-app "Check for updates" comparison.
+  getAppVersion: (): Promise<string> => ipcRenderer.invoke("app:getVersion"),
+
   // Cursor controls.
   cursor: {
     start: (opts: { withClicks: boolean }) =>

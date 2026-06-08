@@ -128,6 +128,27 @@ export interface VersionInfo {
   releaseDate?: string | null;
 }
 
+export interface DesktopRelease {
+  /** @nullable */
+  version: string | null;
+  /** @nullable */
+  fileSize: number | null;
+  notes: string;
+  /** @nullable */
+  downloadUrl: string | null;
+  /** @nullable */
+  updatedAt: string | null;
+}
+
+export interface DesktopReleaseInput {
+  /** @minLength 1 */
+  version: string;
+  /** @minLength 1 */
+  objectPath: string;
+  fileSize: number;
+  notes?: string;
+}
+
 export type AdminRole = typeof AdminRole[keyof typeof AdminRole];
 
 

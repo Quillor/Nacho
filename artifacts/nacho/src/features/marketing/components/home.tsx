@@ -74,6 +74,9 @@ export function Home() {
         </Link>
         <div className="flex items-center gap-4">
           <Button asChild variant="ghost" className="hidden md:flex">
+            <Link href="/download">Download</Link>
+          </Button>
+          <Button asChild variant="ghost" className="hidden md:flex">
             <Link href="/shop">Shop</Link>
           </Button>
           <Button asChild variant="ghost" className="hidden md:flex">
@@ -326,7 +329,7 @@ export function Home() {
           <div className="flex gap-6 font-bold text-foreground/80">
             <a href="#" className="hover:text-foreground hover:underline transition-colors">Twitter</a>
             <a href="#" className="hover:text-foreground hover:underline transition-colors">LinkedIn</a>
-            <a href="#" className="hover:text-foreground hover:underline transition-colors">Privacy</a>
+            <Link href="/download" className="hover:text-foreground hover:underline transition-colors">Download</Link>
             <Link href="/shop" className="hover:text-foreground hover:underline transition-colors">Shop</Link>
             <Link href="/terms" className="hover:text-foreground hover:underline transition-colors">Terms</Link>
             <a href="/design-system/" className="hover:text-foreground hover:underline transition-colors">Design System</a>

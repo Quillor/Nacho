@@ -1,1 +1,2 @@
 - [Fetching from GitHub in this repl](github-fetch-in-code-execution.md) — no git remote exists; auth via integration token + Basic extraheader, pass committer identity in code_execution.
+- [macOS app icon generation](desktop-icon-generation.md) — no Apple tooling/ICNS coder here; commit a 1024 PNG + let electron-builder make the .icns.

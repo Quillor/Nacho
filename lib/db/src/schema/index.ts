@@ -20,3 +20,4 @@
 export * from "./recordings";
 export * from "./userGroups";
 export * from "./tos";
+export * from "./desktopRelease";

@@ -40,12 +40,9 @@ import PublicView from "@/pages/public-view";
 import SettingsPage from "@/pages/settings";
 import Terms from "@/pages/terms";
 import Shop from "@/pages/shop";
+import Download from "@/pages/download";
 import Onboarding from "@/pages/onboarding";
-import {
-  ControlsOverlay,
-  CameraOverlay,
-  NotesOverlay,
-} from "@/features/overlays";
+import { ControlsOverlay, CameraOverlay, NotesOverlay } from "@/features/overlays";
 import {
   DesktopAuthProvider,
   useDesktopAuth,
@@ -261,6 +258,7 @@ function Router() {
       <Route path="/overlay/camera" component={CameraOverlay} />
       <Route path="/overlay/notes" component={NotesOverlay} />
       <Route path="/terms" component={Terms} />
+      <Route path="/download" component={Download} />
       <Route path="/shop" component={Shop} />
       <Route path="/onboarding" component={Onboarding} />
       <Route path="/studio">

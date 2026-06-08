@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { HardDrive, Trash2, Mail, LogOut } from "lucide-react";
+import { HardDrive, Trash2, Mail, LogOut, RefreshCw } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@workspace/pico-ui/button";
 import { formatBytes } from "@workspace/shared";
 import { listRecordings, deleteRecording } from "@/lib/db";
 import type { LocalRecordingMeta } from "@/lib/types";
+import { checkForUpdates } from "@/lib/update-check";
 import { useDesktopAuth } from "../desktop-auth";
 
 const card = "border-2 border-foreground bg-card p-6";
@@ -17,6 +18,29 @@ export function DesktopSettings() {
   const [recordings, setRecordings] = useState<LocalRecordingMeta[]>([]);
   const [usage, setUsage] = useState<number | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [updateMsg, setUpdateMsg] = useState<string | null>(null);
+
+  const onCheckUpdates = async () => {
+    setChecking(true);
+    setUpdateMsg(null);
+    try {
+      const result = await checkForUpdates();
+      if (result.status === "update-available") {
+        setUpdateMsg(
+          `Update available (v${result.latest}). Opening the download page…`,
+        );
+      } else if (result.status === "up-to-date") {
+        setUpdateMsg(`You're on the latest version (v${result.current}).`);
+      } else {
+        setUpdateMsg("Couldn't determine the latest version. Try again later.");
+      }
+    } catch {
+      setUpdateMsg("Update check failed. Try again later.");
+    } finally {
+      setChecking(false);
+    }
+  };
 
   const refresh = () => {
     void listRecordings().then((recs) => {
@@ -60,8 +84,24 @@ export function DesktopSettings() {
           )}
           <Button
             variant="outline"
-            onClick={signOut}
+            onClick={() => void onCheckUpdates()}
+            disabled={checking}
             className="mt-6 w-full border-2 border-foreground font-bold"
+          >
+            <RefreshCw
+              className={`mr-2 h-4 w-4${checking ? " animate-spin" : ""}`}
+            />
+            {checking ? "Checking…" : "Check for updates"}
+          </Button>
+          {updateMsg && (
+            <p className="mt-3 text-sm font-medium text-muted-foreground">
+              {updateMsg}
+            </p>
+          )}
+          <Button
+            variant="outline"
+            onClick={signOut}
+            className="mt-4 w-full border-2 border-foreground font-bold"
           >
             <LogOut className="mr-2 h-4 w-4" /> Sign out
           </Button>

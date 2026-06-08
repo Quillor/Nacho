@@ -47,6 +47,8 @@ export interface NachoBridge {
   openExternal(url: string): Promise<void>;
   /** Receive the nacho://auth deep-link callback URL. */
   onAuthCallback(cb: (url: string) => void): () => void;
+  /** The running desktop app version (for the in-app update check). */
+  getAppVersion(): Promise<string>;
 }
 
 declare global {

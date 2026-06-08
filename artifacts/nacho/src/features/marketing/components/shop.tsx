@@ -83,6 +83,9 @@ export function Shop() {
           <Logo className="h-9" />
         </Link>
         <div className="flex items-center gap-4">
+          <Button asChild variant="ghost" className="hidden md:flex">
+            <Link href="/download">Download</Link>
+          </Button>
           <Button asChild variant="ghost" className="hidden md:flex font-bold">
             <Link href="/shop">Shop</Link>
           </Button>

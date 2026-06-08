@@ -231,6 +231,41 @@ export const GetVersionResponse = zod.object({
 
 
 /**
+ * @summary Get the latest macOS desktop release metadata
+ */
+export const GetDesktopReleaseResponse = zod.object({
+  "version": zod.string().nullable(),
+  "fileSize": zod.number().nullable(),
+  "notes": zod.string(),
+  "downloadUrl": zod.string().nullable(),
+  "updatedAt": zod.string().nullable()
+})
+
+
+/**
+ * @summary Set/replace the latest macOS desktop release
+ */
+
+
+
+
+export const UpdateDesktopReleaseBody = zod.object({
+  "version": zod.string().min(1),
+  "objectPath": zod.string().min(1),
+  "fileSize": zod.number(),
+  "notes": zod.string().optional()
+})
+
+export const UpdateDesktopReleaseResponse = zod.object({
+  "version": zod.string().nullable(),
+  "fileSize": zod.number().nullable(),
+  "notes": zod.string(),
+  "downloadUrl": zod.string().nullable(),
+  "updatedAt": zod.string().nullable()
+})
+
+
+/**
  * @summary Dashboard summary counts and recent activity
  */
 export const GetAdminSummaryResponse = zod.object({

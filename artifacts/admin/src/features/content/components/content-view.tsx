@@ -5,6 +5,7 @@ import { Skeleton } from "@workspace/pico-ui/skeleton";
 import { Save } from "lucide-react";
 import { formatDateTime } from "@workspace/shared";
 import { useTosEditor } from "../hooks/use-tos-editor";
+import { DesktopReleaseSection } from "./desktop-release-section";
 
 export function ContentView() {
   const { tos, isLoading, content, setContent, hasChanges, isSaving, save } =
@@ -24,18 +25,18 @@ export function ContentView() {
   }
 
   return (
-    <div className="p-8 space-y-6 max-w-5xl mx-auto flex flex-col h-[calc(100vh-2rem)]">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 shrink-0">
+    <div className="p-8 space-y-6 max-w-5xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Legal Content</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Content</h1>
           {tos && (
             <p className="text-sm text-muted-foreground mt-1">
-              Last updated: {formatDateTime(tos.updatedAt)}
+              Terms last updated: {formatDateTime(tos.updatedAt)}
             </p>
           )}
         </div>
-        <Button 
-          onClick={save} 
+        <Button
+          onClick={save}
           disabled={!hasChanges || isSaving}
           className="shrink-0"
         >
@@ -44,22 +45,24 @@ export function ContentView() {
         </Button>
       </div>
 
-      <Card className="flex-1 flex flex-col min-h-0">
-        <CardHeader className="shrink-0">
+      <Card>
+        <CardHeader>
           <CardTitle>Terms of Service</CardTitle>
           <CardDescription>
             This content is displayed publicly to all users. Supports Markdown formatting.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex-1 min-h-0 p-6 pt-0">
-          <Textarea 
+        <CardContent className="p-6 pt-0">
+          <Textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="h-full min-h-[400px] font-mono text-sm resize-none focus-visible:ring-primary/20"
+            className="min-h-[400px] font-mono text-sm resize-y focus-visible:ring-primary/20"
             placeholder="Enter the Terms of Service here..."
           />
         </CardContent>
       </Card>
+
+      <DesktopReleaseSection />
     </div>
   );
 }

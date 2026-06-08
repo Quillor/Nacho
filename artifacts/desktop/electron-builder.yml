@@ -23,6 +23,9 @@ protocols:
       - nacho
 
 mac:
+  # 1024×1024 PNG generated from artifacts/pico/public/logo-mark.svg via
+  # scripts/gen-icon.mjs; electron-builder converts it to .icns at build time.
+  icon: build/icon.png
   category: public.app-category.productivity
   hardenedRuntime: true
   gatekeeperAssess: false
