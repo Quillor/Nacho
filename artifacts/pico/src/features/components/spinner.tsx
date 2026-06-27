@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Spinner } from "@workspace/pico-ui/spinner";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 
@@ -13,8 +14,7 @@ export default function SpinnerDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="flex items-center gap-3 bg-background px-4 py-3 border border-foreground shadow-sm rounded-sm">
             <Spinner />
@@ -27,10 +27,9 @@ export default function SpinnerDocs() {
   <Spinner />
   <span>Preparing recording</span>
 </div>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Sizes</h2>
+      <Section title="Sizes">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Resize with a className utility — the spinner inherits the current text color.
         </p>
@@ -42,7 +41,7 @@ export default function SpinnerDocs() {
         <CodeBlock code={`<Spinner className="size-4" />
 <Spinner className="size-6" />
 <Spinner className="size-8" />`} />
-      </section>
+      </Section>
     </div>
   );
 }

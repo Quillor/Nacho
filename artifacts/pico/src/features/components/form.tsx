@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -26,8 +27,7 @@ export default function FormDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <Form {...form}>
             <form
@@ -100,7 +100,7 @@ function RecordingForm() {
     </Form>
   )
 }`} />
-      </section>
+      </Section>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -19,8 +20,7 @@ export default function CollapsibleDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <Collapsible className="w-full max-w-sm space-y-2 bg-background p-4 border border-foreground shadow-sm rounded-sm">
             <div className="flex items-center justify-between">
@@ -62,7 +62,7 @@ import { ChevronsUpDown } from "lucide-react"
     <div>Captions · English</div>
   </CollapsibleContent>
 </Collapsible>`} />
-      </section>
+      </Section>
     </div>
   );
 }

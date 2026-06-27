@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Alert, AlertTitle, AlertDescription } from "@workspace/pico-ui/alert";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 import { Terminal, AlertCircle } from "lucide-react";
@@ -14,8 +15,7 @@ export default function AlertDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Default</h2>
+      <Section title="Default">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Alert>
             <Terminal className="h-4 w-4" />
@@ -35,10 +35,9 @@ import { Terminal } from "lucide-react"
     You can add components to your app using the cli.
   </AlertDescription>
 </Alert>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Destructive</h2>
+      <Section title="Destructive">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
@@ -55,7 +54,7 @@ import { Terminal } from "lucide-react"
     Your session has expired. Please log in again.
   </AlertDescription>
 </Alert>`} />
-      </section>
+      </Section>
     </div>
   );
 }

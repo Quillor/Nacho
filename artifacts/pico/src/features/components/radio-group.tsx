@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { RadioGroup, RadioGroupItem } from "@workspace/pico-ui/radio-group";
 import { Label } from "@workspace/pico-ui/label";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
@@ -14,8 +15,7 @@ export default function RadioGroupDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <RadioGroup defaultValue="link" className="bg-background p-4 border border-foreground shadow-sm rounded-sm">
             <div className="flex items-center space-x-2">
@@ -49,7 +49,7 @@ import { Label } from "@workspace/pico-ui/label"
     <Label htmlFor="private">Private</Label>
   </div>
 </RadioGroup>`} />
-      </section>
+      </Section>
     </div>
   );
 }

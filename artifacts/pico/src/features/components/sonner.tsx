@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Toaster } from "@workspace/pico-ui/sonner";
 import { Button } from "@workspace/pico-ui/button";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
@@ -15,8 +16,7 @@ export default function SonnerDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <Button
             onClick={() =>
@@ -41,10 +41,9 @@ import { Button } from "@workspace/pico-ui/button"
 >
   Copy link
 </Button>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">With an action</h2>
+      <Section title="With an action">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Attach an action button for a quick follow-up — like undoing a delete from your recordings.
         </p>
@@ -71,10 +70,9 @@ import { Button } from "@workspace/pico-ui/button"
     onClick: () => restoreRecording(),
   },
 })`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Setup</h2>
+      <Section title="Setup">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Mount the <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">{"<Toaster />"}</code> once near the root of your app so toasts have somewhere to render.
         </p>
@@ -88,7 +86,7 @@ function App() {
     </>
   )
 }`} />
-      </section>
+      </Section>
     </div>
   );
 }

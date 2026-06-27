@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Textarea } from "@workspace/pico-ui/textarea";
 import { Label } from "@workspace/pico-ui/label";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
@@ -14,8 +15,7 @@ export default function TextareaDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <div className="w-full max-w-md space-y-2">
             <Label htmlFor="description" className="uppercase tracking-wide">Description</Label>
@@ -37,10 +37,9 @@ import { Label } from "@workspace/pico-ui/label"
     placeholder="Tell viewers what this recording covers…"
   />
 </div>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Disabled</h2>
+      <Section title="Disabled">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <div className="w-full max-w-md space-y-2">
             <Label htmlFor="transcript" className="uppercase tracking-wide">Transcript</Label>
@@ -57,7 +56,7 @@ import { Label } from "@workspace/pico-ui/label"
   defaultValue="Transcript is still processing…"
   disabled
 />`} />
-      </section>
+      </Section>
     </div>
   );
 }

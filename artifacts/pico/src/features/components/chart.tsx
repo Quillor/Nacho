@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import {
   ChartContainer,
@@ -36,8 +37,7 @@ export default function ChartDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="w-full max-w-xl bg-card border border-foreground shadow-sm rounded-sm p-6">
             <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
@@ -81,7 +81,7 @@ const chartConfig = {
     <Bar dataKey="views" fill="var(--color-views)" radius={4} />
   </BarChart>
 </ChartContainer>`} />
-      </section>
+      </Section>
     </div>
   );
 }

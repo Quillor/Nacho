@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@workspace/pico-ui/card";
 import { Button } from "@workspace/pico-ui/button";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
@@ -14,8 +15,7 @@ export default function CardDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Basic Usage</h2>
+      <Section title="Basic Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Card className="max-w-[350px]">
             <CardHeader>
@@ -51,7 +51,7 @@ export default function CardDocs() {
     <Button className="w-full">Subscribe Now</Button>
   </CardFooter>
 </Card>`} />
-      </section>
+      </Section>
     </div>
   );
 }

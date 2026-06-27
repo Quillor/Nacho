@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Avatar, AvatarFallback, AvatarImage } from "@workspace/pico-ui/avatar";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 
@@ -13,8 +14,7 @@ export default function AvatarDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center gap-4">
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
@@ -31,7 +31,7 @@ export default function AvatarDocs() {
   <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
   <AvatarFallback>CN</AvatarFallback>
 </Avatar>`} />
-      </section>
+      </Section>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Button } from "@workspace/pico-ui/button";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 import { useToast } from "@workspace/pico-ui/hooks/use-toast";
@@ -16,8 +17,7 @@ export default function ToastDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <Button
             onClick={() =>
@@ -48,10 +48,9 @@ function CopyButton() {
     </Button>
   )
 }`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Destructive</h2>
+      <Section title="Destructive">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Use the destructive variant for failures. Drop the jokes, never blame the user, and say the one thing they can try next.
         </p>
@@ -74,10 +73,9 @@ function CopyButton() {
   title: "Publish failed",
   description: "Something went wrong uploading — give it another go.",
 })`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Setup</h2>
+      <Section title="Setup">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Mount the <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">{"<Toaster />"}</code> once near the root of your app so toasts have somewhere to render.
         </p>
@@ -91,7 +89,7 @@ function App() {
     </>
   )
 }`} />
-      </section>
+      </Section>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import {
   Tooltip,
   TooltipContent,
@@ -19,8 +20,7 @@ export default function TooltipDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <TooltipProvider>
             <Tooltip>
@@ -50,7 +50,7 @@ export default function TooltipDocs() {
     </TooltipContent>
   </Tooltip>
 </TooltipProvider>`} />
-      </section>
+      </Section>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,8 +25,7 @@ export default function AlertDialogDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -76,10 +76,9 @@ export default function AlertDialogDocs() {
     </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Dialog vs. Alert Dialog</h2>
+      <Section title="Dialog vs. Alert Dialog">
         <div className="grid gap-6 md:grid-cols-2">
           <div className="border-2 border-foreground rounded-sm bg-background p-6 shadow-sm">
  <h3 className="font-display text-xl font-extrabold mb-2">Dialog</h3>
@@ -96,7 +95,7 @@ export default function AlertDialogDocs() {
             </p>
           </div>
         </div>
-      </section>
+      </Section>
     </div>
   );
 }

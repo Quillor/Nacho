@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Skeleton } from "@workspace/pico-ui/skeleton";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 
@@ -13,8 +14,7 @@ export default function SkeletonDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="w-full max-w-sm flex items-center space-x-4 bg-background p-4 border border-foreground shadow-sm rounded-sm">
             <Skeleton className="h-16 w-24 rounded-sm" />
@@ -33,7 +33,7 @@ export default function SkeletonDocs() {
     <Skeleton className="h-4 w-1/2" />
   </div>
 </div>`} />
-      </section>
+      </Section>
     </div>
   );
 }

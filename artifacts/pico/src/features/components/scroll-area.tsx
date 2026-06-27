@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { ScrollArea } from "@workspace/pico-ui/scroll-area";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 
@@ -26,8 +27,7 @@ export default function ScrollAreaDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <ScrollArea className="h-48 w-72 bg-background border border-foreground shadow-sm rounded-sm">
             <div className="p-4 space-y-2">
@@ -50,7 +50,7 @@ export default function ScrollAreaDocs() {
     <p className="text-sm">02:15 — Recording your screen</p>
   </div>
 </ScrollArea>`} />
-      </section>
+      </Section>
     </div>
   );
 }

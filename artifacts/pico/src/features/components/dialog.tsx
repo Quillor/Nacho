@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import {
   Dialog,
   DialogContent,
@@ -24,8 +25,7 @@ export default function DialogDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <Dialog>
             <DialogTrigger asChild>
@@ -78,7 +78,7 @@ export default function DialogDocs() {
     </DialogHeader>
   </DialogContent>
 </Dialog>`} />
-      </section>
+      </Section>
     </div>
   );
 }

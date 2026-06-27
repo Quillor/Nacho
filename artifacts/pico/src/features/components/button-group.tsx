@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import {
   ButtonGroup,
   ButtonGroupSeparator,
@@ -19,8 +20,7 @@ export default function ButtonGroupDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <ButtonGroup>
             <Button variant="outline">
@@ -51,10 +51,9 @@ import { SkipBack, Play, SkipForward } from "lucide-react"
     <SkipForward />
   </Button>
 </ButtonGroup>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">With label and separator</h2>
+      <Section title="With label and separator">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Drop in <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">ButtonGroupText</code> for a static label and <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">ButtonGroupSeparator</code> to divide intent.
         </p>
@@ -80,7 +79,7 @@ import { SkipBack, Play, SkipForward } from "lucide-react"
   <Button variant="outline">1.5x</Button>
   <Button variant="outline">2x</Button>
 </ButtonGroup>`} />
-      </section>
+      </Section>
     </div>
   );
 }

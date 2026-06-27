@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Input } from "@workspace/pico-ui/input";
 import { Label } from "@workspace/pico-ui/label";
 import { Textarea } from "@workspace/pico-ui/textarea";
@@ -15,8 +16,7 @@ export default function InputDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Input</h2>
+      <Section title="Input">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 max-w-md space-y-4">
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="email">Email</Label>
@@ -30,10 +30,9 @@ import { Label } from "@workspace/pico-ui/label"
   <Label htmlFor="email">Email</Label>
   <Input type="email" id="email" placeholder="Email" />
 </div>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Disabled State</h2>
+      <Section title="Disabled State">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 max-w-md space-y-4">
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="disabled">Email</Label>
@@ -41,10 +40,9 @@ import { Label } from "@workspace/pico-ui/label"
           </div>
         </div>
         <CodeBlock code={`<Input disabled type="email" placeholder="Email" />`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Textarea</h2>
+      <Section title="Textarea">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 max-w-md space-y-4">
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="message">Message</Label>
@@ -57,7 +55,7 @@ import { Label } from "@workspace/pico-ui/label"
   <Label htmlFor="message">Message</Label>
   <Textarea placeholder="Type your message here." id="message" />
 </div>`} />
-      </section>
+      </Section>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Badge } from "@workspace/pico-ui/badge";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 
@@ -13,8 +14,7 @@ export default function BadgeDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Variants</h2>
+      <Section title="Variants">
         <div className="flex flex-wrap gap-4 items-center p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Badge>Default</Badge>
           <Badge variant="secondary">Secondary</Badge>
@@ -27,7 +27,7 @@ export default function BadgeDocs() {
 <Badge variant="secondary">Secondary</Badge>
 <Badge variant="outline">Outline</Badge>
 <Badge variant="destructive">Destructive</Badge>`} />
-      </section>
+      </Section>
 
     </div>
   );

@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { useState } from "react";
 import { Calendar } from "@workspace/pico-ui/calendar";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
@@ -16,8 +17,7 @@ export default function CalendarDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <Calendar
             mode="single"
@@ -37,7 +37,7 @@ const [date, setDate] = useState<Date | undefined>(new Date())
   onSelect={setDate}
   className="border border-foreground shadow-sm rounded-sm"
 />`} />
-      </section>
+      </Section>
     </div>
   );
 }

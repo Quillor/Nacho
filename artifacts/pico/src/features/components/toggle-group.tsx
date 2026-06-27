@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/pico-ui/toggle-group";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
@@ -14,8 +15,7 @@ export default function ToggleGroupDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <ToggleGroup type="single" defaultValue="left" variant="outline">
             <ToggleGroupItem value="left" aria-label="Align left">
@@ -43,10 +43,9 @@ import { AlignLeft, AlignCenter, AlignRight } from "lucide-react"
     <AlignRight />
   </ToggleGroupItem>
 </ToggleGroup>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Multiple</h2>
+      <Section title="Multiple">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Use type="multiple" when more than one option can be active at once.
         </p>
@@ -74,7 +73,7 @@ import { AlignLeft, AlignCenter, AlignRight } from "lucide-react"
     <AlignRight />
   </ToggleGroupItem>
 </ToggleGroup>`} />
-      </section>
+      </Section>
     </div>
   );
 }

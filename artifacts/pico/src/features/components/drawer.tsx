@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import {
   Drawer,
   DrawerClose,
@@ -23,8 +24,7 @@ export default function DrawerDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <Drawer>
             <DrawerTrigger asChild>
@@ -80,7 +80,7 @@ export default function DrawerDocs() {
     </div>
   </DrawerContent>
 </Drawer>`} />
-      </section>
+      </Section>
     </div>
   );
 }

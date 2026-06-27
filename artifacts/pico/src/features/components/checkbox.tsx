@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Checkbox } from "@workspace/pico-ui/checkbox";
 import { Label } from "@workspace/pico-ui/label";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
@@ -14,8 +15,7 @@ export default function CheckboxDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex flex-col items-center justify-center gap-6">
           <div className="flex items-center space-x-2 bg-background p-4 border border-foreground shadow-sm rounded-sm min-w-[200px]">
             <Checkbox id="terms" />
@@ -41,7 +41,7 @@ import { Label } from "@workspace/pico-ui/label"
   <Checkbox id="terms" />
   <Label htmlFor="terms">Accept terms and conditions</Label>
 </div>`} />
-      </section>
+      </Section>
     </div>
   );
 }

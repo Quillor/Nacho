@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import {
   Command,
   CommandInput,
@@ -23,8 +24,7 @@ export default function CommandDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <Command className="max-w-md border border-foreground shadow-sm rounded-sm">
             <CommandInput placeholder="Type a command or search..." />
@@ -92,7 +92,7 @@ import { Video, Link2, FileText } from "lucide-react"
     </CommandGroup>
   </CommandList>
 </Command>`} />
-      </section>
+      </Section>
     </div>
   );
 }

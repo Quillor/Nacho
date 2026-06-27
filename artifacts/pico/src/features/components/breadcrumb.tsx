@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -21,8 +22,7 @@ export default function BreadcrumbDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <Breadcrumb className="bg-background p-4 border border-foreground shadow-sm rounded-sm">
             <BreadcrumbList>
@@ -64,10 +64,9 @@ export default function BreadcrumbDocs() {
     </BreadcrumbItem>
   </BreadcrumbList>
 </Breadcrumb>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Collapsed</h2>
+      <Section title="Collapsed">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Deep trails get long. Use an ellipsis to fold the middle and keep the first and last crumbs.
         </p>
@@ -93,7 +92,7 @@ export default function BreadcrumbDocs() {
 <BreadcrumbItem>
   <BreadcrumbEllipsis />
 </BreadcrumbItem>`} />
-      </section>
+      </Section>
     </div>
   );
 }

@@ -1,6 +1,49 @@
 import React from "react";
 import { Link } from "wouter";
-import { Check, X, ArrowRight } from "lucide-react";
+import { Check, X, ArrowRight, Link2 } from "lucide-react";
+
+/** Turn a human title into a URL-safe anchor slug. */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+/** Scroll the element matching the current URL hash into view. */
+function scrollToHash() {
+  const raw = window.location.hash.replace(/^#/, "");
+  if (!raw) return;
+  let hash = raw;
+  try {
+    hash = decodeURIComponent(raw);
+  } catch {
+    /* malformed hash — fall back to the raw value */
+  }
+  // Wait two frames so freshly-mounted (and animated-in) content exists.
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => {
+      const el = document.getElementById(hash);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }),
+  );
+}
+
+/**
+ * Mount inside the routed content so it runs once the new page is in the DOM.
+ * Scrolls to the hash on navigation and whenever the hash changes.
+ */
+export function HashScroller() {
+  React.useEffect(() => {
+    scrollToHash();
+    const onHash = () => scrollToHash();
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+  return null;
+}
 
 export function PatternPage({ children }: { children: React.ReactNode }) {
   return <div className="space-y-16">{children}</div>;
@@ -32,15 +75,48 @@ export function PageHeader({
 
 export function Section({
   title,
+  id,
   children,
 }: {
   title: string;
+  id?: string;
   children: React.ReactNode;
 }) {
+  const anchor = id ?? slugify(title);
+  const [copied, setCopied] = React.useState(false);
+
+  const copyLink = async () => {
+    const url = `${window.location.origin}${window.location.pathname}#${anchor}`;
+    window.history.replaceState(null, "", `#${anchor}`);
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* clipboard unavailable; the hash is still updated for manual copy */
+    }
+  };
+
   return (
     <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">
-        {title}
+      <h2
+        id={anchor}
+        className="group flex scroll-mt-24 items-center gap-2 border-b-2 border-foreground pb-2 font-display text-3xl font-extrabold"
+      >
+        <span>{title}</span>
+        <button
+          type="button"
+          onClick={copyLink}
+          aria-label={`Copy link to ${title}`}
+          title="Copy link to this section"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-foreground bg-background text-foreground opacity-0 shadow-xs transition-all hover:-translate-y-0.5 focus-visible:opacity-100 group-hover:opacity-100"
+        >
+          {copied ? (
+            <Check className="h-4 w-4" />
+          ) : (
+            <Link2 className="h-4 w-4" />
+          )}
+        </button>
       </h2>
       {children}
     </section>

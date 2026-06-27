@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Separator } from "@workspace/pico-ui/separator";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 
@@ -13,8 +14,7 @@ export default function SeparatorDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="w-full max-w-xs bg-background p-6 border border-foreground shadow-sm rounded-sm">
             <div className="space-y-1">
@@ -45,7 +45,7 @@ export default function SeparatorDocs() {
     <span>Delete</span>
   </div>
 </div>`} />
-      </section>
+      </Section>
     </div>
   );
 }

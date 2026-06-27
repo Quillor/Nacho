@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Switch } from "@workspace/pico-ui/switch";
 import { Label } from "@workspace/pico-ui/label";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
@@ -14,8 +15,7 @@ export default function SwitchDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="flex items-center space-x-2 bg-background p-4 border border-foreground shadow-sm rounded-sm">
             <Switch id="airplane-mode" />
@@ -29,7 +29,7 @@ import { Label } from "@workspace/pico-ui/label"
   <Switch id="airplane-mode" />
   <Label htmlFor="airplane-mode">Airplane Mode</Label>
 </div>`} />
-      </section>
+      </Section>
     </div>
   );
 }

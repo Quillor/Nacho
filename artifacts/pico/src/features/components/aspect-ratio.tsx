@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { AspectRatio } from "@workspace/pico-ui/aspect-ratio";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 import { Play } from "lucide-react";
@@ -14,8 +15,7 @@ export default function AspectRatioDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="w-full max-w-md">
             <AspectRatio ratio={16 / 9}>
@@ -33,7 +33,7 @@ import { Play } from "lucide-react"
     <Play className="h-10 w-10 text-accent-foreground" />
   </div>
 </AspectRatio>`} />
-      </section>
+      </Section>
     </div>
   );
 }

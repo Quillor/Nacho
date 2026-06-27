@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Progress } from "@workspace/pico-ui/progress";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 
@@ -13,8 +14,7 @@ export default function ProgressDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="w-full max-w-sm space-y-2 bg-background p-4 border border-foreground shadow-sm rounded-sm">
             <div className="flex items-center justify-between text-sm font-bold uppercase tracking-wide">
@@ -27,10 +27,9 @@ export default function ProgressDocs() {
         <CodeBlock code={`import { Progress } from "@workspace/pico-ui/progress"
 
 <Progress value={66} />`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Values</h2>
+      <Section title="Values">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Set <code>value</code> from 0 to 100 to reflect the real state of the task.
         </p>
@@ -44,7 +43,7 @@ export default function ProgressDocs() {
         <CodeBlock code={`<Progress value={20} />
 <Progress value={50} />
 <Progress value={90} />`} />
-      </section>
+      </Section>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import {
   Item,
   ItemActions,
@@ -24,8 +25,7 @@ export default function ItemDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <Item
             variant="outline"
@@ -70,10 +70,9 @@ import { Video, MoreHorizontal } from "lucide-react"
     </Button>
   </ItemActions>
 </Item>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Grouped</h2>
+      <Section title="Grouped">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Wrap rows in an <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">ItemGroup</code> and divide them with <code className="font-mono text-base bg-foreground/10 px-1 rounded-sm">ItemSeparator</code> for a clean list of recordings.
         </p>
@@ -131,7 +130,7 @@ import { Video, MoreHorizontal } from "lucide-react"
     </ItemContent>
   </Item>
 </ItemGroup>`} />
-      </section>
+      </Section>
     </div>
   );
 }

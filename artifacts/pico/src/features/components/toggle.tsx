@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Toggle } from "@workspace/pico-ui/toggle";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 import { Mic } from "lucide-react";
@@ -14,8 +15,7 @@ export default function ToggleDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <Toggle aria-label="Toggle microphone" className="border border-foreground">
             <Mic />
@@ -29,10 +29,9 @@ import { Mic } from "lucide-react"
   <Mic />
   Microphone
 </Toggle>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Variants</h2>
+      <Section title="Variants">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Use the outline variant for standalone controls and show the pressed state with defaultPressed.
         </p>
@@ -55,7 +54,7 @@ import { Mic } from "lucide-react"
   <Mic />
   Mic on
 </Toggle>`} />
-      </section>
+      </Section>
     </div>
   );
 }

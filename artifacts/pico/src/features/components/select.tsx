@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import {
   Select,
   SelectContent,
@@ -20,8 +21,7 @@ export default function SelectDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex justify-center">
           <div className="w-full max-w-xs space-y-2">
             <Label className="uppercase tracking-wide">Caption language</Label>
@@ -56,10 +56,9 @@ export default function SelectDocs() {
     <SelectItem value="fr">French</SelectItem>
   </SelectContent>
 </Select>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Placeholder</h2>
+      <Section title="Placeholder">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           When there's no default, show a placeholder that names the choice — never repeat the label.
         </p>
@@ -78,7 +77,7 @@ export default function SelectDocs() {
         <CodeBlock code={`<SelectTrigger className="w-56 border border-foreground font-bold">
   <SelectValue placeholder="Pick a language" />
 </SelectTrigger>`} />
-      </section>
+      </Section>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Kbd, KbdGroup } from "@workspace/pico-ui/kbd";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 
@@ -13,8 +14,7 @@ export default function KbdDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Usage</h2>
+      <Section title="Usage">
         <div className="p-8 border-2 border-foreground rounded-sm bg-background/50 flex items-center justify-center">
           <div className="bg-background p-4 border border-foreground shadow-sm rounded-sm">
             <Kbd>⌘</Kbd>
@@ -23,10 +23,9 @@ export default function KbdDocs() {
         <CodeBlock code={`import { Kbd } from "@workspace/pico-ui/kbd"
 
 <Kbd>⌘</Kbd>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Shortcuts</h2>
+      <Section title="Shortcuts">
         <p className="text-base font-medium leading-relaxed text-foreground/80 max-w-2xl">
           Combine keys with <code>KbdGroup</code> to show a full shortcut for an action.
         </p>
@@ -56,7 +55,7 @@ export default function KbdDocs() {
   <Kbd>⇧</Kbd>
   <Kbd>R</Kbd>
 </KbdGroup>`} />
-      </section>
+      </Section>
     </div>
   );
 }

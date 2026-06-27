@@ -1,3 +1,4 @@
+import { Section } from "@/components/docs/shared";
 import { Button } from "@workspace/pico-ui/button";
 import { CodeBlock } from "@workspace/pico-ui/code-block";
 import { ArrowRight, Mail } from "lucide-react";
@@ -14,8 +15,7 @@ export default function ButtonDocs() {
         </p>
       </div>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Variants</h2>
+      <Section title="Variants">
         <div className="flex flex-wrap gap-4 items-center p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Button>Default</Button>
           <Button variant="brand">Brand</Button>
@@ -34,10 +34,9 @@ export default function ButtonDocs() {
 <Button variant="destructive">Destructive</Button>
 <Button variant="ghost">Ghost</Button>
 <Button variant="link">Link</Button>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Brand</h2>
+      <Section title="Brand">
         <p className="text-lg max-w-2xl font-medium leading-relaxed text-foreground/80">
           The chunky marketing CTA: solid yellow fill, heavy brown border, and the chunky offset shadow that presses down on hover. Use it for the loudest primary action on a light surface — landing-page sign-up, hero calls to action.
         </p>
@@ -47,10 +46,9 @@ export default function ButtonDocs() {
         </div>
         <CodeBlock code={`<Button variant="brand">Start Recording Free</Button>
 <Button variant="brand" size="lg">Get Started</Button>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">Sizes</h2>
+      <Section title="Sizes">
         <div className="flex flex-wrap gap-4 items-center p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Button size="sm">Small</Button>
           <Button size="default">Default</Button>
@@ -61,10 +59,9 @@ export default function ButtonDocs() {
 <Button size="default">Default</Button>
 <Button size="lg">Large</Button>
 <Button size="icon"><ArrowRight /></Button>`} />
-      </section>
+      </Section>
 
-      <section className="space-y-8">
- <h2 className="text-3xl font-display font-extrabold border-b-2 border-foreground pb-2">With Icon</h2>
+      <Section title="With Icon">
         <div className="flex flex-wrap gap-4 items-center p-8 border-2 border-foreground rounded-sm bg-background/50">
           <Button>
             <Mail className="w-4 h-4 mr-2" /> Login with Email
@@ -73,7 +70,7 @@ export default function ButtonDocs() {
         <CodeBlock code={`<Button>
   <Mail className="w-4 h-4 mr-2" /> Login with Email
 </Button>`} />
-      </section>
+      </Section>
     </div>
   );
 }

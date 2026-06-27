@@ -21,6 +21,7 @@ import {
 } from "@workspace/pico-ui/collapsible";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, Moon, Sun } from "lucide-react";
+import { HashScroller } from "@/components/docs/shared";
 
 const NAVIGATION = [
   {
@@ -300,6 +301,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
             >
+              <HashScroller />
               {children}
             </motion.div>
           </AnimatePresence>
