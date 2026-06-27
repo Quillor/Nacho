@@ -109,7 +109,7 @@ export function Section({
           onClick={copyLink}
           aria-label={`Copy link to ${title}`}
           title="Copy link to this section"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-foreground bg-background text-foreground opacity-0 shadow-xs transition-all hover:-translate-y-0.5 focus-visible:opacity-100 group-hover:opacity-100"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-foreground bg-background text-foreground opacity-100 shadow-xs transition-all hover:-translate-y-0.5 md:opacity-0 md:focus-visible:opacity-100 md:group-hover:opacity-100"
         >
           {copied ? (
             <Check className="h-4 w-4" />
