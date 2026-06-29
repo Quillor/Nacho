@@ -74,9 +74,6 @@ export function Home() {
         </Link>
         <div className="flex items-center gap-4">
           <Button asChild variant="ghost" className="hidden md:flex">
-            <Link href="/download">Download</Link>
-          </Button>
-          <Button asChild variant="ghost" className="hidden md:flex">
             <Link href="/shop">Shop</Link>
           </Button>
           <Button asChild variant="ghost" className="hidden md:flex">
