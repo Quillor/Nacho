@@ -1,5 +1,14 @@
+import { useState } from "react";
 import { Link } from "wouter";
+import { Menu } from "lucide-react";
 import { Button } from "@workspace/pico-ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@workspace/pico-ui/sheet";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/logo";
 
@@ -25,6 +34,8 @@ interface MarketingChromeProps {
  * tab because it is an internal/dev resource.
  */
 export function MarketingNav({ active }: MarketingChromeProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <nav
       data-pico-section="navbar"
@@ -61,6 +72,73 @@ export function MarketingNav({ active }: MarketingChromeProps) {
         <Button asChild variant="brand">
           <Link href="/sign-up">Get Started</Link>
         </Button>
+
+        {/* Mobile menu — surfaces the full nav on small screens. */}
+        <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              aria-label="Open menu"
+            >
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent
+            side="right"
+            className="w-3/4 max-w-xs border-l-2 border-foreground"
+          >
+            <SheetHeader>
+              <SheetTitle className="text-left">Menu</SheetTitle>
+            </SheetHeader>
+            <div className="mt-6 flex flex-col gap-1">
+              {NAV_LINKS.map((item) => (
+                <Button
+                  key={item.page}
+                  asChild
+                  variant="ghost"
+                  className={cn(
+                    "justify-start text-base",
+                    active === item.page && "font-bold",
+                  )}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <Link href={item.href}>{item.label}</Link>
+                </Button>
+              ))}
+
+              <Button
+                asChild
+                variant="ghost"
+                className="justify-start text-base"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Link href="/sign-in">Sign In</Link>
+              </Button>
+
+              {/* Internal/dev resource — set apart and opens in a new tab. */}
+              <a
+                href="/design-system/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMenuOpen(false)}
+                className="mt-2 inline-flex items-center font-bold text-sm text-foreground/60 hover:text-foreground hover:underline transition-colors border-t-2 border-foreground/20 pt-4 px-4"
+              >
+                Design System ↗
+              </a>
+
+              <Button
+                asChild
+                variant="brand"
+                className="mt-4"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Link href="/sign-up">Get Started</Link>
+              </Button>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </nav>
   );
