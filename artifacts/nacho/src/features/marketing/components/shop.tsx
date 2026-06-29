@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "wouter";
 import { Button } from "@workspace/pico-ui/button";
 import { Card } from "@workspace/pico-ui/card";
 import { Badge } from "@workspace/pico-ui/badge";
 import { ShoppingBag, X, ZoomIn } from "lucide-react";
-import { Logo } from "@/components/logo";
+import { MarketingNav, MarketingFooter } from "./marketing-chrome";
 import teeFlat from "@assets/image_1780729762006.png";
 import teeLifestyle from "@assets/image_1780729757624.png";
 import nachosBag from "@assets/image_1780729866536.png";
@@ -78,25 +77,7 @@ export function Shop() {
     <div className="min-h-[100dvh] bg-background text-foreground overflow-hidden selection:bg-accent selection:text-accent-foreground font-sans">
 
       {/* Navigation */}
-      <nav data-pico-section="navbar" className="fixed top-0 left-0 right-0 z-50 border-b-2 border-foreground bg-background py-4 px-6 md:px-12 flex items-center justify-between">
-        <Link href="/" className="flex items-center" aria-label="Nacho home">
-          <Logo className="h-9" />
-        </Link>
-        <div className="flex items-center gap-4">
-          <Button asChild variant="ghost" className="hidden md:flex">
-            <Link href="/download">Download</Link>
-          </Button>
-          <Button asChild variant="ghost" className="hidden md:flex font-bold">
-            <Link href="/shop">Shop</Link>
-          </Button>
-          <Button asChild variant="ghost" className="hidden md:flex">
-            <Link href="/sign-in">Sign In</Link>
-          </Button>
-          <Button asChild variant="brand">
-            <Link href="/sign-up">Get Started</Link>
-          </Button>
-        </div>
-      </nav>
+      <MarketingNav active="shop" />
 
       <main>
 
@@ -211,18 +192,7 @@ export function Shop() {
       </main>
 
       {/* Footer */}
-      <footer data-pico-section="footer" className="py-12 px-6 md:px-12 border-t-2 border-foreground bg-background text-foreground">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <Link href="/" className="flex items-center" aria-label="Nacho home">
-            <Logo className="h-10" />
-          </Link>
-          <div className="flex gap-6 font-bold text-foreground/80">
-            <Link href="/shop" className="hover:text-foreground hover:underline transition-colors">Shop</Link>
-            <Link href="/terms" className="hover:text-foreground hover:underline transition-colors">Terms</Link>
-            <a href="/design-system/" className="hover:text-foreground hover:underline transition-colors">Design System</a>
-          </div>
-        </div>
-      </footer>
+      <MarketingFooter active="shop" />
 
       {/* Lightbox */}
       <AnimatePresence>

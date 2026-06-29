@@ -1,6 +1,5 @@
-import { Link } from "wouter";
 import { useGetPublicTos } from "@workspace/api-client-react";
-import { Logo } from "@/components/logo";
+import { MarketingNav, MarketingFooter } from "./marketing-chrome";
 
 function renderMarkdown(content: string): string {
   // Minimal, safe markdown rendering for headings, bold, and paragraphs.
@@ -53,21 +52,9 @@ export function Terms() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
-      <header className="py-6 px-6 md:px-12 border-b-2 border-foreground">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center" aria-label="Nacho home">
-            <Logo className="h-9" />
-          </Link>
-          <Link
-            href="/"
-            className="font-bold text-foreground/80 hover:text-foreground hover:underline transition-colors"
-          >
-            Back to home
-          </Link>
-        </div>
-      </header>
+      <MarketingNav active="terms" />
 
-      <main className="flex-1 py-12 px-6 md:px-12">
+      <main className="flex-1 pt-32 pb-12 px-6 md:px-12">
         <div className="max-w-3xl mx-auto">
           {isLoading ? (
             <p className="text-foreground/70">Loading terms…</p>
@@ -90,6 +77,8 @@ export function Terms() {
           ) : null}
         </div>
       </main>
+
+      <MarketingFooter active="terms" />
     </div>
   );
 }

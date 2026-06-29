@@ -41,6 +41,7 @@ import SettingsPage from "@/pages/settings";
 import Terms from "@/pages/terms";
 import Shop from "@/pages/shop";
 import Download from "@/pages/download";
+import BuiltByTim from "@/pages/built-by-tim";
 import Onboarding from "@/pages/onboarding";
 import { ControlsOverlay, CameraOverlay, NotesOverlay } from "@/features/overlays";
 import {
@@ -260,6 +261,7 @@ function Router() {
       <Route path="/terms" component={Terms} />
       <Route path="/download" component={Download} />
       <Route path="/shop" component={Shop} />
+      <Route path="/built-by-tim" component={BuiltByTim} />
       <Route path="/onboarding" component={Onboarding} />
       <Route path="/studio">
         <Protected>

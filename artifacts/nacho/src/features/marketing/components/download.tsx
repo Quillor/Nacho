@@ -1,9 +1,8 @@
-import { Link } from "wouter";
 import { useGetDesktopRelease } from "@workspace/api-client-react";
 import { Button } from "@workspace/pico-ui/button";
 import { Apple, Download as DownloadIcon, ShieldCheck } from "lucide-react";
 import { formatBytes } from "@workspace/shared";
-import { Logo } from "@/components/logo";
+import { MarketingNav, MarketingFooter } from "./marketing-chrome";
 
 const INSTALL_STEPS = [
   "Open the downloaded Nacho-x.x.x.dmg file.",
@@ -55,21 +54,9 @@ export function Download() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
-      <header className="py-6 px-6 md:px-12 border-b-2 border-foreground">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center" aria-label="Nacho home">
-            <Logo className="h-9" />
-          </Link>
-          <Link
-            href="/"
-            className="font-bold text-foreground/80 hover:text-foreground hover:underline transition-colors"
-          >
-            Back to home
-          </Link>
-        </div>
-      </header>
+      <MarketingNav active="download" />
 
-      <main className="flex-1 py-16 px-6 md:px-12">
+      <main className="flex-1 pt-32 pb-16 px-6 md:px-12">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-3 text-foreground/70 font-bold mb-4">
             <Apple className="h-6 w-6" />
@@ -130,6 +117,8 @@ export function Download() {
           {hasRelease ? <InstallGuide /> : null}
         </div>
       </main>
+
+      <MarketingFooter active="download" />
     </div>
   );
 }

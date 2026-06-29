@@ -4,7 +4,7 @@ import { Button } from "@workspace/pico-ui/button";
 import { Card } from "@workspace/pico-ui/card";
 import { Badge } from "@workspace/pico-ui/badge";
 import { Video, Share2, Scissors, Zap, MessageSquare, CheckCircle2 } from "lucide-react";
-import { Logo } from "@/components/logo";
+import { MarketingNav, MarketingFooter } from "./marketing-chrome";
 import videoPlayerNacho from "@workspace/nacho-illustrations/assets/nacho-dip-sales-player.webp";
 import hammockNacho from "@workspace/nacho-illustrations/assets/nacho-hammock.webp";
 import cheeseJumpNacho from "@workspace/nacho-illustrations/assets/nacho-cheese-jump.webp";
@@ -68,22 +68,7 @@ export function Home() {
     <div className="min-h-[100dvh] bg-background text-foreground overflow-hidden selection:bg-accent selection:text-accent-foreground font-sans">
 
       {/* Navigation */}
-      <nav data-pico-section="navbar" className="fixed top-0 left-0 right-0 z-50 border-b-2 border-foreground bg-background py-4 px-6 md:px-12 flex items-center justify-between">
-        <Link href="/" className="flex items-center" aria-label="Nacho home">
-          <Logo className="h-9" />
-        </Link>
-        <div className="flex items-center gap-4">
-          <Button asChild variant="ghost" className="hidden md:flex">
-            <Link href="/shop">Shop</Link>
-          </Button>
-          <Button asChild variant="ghost" className="hidden md:flex">
-            <Link href="/sign-in">Sign In</Link>
-          </Button>
-          <Button asChild variant="brand">
-            <Link href="/sign-up">Get Started</Link>
-          </Button>
-        </div>
-      </nav>
+      <MarketingNav />
 
       <main>
 
@@ -318,21 +303,7 @@ export function Home() {
       </main>
 
       {/* Footer */}
-      <footer data-pico-section="footer" className="py-12 px-6 md:px-12 border-t-2 border-foreground bg-background text-foreground">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <Link href="/" className="flex items-center" aria-label="Nacho home">
-            <Logo className="h-10" />
-          </Link>
-          <div className="flex gap-6 font-bold text-foreground/80">
-            <a href="#" className="hover:text-foreground hover:underline transition-colors">Twitter</a>
-            <a href="#" className="hover:text-foreground hover:underline transition-colors">LinkedIn</a>
-            <Link href="/download" className="hover:text-foreground hover:underline transition-colors">Download</Link>
-            <Link href="/shop" className="hover:text-foreground hover:underline transition-colors">Shop</Link>
-            <Link href="/terms" className="hover:text-foreground hover:underline transition-colors">Terms</Link>
-            <a href="/design-system/" className="hover:text-foreground hover:underline transition-colors">Design System</a>
-          </div>
-        </div>
-      </footer>
+      <MarketingFooter />
 
     </div>
   );
