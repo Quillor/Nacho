@@ -100,6 +100,10 @@ export function PublicView() {
           <>
             <div className="flex flex-col gap-8 lg:flex-row">
               <div className="min-w-0 flex-1 space-y-6">
+                <h1 className="font-display text-4xl font-extrabold leading-tight">
+                  {rec.title}
+                </h1>
+
                 <VideoPlayer
                   ref={playerRef}
                   src={storageUrl(rec.videoPath)}
@@ -118,15 +122,10 @@ export function PublicView() {
                   onPlay={handlePlay}
                 />
 
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div className="space-y-2">
- <h1 className="font-display text-4xl font-extrabold leading-tight">
-                      {rec.title}
-                    </h1>
-                    <p className="text-sm font-bold text-muted-foreground">
-                      {formatRelativeDate(new Date(rec.createdAt).getTime())}
-                    </p>
-                  </div>
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <p className="text-sm font-bold text-muted-foreground">
+                    {formatRelativeDate(new Date(rec.createdAt).getTime())}
+                  </p>
                   {hasTranscript && (
                     <Button
                       onClick={() => setTranscriptOpen((o) => !o)}
