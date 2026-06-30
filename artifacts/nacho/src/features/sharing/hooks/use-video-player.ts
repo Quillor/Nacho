@@ -47,6 +47,10 @@ export function useVideoPlayer(
   const [current, setCurrent] = useState(0);
   const [duration, setDuration] = useState(0);
   const [stageWidth, setStageWidth] = useState(0);
+  // True once the <video> element fails to load/decode the source — e.g. the
+  // stored object is missing or truncated. Drives the "video unavailable"
+  // overlay instead of leaving a dead play button on the public page.
+  const [mediaError, setMediaError] = useState(false);
   const hasCaptions = transcript.length > 0;
   const [captionsOn, setCaptionsOn] = useState(captionsDefault && hasCaptions);
 
@@ -260,6 +264,11 @@ export function useVideoPlayer(
 
   const handlePause = () => setPlaying(false);
 
+  const handleError = () => {
+    setMediaError(true);
+    setPlaying(false);
+  };
+
   const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const v = e.currentTarget;
     if (endTime && v.currentTime >= endTime) {
@@ -285,6 +294,7 @@ export function useVideoPlayer(
     stageRef,
     playing,
     current,
+    mediaError,
     captionsOn,
     setCaptionsOn,
     hasCaptions,
@@ -303,6 +313,7 @@ export function useVideoPlayer(
     handleLoadedMetadata,
     handlePlay,
     handlePause,
+    handleError,
     handleTimeUpdate,
     handleChapterClick,
   };

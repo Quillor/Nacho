@@ -13,6 +13,11 @@ import {
 } from "@workspace/api-zod";
 import { authUserId } from "../../lib/dev-auth";
 import {
+  ObjectStorageService,
+  ObjectNotFoundError,
+  UploadIncompleteError,
+} from "../../lib/object-storage";
+import {
   toApi,
   createRecording,
   getPublicRecording,
@@ -23,6 +28,7 @@ import {
 } from "./recordings.service";
 
 const router: IRouter = Router();
+const objectStorageService = new ObjectStorageService();
 
 router.post("/recordings", async (req, res): Promise<void> => {
   const userId = authUserId(req);
@@ -36,6 +42,28 @@ router.post("/recordings", async (req, res): Promise<void> => {
     req.log.warn({ errors: parsed.error.message }, "Invalid recording input");
     res.status(400).json({ error: parsed.error.message });
     return;
+  }
+
+  // Gate: never persist a recording whose video object didn't fully upload.
+  // A missing/truncated object here means the direct-to-storage PUT failed or
+  // was interrupted, so we refuse (retryable) rather than mint a dead link.
+  try {
+    await objectStorageService.verifyUploadedObject(
+      parsed.data.videoPath,
+      parsed.data.videoSize,
+    );
+  } catch (err) {
+    if (err instanceof ObjectNotFoundError || err instanceof UploadIncompleteError) {
+      req.log.warn(
+        { err, videoPath: parsed.data.videoPath },
+        "Refusing to save recording: video upload incomplete",
+      );
+      res.status(422).json({
+        error: "The video upload didn't finish. Please try again.",
+      });
+      return;
+    }
+    throw err;
   }
 
   const row = await createRecording(userId, parsed.data);

@@ -7,11 +7,60 @@ interface UploadUrlResponse {
   objectPath: string;
 }
 
+/**
+ * The video transfer to object storage failed (request-url or the PUT itself,
+ * after retries). The recording is still safe locally — the publish can be
+ * retried. Kept distinct from {@link SaveFailedError} so the UI can tell the
+ * user *which* half broke instead of a catch-all "couldn't create link".
+ */
+export class UploadFailedError extends Error {
+  constructor(message = "Upload failed") {
+    super(message);
+    this.name = "UploadFailedError";
+  }
+}
+
+/**
+ * The media uploaded but the server refused to (or couldn't) save the
+ * recording row — e.g. it verified the stored object was incomplete (HTTP 422)
+ * or the metadata POST failed. Also retryable.
+ */
+export class SaveFailedError extends Error {
+  constructor(message = "Save failed") {
+    super(message);
+    this.name = "SaveFailedError";
+  }
+}
+
 interface BlobUploadOptions {
   signal?: AbortSignal;
   /** Fraction (0..1) of the PUT transfer completed. */
   onProgress?: (fraction: number) => void;
 }
+
+/** Max PUT attempts (1 initial + retries) before giving up on a transfer. */
+const MAX_UPLOAD_ATTEMPTS = 4;
+
+function isAbort(err: unknown): boolean {
+  return err instanceof DOMException && err.name === "AbortError";
+}
+
+const delay = (ms: number, signal?: AbortSignal): Promise<void> =>
+  new Promise((resolve, reject) => {
+    if (signal?.aborted) {
+      reject(new DOMException("Aborted", "AbortError"));
+      return;
+    }
+    const t = setTimeout(() => {
+      signal?.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+    const onAbort = () => {
+      clearTimeout(t);
+      reject(new DOMException("Aborted", "AbortError"));
+    };
+    signal?.addEventListener("abort", onAbort);
+  });
 
 /**
  * PUT a blob to a presigned URL via XHR so we get upload progress events and
@@ -46,12 +95,12 @@ function putBlob(
         onProgress?.(1);
         resolve();
       } else {
-        reject(new Error("Upload failed"));
+        reject(new UploadFailedError(`Upload failed (HTTP ${xhr.status})`));
       }
     };
     xhr.onerror = () => {
       signal?.removeEventListener("abort", onAbort);
-      reject(new Error("Upload failed"));
+      reject(new UploadFailedError("Upload network error"));
     };
     xhr.onabort = () => {
       signal?.removeEventListener("abort", onAbort);
@@ -62,26 +111,67 @@ function putBlob(
   });
 }
 
+/**
+ * PUT with bounded retries + exponential backoff. A single fixed-window PUT of
+ * a large/slow file is fragile — a transient network blip drops the whole
+ * transfer. Re-PUTting to the *same* presigned URL is idempotent in object
+ * storage (it overwrites the object), and the long-lived upload URL stays valid
+ * across the backoff, so each retry is a clean fresh attempt. Aborts are never
+ * retried.
+ */
+async function putBlobWithRetry(
+  url: string,
+  blob: Blob,
+  contentType: string,
+  options: BlobUploadOptions = {},
+): Promise<void> {
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= MAX_UPLOAD_ATTEMPTS; attempt++) {
+    try {
+      await putBlob(url, blob, contentType, options);
+      return;
+    } catch (err) {
+      if (isAbort(err)) throw err;
+      lastErr = err;
+      if (attempt < MAX_UPLOAD_ATTEMPTS) {
+        // Reset visible progress so a fresh attempt doesn't look stuck at the
+        // point the previous one died.
+        options.onProgress?.(0);
+        await delay(1000 * 2 ** (attempt - 1), options.signal);
+      }
+    }
+  }
+  throw lastErr instanceof Error
+    ? lastErr
+    : new UploadFailedError();
+}
+
 async function uploadBlob(
   blob: Blob,
   name: string,
   options: BlobUploadOptions = {},
 ): Promise<string> {
-  const res = await fetch(apiPath("/api/storage/uploads/request-url"), {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
-    body: JSON.stringify({
-      name,
-      size: blob.size,
-      contentType: blob.type || "application/octet-stream",
-    }),
-    signal: options.signal,
-  });
-  if (!res.ok) throw new Error("Failed to request upload URL");
+  let res: Response;
+  try {
+    res = await fetch(apiPath("/api/storage/uploads/request-url"), {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json", ...(await authHeaders()) },
+      body: JSON.stringify({
+        name,
+        size: blob.size,
+        contentType: blob.type || "application/octet-stream",
+      }),
+      signal: options.signal,
+    });
+  } catch (err) {
+    if (isAbort(err)) throw err;
+    throw new UploadFailedError("Couldn't reach the upload service");
+  }
+  if (!res.ok) throw new UploadFailedError("Failed to request upload URL");
   const { uploadURL, objectPath } = (await res.json()) as UploadUrlResponse;
 
-  await putBlob(
+  await putBlobWithRetry(
     uploadURL,
     blob,
     blob.type || "application/octet-stream",
@@ -132,30 +222,44 @@ async function uploadRecording(
   }
 
   onProgress?.("Saving…");
-  const res = await fetch(apiPath("/api/recordings"), {
-    method: "POST",
-    credentials: "include",
-    signal,
-    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
-    body: JSON.stringify({
-      title: rec.title,
-      description: DOMPurify.sanitize(rec.description),
-      visibility,
-      durationSec: rec.durationSec,
-      trimStart: rec.trimStart,
-      trimEnd: rec.trimEnd,
-      hasAudio: rec.hasAudio,
-      videoPath,
-      thumbnailPath,
-      gifPath,
-      selfieCorner: rec.selfieCorner,
-      chapters: rec.chapters,
-      displayChaptersOnVideo: rec.displayChaptersOnVideo,
-      notifyOnView: rec.notifyOnView,
-      transcript: rec.transcript,
-    }),
-  });
-  if (!res.ok) throw new Error("Failed to save recording");
+  let res: Response;
+  try {
+    res = await fetch(apiPath("/api/recordings"), {
+      method: "POST",
+      credentials: "include",
+      signal,
+      headers: { "Content-Type": "application/json", ...(await authHeaders()) },
+      body: JSON.stringify({
+        title: rec.title,
+        description: DOMPurify.sanitize(rec.description),
+        visibility,
+        durationSec: rec.durationSec,
+        trimStart: rec.trimStart,
+        trimEnd: rec.trimEnd,
+        hasAudio: rec.hasAudio,
+        videoPath,
+        videoSize: rec.blob.size,
+        thumbnailPath,
+        gifPath,
+        selfieCorner: rec.selfieCorner,
+        chapters: rec.chapters,
+        displayChaptersOnVideo: rec.displayChaptersOnVideo,
+        notifyOnView: rec.notifyOnView,
+        transcript: rec.transcript,
+      }),
+    });
+  } catch (err) {
+    if (isAbort(err)) throw err;
+    throw new SaveFailedError("Couldn't reach the server to save");
+  }
+  if (!res.ok) {
+    // 422 means the server verified the uploaded object was missing/truncated:
+    // the media half is what's broken even though the PUT appeared to finish.
+    if (res.status === 422) {
+      throw new UploadFailedError("The video upload didn't finish");
+    }
+    throw new SaveFailedError("Failed to save recording");
+  }
   const data = (await res.json()) as {
     shareId: string;
     visibility: Visibility;

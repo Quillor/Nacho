@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { Play, Pause, Captions, CaptionsOff } from "lucide-react";
+import { Play, Pause, Captions, CaptionsOff, VideoOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatTimestamp } from "@workspace/shared";
 import type { Chapter, TranscriptSegment, SelfieCorner } from "@/lib/types";
@@ -108,8 +108,22 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
             onPlay={p.handlePlay}
             onPause={p.handlePause}
             onTimeUpdate={p.handleTimeUpdate}
-            onClick={p.togglePlay}
+            onError={p.handleError}
+            onClick={p.mediaError ? undefined : p.togglePlay}
           />
+
+          {p.mediaError ? (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-foreground/90 p-6 text-center">
+              <VideoOff className="h-8 w-8 text-background" />
+              <p className="font-display text-base font-extrabold text-background">
+                Video unavailable
+              </p>
+              <p className="max-w-xs text-sm font-medium text-background/80">
+                This recording couldn’t be loaded. It may still be processing or
+                is no longer available.
+              </p>
+            </div>
+          ) : null}
 
           {showChapterTitles && p.chapterTitle ? (
             <div
@@ -144,8 +158,9 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
           <button
             type="button"
             onClick={p.togglePlay}
+            disabled={p.mediaError}
             aria-label={p.playing ? "Pause" : "Play"}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-foreground bg-accent text-accent-foreground shadow-sm transition-transform hover:translate-y-0.5"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-foreground bg-accent text-accent-foreground shadow-sm transition-transform hover:translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {p.playing ? (
               <Pause className="h-5 w-5" />

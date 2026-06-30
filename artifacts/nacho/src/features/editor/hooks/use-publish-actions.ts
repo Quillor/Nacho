@@ -9,12 +9,43 @@ import {
   isUploadInFlight,
   retryUpload,
   createGifFromBlob,
+  UploadFailedError,
+  SaveFailedError,
 } from "@/features/publishing";
 import { shareUrl } from "@/lib/api";
 import type { LocalRecording, Chapter, Visibility } from "@/lib/types";
 
 // The GIF preview only covers the first few seconds of the trimmed clip.
 const GIF_PREVIEW_MAX_SECONDS = 6;
+
+// Turn a publish failure into an accurate, actionable toast. The two halves of
+// publishing fail for different reasons and need different guidance: an upload
+// failure (after retries) is usually network/size — ask them to retry on a
+// stable connection; a save failure means the metadata didn't land. Anything
+// else stays a generic message. The link button itself is the retry affordance.
+function describePublishError(err: unknown): {
+  title: string;
+  description: string;
+} {
+  if (err instanceof UploadFailedError) {
+    return {
+      title: "Video upload didn't finish",
+      description:
+        "The video couldn't be uploaded — this often happens on slow or unstable connections. Check your connection and tap “Get public link” to try again.",
+    };
+  }
+  if (err instanceof SaveFailedError) {
+    return {
+      title: "Couldn't save recording",
+      description:
+        "The video uploaded but we couldn't save it. Please tap “Get public link” to try again.",
+    };
+  }
+  return {
+    title: "Couldn't create link",
+    description: "Something went wrong. Please try again.",
+  };
+}
 
 // The editable fields the publish flows snapshot onto the recording. These are
 // owned by useRecordingEditor and passed in so the orchestration can build a
@@ -204,12 +235,9 @@ export function usePublishActions({
         title: "Public link ready",
         description: "Link copied — anyone with it can watch.",
       });
-    } catch {
-      toast({
-        title: "Couldn't create link",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
+    } catch (err) {
+      const { title, description } = describePublishError(err);
+      toast({ title, description, variant: "destructive" });
     } finally {
       setBusy(false);
       setPublishStep("");

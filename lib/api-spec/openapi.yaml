@@ -639,6 +639,12 @@ components:
           type: boolean
         videoPath:
           type: string
+        videoSize:
+          description: >-
+            Byte size of the uploaded video blob. The server verifies the
+            stored object matches this before persisting, so a truncated or
+            failed upload can never produce a public link to incomplete media.
+          type: integer
         thumbnailPath:
           type: ["string", "null"]
         gifPath:

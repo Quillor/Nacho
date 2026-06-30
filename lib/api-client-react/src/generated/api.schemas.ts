@@ -67,6 +67,8 @@ export interface RecordingInput {
   trimEnd: number;
   hasAudio?: boolean;
   videoPath: string;
+  /** Byte size of the uploaded video blob. The server verifies the stored object matches this before persisting, so a truncated or failed upload can never produce a public link to incomplete media. */
+  videoSize?: number;
   /** @nullable */
   thumbnailPath?: string | null;
   /** @nullable */

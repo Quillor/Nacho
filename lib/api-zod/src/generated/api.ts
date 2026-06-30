@@ -47,6 +47,7 @@ export const PublishRecordingBody = zod.object({
   "trimEnd": zod.number(),
   "hasAudio": zod.boolean().optional(),
   "videoPath": zod.string(),
+  "videoSize": zod.number().optional().describe('Byte size of the uploaded video blob. The server verifies the stored object matches this before persisting, so a truncated or failed upload can never produce a public link to incomplete media.'),
   "thumbnailPath": zod.string().nullish(),
   "gifPath": zod.string().nullish(),
   "selfieCorner": zod.union([zod.enum(['top-left', 'top-right', 'bottom-left', 'bottom-right']),zod.null()]).optional(),
