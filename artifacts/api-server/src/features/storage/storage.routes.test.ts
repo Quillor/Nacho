@@ -50,6 +50,21 @@ vi.mock("@google-cloud/storage", async () => {
       const end = opts?.end ?? FAKE.buf.length - 1;
       return Readable.from([FAKE.buf.subarray(start, end + 1)]);
     }
+    async createResumableUpload(opts?: {
+      origin?: string;
+      metadata?: { contentType?: string };
+    }) {
+      // Echo the inputs into the fake session URL so the test can assert the
+      // route forwarded origin/contentType through to the storage client.
+      const params = new URLSearchParams({
+        upload_id: "fake-upload-id",
+        origin: opts?.origin ?? "",
+        contentType: opts?.metadata?.contentType ?? "",
+      });
+      return [
+        `https://storage.googleapis.com/${this.bucket.name}/${this.name}?${params}`,
+      ];
+    }
   }
 
   class Bucket {
@@ -95,6 +110,7 @@ beforeAll(async () => {
     };
     next();
   });
+  app.use(express.json());
   app.use(storageRouter);
 
   await new Promise<void>((resolve) => {
@@ -166,5 +182,45 @@ describe("storage proxy Range support", () => {
     expect(res.status).toBe(416);
     expect(res.headers.get("content-range")).toBe(`bytes */${FAKE.buf.length}`);
     expect(res.headers.get("accept-ranges")).toBe("bytes");
+  });
+});
+
+describe("resumable upload session endpoint", () => {
+  const RESUMABLE_URL = () => `${baseUrl}/storage/uploads/resumable`;
+
+  test("returns a session URL and a normalized /objects path", async () => {
+    const res = await fetch(RESUMABLE_URL(), {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Origin: "https://app.test" },
+      body: JSON.stringify({
+        name: "big.webm",
+        size: 500_000_000,
+        contentType: "video/webm",
+      }),
+    });
+
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { sessionUrl: string; objectPath: string };
+
+    // The session URL is what the client PUTs chunks to, and the origin +
+    // content type must be forwarded into the storage session.
+    const session = new URL(body.sessionUrl);
+    expect(session.searchParams.get("upload_id")).toBe("fake-upload-id");
+    expect(session.searchParams.get("origin")).toBe("https://app.test");
+    expect(session.searchParams.get("contentType")).toBe("video/webm");
+
+    // The object path is normalized to the /objects/uploads/<id> form the
+    // recording row is keyed by — never a raw GCS URL.
+    expect(body.objectPath).toMatch(/^\/objects\/uploads\//);
+  });
+
+  test("rejects a request missing required fields with 400", async () => {
+    const res = await fetch(RESUMABLE_URL(), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "no-size.webm" }),
+    });
+
+    expect(res.status).toBe(400);
   });
 });

@@ -4,6 +4,8 @@ import { File } from "@google-cloud/storage";
 import {
   RequestUploadUrlBody,
   RequestUploadUrlResponse,
+  RequestResumableUploadBody,
+  RequestResumableUploadResponse,
 } from "@workspace/api-zod";
 import {
   ObjectStorageService,
@@ -125,6 +127,39 @@ router.post("/storage/uploads/request-url", async (req: Request, res: Response) 
   } catch (error) {
     req.log.error({ err: error }, "Error generating upload URL");
     res.status(500).json({ error: "Failed to generate upload URL" });
+  }
+});
+
+/**
+ * POST /storage/uploads/resumable
+ *
+ * Start a resumable upload session for a large file. The client sends JSON
+ * metadata (name, size, contentType) — NOT the file — and receives a session
+ * URL it PUTs chunks to (with `Content-Range`). An interrupted transfer resumes
+ * from the last committed byte instead of restarting from zero.
+ */
+router.post("/storage/uploads/resumable", async (req: Request, res: Response) => {
+  const parsed = RequestResumableUploadBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Missing or invalid required fields" });
+    return;
+  }
+
+  try {
+    const { contentType } = parsed.data;
+
+    const { sessionUrl, objectPath } =
+      await objectStorageService.createResumableUploadSession({
+        contentType,
+        origin: req.headers.origin,
+      });
+
+    res.json(RequestResumableUploadResponse.parse({ sessionUrl, objectPath }));
+  } catch (error) {
+    req.log.error({ err: error }, "Error starting resumable upload session");
+    res
+      .status(500)
+      .json({ error: "Failed to start resumable upload session" });
   }
 });
 

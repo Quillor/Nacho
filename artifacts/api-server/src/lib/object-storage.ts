@@ -218,6 +218,48 @@ export class ObjectStorageService {
   }
 
   /**
+   * Start a GCS resumable upload session for a large object and return the
+   * session URL the client uploads to (PUT chunks with a `Content-Range`
+   * header) plus the normalized `/objects/...` path the recording will be keyed
+   * by. Unlike a single presigned PUT, a resumable session lets an interrupted
+   * transfer pick up from the last committed byte instead of restarting from
+   * zero — what makes very large recordings reliable on flaky connections.
+   *
+   * `origin` is the browser origin requesting the upload; GCS records it on the
+   * session so the cross-origin chunk PUTs from the page are allowed. The
+   * session URL is self-authenticating (it carries an upload id), so the client
+   * never needs further credentials to push chunks.
+   */
+  async createResumableUploadSession(opts: {
+    contentType?: string;
+    origin?: string;
+  } = {}): Promise<{ sessionUrl: string; objectPath: string }> {
+    const privateObjectDir = this.getPrivateObjectDir();
+    if (!privateObjectDir) {
+      throw new Error(
+        "PRIVATE_OBJECT_DIR not set. Create a bucket in 'Object Storage' " +
+          "tool and set PRIVATE_OBJECT_DIR env var."
+      );
+    }
+
+    const objectId = randomUUID();
+    const fullPath = `${privateObjectDir}/uploads/${objectId}`;
+    const { bucketName, objectName } = parseObjectPath(fullPath);
+
+    const file = objectStorageClient.bucket(bucketName).file(objectName);
+    const [sessionUrl] = await file.createResumableUpload({
+      origin: opts.origin,
+      metadata: opts.contentType ? { contentType: opts.contentType } : undefined,
+    });
+
+    const objectPath = this.normalizeObjectEntityPath(
+      `https://storage.googleapis.com/${bucketName}/${objectName}`,
+    );
+
+    return { sessionUrl, objectPath };
+  }
+
+  /**
    * Confirm a just-uploaded object is fully present in storage before we let it
    * back a published recording. Throws {@link ObjectNotFoundError} when the
    * object is missing and {@link UploadIncompleteError} when it's empty or

@@ -33,6 +33,22 @@ export const RequestUploadUrlResponse = zod.object({
 
 
 /**
+ * Create a resumable upload session in object storage for a large file. Returns a session URL the client uploads chunks to (PUT with Content-Range) so an interrupted transfer resumes from the last committed byte instead of restarting from zero.
+ * @summary Start a resumable upload session
+ */
+export const RequestResumableUploadBody = zod.object({
+  "name": zod.string(),
+  "size": zod.number(),
+  "contentType": zod.string()
+})
+
+export const RequestResumableUploadResponse = zod.object({
+  "sessionUrl": zod.string().describe('Resumable session URL. The client PUTs chunks to this URL with a Content-Range header; an interrupted transfer resumes from the last committed byte instead of restarting.'),
+  "objectPath": zod.string()
+})
+
+
+/**
  * @summary Publish a recording (store metadata; media already uploaded)
  */
 

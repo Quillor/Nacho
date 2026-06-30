@@ -35,6 +35,7 @@ import type {
   PublishedRecording,
   RecordingInput,
   RecordingUpdateInput,
+  ResumableUploadResponse,
   RoleInput,
   TosDocument,
   TosInput,
@@ -206,6 +207,78 @@ export const useRequestUploadUrl = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getRequestUploadUrlMutationOptions(options));
+    }
+
+export const getRequestResumableUploadUrl = () => {
+
+
+
+
+  return `/api/storage/uploads/resumable`
+}
+
+/**
+ * Create a resumable upload session in object storage for a large file. Returns a session URL the client uploads chunks to (PUT with Content-Range) so an interrupted transfer resumes from the last committed byte instead of restarting from zero.
+ * @summary Start a resumable upload session
+ */
+export const requestResumableUpload = async (uploadUrlInput: UploadUrlInput, options?: RequestInit): Promise<ResumableUploadResponse> => {
+
+  return customFetch<ResumableUploadResponse>(getRequestResumableUploadUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      uploadUrlInput,)
+  }
+);}
+
+
+
+
+export const getRequestResumableUploadMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestResumableUpload>>, TError,{data: BodyType<UploadUrlInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof requestResumableUpload>>, TError,{data: BodyType<UploadUrlInput>}, TContext> => {
+
+const mutationKey = ['requestResumableUpload'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof requestResumableUpload>>, {data: BodyType<UploadUrlInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  requestResumableUpload(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RequestResumableUploadMutationResult = NonNullable<Awaited<ReturnType<typeof requestResumableUpload>>>
+    export type RequestResumableUploadMutationBody = BodyType<UploadUrlInput>
+    export type RequestResumableUploadMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Start a resumable upload session
+ */
+export const useRequestResumableUpload = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestResumableUpload>>, TError,{data: BodyType<UploadUrlInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof requestResumableUpload>>,
+        TError,
+        {data: BodyType<UploadUrlInput>},
+        TContext
+      > => {
+      return useMutation(getRequestResumableUploadMutationOptions(options));
     }
 
 export const getPublishRecordingUrl = () => {

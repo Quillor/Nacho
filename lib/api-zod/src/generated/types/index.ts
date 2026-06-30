@@ -26,6 +26,7 @@ export * from './notificationResult';
 export * from './publishedRecording';
 export * from './recordingInput';
 export * from './recordingUpdateInput';
+export * from './resumableUploadResponse';
 export * from './roleInput';
 export * from './selfieCorner';
 export * from './tosDocument';

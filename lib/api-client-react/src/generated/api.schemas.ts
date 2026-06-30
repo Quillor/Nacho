@@ -24,6 +24,12 @@ export interface UploadUrlResponse {
   objectPath: string;
 }
 
+export interface ResumableUploadResponse {
+  /** Resumable session URL. The client PUTs chunks to this URL with a Content-Range header; an interrupted transfer resumes from the last committed byte instead of restarting. */
+  sessionUrl: string;
+  objectPath: string;
+}
+
 export interface Chapter {
   time: number;
   label: string;

@@ -52,6 +52,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UploadUrlResponse"
+  /storage/uploads/resumable:
+    post:
+      operationId: requestResumableUpload
+      tags: [storage]
+      summary: Start a resumable upload session
+      description: >-
+        Create a resumable upload session in object storage for a large file.
+        Returns a session URL the client uploads chunks to (PUT with
+        Content-Range) so an interrupted transfer resumes from the last
+        committed byte instead of restarting from zero.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadUrlInput"
+      responses:
+        "200":
+          description: Resumable upload session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResumableUploadResponse"
   /recordings:
     post:
       operationId: publishRecording
@@ -581,6 +604,18 @@ components:
       properties:
         uploadURL:
           type: string
+        objectPath:
+          type: string
+    ResumableUploadResponse:
+      type: object
+      required: [sessionUrl, objectPath]
+      properties:
+        sessionUrl:
+          type: string
+          description: >-
+            Resumable session URL. The client PUTs chunks to this URL with a
+            Content-Range header; an interrupted transfer resumes from the last
+            committed byte instead of restarting.
         objectPath:
           type: string
     Chapter:
