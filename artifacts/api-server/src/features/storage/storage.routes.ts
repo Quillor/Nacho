@@ -1,5 +1,6 @@
 import { Router, type IRouter, type Request, type Response } from "express";
 import { Readable } from "stream";
+import { File } from "@google-cloud/storage";
 import {
   RequestUploadUrlBody,
   RequestUploadUrlResponse,
@@ -7,6 +8,7 @@ import {
 import {
   ObjectStorageService,
   ObjectNotFoundError,
+  RangeNotSatisfiableError,
 } from "../../lib/object-storage";
 import { ObjectPermission } from "../../lib/object-acl";
 
@@ -45,6 +47,52 @@ function pipeObjectBody(
   });
 
   nodeStream.pipe(res);
+}
+
+/**
+ * Stream a stored object to the client, honoring an HTTP `Range` request so
+ * HTML5 `<video>` playback can start and seek. Responds `206 Partial Content`
+ * with `Content-Range`/`Content-Length` for a valid range, `200` with the full
+ * body otherwise, and `416` for an unsatisfiable range. Always advertises
+ * `Accept-Ranges: bytes`.
+ */
+async function serveObject(file: File, req: Request, res: Response): Promise<void> {
+  const rangeHeader = req.headers.range ?? null;
+
+  let download;
+  try {
+    download = await objectStorageService.downloadObject(file, { rangeHeader });
+  } catch (err) {
+    if (err instanceof RangeNotSatisfiableError) {
+      res.setHeader("Accept-Ranges", "bytes");
+      if (err.totalSize != null) {
+        res.setHeader("Content-Range", `bytes */${err.totalSize}`);
+      }
+      res.status(416).end();
+      return;
+    }
+    throw err;
+  }
+
+  res.setHeader("Content-Type", download.contentType);
+  res.setHeader("Cache-Control", download.cacheControl);
+  res.setHeader("Accept-Ranges", "bytes");
+
+  if (download.partial) {
+    res.setHeader(
+      "Content-Range",
+      `bytes ${download.start}-${download.end}/${download.totalSize}`,
+    );
+    res.setHeader("Content-Length", String(download.contentLength));
+    res.status(206);
+  } else {
+    if (download.contentLength != null) {
+      res.setHeader("Content-Length", String(download.contentLength));
+    }
+    res.status(200);
+  }
+
+  pipeObjectBody(download.body, req, res);
 }
 
 /**
@@ -97,12 +145,7 @@ router.get("/storage/public-objects/*filePath", async (req: Request, res: Respon
       return;
     }
 
-    const response = await objectStorageService.downloadObject(file);
-
-    res.status(response.status);
-    response.headers.forEach((value, key) => res.setHeader(key, value));
-
-    pipeObjectBody(response.body as ReadableStream<Uint8Array> | null, req, res);
+    await serveObject(file, req, res);
   } catch (error) {
     req.log.error({ err: error }, "Error serving public object");
     res.status(500).json({ error: "Failed to serve public object" });
@@ -138,12 +181,7 @@ router.get("/storage/objects/*path", async (req: Request, res: Response) => {
     //   return;
     // }
 
-    const response = await objectStorageService.downloadObject(objectFile);
-
-    res.status(response.status);
-    response.headers.forEach((value, key) => res.setHeader(key, value));
-
-    pipeObjectBody(response.body as ReadableStream<Uint8Array> | null, req, res);
+    await serveObject(objectFile, req, res);
   } catch (error) {
     if (error instanceof ObjectNotFoundError) {
       req.log.warn({ err: error }, "Object not found");

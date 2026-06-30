@@ -37,6 +37,94 @@ export class ObjectNotFoundError extends Error {
   }
 }
 
+/**
+ * Thrown when a client sends a `Range` header that can't be satisfied for the
+ * requested object (e.g. the start offset is past the end of the file). The
+ * caller should respond with `416 Range Not Satisfiable` and a
+ * `Content-Range: bytes *\/<totalSize>` header.
+ */
+export class RangeNotSatisfiableError extends Error {
+  totalSize: number | null;
+  constructor(totalSize: number | null) {
+    super("Requested range not satisfiable");
+    this.name = "RangeNotSatisfiableError";
+    this.totalSize = totalSize;
+    Object.setPrototypeOf(this, RangeNotSatisfiableError.prototype);
+  }
+}
+
+/**
+ * Result of {@link ObjectStorageService.downloadObject}: a readable web stream
+ * of the object bytes plus the metadata an HTTP handler needs to build a
+ * correct `200` or `206 Partial Content` response.
+ */
+export interface ObjectDownload {
+  body: ReadableStream<Uint8Array>;
+  contentType: string;
+  cacheControl: string;
+  /** Total size of the object in bytes, or `null` when storage didn't report it. */
+  totalSize: number | null;
+  /** `true` when only a requested byte range is being streamed (HTTP 206). */
+  partial: boolean;
+  /** First byte offset being streamed (inclusive). */
+  start: number;
+  /** Last byte offset being streamed (inclusive). */
+  end: number;
+  /** Number of bytes being streamed, or `null` when the total size is unknown. */
+  contentLength: number | null;
+}
+
+/**
+ * Parse a single-range HTTP `Range` header value against a known total size.
+ * Returns the resolved inclusive `{ start, end }` byte offsets, `null` when
+ * there's no usable range (no header, size unknown, or a form we don't
+ * support — caller should serve the full object), or the string
+ * `"unsatisfiable"` when the range is well-formed but can't be satisfied.
+ *
+ * Only a single `bytes=start-end` range is supported (including open-ended
+ * `bytes=start-` and suffix `bytes=-N`); multi-range requests are ignored and
+ * fall back to a full response.
+ */
+export function parseByteRange(
+  rangeHeader: string | null | undefined,
+  totalSize: number | null,
+): { start: number; end: number } | "unsatisfiable" | null {
+  if (!rangeHeader || totalSize == null || totalSize <= 0) {
+    return null;
+  }
+  const match = /^bytes=(\d*)-(\d*)$/.exec(rangeHeader.trim());
+  if (!match) {
+    return null;
+  }
+  const [, startStr, endStr] = match;
+  if (startStr === "" && endStr === "") {
+    return null;
+  }
+
+  let start: number;
+  let end: number;
+  if (startStr === "") {
+    // Suffix range: the final N bytes of the object.
+    const suffix = Number(endStr);
+    if (suffix === 0) {
+      return "unsatisfiable";
+    }
+    start = Math.max(totalSize - suffix, 0);
+    end = totalSize - 1;
+  } else {
+    start = Number(startStr);
+    end = endStr === "" ? totalSize - 1 : Number(endStr);
+    if (end >= totalSize) {
+      end = totalSize - 1;
+    }
+  }
+
+  if (start > end || start >= totalSize || start < 0) {
+    return "unsatisfiable";
+  }
+  return { start, end };
+}
+
 export class ObjectStorageService {
   constructor() {}
 
@@ -87,23 +175,65 @@ export class ObjectStorageService {
     return null;
   }
 
-  async downloadObject(file: File, cacheTtlSec: number = 3600): Promise<Response> {
+  /**
+   * Stream a stored object, optionally honoring an HTTP `Range` header so HTML5
+   * `<video>` playback can start and seek (Safari/iOS require byte-range
+   * support). When `rangeHeader` resolves to a valid range, only those bytes are
+   * streamed and `partial` is `true` (caller responds `206`); otherwise the full
+   * object is streamed (caller responds `200`). Throws
+   * {@link RangeNotSatisfiableError} when the range is well-formed but can't be
+   * satisfied (caller responds `416`).
+   */
+  async downloadObject(
+    file: File,
+    opts: { cacheTtlSec?: number; rangeHeader?: string | null } = {},
+  ): Promise<ObjectDownload> {
+    const { cacheTtlSec = 3600, rangeHeader } = opts;
     const [metadata] = await file.getMetadata();
     const aclPolicy = await getObjectAclPolicy(file);
     const isPublic = aclPolicy?.visibility === "public";
 
-    const nodeStream = file.createReadStream();
-    const webStream = Readable.toWeb(nodeStream) as ReadableStream;
+    const contentType =
+      (metadata.contentType as string) || "application/octet-stream";
+    const cacheControl = `${isPublic ? "public" : "private"}, max-age=${cacheTtlSec}`;
+    const totalSize =
+      metadata.size != null ? Number(metadata.size) : null;
 
-    const headers: Record<string, string> = {
-      "Content-Type": (metadata.contentType as string) || "application/octet-stream",
-      "Cache-Control": `${isPublic ? "public" : "private"}, max-age=${cacheTtlSec}`,
-    };
-    if (metadata.size) {
-      headers["Content-Length"] = String(metadata.size);
+    const range = parseByteRange(rangeHeader, totalSize);
+    if (range === "unsatisfiable") {
+      throw new RangeNotSatisfiableError(totalSize);
     }
 
-    return new Response(webStream, { headers });
+    if (range) {
+      const nodeStream = file.createReadStream({
+        start: range.start,
+        end: range.end,
+      });
+      const webStream = Readable.toWeb(nodeStream) as ReadableStream<Uint8Array>;
+      return {
+        body: webStream,
+        contentType,
+        cacheControl,
+        totalSize,
+        partial: true,
+        start: range.start,
+        end: range.end,
+        contentLength: range.end - range.start + 1,
+      };
+    }
+
+    const nodeStream = file.createReadStream();
+    const webStream = Readable.toWeb(nodeStream) as ReadableStream<Uint8Array>;
+    return {
+      body: webStream,
+      contentType,
+      cacheControl,
+      totalSize,
+      partial: false,
+      start: 0,
+      end: totalSize != null ? Math.max(totalSize - 1, 0) : 0,
+      contentLength: totalSize,
+    };
   }
 
   /**
