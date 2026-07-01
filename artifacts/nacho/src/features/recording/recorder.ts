@@ -1,6 +1,7 @@
 import type { RecordingSource, SelfieCorner } from "@/lib/types";
 import { pickRecorderMimeType } from "@/lib/media";
 import { drawCameraBubble } from "./composite";
+import { startCompositeTicker } from "./composite-ticker";
 import {
   type CursorInput,
   type Ripple,
@@ -180,7 +181,7 @@ export async function prepareRecording(
     (cursorActive && Boolean(screenStream));
 
   let videoTrack: MediaStreamTrack;
-  let rafId = 0;
+  let stopTicker: (() => void) | null = null;
   let canvas: HTMLCanvasElement | null = null;
   let corner: SelfieCorner = opts.corner ?? "bottom-right";
   const helperVideos: HTMLVideoElement[] = [];
@@ -208,7 +209,7 @@ export async function prepareRecording(
     const pxScale = canvas.height / 720;
     const cursorScale = (opts.cursorSize ?? 1.5) * pxScale;
 
-    const draw = () => {
+    const drawFrame = () => {
       if (!canvas) return;
       ctx.drawImage(screenVideo, 0, 0, canvas.width, canvas.height);
 
@@ -239,10 +240,8 @@ export async function prepareRecording(
         lastCursorCanvas = mapped;
         if (mapped) drawCursor(ctx, mapped.x, mapped.y, cursorScale);
       }
-
-      rafId = requestAnimationFrame(draw);
     };
-    draw();
+    stopTicker = startCompositeTicker(drawFrame, 30);
     videoTrack = canvas.captureStream(30).getVideoTracks()[0];
   } else {
     const primary = screenStream ?? cameraStream;
@@ -270,7 +269,7 @@ export async function prepareRecording(
   };
 
   const cleanup = () => {
-    if (rafId) cancelAnimationFrame(rafId);
+    if (stopTicker) stopTicker();
     helperVideos.forEach((v) => {
       v.pause();
       v.srcObject = null;

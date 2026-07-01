@@ -1,2 +1,1 @@
-- [Fetching from GitHub in this repl](github-fetch-in-code-execution.md) — no git remote exists; auth via integration token + Basic extraheader, pass committer identity in code_execution.
-- [macOS app icon generation](desktop-icon-generation.md) — no Apple tooling/ICNS coder here; commit a 1024 PNG + let electron-builder make the .icns.
+- [Recording composite background freeze](recording-composite-background-freeze.md) — canvas-composite recordings freeze video (audio continues) when tab backgrounded; drive redraw from a Web Worker timer, never bare rAF.
