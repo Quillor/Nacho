@@ -32,8 +32,13 @@ import { cn } from "@/lib/utils";
 import { CAPTION_LANGUAGES } from "../languages";
 import { formatDuration } from "@workspace/shared";
 import type { RecordingSource } from "@/lib/types";
-import { useRecorderSession } from "../hooks/use-recorder-session";
+import {
+  useRecorderSession,
+  MAX_RECORDING_SECONDS,
+  RECORDING_WARN_SECONDS,
+} from "../hooks/use-recorder-session";
 import { ToggleRow } from "./toggle-row";
+import { RecordingTimer } from "./recording-timer";
 import { SelfieCornerOverlay } from "./selfie-corner-overlay";
 import { isDesktop } from "@/lib/desktop";
 import { SpeakerNotesPanel } from "@/features/notes";
@@ -48,6 +53,9 @@ export function Studio() {
   const s = useRecorderSession();
   const showSelfiePicker =
     s.source === "screen-camera" && (s.phase === "setup" || s.phase === "ready");
+  const remaining = Math.max(0, MAX_RECORDING_SECONDS - s.elapsed);
+  const nearingLimit =
+    s.phase === "recording" && remaining <= RECORDING_WARN_SECONDS;
 
   return (
     <AppShell>
@@ -218,6 +226,17 @@ export function Studio() {
               </div>
             )}
 
+            {nearingLimit && (
+              <div className="flex items-start gap-3 border-2 border-foreground bg-accent p-4 text-accent-foreground">
+                <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
+                <p className="text-sm font-bold">
+                  Heads up — recording auto-stops at the 30-minute limit.{" "}
+                  <span className="font-mono">{formatDuration(remaining)}</span>{" "}
+                  left, then we'll save everything captured so far.
+                </p>
+              </div>
+            )}
+
             {s.phase === "recording" && (
               <div className="flex flex-wrap items-center gap-4">
                 <Button
@@ -293,22 +312,11 @@ export function Studio() {
               )}
 
               {s.phase === "recording" && (
-                <div className="absolute left-4 top-4 flex items-center gap-2 border border-foreground bg-background px-3 py-1.5">
-                  <span
-                    className={cn(
-                      "h-3 w-3 rounded-full bg-destructive",
-                      !s.paused && "animate-pulse",
-                    )}
-                  />
-                  <span className="font-mono text-sm font-bold">
-                    {formatDuration(s.elapsed)}
-                  </span>
-                  {s.paused && (
-                    <span className="font-bold text-muted-foreground">
-                      Paused
-                    </span>
-                  )}
-                </div>
+                <RecordingTimer
+                  elapsed={s.elapsed}
+                  paused={s.paused}
+                  nearingLimit={nearingLimit}
+                />
               )}
 
               {showSelfiePicker && (

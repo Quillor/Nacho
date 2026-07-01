@@ -35,6 +35,18 @@ import type {
 export type StudioPhase = "setup" | "ready" | "countdown" | "recording";
 
 /**
+ * Hard cap on a single recording. Nacho records at a fixed 5 Mbps into one
+ * in-memory blob, so very long sessions risk crashing low-end devices/Safari and
+ * losing the whole take. At the cap we auto-stop down the normal stop/save path.
+ * Tracked against the recorder's `elapsed` clock, which already excludes paused
+ * time, so pausing never counts against the limit.
+ */
+export const MAX_RECORDING_SECONDS = 30 * 60;
+
+/** How close to the cap (seconds remaining) before we surface the warning. */
+export const RECORDING_WARN_SECONDS = 2 * 60;
+
+/**
  * Owns the full studio recording state machine: stream preparation, the live
  * preview, countdown, the MediaRecorder lifecycle, transcription run in lockstep
  * with the recorder, and persistence on stop. The Studio page is a thin view
@@ -174,7 +186,12 @@ export function useRecorderSession() {
     setElapsed(0);
     setPaused(false);
     tickRef.current = window.setInterval(() => {
-      setElapsed(controller.getElapsed());
+      const e = controller.getElapsed();
+      setElapsed(e);
+      // Hard 30-minute cap: auto-stop down the exact same save path as a manual
+      // Stop (transcription pause, local save, editor navigation, presenter
+      // teardown) so the user never hits the memory wall unexpectedly.
+      if (e >= MAX_RECORDING_SECONDS) void finishRecording();
     }, 250);
   };
 
