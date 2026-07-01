@@ -119,6 +119,7 @@ export function PublicView() {
                   startTime={rec.trimStart}
                   endTime={rec.trimEnd || undefined}
                   durationSec={rec.durationSec}
+                  hasAudio={rec.hasAudio}
                   onPlay={handlePlay}
                 />
 

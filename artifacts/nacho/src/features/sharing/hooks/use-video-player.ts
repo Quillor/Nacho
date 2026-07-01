@@ -10,6 +10,34 @@ import {
 import type { Chapter } from "@/lib/types";
 import type { VideoPlayerHandle, VideoPlayerProps } from "../components/video-player";
 
+// Volume/mute are remembered across replays and across recordings within the
+// browser session (not persisted forever) so a viewer only has to set their
+// level once. Stored in sessionStorage; falls back to sensible audible
+// defaults when nothing is stored or storage is unavailable.
+const VOLUME_STORAGE_KEY = "nacho_player_volume";
+const MUTED_STORAGE_KEY = "nacho_player_muted";
+
+function loadStoredVolume(): number {
+  try {
+    const raw = sessionStorage.getItem(VOLUME_STORAGE_KEY);
+    if (raw != null) {
+      const n = Number(raw);
+      if (Number.isFinite(n) && n >= 0 && n <= 1) return n;
+    }
+  } catch {
+    /* storage unavailable — fall through to default */
+  }
+  return 1;
+}
+
+function loadStoredMuted(): boolean {
+  try {
+    return sessionStorage.getItem(MUTED_STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Drives all playback state and behaviour for the VideoPlayer: play/pause/seek,
  * trim-range clamping, the captions overlay, the chapter-title flash, and the
@@ -31,6 +59,7 @@ export function useVideoPlayer(
     endTime,
     durationSec,
     captionsDefault = false,
+    hasAudio = true,
     onTimeUpdate,
     onDurationChange,
     onChapterClick,
@@ -53,6 +82,14 @@ export function useVideoPlayer(
   const [mediaError, setMediaError] = useState(false);
   const hasCaptions = transcript.length > 0;
   const [captionsOn, setCaptionsOn] = useState(captionsDefault && hasCaptions);
+
+  // Volume (0–1) and mute state. Seeded from the session so the viewer's choice
+  // survives replays, seeks, and navigating between recordings. Applied to the
+  // <video> element imperatively (an effect below) so it can't be left silent.
+  const [volume, setVolumeState] = useState(loadStoredVolume);
+  const [muted, setMutedState] = useState(loadStoredMuted);
+  // A zero-volume slider reads as muted in the UI even if `muted` is false.
+  const effectiveMuted = muted || volume === 0;
 
   // Title shown by the chapter overlay (kept during fade-out) and whether it
   // is currently visible (drives the opacity transition).
@@ -102,6 +139,39 @@ export function useVideoPlayer(
     if (v.paused) play();
     else v.pause();
   }, [play]);
+
+  // Keep the media element's audio in lockstep with our state and persist the
+  // choice for the session. Runs on mount (so the element starts audible unless
+  // the viewer previously muted it) and whenever volume/mute change.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (v) {
+      v.volume = volume;
+      v.muted = effectiveMuted;
+    }
+    try {
+      sessionStorage.setItem(VOLUME_STORAGE_KEY, String(volume));
+      sessionStorage.setItem(MUTED_STORAGE_KEY, muted ? "1" : "0");
+    } catch {
+      /* storage unavailable — non-fatal */
+    }
+  }, [volume, muted, effectiveMuted]);
+
+  const setVolume = useCallback((next: number) => {
+    const clamped = Math.max(0, Math.min(1, next));
+    setVolumeState(clamped);
+    // Dragging the slider up from silence should unmute; dragging to zero mutes.
+    setMutedState(clamped === 0);
+  }, []);
+
+  const toggleMuted = useCallback(() => {
+    setMutedState((prev) => {
+      const next = !prev;
+      // Unmuting while the slider sits at zero would stay silent — nudge it up.
+      if (!next && volume === 0) setVolumeState(1);
+      return next;
+    });
+  }, [volume]);
 
   useImperativeHandle(
     ref,
@@ -298,6 +368,11 @@ export function useVideoPlayer(
     captionsOn,
     setCaptionsOn,
     hasCaptions,
+    hasAudio,
+    volume,
+    muted: effectiveMuted,
+    setVolume,
+    toggleMuted,
     chapterTitle,
     chapterVisible,
     stageWidth,

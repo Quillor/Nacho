@@ -99,6 +99,7 @@ export function Editor() {
             startTime={e.trimStart}
             endTime={e.trimEnd || undefined}
             durationSec={rec.durationSec}
+            hasAudio={rec.hasAudio}
             onTimeUpdate={e.setCurrent}
             onDurationChange={(d) => {
               e.setDuration(d);

@@ -1,5 +1,13 @@
 import { forwardRef } from "react";
-import { Play, Pause, Captions, CaptionsOff, VideoOff } from "lucide-react";
+import {
+  Play,
+  Pause,
+  Captions,
+  CaptionsOff,
+  VideoOff,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatTimestamp } from "@workspace/shared";
 import type { Chapter, TranscriptSegment, SelfieCorner } from "@/lib/types";
@@ -65,6 +73,11 @@ export interface VideoPlayerProps {
   durationSec?: number;
   /** Show captions on by default when transcript data is present. */
   captionsDefault?: boolean;
+  /**
+   * Whether the recording carries an audible audio track. When false, the
+   * volume/mute control is disabled so it doesn't look broken.
+   */
+  hasAudio?: boolean;
   className?: string;
   /** Called whenever playback time changes. */
   onTimeUpdate?: (current: number) => void;
@@ -208,6 +221,46 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
             {formatTimestamp(Math.max(0, p.current - p.lowerBound))} /{" "}
             {formatTimestamp(p.playableRange)}
           </span>
+
+          <div className="flex shrink-0 items-center gap-2">
+            <button
+              type="button"
+              onClick={p.toggleMuted}
+              disabled={p.mediaError || !p.hasAudio}
+              aria-label={
+                !p.hasAudio
+                  ? "No audio in this recording"
+                  : p.muted
+                    ? "Unmute"
+                    : "Mute"
+              }
+              aria-pressed={p.muted}
+              className={cn(
+                "flex h-9 w-9 items-center justify-center rounded-md border border-foreground shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+                p.muted
+                  ? "bg-card text-foreground"
+                  : "bg-accent text-accent-foreground",
+              )}
+            >
+              {p.muted ? (
+                <VolumeX className="h-4 w-4" />
+              ) : (
+                <Volume2 className="h-4 w-4" />
+              )}
+            </button>
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.05}
+              value={p.muted ? 0 : p.volume}
+              onChange={(e) => p.setVolume(Number(e.target.value))}
+              disabled={p.mediaError || !p.hasAudio}
+              aria-label="Volume"
+              aria-valuetext={`${Math.round((p.muted ? 0 : p.volume) * 100)}%`}
+              className="h-1.5 w-16 cursor-pointer accent-accent disabled:cursor-not-allowed disabled:opacity-50 sm:w-20"
+            />
+          </div>
 
           {p.hasCaptions ? (
             <button
