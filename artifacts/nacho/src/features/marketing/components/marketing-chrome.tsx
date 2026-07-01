@@ -22,6 +22,14 @@ const NAV_LINKS: { href: string; label: string; page: MarketingPage }[] = [
   { href: "/built-by-tim", label: "Built by Tim", page: "built-by-tim" },
 ];
 
+/**
+ * Links shown in the top navigation. "Download" and "Terms" are intentionally
+ * kept out of the top nav (they remain in the footer via the full `NAV_LINKS`).
+ */
+const TOP_NAV_LINKS = NAV_LINKS.filter(
+  (item) => item.page !== "download" && item.page !== "terms",
+);
+
 interface MarketingChromeProps {
   /** Marks the matching link as the current page. */
   active?: MarketingPage;
@@ -45,7 +53,7 @@ export function MarketingNav({ active }: MarketingChromeProps) {
         <Logo className="h-9" />
       </Link>
       <div className="flex items-center gap-2 md:gap-3">
-        {NAV_LINKS.map((item) => (
+        {TOP_NAV_LINKS.map((item) => (
           <Button
             key={item.page}
             asChild
@@ -63,7 +71,7 @@ export function MarketingNav({ active }: MarketingChromeProps) {
           rel="noopener noreferrer"
           className="hidden md:inline-flex items-center font-bold text-sm text-foreground/60 hover:text-foreground hover:underline transition-colors border-l-2 border-foreground/20 pl-3 ml-1"
         >
-          Design System ↗
+          Design System
         </a>
 
         <Button asChild variant="ghost" className="hidden md:flex">
@@ -93,7 +101,7 @@ export function MarketingNav({ active }: MarketingChromeProps) {
               <SheetTitle className="text-left">Menu</SheetTitle>
             </SheetHeader>
             <div className="mt-6 flex flex-col gap-1">
-              {NAV_LINKS.map((item) => (
+              {TOP_NAV_LINKS.map((item) => (
                 <Button
                   key={item.page}
                   asChild
@@ -125,7 +133,7 @@ export function MarketingNav({ active }: MarketingChromeProps) {
                 onClick={() => setMenuOpen(false)}
                 className="mt-2 inline-flex items-center font-bold text-sm text-foreground/60 hover:text-foreground hover:underline transition-colors border-t-2 border-foreground/20 pt-4 px-4"
               >
-                Design System ↗
+                Design System
               </a>
 
               <Button
@@ -160,18 +168,6 @@ export function MarketingFooter({ active }: MarketingChromeProps) {
           <Logo className="h-10" />
         </Link>
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 font-bold text-foreground/80">
-          <a
-            href="#"
-            className="hover:text-foreground hover:underline transition-colors"
-          >
-            Twitter
-          </a>
-          <a
-            href="#"
-            className="hover:text-foreground hover:underline transition-colors"
-          >
-            LinkedIn
-          </a>
           {NAV_LINKS.map((item) => (
             <Link
               key={item.page}
@@ -190,7 +186,7 @@ export function MarketingFooter({ active }: MarketingChromeProps) {
             rel="noopener noreferrer"
             className="hover:text-foreground hover:underline transition-colors"
           >
-            Design System ↗
+            Design System
           </a>
         </div>
       </div>
