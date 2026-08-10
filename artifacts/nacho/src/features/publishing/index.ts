@@ -3,4 +3,5 @@
 // the editor, library, and studio features — import from here, not the internals.
 export * from "./publish";
 export * from "./upload-manager";
+export * from "./resume-uploads";
 export * from "./gif";

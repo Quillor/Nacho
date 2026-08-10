@@ -1,5 +1,6 @@
 import type { RecordingSource, SelfieCorner } from "@/lib/types";
 import { pickRecorderMimeType } from "@/lib/media";
+import { createChunkSink } from "./capture-chunks";
 import { drawCameraBubble } from "./composite";
 import { startCompositeTicker } from "./composite-ticker";
 import {
@@ -39,6 +40,12 @@ export interface RecorderController {
   previewStream: MediaStream;
   mimeType: string;
   hasAudio: boolean;
+  /**
+   * Id of this capture's incrementally-persisted chunk group in IndexedDB.
+   * The caller should `deleteCaptureChunks(captureId)` once the assembled
+   * recording has been saved (or the capture abandoned).
+   */
+  captureId: string;
   pause(): void;
   resume(): void;
   isPaused(): boolean;
@@ -303,10 +310,11 @@ export async function prepareRecording(
         mimeType,
         videoBitsPerSecond: 5_000_000,
       });
-      const chunks: Blob[] = [];
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) chunks.push(e.data);
-      };
+
+      // Chunks stream into IndexedDB as they arrive (memory-safe for long
+      // takes); see capture-chunks.ts for the persistence/fallback contract.
+      const sink = createChunkSink();
+      recorder.ondataavailable = (e) => sink.append(e.data);
       recorder.start(1000);
 
       let startTime = performance.now();
@@ -325,6 +333,7 @@ export async function prepareRecording(
         previewStream,
         mimeType,
         hasAudio: Boolean(audioTrack),
+        captureId: sink.captureId,
         triggerClick,
         pause() {
           if (paused || recorder.state !== "recording") return;
@@ -349,12 +358,12 @@ export async function prepareRecording(
           return new Promise<Blob>((resolve) => {
             recorder.onstop = () => {
               cleanup();
-              resolve(new Blob(chunks, { type: mimeType }));
+              void sink.assemble(mimeType).then(resolve);
             };
             if (recorder.state !== "inactive") recorder.stop();
             else {
               cleanup();
-              resolve(new Blob(chunks, { type: mimeType }));
+              void sink.assemble(mimeType).then(resolve);
             }
           });
         },
@@ -365,6 +374,8 @@ export async function prepareRecording(
             /* ignore */
           }
           cleanup();
+          // Abandoned capture — drop its persisted chunks.
+          sink.discard();
         },
         onEnded(cb) {
           endedCb = cb;

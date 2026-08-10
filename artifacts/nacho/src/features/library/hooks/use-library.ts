@@ -11,13 +11,15 @@ import {
 import {
   getPublicLink,
   unpublishRecording,
+  publishExistingRecording,
   deleteServerRecording,
   waitForUpload,
   isUploadInFlight,
   cancelUpload,
 } from "@/features/publishing";
 import { shareUrl } from "@/lib/api";
-import type { LocalRecordingMeta } from "@/lib/types";
+import { fetchServerRecordings, mergeLibraries } from "./library-server";
+import type { LibraryItem } from "@/lib/types";
 
 /** Sort options offered by the Library's sort control. */
 export type LibrarySort = "pinned" | "newest" | "oldest" | "title";
@@ -32,9 +34,7 @@ export type LibrarySort = "pinned" | "newest" | "oldest" | "title";
 export function useLibrary() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
-  const [recordings, setRecordings] = useState<LocalRecordingMeta[] | null>(
-    null,
-  );
+  const [recordings, setRecordings] = useState<LibraryItem[] | null>(null);
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [seeding, setSeeding] = useState(false);
@@ -46,9 +46,15 @@ export function useLibrary() {
   const [bulkDeleting, setBulkDeleting] = useState(false);
 
   const refresh = () => {
-    // listRecordings already returns newest-first; keep the raw order here and
-    // apply pinning/sort/search as a derived view so the controls can change it.
-    listRecordings().then((recs) => setRecordings(recs));
+    // Show the local list immediately (fast path), then merge in cloud-only
+    // recordings once the server responds so recordings made on other devices
+    // — or whose local copy was cleared — still show up.
+    listRecordings().then((recs) => {
+      setRecordings((prev) => (prev === null ? recs : prev));
+      fetchServerRecordings().then((server) => {
+        setRecordings(mergeLibraries(recs, server));
+      });
+    });
   };
 
   // Derived view for the grid: filter by the search query, then sort. The raw
@@ -123,7 +129,8 @@ export function useLibrary() {
     }
   };
 
-  const handleTogglePin = async (rec: LocalRecordingMeta) => {
+  const handleTogglePin = async (rec: LibraryItem) => {
+    if (rec.remote) return; // pinning is a device-local concept
     const next = !rec.pinned;
     await updateRecording(rec.id, { pinned: next });
     refresh();
@@ -140,9 +147,21 @@ export function useLibrary() {
     toast({ title: "Link copied", description: "Share it anywhere." });
   };
 
-  const handleGetLink = async (rec: LocalRecordingMeta) => {
+  const handleGetLink = async (rec: LibraryItem) => {
     setBusyId(rec.id);
     try {
+      // Cloud-only entry: the media already lives on the server — just flip
+      // visibility and hand over the link.
+      if (rec.remote && rec.shareId) {
+        await publishExistingRecording(rec.shareId);
+        await navigator.clipboard.writeText(shareUrl(rec.shareId));
+        refresh();
+        toast({
+          title: "Public link ready",
+          description: "Link copied — anyone with it can watch.",
+        });
+        return;
+      }
       // Reuse the background upload: wait for the in-flight transfer to finish
       // so getPublicLink just syncs metadata + flips visibility instead of
       // re-uploading the whole video.
@@ -174,12 +193,12 @@ export function useLibrary() {
     }
   };
 
-  const handleUnpublish = async (rec: LocalRecordingMeta) => {
+  const handleUnpublish = async (rec: LibraryItem) => {
     if (!rec.shareId) return;
     setBusyId(rec.id);
     try {
       await unpublishRecording(rec.shareId);
-      await updateRecording(rec.id, { visibility: "private" });
+      if (!rec.remote) await updateRecording(rec.id, { visibility: "private" });
       refresh();
       toast({
         title: "Made private",
@@ -200,6 +219,13 @@ export function useLibrary() {
   // in-flight upload, remove the local IndexedDB copy, then best-effort remove
   // the dangling server-side record for an already-uploaded recording.
   const deleteOne = async (id: string) => {
+    // Cloud-only entry: there's no local copy — just remove the server record.
+    if (id.startsWith("remote-")) {
+      await deleteServerRecording(id.slice("remote-".length)).catch(
+        () => undefined,
+      );
+      return;
+    }
     // Reload the full record so we have the freshest shareId — a background
     // upload may have persisted one after the list snapshot was taken.
     const full = await getRecording(id);

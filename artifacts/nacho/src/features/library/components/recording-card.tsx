@@ -33,19 +33,21 @@ import {
 import { useUploadState, retryUpload } from "@/features/publishing";
 import { formatDuration, formatRelativeDate } from "@workspace/shared";
 import { cloudEnabled } from "@/lib/desktop-api";
-import type { LocalRecordingMeta } from "@/lib/types";
+import type { LibraryItem } from "@/lib/types";
 
 /** Poster thumbnail for a recording; falls back to a play glyph when absent. */
-function Thumb({ rec }: { rec: LocalRecordingMeta }) {
-  const url = useMemo(
+function Thumb({ rec }: { rec: LibraryItem }) {
+  const objectUrl = useMemo(
     () => (rec.thumbnail ? URL.createObjectURL(rec.thumbnail) : null),
     [rec.thumbnail],
   );
   useEffect(() => {
     return () => {
-      if (url) URL.revokeObjectURL(url);
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
-  }, [url]);
+  }, [objectUrl]);
+  // Cloud-only entries have no local thumbnail blob — use the server's.
+  const url = objectUrl ?? rec.thumbnailUrl ?? null;
 
   return (
     <div className="relative aspect-video w-full overflow-hidden border-b-2 border-foreground bg-muted">
@@ -100,17 +102,17 @@ function UploadStatus({ id }: { id: string }) {
 }
 
 export interface RecordingCardProps {
-  rec: LocalRecordingMeta;
+  rec: LibraryItem;
   busy: boolean;
   selectable?: boolean;
   selected?: boolean;
   onToggleSelected?: (id: string) => void;
-  onTogglePin: (rec: LocalRecordingMeta) => void;
+  onTogglePin: (rec: LibraryItem) => void;
   onOpenEditor: (id: string) => void;
   onView: (shareId: string) => void;
   onCopy: (shareId: string) => void;
-  onGetLink: (rec: LocalRecordingMeta) => void;
-  onUnpublish: (rec: LocalRecordingMeta) => void;
+  onGetLink: (rec: LibraryItem) => void;
+  onUnpublish: (rec: LibraryItem) => void;
   onRequestDelete: (id: string) => void;
 }
 
@@ -135,7 +137,7 @@ export function RecordingCard({
         selectable && selected ? "ring-2 ring-accent ring-offset-2" : ""
       }`}
     >
-      {selectable ? (
+      {rec.remote && !selectable ? null : selectable ? (
         <label
           title={selected ? "Deselect recording" : "Select recording"}
           className="absolute right-2 top-2 z-10 flex h-9 w-9 cursor-pointer items-center justify-center rounded-sm border border-foreground bg-background shadow-sm transition-colors hover:bg-accent"
@@ -173,7 +175,11 @@ export function RecordingCard({
         type="button"
         className="block text-left"
         onClick={() =>
-          selectable ? onToggleSelected?.(rec.id) : onOpenEditor(rec.id)
+          selectable
+            ? onToggleSelected?.(rec.id)
+            : rec.remote && rec.shareId
+              ? onView(rec.shareId)
+              : onOpenEditor(rec.id)
         }
       >
         <Thumb rec={rec} />
@@ -197,14 +203,40 @@ export function RecordingCard({
           {rec.title}
         </h3>
 
-        {rec.visibility !== "public" && cloudEnabled && (
+        {rec.remote ? (
           <div className="mt-2">
-            <UploadStatus id={rec.id} />
+            <span className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+              {rec.remoteStatus === "pending" ? (
+                <>
+                  <UploadCloud className="h-3.5 w-3.5 animate-pulse" />
+                  Uploading from another device…
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="h-3.5 w-3.5" /> In your cloud library
+                </>
+              )}
+            </span>
           </div>
+        ) : (
+          rec.visibility !== "public" &&
+          cloudEnabled && (
+            <div className="mt-2">
+              <UploadStatus id={rec.id} />
+            </div>
+          )
         )}
 
         <div className="mt-4 flex items-center gap-2">
-          {!cloudEnabled ? (
+          {rec.remote && rec.remoteStatus === "pending" ? (
+            <Button
+              size="sm"
+              disabled
+              className="flex-1 border border-foreground bg-accent font-bold text-accent-foreground"
+            >
+              <Loader2 className="mr-1 h-4 w-4 animate-spin" /> Uploading…
+            </Button>
+          ) : !cloudEnabled ? (
             // Cloud unavailable (desktop without a backend): edit locally only.
             <Button
               size="sm"
@@ -257,20 +289,33 @@ export function RecordingCard({
               align="end"
               className="border-2 border-foreground"
             >
-              <DropdownMenuItem
-                className="font-medium"
-                onSelect={() => onOpenEditor(rec.id)}
-              >
-                <Pencil className="mr-2 h-4 w-4" /> Edit
-              </DropdownMenuItem>
-              {rec.visibility === "public" && rec.shareId && (
-                <>
+              {rec.remote ? (
+                rec.shareId && (
                   <DropdownMenuItem
                     className="font-medium"
                     onSelect={() => onView(rec.shareId!)}
                   >
                     <Eye className="mr-2 h-4 w-4" /> View
                   </DropdownMenuItem>
+                )
+              ) : (
+                <DropdownMenuItem
+                  className="font-medium"
+                  onSelect={() => onOpenEditor(rec.id)}
+                >
+                  <Pencil className="mr-2 h-4 w-4" /> Edit
+                </DropdownMenuItem>
+              )}
+              {rec.visibility === "public" && rec.shareId && (
+                <>
+                  {!rec.remote && (
+                    <DropdownMenuItem
+                      className="font-medium"
+                      onSelect={() => onView(rec.shareId!)}
+                    >
+                      <Eye className="mr-2 h-4 w-4" /> View
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem
                     className="font-medium"
                     disabled={busy}

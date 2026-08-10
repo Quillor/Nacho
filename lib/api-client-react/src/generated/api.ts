@@ -32,13 +32,18 @@ import type {
   ImpersonationTicket,
   NotificationInput,
   NotificationResult,
+  PlaybackUrl,
   PublishedRecording,
+  RecordingCompleteInput,
   RecordingInput,
+  RecordingStartInput,
+  RecordingSummary,
   RecordingUpdateInput,
   ResumableUploadResponse,
   RoleInput,
   TosDocument,
   TosInput,
+  TranscriptInput,
   UploadUrlInput,
   UploadUrlResponse,
   UserGroup,
@@ -281,6 +286,83 @@ export const useRequestResumableUpload = <TError = ErrorType<unknown>,
       return useMutation(getRequestResumableUploadMutationOptions(options));
     }
 
+export const getListMyRecordingsUrl = () => {
+
+
+
+
+  return `/api/recordings`
+}
+
+/**
+ * @summary List the signed-in user's recordings (server-side library)
+ */
+export const listMyRecordings = async ( options?: RequestInit): Promise<RecordingSummary[]> => {
+
+  return customFetch<RecordingSummary[]>(getListMyRecordingsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMyRecordingsQueryKey = () => {
+    return [
+    `/api/recordings`
+    ] as const;
+    }
+
+
+export const getListMyRecordingsQueryOptions = <TData = Awaited<ReturnType<typeof listMyRecordings>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyRecordings>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMyRecordingsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMyRecordings>>> = ({ signal }) => listMyRecordings({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMyRecordings>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListMyRecordingsQueryResult = NonNullable<Awaited<ReturnType<typeof listMyRecordings>>>
+export type ListMyRecordingsQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary List the signed-in user's recordings (server-side library)
+ */
+
+export function useListMyRecordings<TData = Awaited<ReturnType<typeof listMyRecordings>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyRecordings>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListMyRecordingsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
 export const getPublishRecordingUrl = () => {
 
 
@@ -351,6 +433,300 @@ export const usePublishRecording = <TError = ErrorType<unknown>,
       > => {
       return useMutation(getPublishRecordingMutationOptions(options));
     }
+
+export const getStartRecordingUploadUrl = () => {
+
+
+
+
+  return `/api/recordings/start`
+}
+
+/**
+ * Registers the recording server-side at upload start so it is visible and resumable across devices, and so an interrupted upload leaves a reap-able pending row instead of an invisible orphaned object.
+ * @summary Create a pending recording row before the media upload starts
+ */
+export const startRecordingUpload = async (recordingStartInput: RecordingStartInput, options?: RequestInit): Promise<PublishedRecording> => {
+
+  return customFetch<PublishedRecording>(getStartRecordingUploadUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      recordingStartInput,)
+  }
+);}
+
+
+
+
+export const getStartRecordingUploadMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startRecordingUpload>>, TError,{data: BodyType<RecordingStartInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof startRecordingUpload>>, TError,{data: BodyType<RecordingStartInput>}, TContext> => {
+
+const mutationKey = ['startRecordingUpload'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof startRecordingUpload>>, {data: BodyType<RecordingStartInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  startRecordingUpload(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StartRecordingUploadMutationResult = NonNullable<Awaited<ReturnType<typeof startRecordingUpload>>>
+    export type StartRecordingUploadMutationBody = BodyType<RecordingStartInput>
+    export type StartRecordingUploadMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Create a pending recording row before the media upload starts
+ */
+export const useStartRecordingUpload = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startRecordingUpload>>, TError,{data: BodyType<RecordingStartInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof startRecordingUpload>>,
+        TError,
+        {data: BodyType<RecordingStartInput>},
+        TContext
+      > => {
+      return useMutation(getStartRecordingUploadMutationOptions(options));
+    }
+
+export const getCompleteRecordingUploadUrl = (shareId: string,) => {
+
+
+
+
+  return `/api/recordings/${shareId}/complete`
+}
+
+/**
+ * @summary Mark a pending recording ready after verifying the stored video
+ */
+export const completeRecordingUpload = async (shareId: string,
+    recordingCompleteInput: RecordingCompleteInput, options?: RequestInit): Promise<PublishedRecording> => {
+
+  return customFetch<PublishedRecording>(getCompleteRecordingUploadUrl(shareId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      recordingCompleteInput,)
+  }
+);}
+
+
+
+
+export const getCompleteRecordingUploadMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeRecordingUpload>>, TError,{shareId: string;data: BodyType<RecordingCompleteInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof completeRecordingUpload>>, TError,{shareId: string;data: BodyType<RecordingCompleteInput>}, TContext> => {
+
+const mutationKey = ['completeRecordingUpload'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof completeRecordingUpload>>, {shareId: string;data: BodyType<RecordingCompleteInput>}> = (props) => {
+          const {shareId,data} = props ?? {};
+
+          return  completeRecordingUpload(shareId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CompleteRecordingUploadMutationResult = NonNullable<Awaited<ReturnType<typeof completeRecordingUpload>>>
+    export type CompleteRecordingUploadMutationBody = BodyType<RecordingCompleteInput>
+    export type CompleteRecordingUploadMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Mark a pending recording ready after verifying the stored video
+ */
+export const useCompleteRecordingUpload = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeRecordingUpload>>, TError,{shareId: string;data: BodyType<RecordingCompleteInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof completeRecordingUpload>>,
+        TError,
+        {shareId: string;data: BodyType<RecordingCompleteInput>},
+        TContext
+      > => {
+      return useMutation(getCompleteRecordingUploadMutationOptions(options));
+    }
+
+export const getSetRecordingTranscriptUrl = (shareId: string,) => {
+
+
+
+
+  return `/api/recordings/${shareId}/transcript`
+}
+
+/**
+ * @summary Replace a recording's transcript (kept out of other payloads)
+ */
+export const setRecordingTranscript = async (shareId: string,
+    transcriptInput: TranscriptInput, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getSetRecordingTranscriptUrl(shareId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      transcriptInput,)
+  }
+);}
+
+
+
+
+export const getSetRecordingTranscriptMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof setRecordingTranscript>>, TError,{shareId: string;data: BodyType<TranscriptInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof setRecordingTranscript>>, TError,{shareId: string;data: BodyType<TranscriptInput>}, TContext> => {
+
+const mutationKey = ['setRecordingTranscript'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof setRecordingTranscript>>, {shareId: string;data: BodyType<TranscriptInput>}> = (props) => {
+          const {shareId,data} = props ?? {};
+
+          return  setRecordingTranscript(shareId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SetRecordingTranscriptMutationResult = NonNullable<Awaited<ReturnType<typeof setRecordingTranscript>>>
+    export type SetRecordingTranscriptMutationBody = BodyType<TranscriptInput>
+    export type SetRecordingTranscriptMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Replace a recording's transcript (kept out of other payloads)
+ */
+export const useSetRecordingTranscript = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof setRecordingTranscript>>, TError,{shareId: string;data: BodyType<TranscriptInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof setRecordingTranscript>>,
+        TError,
+        {shareId: string;data: BodyType<TranscriptInput>},
+        TContext
+      > => {
+      return useMutation(getSetRecordingTranscriptMutationOptions(options));
+    }
+
+export const getGetRecordingPlaybackUrlUrl = (shareId: string,) => {
+
+
+
+
+  return `/api/recordings/${shareId}/play`
+}
+
+/**
+ * Checks visibility (public, or owned by the caller) and returns a short-lived signed object-storage URL so the video streams directly from storage instead of proxying every byte through the API server.
+ * @summary Get a short-lived direct playback URL for a recording's video
+ */
+export const getRecordingPlaybackUrl = async (shareId: string, options?: RequestInit): Promise<PlaybackUrl> => {
+
+  return customFetch<PlaybackUrl>(getGetRecordingPlaybackUrlUrl(shareId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetRecordingPlaybackUrlQueryKey = (shareId: string,) => {
+    return [
+    `/api/recordings/${shareId}/play`
+    ] as const;
+    }
+
+
+export const getGetRecordingPlaybackUrlQueryOptions = <TData = Awaited<ReturnType<typeof getRecordingPlaybackUrl>>, TError = ErrorType<ErrorResponse>>(shareId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRecordingPlaybackUrl>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRecordingPlaybackUrlQueryKey(shareId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRecordingPlaybackUrl>>> = ({ signal }) => getRecordingPlaybackUrl(shareId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(shareId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRecordingPlaybackUrl>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetRecordingPlaybackUrlQueryResult = NonNullable<Awaited<ReturnType<typeof getRecordingPlaybackUrl>>>
+export type GetRecordingPlaybackUrlQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Get a short-lived direct playback URL for a recording's video
+ */
+
+export function useGetRecordingPlaybackUrl<TData = Awaited<ReturnType<typeof getRecordingPlaybackUrl>>, TError = ErrorType<ErrorResponse>>(
+ shareId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRecordingPlaybackUrl>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetRecordingPlaybackUrlQueryOptions(shareId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export const getGetRecordingUrl = (shareId: string,) => {
 

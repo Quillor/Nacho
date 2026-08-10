@@ -1,6 +1,7 @@
 import { apiPath, authHeaders } from "@/lib/desktop-api";
+import type { SavedUploadSession } from "@/lib/types";
 import { UploadFailedError } from "./errors";
-import { uploadResumable } from "./resumable-upload";
+import { uploadResumable, queryResumableStatus } from "./resumable-upload";
 
 interface UploadUrlResponse {
   uploadURL: string;
@@ -26,7 +27,21 @@ export interface BlobUploadOptions {
   signal?: AbortSignal;
   /** Fraction (0..1) of the PUT transfer completed. */
   onProgress?: (fraction: number) => void;
+  /**
+   * A previously-persisted resumable session for this exact blob. When still
+   * alive, the transfer resumes from the last committed byte instead of
+   * restarting from zero (survives reloads/app restarts).
+   */
+  session?: SavedUploadSession | null;
+  /**
+   * Called when a resumable session is created so the caller can persist it
+   * (and resume it on a later attempt).
+   */
+  onSession?: (session: SavedUploadSession) => void;
 }
+
+/** Attempts at creating a resumable session before giving up. */
+const MAX_SESSION_ATTEMPTS = 3;
 
 function isAbort(err: unknown): boolean {
   return err instanceof DOMException && err.name === "AbortError";
@@ -170,47 +185,117 @@ async function uploadBlobSimple(
 }
 
 /**
+ * Try to resume a previously-persisted session. Returns the object path when
+ * the session is alive and the transfer finishes (or had already finished),
+ * or `null` when the session is dead/expired and a fresh one is needed.
+ */
+async function tryResumeSavedSession(
+  blob: Blob,
+  session: SavedUploadSession,
+  options: BlobUploadOptions,
+): Promise<string | null> {
+  // A session is only resumable for the exact blob it was opened for.
+  if (session.size !== blob.size) return null;
+
+  let committed: number | null;
+  try {
+    committed = await queryResumableStatus(
+      session.sessionUrl,
+      blob.size,
+      options.signal,
+    );
+  } catch (err) {
+    if (isAbort(err)) throw err;
+    // Dead/expired session (GCS sessions live ~a week) — start fresh.
+    return null;
+  }
+
+  if (committed != null && committed >= blob.size) {
+    // A previous attempt actually finished; nothing left to transfer.
+    options.onProgress?.(1);
+    return session.objectPath;
+  }
+
+  await uploadResumable(session.sessionUrl, blob, {
+    signal: options.signal,
+    onProgress: options.onProgress,
+    startOffset: committed ?? 0,
+  });
+  return session.objectPath;
+}
+
+/**
  * Upload a large blob via a resumable session: a chunked transfer that picks up
  * from the last committed byte if a chunk fails, instead of restarting the
- * whole file. If the session can't be created (e.g. an older server without the
- * endpoint), falls back to the single-PUT path so publishing still works.
+ * whole file. A persisted session from a previous attempt is resumed when still
+ * alive. Session creation is retried with backoff; large files deliberately do
+ * NOT fall back to a fragile single ~GB PUT — the only fallback is for an old
+ * server that doesn't have the resumable endpoint at all (HTTP 404).
  */
 async function uploadBlobResumable(
   blob: Blob,
   name: string,
   options: BlobUploadOptions = {},
 ): Promise<string> {
-  let res: Response;
-  try {
-    res = await fetch(apiPath("/api/storage/uploads/resumable"), {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json", ...(await authHeaders()) },
-      body: JSON.stringify({
-        name,
-        size: blob.size,
-        contentType: blob.type || "application/octet-stream",
-      }),
-      signal: options.signal,
-    });
-  } catch (err) {
-    if (isAbort(err)) throw err;
-    // Network hiccup reaching the session endpoint — try the simple path before
-    // giving up so a transient blip doesn't block publishing entirely.
-    return uploadBlobSimple(blob, name, options);
+  if (options.session) {
+    const resumed = await tryResumeSavedSession(blob, options.session, options);
+    if (resumed != null) return resumed;
   }
-  if (!res.ok) {
-    // Endpoint missing/unavailable: gracefully degrade to a single PUT.
-    return uploadBlobSimple(blob, name, options);
-  }
-  const { sessionUrl, objectPath } =
-    (await res.json()) as ResumableUploadResponse;
 
-  await uploadResumable(sessionUrl, blob, {
-    signal: options.signal,
-    onProgress: options.onProgress,
-  });
-  return objectPath;
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= MAX_SESSION_ATTEMPTS; attempt++) {
+    let res: Response;
+    try {
+      res = await fetch(apiPath("/api/storage/uploads/resumable"), {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          ...(await authHeaders()),
+        },
+        body: JSON.stringify({
+          name,
+          size: blob.size,
+          contentType: blob.type || "application/octet-stream",
+        }),
+        signal: options.signal,
+      });
+    } catch (err) {
+      if (isAbort(err)) throw err;
+      lastErr = new UploadFailedError("Couldn't reach the upload service");
+      await delay(1000 * 2 ** (attempt - 1), options.signal);
+      continue;
+    }
+
+    if (res.status === 404) {
+      // Older server without the resumable endpoint: single PUT is the only
+      // option there.
+      return uploadBlobSimple(blob, name, options);
+    }
+    if (!res.ok) {
+      lastErr = new UploadFailedError(
+        `Failed to start upload session (HTTP ${res.status})`,
+      );
+      await delay(1000 * 2 ** (attempt - 1), options.signal);
+      continue;
+    }
+
+    const { sessionUrl, objectPath } =
+      (await res.json()) as ResumableUploadResponse;
+    const session: SavedUploadSession = {
+      sessionUrl,
+      objectPath,
+      size: blob.size,
+    };
+    options.onSession?.(session);
+
+    await uploadResumable(sessionUrl, blob, {
+      signal: options.signal,
+      onProgress: options.onProgress,
+    });
+    return objectPath;
+  }
+  throw lastErr instanceof Error ? lastErr : new UploadFailedError();
 }
 
 /**

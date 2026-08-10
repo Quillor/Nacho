@@ -3,7 +3,7 @@
 // here. Ownership is enforced at the query level — owner-scoped mutations make
 // a leaked shareId unusable by anyone but the owner (a non-match reads as 404).
 
-import { and, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import {
   db,
@@ -13,6 +13,9 @@ import {
 import type {
   RecordingInput,
   RecordingUpdateInput,
+  RecordingStartInput,
+  RecordingCompleteInput,
+  TranscriptSegment,
 } from "@workspace/api-zod";
 import { clerkClient, primaryEmail } from "../../lib/clerk";
 import { sendEmail } from "../../lib/email";
@@ -25,6 +28,7 @@ export type ViewLogger = { warn: (obj: unknown, msg: string) => void };
 export function toApi(row: PublishedRecordingRow) {
   return {
     shareId: row.shareId,
+    status: row.status,
     title: row.title,
     description: row.description,
     visibility: row.visibility,
@@ -79,7 +83,120 @@ export async function createRecording(
   return row;
 }
 
-/** Fetch a recording by share id, but only if it is public. */
+/** Map a DB row to the lightweight library-listing shape (no transcript). */
+export function toApiSummary(row: PublishedRecordingRow) {
+  return {
+    shareId: row.shareId,
+    status: row.status,
+    title: row.title,
+    description: row.description,
+    visibility: row.visibility,
+    durationSec: row.durationSec,
+    trimStart: row.trimStart,
+    trimEnd: row.trimEnd,
+    hasAudio: row.hasAudio,
+    thumbnailPath: row.thumbnailPath,
+    gifPath: row.gifPath,
+    selfieCorner: row.selfieCorner,
+    views: row.views,
+    createdAt:
+      row.createdAt instanceof Date
+        ? row.createdAt.toISOString()
+        : String(row.createdAt),
+  };
+}
+
+/**
+ * Create a pending recording row at upload start. The row makes the upload
+ * visible/resumable across devices; it flips to `ready` only after the stored
+ * video object is verified in {@link completeRecording}.
+ */
+export async function startRecording(
+  ownerUserId: string,
+  data: RecordingStartInput,
+): Promise<PublishedRecordingRow> {
+  const shareId = nanoid(10);
+  const [row] = await db
+    .insert(publishedRecordingsTable)
+    .values({
+      shareId,
+      ownerUserId,
+      status: "pending",
+      title: data.title,
+      description: data.description ?? "",
+      visibility: data.visibility ?? "private",
+      durationSec: data.durationSec,
+      trimStart: data.trimStart,
+      trimEnd: data.trimEnd,
+      hasAudio: data.hasAudio ?? true,
+      videoPath: "",
+      selfieCorner: data.selfieCorner ?? null,
+      chapters: data.chapters ?? [],
+      displayChaptersOnVideo: data.displayChaptersOnVideo ?? false,
+      notifyOnView: data.notifyOnView ?? false,
+    })
+    .returning();
+  return row;
+}
+
+/**
+ * Attach the verified media paths to a pending recording and mark it ready.
+ * Idempotent for retried completes. Returns null when not owned/found.
+ */
+export async function completeRecording(
+  shareId: string,
+  ownerUserId: string,
+  data: RecordingCompleteInput,
+): Promise<PublishedRecordingRow | null> {
+  const [row] = await db
+    .update(publishedRecordingsTable)
+    .set({
+      status: "ready",
+      videoPath: data.videoPath,
+      thumbnailPath: data.thumbnailPath ?? null,
+      gifPath: data.gifPath ?? null,
+    })
+    .where(
+      and(
+        eq(publishedRecordingsTable.shareId, shareId),
+        eq(publishedRecordingsTable.ownerUserId, ownerUserId),
+      ),
+    )
+    .returning();
+  return row ?? null;
+}
+
+/** Replace a recording's transcript. Returns null when not owned/found. */
+export async function setRecordingTranscript(
+  shareId: string,
+  ownerUserId: string,
+  transcript: TranscriptSegment[],
+): Promise<PublishedRecordingRow | null> {
+  const [row] = await db
+    .update(publishedRecordingsTable)
+    .set({ transcript })
+    .where(
+      and(
+        eq(publishedRecordingsTable.shareId, shareId),
+        eq(publishedRecordingsTable.ownerUserId, ownerUserId),
+      ),
+    )
+    .returning();
+  return row ?? null;
+}
+
+/** List every recording owned by a user, newest first (server-side library). */
+export async function listRecordingsByOwner(
+  ownerUserId: string,
+): Promise<PublishedRecordingRow[]> {
+  return db
+    .select()
+    .from(publishedRecordingsTable)
+    .where(eq(publishedRecordingsTable.ownerUserId, ownerUserId))
+    .orderBy(desc(publishedRecordingsTable.createdAt));
+}
+
+/** Fetch a recording by share id, but only if it is public and ready. */
 export async function getPublicRecording(
   shareId: string,
 ): Promise<PublishedRecordingRow | null> {
@@ -87,10 +204,30 @@ export async function getPublicRecording(
     .select()
     .from(publishedRecordingsTable)
     .where(eq(publishedRecordingsTable.shareId, shareId));
-  // Private recordings are never resolvable through the public path.
-  if (!row || row.visibility !== "public") return null;
+  // Private or still-uploading recordings never resolve through the public path.
+  if (!row || row.visibility !== "public" || row.status !== "ready") return null;
   return row;
 }
+
+/**
+ * Fetch a recording for a viewer: public+ready recordings resolve for anyone;
+ * everything else only for the owner. This is what lets the owner's other
+ * devices (and the library) open recordings that only exist server-side.
+ */
+export async function getRecordingForViewer(
+  shareId: string,
+  viewerUserId: string | null,
+): Promise<PublishedRecordingRow | null> {
+  const [row] = await db
+    .select()
+    .from(publishedRecordingsTable)
+    .where(eq(publishedRecordingsTable.shareId, shareId));
+  if (!row) return null;
+  if (row.visibility === "public" && row.status === "ready") return row;
+  if (viewerUserId && row.ownerUserId === viewerUserId) return row;
+  return null;
+}
+
 
 /** Update an owner's recording metadata. Returns null when not owned/found. */
 export async function updateRecording(

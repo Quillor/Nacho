@@ -12,7 +12,7 @@ import {
   ObjectNotFoundError,
   RangeNotSatisfiableError,
 } from "../../lib/object-storage";
-import { ObjectPermission } from "../../lib/object-acl";
+import { authUserId } from "../../lib/dev-auth";
 
 const router: IRouter = Router();
 const objectStorageService = new ObjectStorageService();
@@ -105,6 +105,12 @@ async function serveObject(file: File, req: Request, res: Response): Promise<voi
  * Then uploads the file directly to the returned presigned URL.
  */
 router.post("/storage/uploads/request-url", async (req: Request, res: Response) => {
+  // Only signed-in users may mint upload URLs into the bucket.
+  if (!authUserId(req)) {
+    res.status(401).json({ error: "Sign in to upload" });
+    return;
+  }
+
   const parsed = RequestUploadUrlBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Missing or invalid required fields" });
@@ -139,6 +145,12 @@ router.post("/storage/uploads/request-url", async (req: Request, res: Response) 
  * from the last committed byte instead of restarting from zero.
  */
 router.post("/storage/uploads/resumable", async (req: Request, res: Response) => {
+  // Only signed-in users may mint upload sessions into the bucket.
+  if (!authUserId(req)) {
+    res.status(401).json({ error: "Sign in to upload" });
+    return;
+  }
+
   const parsed = RequestResumableUploadBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Missing or invalid required fields" });

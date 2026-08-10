@@ -87,6 +87,12 @@ vi.mock("@google-cloud/storage", async () => {
   return { Storage, File, Bucket };
 });
 
+// Always authenticate as a fixed user — the upload endpoints require a
+// signed-in user, and auth itself isn't what's under test here.
+vi.mock("../../lib/dev-auth", () => ({
+  authUserId: () => "user_test",
+}));
+
 // The service reads these env vars lazily (per request), so setting them before
 // the server starts is enough.
 process.env.PUBLIC_OBJECT_SEARCH_PATHS = "/test-bucket/public";

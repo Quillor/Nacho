@@ -6,6 +6,8 @@ import {
   useGetRecording,
   useAddRecordingView,
   getGetRecordingQueryKey,
+  useGetRecordingPlaybackUrl,
+  getGetRecordingPlaybackUrlQueryKey,
 } from "@workspace/api-client-react";
 import { Button } from "@workspace/pico-ui/button";
 import { Logo } from "@/components/logo";
@@ -32,6 +34,23 @@ export function PublicView() {
       retry: false,
     },
   });
+
+  // Videos stream straight from object storage via a short-lived signed URL —
+  // the API server only signs, it doesn't proxy the bytes (which used to make
+  // playback stall under load). Falls back to the server proxy if signing is
+  // unavailable (e.g. an older server).
+  const playback = useGetRecordingPlaybackUrl(shareId, {
+    request: { credentials: "include" },
+    query: {
+      queryKey: getGetRecordingPlaybackUrlQueryKey(shareId),
+      enabled: !!shareId && !!rec,
+      retry: 1,
+      // Signed URLs expire; don't cache one past its useful life.
+      staleTime: 30 * 60 * 1000,
+    },
+  });
+  const videoSrc =
+    playback.data?.url ?? (rec ? storageUrl(rec.videoPath) : undefined);
 
   const addView = useAddRecordingView({ request: { credentials: "include" } });
   const viewCounted = useRef(false);
@@ -94,7 +113,7 @@ export function PublicView() {
               It may be private, or the link may have been removed.
             </p>
           </div>
-        ) : !rec || isLoading ? (
+        ) : !rec || isLoading || (playback.isLoading && !playback.isError) ? (
           <div className="aspect-video w-full animate-pulse border-2 border-foreground bg-muted" />
         ) : (
           <>
@@ -106,7 +125,7 @@ export function PublicView() {
 
                 <VideoPlayer
                   ref={playerRef}
-                  src={storageUrl(rec.videoPath)}
+                  src={videoSrc ?? storageUrl(rec.videoPath)}
                   poster={
                     rec.thumbnailPath
                       ? storageUrl(rec.thumbnailPath)

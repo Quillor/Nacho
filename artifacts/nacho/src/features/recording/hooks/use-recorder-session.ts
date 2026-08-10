@@ -15,7 +15,7 @@ import {
 } from "../transcribe";
 import { DEFAULT_CAPTION_LANG } from "../languages";
 import { captureThumbnail, getBlobDuration } from "@/lib/media";
-import { saveRecording } from "@/lib/db";
+import { saveRecording, deleteCaptureChunks } from "@/lib/db";
 import { startBackgroundUpload } from "@/features/publishing";
 import { type RecorderCommand } from "@/lib/desktop";
 import { cloudEnabled } from "@/lib/desktop-api";
@@ -282,6 +282,9 @@ export function useRecorderSession() {
         gifPath: null,
       };
       await saveRecording(recording);
+      // The recording is safely persisted as one record — the incremental
+      // capture chunks have served their purpose.
+      void deleteCaptureChunks(c.captureId).catch(() => undefined);
       // Start uploading the video to storage in the background as a private
       // recording so sharing is instant later. Skipped only when cloud is
       // unavailable (desktop without a configured backend).

@@ -6,7 +6,7 @@
   "main": "dist/main.cjs",
   "scripts": {
     "gen-icon": "node ./scripts/gen-icon.mjs",
-    "build:renderer": "BASE_PATH=/ PORT=5173 pnpm --filter @workspace/nacho run build && node ./scripts/copy-renderer.mjs",
+    "build:renderer": "BASE_PATH=/ PORT=5173 VITE_DESKTOP_API_URL=\"${VITE_DESKTOP_API_URL:-https://nacho-app.replit.app}\" pnpm --filter @workspace/nacho run build && node ./scripts/copy-renderer.mjs",
     "build:main": "node ./build.mjs",
     "build": "pnpm run build:renderer && pnpm run build:main",
     "start": "electron .",

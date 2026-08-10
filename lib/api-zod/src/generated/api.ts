@@ -49,6 +49,28 @@ export const RequestResumableUploadResponse = zod.object({
 
 
 /**
+ * @summary List the signed-in user's recordings (server-side library)
+ */
+export const ListMyRecordingsResponseItem = zod.object({
+  "shareId": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "visibility": zod.enum(['private', 'public']),
+  "status": zod.enum(['pending', 'ready']).describe('Upload lifecycle. \"pending\" rows exist from upload start; \"ready\" means the stored video was verified complete.'),
+  "durationSec": zod.number(),
+  "trimStart": zod.number(),
+  "trimEnd": zod.number(),
+  "hasAudio": zod.boolean(),
+  "thumbnailPath": zod.string().nullish(),
+  "gifPath": zod.string().nullish(),
+  "selfieCorner": zod.union([zod.enum(['top-left', 'top-right', 'bottom-left', 'bottom-right']),zod.null()]).optional(),
+  "views": zod.number(),
+  "createdAt": zod.string()
+}).describe('Lightweight listing shape for the library — everything a grid card needs, without the transcript\/chapters payload.')
+export const ListMyRecordingsResponse = zod.array(ListMyRecordingsResponseItem)
+
+
+/**
  * @summary Publish a recording (store metadata; media already uploaded)
  */
 
@@ -82,6 +104,108 @@ export const PublishRecordingBody = zod.object({
 
 
 /**
+ * Registers the recording server-side at upload start so it is visible and resumable across devices, and so an interrupted upload leaves a reap-able pending row instead of an invisible orphaned object.
+ * @summary Create a pending recording row before the media upload starts
+ */
+
+
+
+export const StartRecordingUploadBody = zod.object({
+  "title": zod.string().min(1),
+  "description": zod.string().optional(),
+  "visibility": zod.enum(['private', 'public']).optional(),
+  "durationSec": zod.number(),
+  "trimStart": zod.number(),
+  "trimEnd": zod.number(),
+  "hasAudio": zod.boolean().optional(),
+  "selfieCorner": zod.union([zod.enum(['top-left', 'top-right', 'bottom-left', 'bottom-right']),zod.null()]).optional(),
+  "chapters": zod.array(zod.object({
+  "time": zod.number(),
+  "label": zod.string()
+})).optional(),
+  "displayChaptersOnVideo": zod.boolean().optional(),
+  "notifyOnView": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Mark a pending recording ready after verifying the stored video
+ */
+export const CompleteRecordingUploadParams = zod.object({
+  "shareId": zod.coerce.string()
+})
+
+
+
+
+export const CompleteRecordingUploadBody = zod.object({
+  "videoPath": zod.string().min(1),
+  "videoSize": zod.number().optional().describe('Byte size of the uploaded video blob; the server verifies the stored object matches before flipping the recording to ready.'),
+  "thumbnailPath": zod.string().nullish(),
+  "gifPath": zod.string().nullish()
+})
+
+export const CompleteRecordingUploadResponse = zod.object({
+  "shareId": zod.string(),
+  "status": zod.enum(['pending', 'ready']).describe('Upload lifecycle. \"pending\" rows exist from upload start; \"ready\" means the stored video was verified complete.'),
+  "title": zod.string(),
+  "description": zod.string(),
+  "visibility": zod.enum(['private', 'public']),
+  "durationSec": zod.number(),
+  "trimStart": zod.number(),
+  "trimEnd": zod.number(),
+  "hasAudio": zod.boolean(),
+  "videoPath": zod.string(),
+  "thumbnailPath": zod.string().nullish(),
+  "gifPath": zod.string().nullish(),
+  "selfieCorner": zod.union([zod.enum(['top-left', 'top-right', 'bottom-left', 'bottom-right']),zod.null()]).optional(),
+  "chapters": zod.array(zod.object({
+  "time": zod.number(),
+  "label": zod.string()
+})),
+  "displayChaptersOnVideo": zod.boolean().optional(),
+  "notifyOnView": zod.boolean().optional(),
+  "transcript": zod.array(zod.object({
+  "start": zod.number(),
+  "end": zod.number(),
+  "text": zod.string()
+})),
+  "views": zod.number(),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Replace a recording's transcript (kept out of other payloads)
+ */
+export const SetRecordingTranscriptParams = zod.object({
+  "shareId": zod.coerce.string()
+})
+
+export const SetRecordingTranscriptBody = zod.object({
+  "transcript": zod.array(zod.object({
+  "start": zod.number(),
+  "end": zod.number(),
+  "text": zod.string()
+}))
+})
+
+
+/**
+ * Checks visibility (public, or owned by the caller) and returns a short-lived signed object-storage URL so the video streams directly from storage instead of proxying every byte through the API server.
+ * @summary Get a short-lived direct playback URL for a recording's video
+ */
+export const GetRecordingPlaybackUrlParams = zod.object({
+  "shareId": zod.coerce.string()
+})
+
+export const GetRecordingPlaybackUrlResponse = zod.object({
+  "url": zod.string().describe('Short-lived signed URL that streams directly from storage.'),
+  "expiresInSec": zod.number().optional()
+})
+
+
+/**
  * @summary Get a published recording by share id
  */
 export const GetRecordingParams = zod.object({
@@ -90,6 +214,7 @@ export const GetRecordingParams = zod.object({
 
 export const GetRecordingResponse = zod.object({
   "shareId": zod.string(),
+  "status": zod.enum(['pending', 'ready']).describe('Upload lifecycle. \"pending\" rows exist from upload start; \"ready\" means the stored video was verified complete.'),
   "title": zod.string(),
   "description": zod.string(),
   "visibility": zod.enum(['private', 'public']),
@@ -151,6 +276,7 @@ export const UpdateRecordingBody = zod.object({
 
 export const UpdateRecordingResponse = zod.object({
   "shareId": zod.string(),
+  "status": zod.enum(['pending', 'ready']).describe('Upload lifecycle. \"pending\" rows exist from upload start; \"ready\" means the stored video was verified complete.'),
   "title": zod.string(),
   "description": zod.string(),
   "visibility": zod.enum(['private', 'public']),
@@ -199,6 +325,7 @@ export const SetRecordingVisibilityBody = zod.object({
 
 export const SetRecordingVisibilityResponse = zod.object({
   "shareId": zod.string(),
+  "status": zod.enum(['pending', 'ready']).describe('Upload lifecycle. \"pending\" rows exist from upload start; \"ready\" means the stored video was verified complete.'),
   "title": zod.string(),
   "description": zod.string(),
   "visibility": zod.enum(['private', 'public']),

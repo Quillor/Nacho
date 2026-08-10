@@ -23,6 +23,12 @@ vi.mock("@/lib/desktop-api", () => ({
   authHeaders: async () => ({}),
 }));
 
+// publish persists shareId/uploadSession onto the local recording as the
+// upload progresses; IndexedDB doesn't exist in this environment.
+vi.mock("@/lib/db", () => ({
+  updateRecording: vi.fn(async () => undefined),
+}));
+
 import {
   publishRecording,
   UploadFailedError,
@@ -90,8 +96,10 @@ class FakeXHR {
 }
 
 // --- fetch mock -----------------------------------------------------------
-// Two endpoints are hit: POST /api/storage/uploads/request-url (always OK here)
-// and POST /api/recordings (the metadata save, whose status each test controls).
+// Endpoints hit by the current flow: POST /api/recordings/start (pending row),
+// POST /api/storage/uploads/request-url (presigned PUT), then
+// POST /api/recordings/:id/complete — the metadata commit whose status each
+// test controls (recordingsCalls counts these commits).
 
 let recordingsResponse: { ok: boolean; status: number };
 let recordingsCalls: number;
@@ -108,12 +116,30 @@ function fakeFetch(input: string): Promise<Response> {
       }),
     } as unknown as Response);
   }
-  if (url.includes("/api/recordings")) {
+  if (url.includes("/api/recordings/start")) {
+    return Promise.resolve({
+      ok: true,
+      status: 201,
+      json: async () => ({
+        shareId: "share123",
+        visibility: "public",
+        status: "pending",
+      }),
+    } as unknown as Response);
+  }
+  if (url.includes("/complete")) {
     recordingsCalls++;
     return Promise.resolve({
       ok: recordingsResponse.ok,
       status: recordingsResponse.status,
       json: async () => ({ shareId: "share123", visibility: "public" }),
+    } as unknown as Response);
+  }
+  if (url.includes("/transcript") || url.includes("/visibility")) {
+    return Promise.resolve({
+      ok: true,
+      status: 200,
+      json: async () => ({}),
     } as unknown as Response);
   }
   throw new Error(`Unexpected fetch to ${url}`);

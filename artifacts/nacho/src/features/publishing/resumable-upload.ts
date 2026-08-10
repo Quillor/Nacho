@@ -61,6 +61,25 @@ export interface ResumableUploadOptions {
   /** Injectable for tests; defaults to the real XHR status query. */
   statusTransport?: StatusTransport;
   maxChunkAttempts?: number;
+  /**
+   * Bytes storage has already committed for this session (from a previous
+   * attempt that was interrupted). The transfer picks up from here instead of
+   * re-sending from zero.
+   */
+  startOffset?: number;
+}
+
+/**
+ * Ask an existing resumable session how many bytes it has committed. Returns
+ * the committed byte count (`total` when already complete), or throws when the
+ * session is dead/expired — the caller should open a fresh session then.
+ */
+export function queryResumableStatus(
+  sessionUrl: string,
+  total: number,
+  signal?: AbortSignal,
+): Promise<number | null> {
+  return xhrStatusTransport({ sessionUrl, total, signal });
 }
 
 function isAbort(err: unknown): boolean {
@@ -121,6 +140,7 @@ export async function uploadResumable(
     transport = xhrChunkTransport,
     statusTransport = xhrStatusTransport,
     maxChunkAttempts = MAX_CHUNK_ATTEMPTS,
+    startOffset = 0,
   } = options;
 
   const total = blob.size;
@@ -129,7 +149,12 @@ export async function uploadResumable(
     return;
   }
 
-  let committed = 0;
+  let committed = Math.min(Math.max(startOffset, 0), total);
+  if (committed >= total) {
+    onProgress?.(1);
+    return;
+  }
+  if (committed > 0) onProgress?.(committed / total);
   let attempts = 0;
 
   while (committed < total) {

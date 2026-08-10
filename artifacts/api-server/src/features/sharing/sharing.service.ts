@@ -51,7 +51,7 @@ export async function buildSharePage(
     .where(eq(publishedRecordingsTable.shareId, shareId));
 
   // Private recordings have no public link and must not unfurl.
-  if (!row || row.visibility !== "public") return null;
+  if (!row || row.visibility !== "public" || row.status !== "ready") return null;
 
   const appUrl = `${origin}${NACHO_BASE}v/${shareId}`;
   // Prefer the recording's own thumbnail; otherwise fall back to the Nacho

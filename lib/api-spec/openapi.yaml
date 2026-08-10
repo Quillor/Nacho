@@ -76,6 +76,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResumableUploadResponse"
   /recordings:
+    get:
+      operationId: listMyRecordings
+      tags: [recordings]
+      summary: List the signed-in user's recordings (server-side library)
+      responses:
+        "200":
+          description: The user's recordings, newest first
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecordingSummary"
+        "401":
+          description: Not signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: publishRecording
       tags: [recordings]
@@ -93,6 +112,118 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PublishedRecording"
+  /recordings/start:
+    post:
+      operationId: startRecordingUpload
+      tags: [recordings]
+      summary: Create a pending recording row before the media upload starts
+      description: >-
+        Registers the recording server-side at upload start so it is visible
+        and resumable across devices, and so an interrupted upload leaves a
+        reap-able pending row instead of an invisible orphaned object.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecordingStartInput"
+      responses:
+        "201":
+          description: Pending recording created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedRecording"
+  /recordings/{shareId}/complete:
+    post:
+      operationId: completeRecordingUpload
+      tags: [recordings]
+      summary: Mark a pending recording ready after verifying the stored video
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecordingCompleteInput"
+      responses:
+        "200":
+          description: The recording, now ready
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedRecording"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: The stored video object is missing or incomplete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /recordings/{shareId}/transcript:
+    patch:
+      operationId: setRecordingTranscript
+      tags: [recordings]
+      summary: Replace a recording's transcript (kept out of other payloads)
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TranscriptInput"
+      responses:
+        "204":
+          description: Transcript stored
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /recordings/{shareId}/play:
+    get:
+      operationId: getRecordingPlaybackUrl
+      tags: [recordings]
+      summary: Get a short-lived direct playback URL for a recording's video
+      description: >-
+        Checks visibility (public, or owned by the caller) and returns a
+        short-lived signed object-storage URL so the video streams directly
+        from storage instead of proxying every byte through the API server.
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Signed playback URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaybackUrl"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /recordings/{shareId}:
     get:
       operationId: getRecording
@@ -639,6 +770,12 @@ components:
     Visibility:
       type: string
       enum: [private, public]
+    RecordingStatus:
+      type: string
+      description: >-
+        Upload lifecycle. "pending" rows exist from upload start; "ready"
+        means the stored video was verified complete.
+      enum: [pending, ready]
     SelfieCorner:
       type: string
       enum: [top-left, top-right, bottom-left, bottom-right]
@@ -739,6 +876,122 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/TranscriptSegment"
+    RecordingStartInput:
+      type: object
+      required:
+        - title
+        - durationSec
+        - trimStart
+        - trimEnd
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        visibility:
+          $ref: "#/components/schemas/Visibility"
+        durationSec:
+          type: number
+        trimStart:
+          type: number
+        trimEnd:
+          type: number
+        hasAudio:
+          type: boolean
+        selfieCorner:
+          anyOf:
+            - $ref: "#/components/schemas/SelfieCorner"
+            - type: "null"
+        chapters:
+          type: array
+          items:
+            $ref: "#/components/schemas/Chapter"
+        displayChaptersOnVideo:
+          type: boolean
+        notifyOnView:
+          type: boolean
+    RecordingCompleteInput:
+      type: object
+      required: [videoPath]
+      properties:
+        videoPath:
+          type: string
+          minLength: 1
+        videoSize:
+          description: >-
+            Byte size of the uploaded video blob; the server verifies the
+            stored object matches before flipping the recording to ready.
+          type: integer
+        thumbnailPath:
+          type: ["string", "null"]
+        gifPath:
+          type: ["string", "null"]
+    TranscriptInput:
+      type: object
+      required: [transcript]
+      properties:
+        transcript:
+          type: array
+          items:
+            $ref: "#/components/schemas/TranscriptSegment"
+    PlaybackUrl:
+      type: object
+      required: [url]
+      properties:
+        url:
+          type: string
+          description: Short-lived signed URL that streams directly from storage.
+        expiresInSec:
+          type: integer
+    RecordingSummary:
+      type: object
+      description: >-
+        Lightweight listing shape for the library — everything a grid card
+        needs, without the transcript/chapters payload.
+      required:
+        - shareId
+        - title
+        - description
+        - visibility
+        - status
+        - durationSec
+        - trimStart
+        - trimEnd
+        - hasAudio
+        - views
+        - createdAt
+      properties:
+        shareId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        visibility:
+          $ref: "#/components/schemas/Visibility"
+        status:
+          $ref: "#/components/schemas/RecordingStatus"
+        durationSec:
+          type: number
+        trimStart:
+          type: number
+        trimEnd:
+          type: number
+        hasAudio:
+          type: boolean
+        thumbnailPath:
+          type: ["string", "null"]
+        gifPath:
+          type: ["string", "null"]
+        selfieCorner:
+          anyOf:
+            - $ref: "#/components/schemas/SelfieCorner"
+            - type: "null"
+        views:
+          type: integer
+        createdAt:
+          type: string
     PublishedRecording:
       type: object
       required:
@@ -746,6 +999,7 @@ components:
         - title
         - description
         - visibility
+        - status
         - durationSec
         - trimStart
         - trimEnd
@@ -758,6 +1012,8 @@ components:
       properties:
         shareId:
           type: string
+        status:
+          $ref: "#/components/schemas/RecordingStatus"
         title:
           type: string
         description:

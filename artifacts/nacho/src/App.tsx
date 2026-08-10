@@ -20,7 +20,6 @@ import {
   useUser,
 } from "@clerk/react";
 import { publishableKeyFromHost } from "@clerk/react/internal";
-import { shadcn } from "@clerk/themes";
 import { Toaster } from "@workspace/pico-ui/toaster";
 import { TooltipProvider } from "@workspace/pico-ui/tooltip";
 import { isDevAuthBypassEnabled } from "@workspace/shared";
@@ -50,6 +49,8 @@ import {
   DesktopSignIn,
   DesktopSettings,
 } from "@/features/desktop-auth";
+import { BootMaintenance } from "@/components/boot-maintenance";
+import { buildClerkAppearance } from "@/lib/clerk-appearance";
 
 const queryClient = new QueryClient();
 
@@ -87,62 +88,7 @@ if (!clerkPubKey && !isDesktop) {
   throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY in .env file");
 }
 
-const clerkAppearance = {
-  theme: shadcn,
-  cssLayerName: "clerk",
-  options: {
-    logoPlacement: "inside" as const,
-    logoLinkUrl: routerBase || "/",
-    logoImageUrl: `${window.location.origin}${basePath}/logo.svg`,
-    socialButtonsPlacement: "bottom" as const,
-  },
-  variables: {
-    colorPrimary: "hsl(var(--primary))",
-    colorForeground: "hsl(var(--foreground))",
-    colorMutedForeground: "hsl(var(--muted-foreground))",
-    colorDanger: "hsl(var(--destructive))",
-    colorBackground: "hsl(var(--background))",
-    colorInput: "hsl(var(--background))",
-    colorInputForeground: "hsl(var(--foreground))",
-    colorNeutral: "hsl(var(--foreground))",
-    fontFamily: "var(--app-font-sans)",
-    borderRadius: "var(--radius)",
-  },
-  elements: {
-    rootBox: "w-full flex justify-center",
-    cardBox:
-      "bg-background border-2 border-foreground shadow-md rounded-md w-[440px] max-w-full overflow-hidden",
-    card: "!shadow-none !border-0 !bg-transparent !rounded-none",
-    footer: "!shadow-none !border-0 !bg-transparent !rounded-none",
-    headerTitle:
-"text-foreground font-display font-extrabold tracking-tight text-2xl",
-    headerSubtitle: "text-muted-foreground font-medium",
-    socialButtonsBlockButtonText: "text-foreground font-bold",
-    formFieldLabel: "text-foreground font-bold",
-    footerActionLink:
-      "text-foreground font-bold underline hover:text-foreground/70",
-    footerActionText: "text-muted-foreground",
-    resendCodeText: "text-foreground",
-    dividerText: "text-muted-foreground",
-    identityPreviewEditButton: "text-foreground",
-    formFieldSuccessText: "text-foreground",
-    alertText: "text-foreground",
-    logoBox: "h-10",
-    logoImage: "h-10",
-    socialButtonsBlockButton:
-      "border border-foreground hover:bg-muted",
-    // Background + text color are forced to the Pico accent in index.css (the
-    // shadcn theme reassigns `--accent` inside the Clerk card, so utility
-    // classes can't reach the brand yellow here). These classes own the border,
-    // weight, and the chunky press animation that match the in-app brand button.
-    formButtonPrimary:
-      "!border-2 !border-foreground !font-bold uppercase tracking-wide !shadow-sm !py-2.5 transition-all hover:translate-y-[2px] hover:!shadow-xs active:translate-y-[2px] active:!shadow-none",
-    formFieldInput: "border border-foreground",
-    footerAction: "",
-    dividerLine: "bg-foreground",
-    otpCodeFieldInput: "border border-foreground",
-  },
-};
+const clerkAppearance = buildClerkAppearance(routerBase, basePath);
 
 const signInRouting = {
   routing: "path" as const,
@@ -338,6 +284,7 @@ function DesktopApp() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <DesktopAuthProvider>
+          <BootMaintenance />
           <DesktopRoutes />
         </DesktopAuthProvider>
         <Toaster />
@@ -375,6 +322,7 @@ function ClerkProviderWithRoutes() {
     >
       <QueryClientProvider client={queryClient}>
         <ClerkQueryClientCacheInvalidator />
+        <BootMaintenance />
         <TooltipProvider>
           <TestingModeBanner />
           <Router />

@@ -41,7 +41,10 @@ app.use(
 app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 
 app.use(cors({ credentials: true, origin: true }));
-app.use(express.json());
+// Recording metadata (chapters, sanitized description, transcript sync) can
+// exceed the express default of 100kb for long captioned recordings, which
+// surfaced as 413s after a fully successful video upload.
+app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 // Resolve the publishable key from the incoming request host so the same

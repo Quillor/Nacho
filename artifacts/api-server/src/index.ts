@@ -1,6 +1,7 @@
 import app from "./app";
 import { logger } from "./lib/logger";
 import { seedTos } from "./lib/seed-tos";
+import { startCleanupSchedule } from "./features/maintenance/cleanup";
 
 const rawPort = process.env["PORT"];
 
@@ -27,4 +28,7 @@ app.listen(port, (err) => {
   void seedTos().catch((err) => {
     logger.error({ err }, "Failed to seed Terms of Service");
   });
+
+  // Reap dead pending uploads and orphaned storage objects.
+  startCleanupSchedule();
 });

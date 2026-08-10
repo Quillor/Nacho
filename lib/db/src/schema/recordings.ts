@@ -23,10 +23,19 @@ import type {
 } from "@workspace/shared/types";
 export type { Chapter, TranscriptSegment, Visibility, SelfieCorner };
 
+/**
+ * Server-side upload lifecycle. `pending` rows are created when an upload
+ * starts (so the recording is visible/resumable across devices and stale
+ * uploads can be reaped); `ready` means the video object was verified in
+ * storage. Only `ready` recordings are ever publicly resolvable.
+ */
+export type RecordingStatus = "pending" | "ready";
+
 export const publishedRecordingsTable = pgTable("published_recordings", {
   id: serial("id").primaryKey(),
   shareId: text("share_id").notNull().unique(),
   ownerUserId: text("owner_user_id"),
+  status: text("status").$type<RecordingStatus>().notNull().default("ready"),
   title: text("title").notNull(),
   description: text("description").notNull().default(""),
   visibility: text("visibility")
@@ -37,7 +46,9 @@ export const publishedRecordingsTable = pgTable("published_recordings", {
   trimStart: real("trim_start").notNull().default(0),
   trimEnd: real("trim_end").notNull(),
   hasAudio: boolean("has_audio").notNull().default(true),
-  videoPath: text("video_path").notNull(),
+  // Empty string until the upload completes ("pending" rows created at
+  // upload start don't have a stored object yet).
+  videoPath: text("video_path").notNull().default(""),
   thumbnailPath: text("thumbnail_path"),
   gifPath: text("gif_path"),
   selfieCorner: text("selfie_corner").$type<SelfieCorner>(),

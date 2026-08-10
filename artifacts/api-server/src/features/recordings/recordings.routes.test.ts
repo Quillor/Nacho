@@ -74,12 +74,24 @@ vi.mock("./recordings.service", () => ({
   // The route does GetRecordingResponse.parse(toApi(row)); have createRecording
   // return an already-API-shaped object and keep toApi an identity passthrough.
   toApi: (row: unknown) => row,
+  toApiSummary: (row: unknown) => row,
+  // Unexercised here, but imported by the router module.
+  startRecording: vi.fn(),
+  completeRecording: vi.fn(),
+  setRecordingTranscript: vi.fn(),
+  listRecordingsByOwner: vi.fn(),
+  getRecordingForViewer: vi.fn(),
+  updateRecording: vi.fn(),
+  deleteRecording: vi.fn(),
+  setRecordingVisibility: vi.fn(),
+  addRecordingView: vi.fn(),
 }));
 
 process.env.PRIVATE_OBJECT_DIR = "/test-bucket/private";
 
 const VALID_API_ROW = {
   shareId: "share123",
+  status: "ready" as const,
   title: "Big upload",
   description: "",
   visibility: "private" as const,

@@ -5,32 +5,28 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import type { Chapter } from './chapter';
 import type { RecordingStatus } from './recordingStatus';
 import type { SelfieCorner } from './selfieCorner';
-import type { TranscriptSegment } from './transcriptSegment';
 import type { Visibility } from './visibility';
 
-export interface PublishedRecording {
+/**
+ * Lightweight listing shape for the library — everything a grid card needs, without the transcript/chapters payload.
+ */
+export interface RecordingSummary {
   shareId: string;
-  status: RecordingStatus;
   title: string;
   description: string;
   visibility: Visibility;
+  status: RecordingStatus;
   durationSec: number;
   trimStart: number;
   trimEnd: number;
   hasAudio: boolean;
-  videoPath: string;
   /** @nullable */
   thumbnailPath?: string | null;
   /** @nullable */
   gifPath?: string | null;
   selfieCorner?: SelfieCorner | null;
-  chapters: Chapter[];
-  displayChaptersOnVideo?: boolean;
-  notifyOnView?: boolean;
-  transcript: TranscriptSegment[];
   views: number;
   createdAt: string;
 }

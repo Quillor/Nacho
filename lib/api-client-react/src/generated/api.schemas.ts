@@ -49,6 +49,17 @@ export const Visibility = {
   public: 'public',
 } as const;
 
+/**
+ * Upload lifecycle. "pending" rows exist from upload start; "ready" means the stored video was verified complete.
+ */
+export type RecordingStatus = typeof RecordingStatus[keyof typeof RecordingStatus];
+
+
+export const RecordingStatus = {
+  pending: 'pending',
+  ready: 'ready',
+} as const;
+
 export type SelfieCorner = typeof SelfieCorner[keyof typeof SelfieCorner];
 
 
@@ -103,8 +114,67 @@ export interface RecordingUpdateInput {
   transcript?: TranscriptSegment[];
 }
 
+export interface RecordingStartInput {
+  /** @minLength 1 */
+  title: string;
+  description?: string;
+  visibility?: Visibility;
+  durationSec: number;
+  trimStart: number;
+  trimEnd: number;
+  hasAudio?: boolean;
+  selfieCorner?: SelfieCorner | null;
+  chapters?: Chapter[];
+  displayChaptersOnVideo?: boolean;
+  notifyOnView?: boolean;
+}
+
+export interface RecordingCompleteInput {
+  /** @minLength 1 */
+  videoPath: string;
+  /** Byte size of the uploaded video blob; the server verifies the stored object matches before flipping the recording to ready. */
+  videoSize?: number;
+  /** @nullable */
+  thumbnailPath?: string | null;
+  /** @nullable */
+  gifPath?: string | null;
+}
+
+export interface TranscriptInput {
+  transcript: TranscriptSegment[];
+}
+
+export interface PlaybackUrl {
+  /** Short-lived signed URL that streams directly from storage. */
+  url: string;
+  expiresInSec?: number;
+}
+
+/**
+ * Lightweight listing shape for the library — everything a grid card needs, without the transcript/chapters payload.
+ */
+export interface RecordingSummary {
+  shareId: string;
+  title: string;
+  description: string;
+  visibility: Visibility;
+  status: RecordingStatus;
+  durationSec: number;
+  trimStart: number;
+  trimEnd: number;
+  hasAudio: boolean;
+  /** @nullable */
+  thumbnailPath?: string | null;
+  /** @nullable */
+  gifPath?: string | null;
+  selfieCorner?: SelfieCorner | null;
+  views: number;
+  createdAt: string;
+}
+
 export interface PublishedRecording {
   shareId: string;
+  status: RecordingStatus;
   title: string;
   description: string;
   visibility: Visibility;
