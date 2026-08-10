@@ -1,7 +1,13 @@
 import type { RecordingSource, SelfieCorner } from "@/lib/types";
 import { pickRecorderMimeType } from "@/lib/media";
 import { createChunkSink } from "./capture-chunks";
-import { drawCameraBubble } from "./composite";
+import { mixAudio, cssToken, attachVideo } from "./recorder-helpers";
+import {
+  drawCameraBubble,
+  drawCover,
+  CAMERA_BUBBLE_FRACTION,
+  type CameraSize,
+} from "./composite";
 import { startCompositeTicker } from "./composite-ticker";
 import {
   type CursorInput,
@@ -16,12 +22,15 @@ import {
 
 export type { SelfieCorner } from "@/lib/types";
 export type { CursorInput } from "./cursor-overlay";
+export type { CameraSize } from "./composite";
 
 export interface RecorderOptions {
   source: RecordingSource;
   withMic: boolean;
   withSystemAudio: boolean;
   corner?: SelfieCorner;
+  /** Initial composited camera size (live-adjustable via setCameraSize). */
+  cameraSize?: CameraSize;
   /**
    * Cursor controls (desktop only). When `cursorOverlay` is on, the native OS
    * cursor is hidden from capture and an enlarged synthetic cursor is drawn onto
@@ -65,57 +74,18 @@ export interface PreparedRecorder {
   hasSelfie: boolean;
   /** Move the camera bubble live (affects both preview and the recording). */
   setCorner(corner: SelfieCorner): void;
+  /**
+   * Resize the composited camera live — none / small / large bubble, or
+   * full-screen camera. Same mutable-var mechanism as setCorner, so it works
+   * mid-recording without touching the streams.
+   */
+  setCameraSize(size: CameraSize): void;
   /** Register a global click during preview (ripple only; no recording yet). */
   triggerClick(): void;
   /** Begin capturing. Returns the active recorder controller. */
   start(): RecorderController;
   /** Release all streams without recording (used when the user backs out). */
   dispose(): void;
-}
-
-function mixAudio(
-  streams: MediaStream[],
-  force: boolean,
-): {
-  track: MediaStreamTrack | null;
-  ctx: AudioContext | null;
-  dest: MediaStreamAudioDestinationNode | null;
-} {
-  const withAudio = streams.filter((s) => s.getAudioTracks().length > 0);
-  // Without inputs and without a forced destination, behave exactly as before:
-  // no AudioContext is created.
-  if (withAudio.length === 0 && !force) {
-    return { track: null, ctx: null, dest: null };
-  }
-  const ctx = new AudioContext();
-  const dest = ctx.createMediaStreamDestination();
-  for (const s of withAudio) {
-    const src = ctx.createMediaStreamSource(
-      new MediaStream(s.getAudioTracks()),
-    );
-    src.connect(dest);
-  }
-  return { track: dest.stream.getAudioTracks()[0] ?? null, ctx, dest };
-}
-
-function cssToken(name: string, fallback: string): string {
-  try {
-    const v = getComputedStyle(document.documentElement)
-      .getPropertyValue(name)
-      .trim();
-    return v || fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function attachVideo(stream: MediaStream): HTMLVideoElement {
-  const v = document.createElement("video");
-  v.srcObject = stream;
-  v.muted = true;
-  v.playsInline = true;
-  void v.play().catch(() => undefined);
-  return v;
 }
 
 /**
@@ -191,6 +161,7 @@ export async function prepareRecording(
   let stopTicker: (() => void) | null = null;
   let canvas: HTMLCanvasElement | null = null;
   let corner: SelfieCorner = opts.corner ?? "bottom-right";
+  let cameraSize: CameraSize = opts.cameraSize ?? "small";
   const helperVideos: HTMLVideoElement[] = [];
   const hasSelfie = opts.source === "screen-camera";
 
@@ -218,17 +189,23 @@ export async function prepareRecording(
 
     const drawFrame = () => {
       if (!canvas) return;
-      ctx.drawImage(screenVideo, 0, 0, canvas.width, canvas.height);
-
-      if (cameraVideo) {
-        drawCameraBubble(
-          ctx,
-          cameraVideo,
-          canvas.width,
-          canvas.height,
-          corner,
-          ringColor,
-        );
+      // Full-screen camera replaces the screen entirely; otherwise the screen
+      // is the base layer with an optional camera bubble on top.
+      if (cameraVideo && cameraSize === "full") {
+        drawCover(ctx, cameraVideo, 0, 0, canvas.width, canvas.height);
+      } else {
+        ctx.drawImage(screenVideo, 0, 0, canvas.width, canvas.height);
+        if (cameraVideo && cameraSize !== "none" && cameraSize !== "full") {
+          drawCameraBubble(
+            ctx,
+            cameraVideo,
+            canvas.width,
+            canvas.height,
+            corner,
+            ringColor,
+            CAMERA_BUBBLE_FRACTION[cameraSize],
+          );
+        }
       }
 
       if (cursorActive) {
@@ -295,6 +272,9 @@ export async function prepareRecording(
     hasSelfie,
     setCorner(next) {
       corner = next;
+    },
+    setCameraSize(next) {
+      cameraSize = next;
     },
     triggerClick,
     dispose() {

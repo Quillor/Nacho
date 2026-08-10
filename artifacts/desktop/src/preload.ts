@@ -44,6 +44,21 @@ const api = {
   // The running app version, for the in-app "Check for updates" comparison.
   getAppVersion: (): Promise<string> => ipcRenderer.invoke("app:getVersion"),
 
+  // In-app screen/window picker (Zoom-style; replaces the OS picker).
+  capture: {
+    listSources: (): Promise<
+      Array<{
+        id: string;
+        name: string;
+        kind: "screen" | "window";
+        thumbnailDataUrl: string | null;
+        appIconDataUrl: string | null;
+      }>
+    > => ipcRenderer.invoke(CH.captureList),
+    selectSource: (id: string): Promise<void> =>
+      ipcRenderer.invoke(CH.captureSelect, id),
+  },
+
   // Cursor controls.
   cursor: {
     start: (opts: { withClicks: boolean }) =>

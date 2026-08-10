@@ -40,6 +40,8 @@ import {
 import { ToggleRow } from "./toggle-row";
 import { RecordingTimer } from "./recording-timer";
 import { SelfieCornerOverlay } from "./selfie-corner-overlay";
+import { CameraSizeControl } from "./camera-size-control";
+import { SourcePicker } from "./source-picker";
 import { isDesktop } from "@/lib/desktop";
 import { SpeakerNotesPanel } from "@/features/notes";
 
@@ -53,6 +55,10 @@ export function Studio() {
   const s = useRecorderSession();
   const showSelfiePicker =
     s.source === "screen-camera" && (s.phase === "setup" || s.phase === "ready");
+  // Camera size stays adjustable through the whole session, recording included.
+  const showCameraSize =
+    s.source === "screen-camera" &&
+    (s.phase === "ready" || s.phase === "countdown" || s.phase === "recording");
   const remaining = Math.max(0, MAX_RECORDING_SECONDS - s.elapsed);
   const nearingLimit =
     s.phase === "recording" && remaining <= RECORDING_WARN_SECONDS;
@@ -60,6 +66,11 @@ export function Studio() {
   return (
     <AppShell>
       <div className="mx-auto max-w-6xl">
+        <SourcePicker
+          open={s.sourcePickerOpen}
+          onCancel={s.cancelSourcePicker}
+          onConfirm={(id) => void s.confirmSource(id)}
+        />
         <h1 className="mb-2 font-display text-5xl font-extrabold tracking-tight">
           Studio
         </h1>
@@ -235,6 +246,13 @@ export function Studio() {
                   left, then we'll save everything captured so far.
                 </p>
               </div>
+            )}
+
+            {showCameraSize && (
+              <CameraSizeControl
+                value={s.cameraSize}
+                onChange={s.changeCameraSize}
+              />
             )}
 
             {s.phase === "recording" && (

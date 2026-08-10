@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
-import { nanoid } from "nanoid";
 import { useToast } from "@workspace/pico-ui/hooks/use-toast";
 import {
   prepareRecording,
   type PreparedRecorder,
   type RecorderController,
   type SelfieCorner,
+  type CameraSize,
 } from "../recorder";
 import {
   startTranscription,
@@ -14,18 +14,12 @@ import {
   type Transcriber,
 } from "../transcribe";
 import { DEFAULT_CAPTION_LANG } from "../languages";
-import { captureThumbnail, getBlobDuration } from "@/lib/media";
-import { saveRecording, deleteCaptureChunks } from "@/lib/db";
-import { startBackgroundUpload } from "@/features/publishing";
+import { persistFinishedRecording } from "../finish-recording";
 import { type RecorderCommand } from "@/lib/desktop";
-import { cloudEnabled } from "@/lib/desktop-api";
+import { useSourcePicker } from "./use-source-picker";
 import { useDesktopPresenter } from "./use-desktop-presenter";
 import { useCursorControls } from "./use-cursor-controls";
-import type {
-  RecordingSource,
-  TranscriptSegment,
-  LocalRecording,
-} from "@/lib/types";
+import type { RecordingSource, TranscriptSegment } from "@/lib/types";
 
 /**
  * Studio phases. `setup` lets the user configure sources; `ready` shows the live
@@ -69,6 +63,7 @@ export function useRecorderSession() {
   const [withCaptions, setWithCaptions] = useState(isTranscriptionSupported());
   const [captionLang, setCaptionLang] = useState(DEFAULT_CAPTION_LANG);
   const [corner, setCorner] = useState<SelfieCorner>("bottom-right");
+  const [cameraSize, setCameraSize] = useState<CameraSize>("small");
   const [countdown, setCountdown] = useState(3);
   const [elapsed, setElapsed] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -102,7 +97,7 @@ export function useRecorderSession() {
     }
   };
 
-  const enablePreview = async () => {
+  const startPreview = async () => {
     setPreparing(true);
     setPermissionError(null);
     setPermissionDenied(false);
@@ -113,6 +108,7 @@ export function useRecorderSession() {
         withMic,
         withSystemAudio,
         corner,
+        cameraSize,
         cursorOverlay: cursor.cursorOverlay,
         cursorSize: cursor.cursorSize,
         clickSound: cursor.clickSound,
@@ -141,6 +137,12 @@ export function useRecorderSession() {
     setPhase("ready");
   };
 
+  // "Enable preview" goes through the desktop's in-app share picker when
+  // available; startPreview runs once a source is locked in (or directly on
+  // the web, where the browser picker is mandatory).
+  const { sourcePickerOpen, enablePreview, confirmSource, cancelSourcePicker } =
+    useSourcePicker(source, startPreview);
+
   const reconfigure = () => {
     preparedRef.current?.dispose();
     preparedRef.current = null;
@@ -156,6 +158,13 @@ export function useRecorderSession() {
     // Update the live composite immediately — corner is a cosmetic option that
     // stays mutable even after the preview is built.
     preparedRef.current?.setCorner(next);
+  };
+
+  const changeCameraSize = (next: CameraSize) => {
+    setCameraSize(next);
+    // Same live-mutable mechanism as the corner: the composite's draw loop
+    // picks the new size up on its next tick, mid-recording included.
+    preparedRef.current?.setCameraSize(next);
   };
 
   const beginRecording = () => {
@@ -179,6 +188,14 @@ export function useRecorderSession() {
           transcriptRef.current = [...transcriptRef.current, seg];
         },
         captionLang,
+        () => {
+          toast({
+            title: "Live captions unavailable",
+            description:
+              "Speech recognition couldn't start (microphone permission or speech service). Recording continues without captions.",
+            variant: "destructive",
+          });
+        },
       );
     }
 
@@ -238,57 +255,13 @@ export function useRecorderSession() {
     setSaving(true);
 
     try {
-      const blob = await c.stop();
-      let duration = c.getElapsed();
-      if (!(duration > 0)) {
-        try {
-          duration = await getBlobDuration(blob);
-        } catch {
-          duration = 0;
-        }
-      }
-      let thumbnail: Blob | null = null;
-      try {
-        thumbnail = await captureThumbnail(blob, Math.min(0.2, duration / 2));
-      } catch {
-        thumbnail = null;
-      }
-
-      const id = nanoid(12);
-      const recording: LocalRecording = {
-        id,
-        title: `Recording ${new Date().toLocaleString()}`,
-        description: "",
-        durationSec: duration,
-        trimStart: 0,
-        trimEnd: duration,
-        hasAudio: c.hasAudio,
+      const id = await persistFinishedRecording({
+        controller: c,
         source,
-        selfieCorner: source === "screen-camera" ? corner : null,
+        corner,
         captionLang: withCaptions ? captionLang : null,
-        chapters: [],
-        displayChaptersOnVideo: false,
-        notifyOnView: false,
-        pinned: false,
         transcript: transcriptRef.current,
-        createdAt: Date.now(),
-        blob,
-        thumbnail,
-        mimeType: c.mimeType,
-        visibility: "private",
-        shareId: null,
-        videoPath: null,
-        thumbnailPath: null,
-        gifPath: null,
-      };
-      await saveRecording(recording);
-      // The recording is safely persisted as one record — the incremental
-      // capture chunks have served their purpose.
-      void deleteCaptureChunks(c.captureId).catch(() => undefined);
-      // Start uploading the video to storage in the background as a private
-      // recording so sharing is instant later. Skipped only when cloud is
-      // unavailable (desktop without a configured backend).
-      if (cloudEnabled) startBackgroundUpload(recording);
+      });
       navigate(`/editor/${id}`);
     } catch {
       setSaving(false);
@@ -324,6 +297,8 @@ export function useRecorderSession() {
       void finishRecording();
     } else if (cmd === "cancel") {
       cancelRecording();
+    } else if (cmd.startsWith("camera:")) {
+      changeCameraSize(cmd.slice("camera:".length) as CameraSize);
     }
   };
 
@@ -360,6 +335,7 @@ export function useRecorderSession() {
     captionLang,
     setCaptionLang,
     corner,
+    cameraSize,
     countdown,
     elapsed,
     paused,
@@ -372,8 +348,12 @@ export function useRecorderSession() {
     locked,
     cursor,
     enablePreview,
+    sourcePickerOpen,
+    confirmSource,
+    cancelSourcePicker,
     reconfigure,
     changeCorner,
+    changeCameraSize,
     startCountdown,
     togglePause,
     finishRecording,

@@ -54,12 +54,17 @@ export async function buildSharePage(
   if (!row || row.visibility !== "public" || row.status !== "ready") return null;
 
   const appUrl = `${origin}${NACHO_BASE}v/${shareId}`;
-  // Prefer the recording's own thumbnail; otherwise fall back to the Nacho
-  // brand card so the link still unfurls with the brand mark.
+  // Prefer the animated GIF summary (frames sampled across the whole video) so
+  // the unfurl previews the content; fall back to the static thumbnail, then
+  // the Nacho brand card. Platforms that don't animate GIFs (e.g. X/Twitter
+  // cards) show its first frame, which is still a real video frame.
   const brandImage = `${origin}${NACHO_BASE}opengraph.jpg`;
-  const image = row.thumbnailPath
-    ? `${origin}/api/storage${row.thumbnailPath}`
-    : brandImage;
+  const image = row.gifPath
+    ? `${origin}/api/storage${row.gifPath}`
+    : row.thumbnailPath
+      ? `${origin}/api/storage${row.thumbnailPath}`
+      : brandImage;
+  const imageType = row.gifPath ? "image/gif" : "image/jpeg";
   const videoUrl = `${origin}/api/storage${row.videoPath}`;
 
   const title = esc(row.title || "Nacho recording");
@@ -82,6 +87,7 @@ export async function buildSharePage(
 <meta property="og:title" content="${title}" />
 <meta property="og:description" content="${description}" />
 ${image ? `<meta property="og:image" content="${esc(image)}" />` : ""}
+${image ? `<meta property="og:image:type" content="${imageType}" />` : ""}
 <meta property="og:url" content="${esc(appUrl)}" />
 <meta property="og:video" content="${esc(videoUrl)}" />
 <meta property="og:video:type" content="video/webm" />

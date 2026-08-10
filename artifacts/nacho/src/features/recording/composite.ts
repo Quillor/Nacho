@@ -4,6 +4,19 @@ import type { SelfieCorner } from "@/lib/types";
 // "cover" image drawing and the circular camera bubble (the selfie composited
 // into the screen recording).
 
+/**
+ * Live-adjustable size of the composited camera: hidden, a small or large
+ * corner bubble, or full-screen (the camera covers the whole frame and the
+ * screen share is not visible).
+ */
+export type CameraSize = "none" | "small" | "large" | "full";
+
+/** Bubble diameter as a fraction of canvas height, per size option. */
+export const CAMERA_BUBBLE_FRACTION: Record<"small" | "large", number> = {
+  small: 0.26,
+  large: 0.44,
+};
+
 export function drawCover(
   ctx: CanvasRenderingContext2D,
   video: HTMLVideoElement,
@@ -30,8 +43,9 @@ export function drawCameraBubble(
   canvasH: number,
   corner: SelfieCorner,
   ringColor: string,
+  sizeFraction: number = CAMERA_BUBBLE_FRACTION.small,
 ): void {
-  const size = Math.round(canvasH * 0.26);
+  const size = Math.round(canvasH * sizeFraction);
   const margin = Math.round(canvasH * 0.03);
   const right = canvasW - size - margin;
   const bottom = canvasH - size - margin;

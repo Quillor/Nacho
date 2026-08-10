@@ -24,6 +24,10 @@ export const CH = {
   displayBounds: "display:bounds",
   /** renderer → main (invoke): ensure/return macOS Accessibility trust */
   accessibility: "perm:accessibility",
+  /** renderer → main (invoke): enumerate screens/windows for the picker */
+  captureList: "capture:list",
+  /** renderer → main (invoke): set the source the next getDisplayMedia uses */
+  captureSelect: "capture:select",
 } as const;
 
 /** Hash routes (the renderer runs under hash routing inside Electron). */

@@ -13,6 +13,7 @@ import {
   unpublishRecording,
   publishExistingRecording,
   deleteServerRecording,
+  downloadRecordingFiles,
   waitForUpload,
   isUploadInFlight,
   cancelUpload,
@@ -140,6 +141,23 @@ export function useLibrary() {
         ? "This recording now stays at the top of your Library."
         : "This recording returns to its usual spot.",
     });
+  };
+
+  const handleDownload = async (rec: LibraryItem) => {
+    try {
+      await downloadRecordingFiles(rec);
+      toast({
+        title: "Download started",
+        description:
+          "The video (plus .srt/.vtt captions when available) is downloading.",
+      });
+    } catch {
+      toast({
+        title: "Couldn't download",
+        description: "Something went wrong preparing the files. Try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleCopy = async (shareId: string) => {
@@ -314,6 +332,7 @@ export function useLibrary() {
     handleSeed,
     handleTogglePin,
     handleCopy,
+    handleDownload,
     handleGetLink,
     handleUnpublish,
     handleDelete,

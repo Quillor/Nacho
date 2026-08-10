@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Pause, Play, Square, X } from "lucide-react";
+import { Pause, Play, Square, X, UserRound } from "lucide-react";
 import { formatDuration } from "@workspace/shared";
 import { cn } from "@/lib/utils";
 import {
@@ -26,6 +26,17 @@ export function ControlsOverlay() {
   }, []);
 
   const send = (cmd: RecorderCommand) => desktopBridge?.sendCommand(cmd);
+
+  // Camera-size cycle (none → small → large → full). The overlay can't read
+  // the recorder's current size, so it tracks its own cursor starting from the
+  // default; each click sends an absolute size command.
+  const CAMERA_SIZES = ["small", "large", "full", "none"] as const;
+  const [cameraIdx, setCameraIdx] = useState(0);
+  const cycleCamera = () => {
+    const next = (cameraIdx + 1) % CAMERA_SIZES.length;
+    setCameraIdx(next);
+    send(`camera:${CAMERA_SIZES[next]}` as RecorderCommand);
+  };
 
   const btn =
     "flex h-10 w-10 items-center justify-center border-2 border-foreground bg-card transition-colors hover:bg-muted";
@@ -75,6 +86,18 @@ export function ControlsOverlay() {
           className={cn(btn, "bg-accent text-accent-foreground hover:bg-accent")}
         >
           <Square className="h-5 w-5" />
+        </button>
+
+        <button
+          type="button"
+          style={NO_DRAG_REGION}
+          aria-label={`Camera size: ${CAMERA_SIZES[cameraIdx]} — click to change`}
+          title={`Camera: ${CAMERA_SIZES[cameraIdx]}`}
+          onClick={cycleCamera}
+          className={btn}
+        >
+          <UserRound className="h-5 w-5" />
+          <span className="sr-only">Camera size</span>
         </button>
 
         <button

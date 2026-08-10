@@ -22,6 +22,9 @@ import type {
 import type {
   AdminSummary,
   AdminUser,
+  CommentInput,
+  CommentList,
+  CommentUpdate,
   DesktopRelease,
   DesktopReleaseInput,
   EmailPreview,
@@ -34,6 +37,7 @@ import type {
   NotificationResult,
   PlaybackUrl,
   PublishedRecording,
+  RecordingComment,
   RecordingCompleteInput,
   RecordingInput,
   RecordingStartInput,
@@ -727,6 +731,301 @@ export function useGetRecordingPlaybackUrl<TData = Awaited<ReturnType<typeof get
 
 
 
+
+export const getListRecordingCommentsUrl = (shareId: string,) => {
+
+
+
+
+  return `/api/recordings/${shareId}/comments`
+}
+
+/**
+ * @summary List timeline comments for a viewable recording
+ */
+export const listRecordingComments = async (shareId: string, options?: RequestInit): Promise<CommentList> => {
+
+  return customFetch<CommentList>(getListRecordingCommentsUrl(shareId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListRecordingCommentsQueryKey = (shareId: string,) => {
+    return [
+    `/api/recordings/${shareId}/comments`
+    ] as const;
+    }
+
+
+export const getListRecordingCommentsQueryOptions = <TData = Awaited<ReturnType<typeof listRecordingComments>>, TError = ErrorType<ErrorResponse>>(shareId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRecordingComments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListRecordingCommentsQueryKey(shareId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listRecordingComments>>> = ({ signal }) => listRecordingComments(shareId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(shareId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listRecordingComments>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListRecordingCommentsQueryResult = NonNullable<Awaited<ReturnType<typeof listRecordingComments>>>
+export type ListRecordingCommentsQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary List timeline comments for a viewable recording
+ */
+
+export function useListRecordingComments<TData = Awaited<ReturnType<typeof listRecordingComments>>, TError = ErrorType<ErrorResponse>>(
+ shareId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRecordingComments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListRecordingCommentsQueryOptions(shareId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getAddRecordingCommentUrl = (shareId: string,) => {
+
+
+
+
+  return `/api/recordings/${shareId}/comments`
+}
+
+/**
+ * @summary Add a timeline comment (requires a signed-in account)
+ */
+export const addRecordingComment = async (shareId: string,
+    commentInput: CommentInput, options?: RequestInit): Promise<RecordingComment> => {
+
+  return customFetch<RecordingComment>(getAddRecordingCommentUrl(shareId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      commentInput,)
+  }
+);}
+
+
+
+
+export const getAddRecordingCommentMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addRecordingComment>>, TError,{shareId: string;data: BodyType<CommentInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof addRecordingComment>>, TError,{shareId: string;data: BodyType<CommentInput>}, TContext> => {
+
+const mutationKey = ['addRecordingComment'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addRecordingComment>>, {shareId: string;data: BodyType<CommentInput>}> = (props) => {
+          const {shareId,data} = props ?? {};
+
+          return  addRecordingComment(shareId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AddRecordingCommentMutationResult = NonNullable<Awaited<ReturnType<typeof addRecordingComment>>>
+    export type AddRecordingCommentMutationBody = BodyType<CommentInput>
+    export type AddRecordingCommentMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Add a timeline comment (requires a signed-in account)
+ */
+export const useAddRecordingComment = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addRecordingComment>>, TError,{shareId: string;data: BodyType<CommentInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof addRecordingComment>>,
+        TError,
+        {shareId: string;data: BodyType<CommentInput>},
+        TContext
+      > => {
+      return useMutation(getAddRecordingCommentMutationOptions(options));
+    }
+
+export const getUpdateRecordingCommentUrl = (shareId: string,
+    commentId: number,) => {
+
+
+
+
+  return `/api/recordings/${shareId}/comments/${commentId}`
+}
+
+/**
+ * @summary Edit a comment's text/anchor (author) or resolve state (author/owner)
+ */
+export const updateRecordingComment = async (shareId: string,
+    commentId: number,
+    commentUpdate: CommentUpdate, options?: RequestInit): Promise<RecordingComment> => {
+
+  return customFetch<RecordingComment>(getUpdateRecordingCommentUrl(shareId,commentId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      commentUpdate,)
+  }
+);}
+
+
+
+
+export const getUpdateRecordingCommentMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRecordingComment>>, TError,{shareId: string;commentId: number;data: BodyType<CommentUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateRecordingComment>>, TError,{shareId: string;commentId: number;data: BodyType<CommentUpdate>}, TContext> => {
+
+const mutationKey = ['updateRecordingComment'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateRecordingComment>>, {shareId: string;commentId: number;data: BodyType<CommentUpdate>}> = (props) => {
+          const {shareId,commentId,data} = props ?? {};
+
+          return  updateRecordingComment(shareId,commentId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateRecordingCommentMutationResult = NonNullable<Awaited<ReturnType<typeof updateRecordingComment>>>
+    export type UpdateRecordingCommentMutationBody = BodyType<CommentUpdate>
+    export type UpdateRecordingCommentMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Edit a comment's text/anchor (author) or resolve state (author/owner)
+ */
+export const useUpdateRecordingComment = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRecordingComment>>, TError,{shareId: string;commentId: number;data: BodyType<CommentUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateRecordingComment>>,
+        TError,
+        {shareId: string;commentId: number;data: BodyType<CommentUpdate>},
+        TContext
+      > => {
+      return useMutation(getUpdateRecordingCommentMutationOptions(options));
+    }
+
+export const getDeleteRecordingCommentUrl = (shareId: string,
+    commentId: number,) => {
+
+
+
+
+  return `/api/recordings/${shareId}/comments/${commentId}`
+}
+
+/**
+ * @summary Delete a comment (author or recording owner)
+ */
+export const deleteRecordingComment = async (shareId: string,
+    commentId: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteRecordingCommentUrl(shareId,commentId),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteRecordingCommentMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteRecordingComment>>, TError,{shareId: string;commentId: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteRecordingComment>>, TError,{shareId: string;commentId: number}, TContext> => {
+
+const mutationKey = ['deleteRecordingComment'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteRecordingComment>>, {shareId: string;commentId: number}> = (props) => {
+          const {shareId,commentId} = props ?? {};
+
+          return  deleteRecordingComment(shareId,commentId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteRecordingCommentMutationResult = NonNullable<Awaited<ReturnType<typeof deleteRecordingComment>>>
+
+    export type DeleteRecordingCommentMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Delete a comment (author or recording owner)
+ */
+export const useDeleteRecordingComment = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteRecordingComment>>, TError,{shareId: string;commentId: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteRecordingComment>>,
+        TError,
+        {shareId: string;commentId: number},
+        TContext
+      > => {
+      return useMutation(getDeleteRecordingCommentMutationOptions(options));
+    }
 
 export const getGetRecordingUrl = (shareId: string,) => {
 

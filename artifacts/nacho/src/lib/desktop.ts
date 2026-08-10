@@ -6,7 +6,16 @@
 // In the plain web build `window.nacho` is undefined, so `isDesktop` is false
 // and every desktop feature stays off — no behavior change on the web.
 
-export type RecorderCommand = "pause" | "resume" | "stop" | "cancel";
+export type RecorderCommand =
+  | "pause"
+  | "resume"
+  | "stop"
+  | "cancel"
+  // Live camera-size changes from the presenter controls overlay.
+  | "camera:none"
+  | "camera:small"
+  | "camera:large"
+  | "camera:full";
 
 export interface RecorderStatus {
   elapsed: number;
@@ -31,6 +40,21 @@ export interface NachoCursorBridge {
   requestAccessibility(): Promise<boolean>;
 }
 
+/** One capturable screen or window from the desktop source picker. */
+export interface CaptureSource {
+  id: string;
+  name: string;
+  kind: "screen" | "window";
+  thumbnailDataUrl: string | null;
+  appIconDataUrl: string | null;
+}
+
+export interface NachoCaptureBridge {
+  listSources(): Promise<CaptureSource[]>;
+  /** Set the source the next getDisplayMedia call will capture. */
+  selectSource(id: string): Promise<void>;
+}
+
 export interface NachoBridge {
   isDesktop: true;
   platform: string;
@@ -43,6 +67,8 @@ export interface NachoBridge {
   showOverlays(which: OverlayName[]): void;
   hideOverlays(): void;
   cursor: NachoCursorBridge;
+  /** In-app screen/window picker (absent in older desktop builds). */
+  capture?: NachoCaptureBridge;
   /** Open a URL in the user's default browser (sign-in handoff). */
   openExternal(url: string): Promise<void>;
   /** Receive the nacho://auth deep-link callback URL. */
@@ -66,6 +92,9 @@ export const isDesktop: boolean =
 
 /** True when the global cursor/click bridge is available (Electron only). */
 export const hasCursorBridge: boolean = Boolean(desktopBridge?.cursor);
+
+/** True when the in-app screen/window picker is available (Electron only). */
+export const hasSourcePicker: boolean = Boolean(desktopBridge?.capture);
 
 /**
  * Open a URL in the user's real browser. On desktop this hands off to the OS

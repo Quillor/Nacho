@@ -86,30 +86,47 @@ function broadcast(channel: string, payload?: unknown) {
 }
 
 /**
- * Show the native macOS screen/window picker on every recording so the user
- * chooses a screen or a specific app window each time (useSystemPicker). The
- * handler below is the fallback for OSes where the system picker isn't available
- * — there it auto-captures the primary screen.
+ * The source the renderer's in-app picker chose (a desktopCapturer source id
+ * like "screen:0:0" or "window:123:0"). The next getDisplayMedia call captures
+ * this source directly — no OS picker. Null falls back to the primary screen.
+ */
+let selectedSourceId: string | null = null;
+
+/**
+ * Resolve getDisplayMedia against the in-app (Zoom-style) picker's selection
+ * instead of the OS picker. The renderer calls `capture:select` with a source
+ * id first; screens also record their display bounds so the cursor overlay can
+ * map global coordinates (window captures can't, so the mapping is cleared).
  */
 function installDisplayMediaHandler() {
   session.defaultSession.setDisplayMediaRequestHandler(
     (_request, callback) => {
       void desktopCapturer
-        .getSources({ types: ["screen"] })
+        .getSources({ types: ["screen", "window"] })
         .then((sources) => {
           const primary = screen.getPrimaryDisplay();
           const match =
+            (selectedSourceId
+              ? sources.find((s) => s.id === selectedSourceId)
+              : undefined) ??
             sources.find((s) => s.display_id === String(primary.id)) ??
             sources[0];
-          const display =
-            screen
-              .getAllDisplays()
-              .find((d) => String(d.id) === match?.display_id) ?? primary;
-          capturedDisplay = {
-            id: display.id,
-            bounds: display.bounds,
-            scaleFactor: display.scaleFactor,
-          };
+
+          if (match?.id.startsWith("screen:")) {
+            const display =
+              screen
+                .getAllDisplays()
+                .find((d) => String(d.id) === match.display_id) ?? primary;
+            capturedDisplay = {
+              id: display.id,
+              bounds: display.bounds,
+              scaleFactor: display.scaleFactor,
+            };
+          } else {
+            // Window capture: global cursor coordinates can't be mapped onto
+            // the recorded frame, so the cursor overlay is disabled for it.
+            capturedDisplay = null;
+          }
           // `loopback` captures system audio on macOS 13+ (ScreenCaptureKit);
           // degrades gracefully where unsupported.
           callback({ video: match, audio: "loopback" });
@@ -119,7 +136,6 @@ function installDisplayMediaHandler() {
           callback({});
         });
     },
-    { useSystemPicker: true },
   );
 }
 
@@ -164,6 +180,36 @@ function registerIpc() {
 
   ipcMain.handle(CH.displayBounds, () => capturedDisplay);
   ipcMain.handle(CH.accessibility, () => ensureAccessibility(true));
+
+  // In-app source picker: enumerate capturable screens/windows with live
+  // thumbnails. Nacho's own windows (main + presenter overlays) are excluded —
+  // recording the recorder is never what the user means.
+  ipcMain.handle(CH.captureList, async () => {
+    const sources = await desktopCapturer.getSources({
+      types: ["screen", "window"],
+      thumbnailSize: { width: 420, height: 262 },
+      fetchWindowIcons: true,
+    });
+    const ownTitles = new Set(
+      BrowserWindow.getAllWindows().map((w) => w.getTitle()),
+    );
+    return sources
+      .filter((s) => !(s.id.startsWith("window:") && ownTitles.has(s.name)))
+      .map((s) => ({
+        id: s.id,
+        name: s.name,
+        kind: s.id.startsWith("screen:") ? "screen" : "window",
+        thumbnailDataUrl: s.thumbnail.isEmpty()
+          ? null
+          : s.thumbnail.toDataURL(),
+        appIconDataUrl:
+          s.appIcon && !s.appIcon.isEmpty() ? s.appIcon.toDataURL() : null,
+      }));
+  });
+
+  ipcMain.handle(CH.captureSelect, (_e, id: unknown) => {
+    selectedSourceId = typeof id === "string" && id.length > 0 ? id : null;
+  });
 
   // Browser sign-in handoff: open the system browser to the login page.
   ipcMain.handle("auth:openExternal", (_e, url: string) => {

@@ -87,6 +87,10 @@ export interface VideoPlayerProps {
   onChapterClick?: (chapter: Chapter, index: number) => void;
   /** Called when playback actually starts (the video begins playing). */
   onPlay?: () => void;
+  /** Open timeline comments, rendered as markers above the scrub bar. */
+  commentMarkers?: { id: number; time: number; label?: string }[];
+  /** Called when a comment marker is clicked (after seeking to it). */
+  onCommentMarkerClick?: (id: number) => void;
 }
 
 export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
@@ -97,6 +101,8 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
       showChapterTitles = false,
       selfieCorner = null,
       className,
+      commentMarkers = [],
+      onCommentMarkerClick,
     } = props;
     const p = useVideoPlayer(props, ref);
 
@@ -207,6 +213,24 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
                 }}
                 className="absolute top-1/2 z-10 h-5 w-1.5 -translate-x-1/2 -translate-y-1/2 border-x border-foreground bg-primary"
                 style={{ left: `${p.pct(c.time)}%` }}
+              />
+            ))}
+
+            {/* open-comment markers (diamonds riding above the track) */}
+            {commentMarkers.map((m) => (
+              <button
+                key={`c${m.id}`}
+                type="button"
+                title={m.label ?? `Comment at ${formatTimestamp(m.time)}`}
+                aria-label={`Jump to comment at ${formatTimestamp(m.time)}`}
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  p.seek(m.time);
+                  onCommentMarkerClick?.(m.id);
+                }}
+                className="absolute -top-2 z-10 h-2.5 w-2.5 -translate-x-1/2 rotate-45 border border-foreground bg-destructive"
+                style={{ left: `${p.pct(m.time)}%` }}
               />
             ))}
 

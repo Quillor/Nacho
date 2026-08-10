@@ -15,8 +15,8 @@ import {
 import { shareUrl } from "@/lib/api";
 import type { LocalRecording, Chapter, Visibility } from "@/lib/types";
 
-// The GIF preview only covers the first few seconds of the trimmed clip.
-const GIF_PREVIEW_MAX_SECONDS = 6;
+// (The GIF preview samples frames across the entire trimmed clip — see
+// createGifFromBlob — so link unfurls summarize the whole video.)
 
 // Turn a publish failure into an accurate, actionable toast. The two halves of
 // publishing fail for different reasons and need different guidance: an upload
@@ -136,7 +136,7 @@ export function usePublishActions({
         try {
           gifBlob = await createGifFromBlob(saved.blob, {
             start: trimStart,
-            end: Math.min(trimEnd, trimStart + GIF_PREVIEW_MAX_SECONDS),
+            end: trimEnd,
           });
         } catch {
           gifBlob = null;
@@ -206,7 +206,7 @@ export function usePublishActions({
         try {
           gifBlob = await createGifFromBlob(draft.blob, {
             start: trimStart,
-            end: Math.min(trimEnd, trimStart + GIF_PREVIEW_MAX_SECONDS),
+            end: trimEnd,
           });
         } catch {
           gifBlob = null;

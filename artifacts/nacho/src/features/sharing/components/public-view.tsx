@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 import { useRoute, Link } from "wouter";
-import { Copy, Check, List, FileText, X } from "lucide-react";
+import { Copy, Check, List, FileText } from "lucide-react";
 import {
   useGetRecording,
   useAddRecordingView,
@@ -12,6 +12,9 @@ import {
 import { Button } from "@workspace/pico-ui/button";
 import { Logo } from "@/components/logo";
 import { VideoPlayer, type VideoPlayerHandle } from "./video-player";
+import { TranscriptPanel } from "./transcript-panel";
+import { CommentsSection } from "./comments-section";
+import type { RecordingComment } from "../hooks/use-comments";
 import { storageUrl, shareUrl } from "@/lib/api";
 import { formatTimestamp, formatRelativeDate } from "@workspace/shared";
 
@@ -57,6 +60,16 @@ export function PublicView() {
   const playerRef = useRef<VideoPlayerHandle>(null);
   const [copied, setCopied] = useState(false);
   const [transcriptOpen, setTranscriptOpen] = useState(false);
+  // Playhead position, for the transcript panel's active-line highlight.
+  const [currentTime, setCurrentTime] = useState(0);
+  // Open comments, mirrored up from the comments section for timeline markers.
+  const [openComments, setOpenComments] = useState<RecordingComment[]>([]);
+
+  const scrollToComment = (id: number) => {
+    document
+      .getElementById(`comment-${id}`)
+      ?.scrollIntoView({ block: "center", behavior: "smooth" });
+  };
 
   // A view counts only when the share link is opened AND playback actually
   // starts — not on mere page load. Dedupe to once per viewing session.
@@ -139,7 +152,15 @@ export function PublicView() {
                   endTime={rec.trimEnd || undefined}
                   durationSec={rec.durationSec}
                   hasAudio={rec.hasAudio}
+                  captionsDefault
                   onPlay={handlePlay}
+                  onTimeUpdate={setCurrentTime}
+                  commentMarkers={openComments.map((c) => ({
+                    id: c.id,
+                    time: c.timeSec,
+                    label: `${c.authorName}: ${c.body.slice(0, 60)}`,
+                  }))}
+                  onCommentMarkerClick={scrollToComment}
                 />
 
                 <div className="flex flex-wrap items-center justify-between gap-4">
@@ -189,41 +210,21 @@ export function PublicView() {
                     </div>
                   </div>
                 )}
+                <CommentsSection
+                  shareId={shareId}
+                  currentTime={currentTime}
+                  onSeek={seek}
+                  onCommentsChanged={setOpenComments}
+                />
               </div>
 
               {hasTranscript && transcriptOpen && (
-                <aside className="shrink-0 lg:w-80">
-                  <div className="border-2 border-foreground bg-card lg:sticky lg:top-6">
-                    <div className="flex items-center justify-between border-b-2 border-foreground px-4 py-3">
- <h2 className="flex items-center gap-2 font-display text-lg font-extrabold">
-                        <FileText className="h-5 w-5" /> Transcript
-                      </h2>
-                      <button
-                        type="button"
-                        onClick={() => setTranscriptOpen(false)}
-                        aria-label="Close transcript"
-                        className="flex h-8 w-8 items-center justify-center border border-foreground bg-background transition-colors hover:bg-muted"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                    <div className="max-h-[60vh] space-y-2 overflow-y-auto p-4">
-                      {rec.transcript.map((seg, i) => (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => seek(seg.start)}
-                          className="flex w-full gap-3 border border-transparent p-2 text-left transition-colors hover:border-foreground hover:bg-muted"
-                        >
-                          <span className="shrink-0 font-mono text-xs font-bold text-foreground">
-                            {formatTimestamp(seg.start)}
-                          </span>
-                          <span className="text-sm">{seg.text}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </aside>
+                <TranscriptPanel
+                  transcript={rec.transcript}
+                  currentTime={currentTime}
+                  onSeek={seek}
+                  onClose={() => setTranscriptOpen(false)}
+                />
               )}
             </div>
 

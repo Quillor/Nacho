@@ -4,4 +4,5 @@
 export * from "./publish";
 export * from "./upload-manager";
 export * from "./resume-uploads";
+export * from "./export";
 export * from "./gif";

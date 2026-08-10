@@ -60,6 +60,7 @@ export function LibraryPage() {
     handleCopy,
     handleGetLink,
     handleUnpublish,
+    handleDownload,
     handleDelete,
     selectionMode,
     selectedIds,
@@ -235,6 +236,7 @@ export function LibraryPage() {
               onCopy={handleCopy}
               onGetLink={handleGetLink}
               onUnpublish={handleUnpublish}
+              onDownload={handleDownload}
               onRequestDelete={setPendingDelete}
             />
           ))}

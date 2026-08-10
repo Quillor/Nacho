@@ -46,8 +46,15 @@ export async function createGifFromBlob(
     const encoder = GIFEncoder();
     const delay = Math.round(1000 / fps);
 
+    // Spread samples across the FULL [start, end] range (inclusive of a frame
+    // near the end) so the GIF summarizes the whole video, backing off slightly
+    // from the final instant where seeking can land on an empty frame.
+    const lastT = Math.max(start, end - 0.15);
     for (let i = 0; i < frameCount; i++) {
-      const t = start + (i / frameCount) * duration;
+      const t =
+        frameCount === 1
+          ? start
+          : start + (i / (frameCount - 1)) * (lastT - start);
       await seek(video, t);
       ctx.drawImage(video, 0, 0, w, h);
       const { data } = ctx.getImageData(0, 0, w, h);

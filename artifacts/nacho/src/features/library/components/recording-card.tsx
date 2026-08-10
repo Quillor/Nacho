@@ -14,6 +14,7 @@ import {
   RotateCcw,
   Pin,
   MoreHorizontal,
+  Download as DownloadIcon,
 } from "lucide-react";
 import { Button } from "@workspace/pico-ui/button";
 import { Badge } from "@workspace/pico-ui/badge";
@@ -113,6 +114,7 @@ export interface RecordingCardProps {
   onCopy: (shareId: string) => void;
   onGetLink: (rec: LibraryItem) => void;
   onUnpublish: (rec: LibraryItem) => void;
+  onDownload: (rec: LibraryItem) => void;
   onRequestDelete: (id: string) => void;
 }
 
@@ -129,6 +131,7 @@ export function RecordingCard({
   onCopy,
   onGetLink,
   onUnpublish,
+  onDownload,
   onRequestDelete,
 }: RecordingCardProps) {
   return (
@@ -325,6 +328,13 @@ export function RecordingCard({
                   </DropdownMenuItem>
                 </>
               )}
+              <DropdownMenuItem
+                className="font-medium"
+                disabled={rec.remote && rec.remoteStatus === "pending"}
+                onSelect={() => onDownload(rec)}
+              >
+                <DownloadIcon className="mr-2 h-4 w-4" /> Download
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="font-medium text-destructive focus:bg-destructive focus:text-destructive-foreground"

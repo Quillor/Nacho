@@ -224,6 +224,130 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /recordings/{shareId}/comments:
+    get:
+      operationId: listRecordingComments
+      tags: [recordings]
+      summary: List timeline comments for a viewable recording
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Comments plus the viewer's moderation rights
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentList"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      operationId: addRecordingComment
+      tags: [recordings]
+      summary: Add a timeline comment (requires a signed-in account)
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentInput"
+      responses:
+        "201":
+          description: The created comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordingComment"
+        "401":
+          description: Sign in to comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /recordings/{shareId}/comments/{commentId}:
+    patch:
+      operationId: updateRecordingComment
+      tags: [recordings]
+      summary: Edit a comment's text/anchor (author) or resolve state (author/owner)
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentUpdate"
+      responses:
+        "200":
+          description: The updated comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordingComment"
+        "403":
+          description: Not allowed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteRecordingComment
+      tags: [recordings]
+      summary: Delete a comment (author or recording owner)
+      parameters:
+        - name: shareId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /recordings/{shareId}:
     get:
       operationId: getRecording
@@ -935,6 +1059,61 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/TranscriptSegment"
+    RecordingComment:
+      type: object
+      required: [id, timeSec, body, resolved, authorName, mine, createdAt]
+      properties:
+        id:
+          type: integer
+        timeSec:
+          type: number
+        body:
+          type: string
+        resolved:
+          type: boolean
+        authorName:
+          type: string
+        mine:
+          description: Whether the viewer authored this comment.
+          type: boolean
+        createdAt:
+          type: string
+    CommentList:
+      type: object
+      required: [comments, canModerate]
+      properties:
+        comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecordingComment"
+        canModerate:
+          description: >-
+            True when the viewer owns the recording (may resolve/delete any
+            comment).
+          type: boolean
+    CommentInput:
+      type: object
+      required: [timeSec, body]
+      properties:
+        timeSec:
+          type: number
+          minimum: 0
+        body:
+          type: string
+          minLength: 1
+          maxLength: 5000
+    CommentUpdate:
+      type: object
+      properties:
+        body:
+          type: string
+          minLength: 1
+          maxLength: 5000
+        timeSec:
+          type: number
+          minimum: 0
+        resolved:
+          type: boolean
     PlaybackUrl:
       type: object
       required: [url]

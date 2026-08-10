@@ -16,8 +16,6 @@ import {
   CompleteRecordingUploadBody,
   SetRecordingTranscriptParams,
   SetRecordingTranscriptBody,
-  GetRecordingPlaybackUrlParams,
-  GetRecordingPlaybackUrlResponse,
 } from "@workspace/api-zod";
 import { authUserId } from "../../lib/dev-auth";
 import {
@@ -42,10 +40,6 @@ import {
 
 const router: IRouter = Router();
 const objectStorageService = new ObjectStorageService();
-
-/** TTL for signed direct-playback URLs (long enough to watch, short enough to
- * keep leaked URLs low-value). */
-const PLAYBACK_URL_TTL_SEC = 3600;
 
 router.get("/recordings", async (req, res): Promise<void> => {
   const userId = authUserId(req);
@@ -170,41 +164,6 @@ router.patch(
   },
 );
 
-router.get("/recordings/:shareId/play", async (req, res): Promise<void> => {
-  const params = GetRecordingPlaybackUrlParams.safeParse(req.params);
-  if (!params.success) {
-    res.status(400).json({ error: params.error.message });
-    return;
-  }
-
-  const row = await getRecordingForViewer(
-    params.data.shareId,
-    authUserId(req),
-  );
-  if (!row || !row.videoPath) {
-    res.status(404).json({ error: "Recording not found" });
-    return;
-  }
-
-  try {
-    const file = await objectStorageService.getObjectEntityFile(row.videoPath);
-    const url = await objectStorageService.getObjectEntityDownloadURL(file, {
-      ttlSec: PLAYBACK_URL_TTL_SEC,
-    });
-    res.json(
-      GetRecordingPlaybackUrlResponse.parse({
-        url,
-        expiresInSec: PLAYBACK_URL_TTL_SEC,
-      }),
-    );
-  } catch (err) {
-    if (err instanceof ObjectNotFoundError) {
-      res.status(404).json({ error: "Recording not found" });
-      return;
-    }
-    throw err;
-  }
-});
 
 router.post("/recordings", async (req, res): Promise<void> => {
   const userId = authUserId(req);

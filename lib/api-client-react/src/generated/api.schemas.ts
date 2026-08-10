@@ -144,6 +144,44 @@ export interface TranscriptInput {
   transcript: TranscriptSegment[];
 }
 
+export interface RecordingComment {
+  id: number;
+  timeSec: number;
+  body: string;
+  resolved: boolean;
+  authorName: string;
+  /** Whether the viewer authored this comment. */
+  mine: boolean;
+  createdAt: string;
+}
+
+export interface CommentList {
+  comments: RecordingComment[];
+  /** True when the viewer owns the recording (may resolve/delete any comment). */
+  canModerate: boolean;
+}
+
+export interface CommentInput {
+  /** @minimum 0 */
+  timeSec: number;
+  /**
+     * @minLength 1
+     * @maxLength 5000
+     */
+  body: string;
+}
+
+export interface CommentUpdate {
+  /**
+     * @minLength 1
+     * @maxLength 5000
+     */
+  body?: string;
+  /** @minimum 0 */
+  timeSec?: number;
+  resolved?: boolean;
+}
+
 export interface PlaybackUrl {
   /** Short-lived signed URL that streams directly from storage. */
   url: string;

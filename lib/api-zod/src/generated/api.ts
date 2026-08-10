@@ -206,6 +206,86 @@ export const GetRecordingPlaybackUrlResponse = zod.object({
 
 
 /**
+ * @summary List timeline comments for a viewable recording
+ */
+export const ListRecordingCommentsParams = zod.object({
+  "shareId": zod.coerce.string()
+})
+
+export const ListRecordingCommentsResponse = zod.object({
+  "comments": zod.array(zod.object({
+  "id": zod.number(),
+  "timeSec": zod.number(),
+  "body": zod.string(),
+  "resolved": zod.boolean(),
+  "authorName": zod.string(),
+  "mine": zod.boolean().describe('Whether the viewer authored this comment.'),
+  "createdAt": zod.string()
+})),
+  "canModerate": zod.boolean().describe('True when the viewer owns the recording (may resolve\/delete any comment).')
+})
+
+
+/**
+ * @summary Add a timeline comment (requires a signed-in account)
+ */
+export const AddRecordingCommentParams = zod.object({
+  "shareId": zod.coerce.string()
+})
+
+export const addRecordingCommentBodyTimeSecMin = 0;
+
+export const addRecordingCommentBodyBodyMax = 5000;
+
+
+
+export const AddRecordingCommentBody = zod.object({
+  "timeSec": zod.number().min(addRecordingCommentBodyTimeSecMin),
+  "body": zod.string().min(1).max(addRecordingCommentBodyBodyMax)
+})
+
+
+/**
+ * @summary Edit a comment's text/anchor (author) or resolve state (author/owner)
+ */
+export const UpdateRecordingCommentParams = zod.object({
+  "shareId": zod.coerce.string(),
+  "commentId": zod.coerce.number()
+})
+
+export const updateRecordingCommentBodyBodyMax = 5000;
+
+export const updateRecordingCommentBodyTimeSecMin = 0;
+
+
+
+export const UpdateRecordingCommentBody = zod.object({
+  "body": zod.string().min(1).max(updateRecordingCommentBodyBodyMax).optional(),
+  "timeSec": zod.number().min(updateRecordingCommentBodyTimeSecMin).optional(),
+  "resolved": zod.boolean().optional()
+})
+
+export const UpdateRecordingCommentResponse = zod.object({
+  "id": zod.number(),
+  "timeSec": zod.number(),
+  "body": zod.string(),
+  "resolved": zod.boolean(),
+  "authorName": zod.string(),
+  "mine": zod.boolean().describe('Whether the viewer authored this comment.'),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Delete a comment (author or recording owner)
+ */
+export const DeleteRecordingCommentParams = zod.object({
+  "shareId": zod.coerce.string(),
+  "commentId": zod.coerce.number()
+})
+
+
+/**
  * @summary Get a published recording by share id
  */
 export const GetRecordingParams = zod.object({

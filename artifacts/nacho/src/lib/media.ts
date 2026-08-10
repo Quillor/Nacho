@@ -143,11 +143,16 @@ export async function extractFilmstrip(
 }
 
 export function pickRecorderMimeType(): string {
+  // MP4 (H.264/AAC) is preferred when the browser can record it natively
+  // (Safari always; Chromium 126+): the file is directly usable everywhere —
+  // YouTube, QuickTime, editors — with no transcode step. WebM (also accepted
+  // by YouTube) is the fallback for browsers that can't record MP4.
   const candidates = [
+    'video/mp4;codecs="avc1.42E01E,mp4a.40.2"',
+    "video/mp4",
     "video/webm;codecs=vp9,opus",
     "video/webm;codecs=vp8,opus",
     "video/webm",
-    "video/mp4",
   ];
   for (const type of candidates) {
     if (
